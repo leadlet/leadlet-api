@@ -1,0 +1,59 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myObjectiveLabel" jhiTranslate="leadletApiApp.objective.home.createOrEditLabel">Create or edit a Objective</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!objective.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="objective.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.objective.sourceId" for="field_sourceId">Source Id</label>
+            <input type="number" class="form-control" name="sourceId" id="field_sourceId"
+                [(ngModel)]="objective.sourceId"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.objective.sourceType" for="field_sourceType">Source Type</label>
+            <select class="form-control" name="sourceType" [(ngModel)]="objective.sourceType" id="field_sourceType" >
+                <option value="USER" jhiTranslate="leadletApiApp.ObjectiveSourceType.USER">USER</option>
+                <option value="TEAM" jhiTranslate="leadletApiApp.ObjectiveSourceType.TEAM">TEAM</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.objective.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="objective.name"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.objective.dueDate" for="field_dueDate">Due Date</label>
+            <div class="d-flex">
+                <input id="field_dueDate" type="datetime-local" class="form-control" name="dueDate" [(ngModel)]="objective.dueDate"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.objective.targetAmount" for="field_targetAmount">Target Amount</label>
+            <input type="number" class="form-control" name="targetAmount" id="field_targetAmount"
+                [(ngModel)]="objective.targetAmount"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.objective.currentAmount" for="field_currentAmount">Current Amount</label>
+            <input type="number" class="form-control" name="currentAmount" id="field_currentAmount"
+                [(ngModel)]="objective.currentAmount"  />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

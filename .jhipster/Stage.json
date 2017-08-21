@@ -1,0 +1,22 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "pipelineStage",
+            "otherEntityName": "pipelineStage",
+            "otherEntityRelationshipName": "stage"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170820143146",
+    "entityTableName": "stage",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Deal.
+    -->
+    <changeSet id="20170820143152-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="pipeline_stage_id"
+                                 baseTableName="deal"
+                                 constraintName="fk_deal_pipeline_stage_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="pipeline_stage"/>
+
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="deal"
+                                 constraintName="fk_deal_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="contact"/>
+
+        <addForeignKeyConstraint baseColumnNames="organization_id"
+                                 baseTableName="deal"
+                                 constraintName="fk_deal_organization_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="contact"/>
+
+        <addForeignKeyConstraint baseColumnNames="app_account_id"
+                                 baseTableName="deal"
+                                 constraintName="fk_deal_app_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="app_account"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="deal"
+                                 constraintName="fk_deal_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+    </changeSet>
+</databaseChangeLog>

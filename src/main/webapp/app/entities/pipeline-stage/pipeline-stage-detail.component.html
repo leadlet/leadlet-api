@@ -1,0 +1,37 @@
+
+<div *ngIf="pipelineStage">
+    <h2><span jhiTranslate="leadletApiApp.pipelineStage.detail.title">Pipeline Stage</span> {{pipelineStage.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="leadletApiApp.pipelineStage.stageOrder">Stage Order</span></dt>
+        <dd>
+            <span>{{pipelineStage.stageOrder}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.pipelineStage.pipeline">Pipeline</span></dt>
+        <dd>
+            <div *ngIf="pipelineStage.pipelineId">
+                <a [routerLink]="['/pipeline', pipelineStage.pipelineId]">{{pipelineStage.pipelineId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.pipelineStage.stage">Stage</span></dt>
+        <dd>
+            <div *ngIf="pipelineStage.stageId">
+                <a [routerLink]="['/stage', pipelineStage.stageId]">{{pipelineStage.stageId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'pipeline-stage/'+ pipelineStage.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

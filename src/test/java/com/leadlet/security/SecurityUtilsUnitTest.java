@@ -20,12 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SecurityUtilsUnitTest {
 
     @Test
-    public void testgetCurrentUserLogin() {
+    public void testgetCurrentUserEmail() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
-        String login = SecurityUtils.getCurrentUserLogin();
-        assertThat(login).isEqualTo("admin");
+        String email = SecurityUtils.getCurrentUserEmail();
+        assertThat(email).isEqualTo("admin");
     }
 
     @Test

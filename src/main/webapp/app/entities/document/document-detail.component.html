@@ -1,0 +1,47 @@
+
+<div *ngIf="document">
+    <h2><span jhiTranslate="leadletApiApp.document.detail.title">Document</span> {{document.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="leadletApiApp.document.url">Url</span></dt>
+        <dd>
+            <span>{{document.url}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.document.memo">Memo</span></dt>
+        <dd>
+            <span>{{document.memo}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.document.contact">Contact</span></dt>
+        <dd>
+            <div *ngIf="document.contactId">
+                <a [routerLink]="['/contact', document.contactId]">{{document.contactId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.document.appAccount">App Account</span></dt>
+        <dd>
+            <div *ngIf="document.appAccountId">
+                <a [routerLink]="['/app-account', document.appAccountId]">{{document.appAccountId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.document.activity">Activity</span></dt>
+        <dd>
+            <div *ngIf="document.activityId">
+                <a [routerLink]="['/activity', document.activityId]">{{document.activityId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'document/'+ document.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

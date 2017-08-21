@@ -1,0 +1,41 @@
+
+<div *ngIf="companySubscriptionPlan">
+    <h2><span jhiTranslate="leadletApiApp.companySubscriptionPlan.detail.title">Company Subscription Plan</span> {{companySubscriptionPlan.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="leadletApiApp.companySubscriptionPlan.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{companySubscriptionPlan.startDate | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.companySubscriptionPlan.endDate">End Date</span></dt>
+        <dd>
+            <span>{{companySubscriptionPlan.endDate | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.companySubscriptionPlan.appAccount">App Account</span></dt>
+        <dd>
+            <div *ngIf="companySubscriptionPlan.appAccountId">
+                <a [routerLink]="['/app-account', companySubscriptionPlan.appAccountId]">{{companySubscriptionPlan.appAccountId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.companySubscriptionPlan.subscriptionPlan">Subscription Plan</span></dt>
+        <dd>
+            <div *ngIf="companySubscriptionPlan.subscriptionPlanId">
+                <a [routerLink]="['/subscription-plan', companySubscriptionPlan.subscriptionPlanId]">{{companySubscriptionPlan.subscriptionPlanId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'company-subscription-plan/'+ companySubscriptionPlan.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

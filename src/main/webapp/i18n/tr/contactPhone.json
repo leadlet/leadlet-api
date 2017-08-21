@@ -1,0 +1,23 @@
+{
+    "leadletApiApp": {
+        "contactPhone" : {
+            "home": {
+                "title": "Contact Phones",
+                "createLabel": "Create a new Contact Phone",
+                "createOrEditLabel": "Create or edit a Contact Phone"
+            },
+            "created": "A new Contact Phone is created with identifier {{ param }}",
+            "updated": "A Contact Phone is updated with identifier {{ param }}",
+            "deleted": "A Contact Phone is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Contact Phone {{ id }}?"
+            },
+            "detail": {
+                "title": "Contact Phone"
+            },
+            "phone": "Phone",
+            "type": "Type",
+            "contact": "Contact"
+        }
+    }
+}

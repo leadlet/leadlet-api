@@ -1,0 +1,24 @@
+{
+    "leadletApiApp": {
+        "appAccount" : {
+            "home": {
+                "title": "App Accounts",
+                "createLabel": "Create a new App Account",
+                "createOrEditLabel": "Create or edit a App Account"
+            },
+            "created": "A new App Account is created with identifier {{ param }}",
+            "updated": "A App Account is updated with identifier {{ param }}",
+            "deleted": "A App Account is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete App Account {{ id }}?"
+            },
+            "detail": {
+                "title": "App Account"
+            },
+            "name": "Name",
+            "address": "Address",
+            "subscriptionPlan": "Subscription Plan",
+            "user": "User"
+        }
+    }
+}

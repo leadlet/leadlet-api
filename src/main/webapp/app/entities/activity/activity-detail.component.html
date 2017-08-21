@@ -1,0 +1,75 @@
+
+<div *ngIf="activity">
+    <h2><span jhiTranslate="leadletApiApp.activity.detail.title">Activity</span> {{activity.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="leadletApiApp.activity.name">Name</span></dt>
+        <dd>
+            <span>{{activity.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.order">Order</span></dt>
+        <dd>
+            <span>{{activity.order}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.memo">Memo</span></dt>
+        <dd>
+            <span>{{activity.memo}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.potentialValue">Potential Value</span></dt>
+        <dd>
+            <span>{{activity.potentialValue}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{activity.startDate | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.endDate">End Date</span></dt>
+        <dd>
+            <span>{{activity.endDate | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.deal">Deal</span></dt>
+        <dd>
+            <div *ngIf="activity.dealId">
+                <a [routerLink]="['/deal', activity.dealId]">{{activity.dealId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.person">Person</span></dt>
+        <dd>
+            <div *ngIf="activity.personId">
+                <a [routerLink]="['/contact', activity.personId]">{{activity.personId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.organization">Organization</span></dt>
+        <dd>
+            <div *ngIf="activity.organizationId">
+                <a [routerLink]="['/contact', activity.organizationId]">{{activity.organizationId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.appAccount">App Account</span></dt>
+        <dd>
+            <div *ngIf="activity.appAccountId">
+                <a [routerLink]="['/app-account', activity.appAccountId]">{{activity.appAccountId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.activity.user">User</span></dt>
+        <dd>
+            <div *ngIf="activity.userId">
+                <a [routerLink]="['/app-user', activity.userId]">{{activity.userId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'activity/'+ activity.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

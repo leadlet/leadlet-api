@@ -34,12 +34,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Pattern(regexp = Constants.LOGIN_REGEX)
-    @Size(min = 1, max = 50)
-    @Column(length = 50, unique = true, nullable = false)
-    private String login;
-
     @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
@@ -54,9 +48,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
+    @NotNull
     @Email
     @Size(min = 5, max = 100)
-    @Column(length = 100, unique = true)
+    @Column(length = 100, unique = true, nullable = false)
     private String email;
 
     @NotNull
@@ -94,21 +89,19 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
+    @ManyToOne
+    private Team team;
+
+    @ManyToOne
+    private AppAccount appAccount;
+
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    //Lowercase the login before saving it in database
-    public void setLogin(String login) {
-        this.login = StringUtils.lowerCase(login, Locale.ENGLISH);
     }
 
     public String getPassword() {
@@ -198,6 +191,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public AppAccount getAppAccount() {
+        return appAccount;
+    }
+
+    public void setAppAccount(AppAccount appAccount) {
+        this.appAccount = appAccount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -219,7 +228,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-            "login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +

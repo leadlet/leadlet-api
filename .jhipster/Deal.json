@@ -1,0 +1,54 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pipelineStage",
+            "otherEntityName": "pipelineStage",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "person",
+            "otherEntityName": "contact",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "organization",
+            "otherEntityName": "contact",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "appAccount",
+            "otherEntityName": "appAccount",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "appUser",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "order",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "potentialValue",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20170820143152",
+    "entityTableName": "deal",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
+}

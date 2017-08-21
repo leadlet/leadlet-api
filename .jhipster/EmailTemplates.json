@@ -1,0 +1,19 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "templateName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "template",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170820143143",
+    "entityTableName": "email_templates",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
+}

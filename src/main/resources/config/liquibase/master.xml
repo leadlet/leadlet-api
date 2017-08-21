@@ -5,6 +5,31 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143139_added_entity_Team.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143140_added_entity_AppAccount.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143141_added_entity_SubscriptionPlan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143142_added_entity_CompanySubscriptionPlan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143143_added_entity_EmailTemplates.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143144_added_entity_Objective.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143145_added_entity_Pipeline.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143146_added_entity_Stage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143147_added_entity_PipelineStage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143148_added_entity_Contact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143149_added_entity_Document.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143150_added_entity_ContactEmail.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143151_added_entity_ContactPhone.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143152_added_entity_Deal.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143153_added_entity_Activity.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20170820143138_added_entity_constraints_User.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143139_added_entity_constraints_Team.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143142_added_entity_constraints_CompanySubscriptionPlan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143147_added_entity_constraints_PipelineStage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143148_added_entity_constraints_Contact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143149_added_entity_constraints_Document.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143150_added_entity_constraints_ContactEmail.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143151_added_entity_constraints_ContactPhone.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143152_added_entity_constraints_Deal.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143153_added_entity_constraints_Activity.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

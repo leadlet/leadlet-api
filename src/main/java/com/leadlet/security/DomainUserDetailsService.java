@@ -29,12 +29,13 @@ public class DomainUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    // TODO ??
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(final String login) {
-        log.debug("Authenticating {}", login);
-        String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        Optional<User> userFromDatabase = userRepository.findOneWithAuthoritiesByLogin(lowercaseLogin);
+    public UserDetails loadUserByUsername(final String email) {
+        log.debug("Authenticating {}", email);
+        String lowercaseLogin = email.toLowerCase(Locale.ENGLISH);
+        Optional<User> userFromDatabase = userRepository.findOneWithAuthoritiesByEmail(lowercaseLogin);
         return userFromDatabase.map(user -> {
             if (!user.getActivated()) {
                 throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");

@@ -1,0 +1,72 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "document",
+            "otherEntityName": "document",
+            "otherEntityRelationshipName": "activity"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "deal",
+            "otherEntityName": "deal",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "person",
+            "otherEntityName": "contact",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "organization",
+            "otherEntityName": "contact",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "appAccount",
+            "otherEntityName": "appAccount",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "appUser",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "order",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "memo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "potentialValue",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "startDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "endDate",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20170820143153",
+    "entityTableName": "activity",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
+}

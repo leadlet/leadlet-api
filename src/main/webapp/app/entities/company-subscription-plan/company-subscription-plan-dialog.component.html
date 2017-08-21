@@ -1,0 +1,53 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCompanySubscriptionPlanLabel" jhiTranslate="leadletApiApp.companySubscriptionPlan.home.createOrEditLabel">Create or edit a Company Subscription Plan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!companySubscriptionPlan.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="companySubscriptionPlan.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.companySubscriptionPlan.startDate" for="field_startDate">Start Date</label>
+            <div class="d-flex">
+                <input id="field_startDate" type="datetime-local" class="form-control" name="startDate" [(ngModel)]="companySubscriptionPlan.startDate"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.companySubscriptionPlan.endDate" for="field_endDate">End Date</label>
+            <div class="d-flex">
+                <input id="field_endDate" type="datetime-local" class="form-control" name="endDate" [(ngModel)]="companySubscriptionPlan.endDate"
+                  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="leadletApiApp.companySubscriptionPlan.appAccount" for="field_appAccount">App Account</label>
+            <select class="form-control" id="field_appAccount" name="appAccount" [(ngModel)]="companySubscriptionPlan.appAccountId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="appAccountOption.id" *ngFor="let appAccountOption of appaccounts; trackBy: trackAppAccountById">{{appAccountOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="leadletApiApp.companySubscriptionPlan.subscriptionPlan" for="field_subscriptionPlan">Subscription Plan</label>
+            <select class="form-control" id="field_subscriptionPlan" name="subscriptionPlan" [(ngModel)]="companySubscriptionPlan.subscriptionPlanId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="subscriptionPlanOption.id" *ngFor="let subscriptionPlanOption of subscriptionplans; trackBy: trackSubscriptionPlanById">{{subscriptionPlanOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

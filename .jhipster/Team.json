@@ -1,0 +1,30 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "leader",
+            "otherEntityName": "appUser",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "team"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "user",
+            "otherEntityName": "appUser",
+            "otherEntityRelationshipName": "team"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170820143139",
+    "entityTableName": "team",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
+}

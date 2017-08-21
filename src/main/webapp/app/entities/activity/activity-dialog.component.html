@@ -1,0 +1,94 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myActivityLabel" jhiTranslate="leadletApiApp.activity.home.createOrEditLabel">Create or edit a Activity</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!activity.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="activity.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.activity.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="activity.name"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.activity.order" for="field_order">Order</label>
+            <input type="number" class="form-control" name="order" id="field_order"
+                [(ngModel)]="activity.order"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.activity.memo" for="field_memo">Memo</label>
+            <input type="text" class="form-control" name="memo" id="field_memo"
+                [(ngModel)]="activity.memo"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.activity.potentialValue" for="field_potentialValue">Potential Value</label>
+            <input type="number" class="form-control" name="potentialValue" id="field_potentialValue"
+                [(ngModel)]="activity.potentialValue"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.activity.startDate" for="field_startDate">Start Date</label>
+            <div class="d-flex">
+                <input id="field_startDate" type="datetime-local" class="form-control" name="startDate" [(ngModel)]="activity.startDate"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="leadletApiApp.activity.endDate" for="field_endDate">End Date</label>
+            <div class="d-flex">
+                <input id="field_endDate" type="datetime-local" class="form-control" name="endDate" [(ngModel)]="activity.endDate"
+                  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="leadletApiApp.activity.deal" for="field_deal">Deal</label>
+            <select class="form-control" id="field_deal" name="deal" [(ngModel)]="activity.dealId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="dealOption.id" *ngFor="let dealOption of deals; trackBy: trackDealById">{{dealOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="leadletApiApp.activity.person" for="field_person">Person</label>
+            <select class="form-control" id="field_person" name="person" [(ngModel)]="activity.personId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="contactOption.id" *ngFor="let contactOption of contacts; trackBy: trackContactById">{{contactOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="leadletApiApp.activity.organization" for="field_organization">Organization</label>
+            <select class="form-control" id="field_organization" name="organization" [(ngModel)]="activity.organizationId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="contactOption.id" *ngFor="let contactOption of contacts; trackBy: trackContactById">{{contactOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="leadletApiApp.activity.appAccount" for="field_appAccount">App Account</label>
+            <select class="form-control" id="field_appAccount" name="appAccount" [(ngModel)]="activity.appAccountId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="appAccountOption.id" *ngFor="let appAccountOption of appaccounts; trackBy: trackAppAccountById">{{appAccountOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="leadletApiApp.activity.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="activity.userId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="appUserOption.id" *ngFor="let appUserOption of appusers; trackBy: trackAppUserById">{{appUserOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

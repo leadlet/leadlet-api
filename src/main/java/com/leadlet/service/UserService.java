@@ -87,7 +87,6 @@ public class UserService {
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(login);
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(firstName);
@@ -108,7 +107,6 @@ public class UserService {
 
     public User createUser(UserDTO userDTO) {
         User user = new User();
-        user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -145,7 +143,7 @@ public class UserService {
      * @param imageUrl image URL of user
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
+        userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
@@ -165,7 +163,6 @@ public class UserService {
         return Optional.of(userRepository
             .findOne(userDTO.getId()))
             .map(user -> {
-                user.setLogin(userDTO.getLogin());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
                 user.setEmail(userDTO.getEmail());
@@ -183,15 +180,15 @@ public class UserService {
             .map(UserDTO::new);
     }
 
-    public void deleteUser(String login) {
-        userRepository.findOneByLogin(login).ifPresent(user -> {
+    public void deleteUser(String email) {
+        userRepository.findOneByEmail(email).ifPresent(user -> {
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });
     }
 
     public void changePassword(String password) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
+        userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail()).ifPresent(user -> {
             String encryptedPassword = passwordEncoder.encode(password);
             user.setPassword(encryptedPassword);
             log.debug("Changed password for User: {}", user);
@@ -200,12 +197,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+        return userRepository.findAllByEmailNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneWithAuthoritiesByLogin(login);
+    public Optional<User> getUserWithAuthoritiesByEmail(String email) {
+        return userRepository.findOneWithAuthoritiesByEmail(email);
     }
 
     @Transactional(readOnly = true)
@@ -215,7 +212,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
-        return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
+        return userRepository.findOneWithAuthoritiesByEmail(SecurityUtils.getCurrentUserEmail()).orElse(null);
     }
 
 
@@ -228,7 +225,7 @@ public class UserService {
     public void removeNotActivatedUsers() {
         List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
         for (User user : users) {
-            log.debug("Deleting not activated user {}", user.getLogin());
+            log.debug("Deleting not activated user {}", user.getEmail());
             userRepository.delete(user);
         }
     }
@@ -238,5 +235,10 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public User createUser(String email, String password, String companyName) {
+
+        return null;
     }
 }

@@ -1,0 +1,29 @@
+
+<div *ngIf="emailTemplates">
+    <h2><span jhiTranslate="leadletApiApp.emailTemplates.detail.title">Email Templates</span> {{emailTemplates.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="leadletApiApp.emailTemplates.templateName">Template Name</span></dt>
+        <dd>
+            <span>{{emailTemplates.templateName}}</span>
+        </dd>
+        <dt><span jhiTranslate="leadletApiApp.emailTemplates.template">Template</span></dt>
+        <dd>
+            <span>{{emailTemplates.template}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'email-templates/'+ emailTemplates.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

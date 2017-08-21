@@ -12,6 +12,7 @@ import com.leadlet.web.rest.vm.KeyAndPasswordVM;
 import com.leadlet.web.rest.vm.ManagedUserVM;
 import com.leadlet.web.rest.util.HeaderUtil;
 
+import com.leadlet.web.rest.vm.RegisterVM;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,35 +54,31 @@ public class AccountResource {
     /**
      * POST  /register : register the user.
      *
-     * @param managedUserVM the managed user View Model
-     * @return the ResponseEntity with status 201 (Created) if the user is registered or 400 (Bad Request) if the login or email is already in use
+     * @param registerVM the managed register View Model
+     * @return the ResponseEntity with status 201 (Created) if the user is registered or 400 (Bad Request) if the email is already in use
      */
     @PostMapping(path = "/register",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity registerAccount(@Valid @RequestBody RegisterVM registerVM) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
-        if (!checkPasswordLength(managedUserVM.getPassword())) {
+        if (!checkPasswordLength(registerVM.getPassword())) {
             return new ResponseEntity<>(CHECK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
         }
-        return userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase())
-            .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
-                .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
+        return userRepository.findOneByEmail(registerVM.getEmail().toLowerCase())
+            .map(user -> new ResponseEntity<>("email already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> {
                     User user = userService
-                        .createUser(managedUserVM.getLogin(), managedUserVM.getPassword(),
-                            managedUserVM.getFirstName(), managedUserVM.getLastName(),
-                            managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
-                            managedUserVM.getLangKey());
+                        .createUser(registerVM.getEmail(), registerVM.getPassword(), registerVM.getCompanyName());
 
                     mailService.sendActivationEmail(user);
                     return new ResponseEntity<>(HttpStatus.CREATED);
-                })
+                }
         );
     }
+
 
     /**
      * GET  /activate : activate the registered user.
@@ -132,13 +129,13 @@ public class AccountResource {
     @PostMapping("/account")
     @Timed
     public ResponseEntity saveAccount(@Valid @RequestBody UserDTO userDTO) {
-        final String userLogin = SecurityUtils.getCurrentUserLogin();
+        final String userEmail = SecurityUtils.getCurrentUserEmail();
         Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userLogin))) {
+        if (existingUser.isPresent() && (!existingUser.get().getEmail().equalsIgnoreCase(userEmail))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
         }
         return userRepository
-            .findOneByLogin(userLogin)
+            .findOneByEmail(userEmail)
             .map(u -> {
                 userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
                     userDTO.getLangKey(), userDTO.getImageUrl());
