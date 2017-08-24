@@ -33,11 +33,6 @@ public class SubscriptionPlan implements Serializable {
     @Column(name = "allowed_features")
     private String allowedFeatures;
 
-    @OneToMany(mappedBy = "subscriptionPlan")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CompanySubscriptionPlan> subscriptionPlans = new HashSet<>();
-
     public Long getId() {
         return id;
     }
@@ -71,32 +66,7 @@ public class SubscriptionPlan implements Serializable {
     public void setAllowedFeatures(String allowedFeatures) {
         this.allowedFeatures = allowedFeatures;
     }
-
-    public Set<CompanySubscriptionPlan> getSubscriptionPlans() {
-        return subscriptionPlans;
-    }
-
-    public SubscriptionPlan subscriptionPlans(Set<CompanySubscriptionPlan> companySubscriptionPlans) {
-        this.subscriptionPlans = companySubscriptionPlans;
-        return this;
-    }
-
-    public SubscriptionPlan addSubscriptionPlan(CompanySubscriptionPlan companySubscriptionPlan) {
-        this.subscriptionPlans.add(companySubscriptionPlan);
-        companySubscriptionPlan.setSubscriptionPlan(this);
-        return this;
-    }
-
-    public SubscriptionPlan removeSubscriptionPlan(CompanySubscriptionPlan companySubscriptionPlan) {
-        this.subscriptionPlans.remove(companySubscriptionPlan);
-        companySubscriptionPlan.setSubscriptionPlan(null);
-        return this;
-    }
-
-    public void setSubscriptionPlans(Set<CompanySubscriptionPlan> companySubscriptionPlans) {
-        this.subscriptionPlans = companySubscriptionPlans;
-    }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {

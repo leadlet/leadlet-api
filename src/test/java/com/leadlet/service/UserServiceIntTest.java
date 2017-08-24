@@ -125,7 +125,7 @@ public class UserServiceIntTest {
         final PageRequest pageable = new PageRequest(0, (int) userRepository.count());
         final Page<UserDTO> allManagedUsers = userService.getAllManagedUsers(pageable);
         assertThat(allManagedUsers.getContent().stream()
-            .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getEmail())))
+            .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
             .isTrue();
     }
 
@@ -135,8 +135,8 @@ public class UserServiceIntTest {
         user.setActivated(false);
         user.setCreatedDate(Instant.now().minus(30, ChronoUnit.DAYS));
         userRepository.save(user);
-        assertThat(userRepository.findOneByEmail("johndoe")).isPresent();
+        assertThat(userRepository.findOneByLogin("johndoe")).isPresent();
         userService.removeNotActivatedUsers();
-        assertThat(userRepository.findOneByEmail("johndoe")).isNotPresent();
+        assertThat(userRepository.findOneByLogin("johndoe")).isNotPresent();
     }
 }

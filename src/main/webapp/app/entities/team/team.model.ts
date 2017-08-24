@@ -6,6 +6,7 @@ export class Team implements BaseEntity {
         public name?: string,
         public leaderId?: number,
         public users?: BaseEntity[],
+        public parentId?: number,
     ) {
     }
 }

@@ -14,6 +14,12 @@
             "relationshipName": "user",
             "otherEntityName": "appUser",
             "otherEntityRelationshipName": "team"
+        },
+        {
+            "relationshipName": "parent",
+            "otherEntityName": "team",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [
@@ -23,8 +29,8 @@
         }
     ],
     "changelogDate": "20170820143139",
-    "entityTableName": "team",
     "dto": "mapstruct",
-    "pagination": "pager",
-    "service": "serviceImpl"
+    "service": "serviceImpl",
+    "entityTableName": "team",
+    "pagination": "pager"
 }

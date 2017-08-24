@@ -97,7 +97,7 @@ public class UserResource {
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
                 .body(null);
         // Lowercase the user login before comparing with database
-        } else if (userRepository.findOneByEmail(managedUserVM.getEmail().toLowerCase()).isPresent()) {
+        } else if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
                 .body(null);
@@ -108,8 +108,8 @@ public class UserResource {
         } else {
             User newUser = userService.createUser(managedUserVM);
             mailService.sendCreationEmail(newUser);
-            return ResponseEntity.created(new URI("/api/users/" + newUser.getEmail()))
-                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getEmail()))
+            return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
+                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
                 .body(newUser);
         }
     }
@@ -131,14 +131,14 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use")).body(null);
         }
-        existingUser = userRepository.findOneByEmail(managedUserVM.getEmail().toLowerCase());
+        existingUser = userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(null);
         }
         Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM);
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
-            HeaderUtil.createAlert("userManagement.updated", managedUserVM.getEmail()));
+            HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));
     }
 
     /**
@@ -168,30 +168,30 @@ public class UserResource {
     /**
      * GET  /users/:login : get the "login" user.
      *
-     * @param email the login of the user to find
+     * @param login the login of the user to find
      * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
      */
     @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     @Timed
-    public ResponseEntity<UserDTO> getUser(@PathVariable String email) {
-        log.debug("REST request to get User : {}", email);
+    public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
+        log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(
-            userService.getUserWithAuthoritiesByEmail(email)
+            userService.getUserWithAuthoritiesByLogin(login)
                 .map(UserDTO::new));
     }
 
     /**
      * DELETE /users/:login : delete the "login" User.
      *
-     * @param email the login of the user to delete
+     * @param login the login of the user to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
-        log.debug("REST request to delete User: {}", email);
-        userService.deleteUser(email);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", email)).build();
+    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
+        log.debug("REST request to delete User: {}", login);
+        userService.deleteUser(login);
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
     }
 }

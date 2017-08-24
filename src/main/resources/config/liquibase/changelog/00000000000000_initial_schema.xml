@@ -19,11 +19,14 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="login" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
             <column name="password_hash" type="varchar(60)"/>
             <column name="first_name" type="varchar(50)"/>
             <column name="last_name" type="varchar(50)"/>
             <column name="email" type="varchar(100)">
-                <constraints unique="true" nullable="false"/>
+                <constraints unique="true" nullable="true"/>
             </column>
             <column name="image_url" type="varchar(256)"/>
             <column name="activated" type="boolean" valueBoolean="false">
@@ -47,6 +50,9 @@
                 <constraints nullable="true" />
             </column>
             <column name="app_account_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="team_leader" type="boolean" valueBoolean="false">
                 <constraints nullable="true" />
             </column>
         </createTable>
@@ -91,6 +97,7 @@
                   separator=";"
                   tableName="jhi_user">
             <column name="activated" type="boolean"/>
+            <column name="team_leader" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>

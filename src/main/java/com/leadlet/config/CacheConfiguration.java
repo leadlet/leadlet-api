@@ -65,6 +65,7 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.Deal.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Activity.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Activity.class.getName() + ".documents", jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Team.class.getName() + ".subteams", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

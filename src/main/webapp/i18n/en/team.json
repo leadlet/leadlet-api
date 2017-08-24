@@ -17,7 +17,8 @@
             },
             "name": "Name",
             "leader": "Leader",
-            "user": "User"
+            "user": "User",
+            "parent": "Parent"
         }
     }
 }

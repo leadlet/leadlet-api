@@ -12,10 +12,14 @@ import org.mapstruct.*;
 public interface TeamMapper extends EntityMapper <TeamDTO, Team> {
 
     @Mapping(source = "leader.id", target = "leaderId")
+
+    @Mapping(source = "parent.id", target = "parentId")
     TeamDTO toDto(Team team);
 
     @Mapping(source = "leaderId", target = "leader")
     @Mapping(target = "users", ignore = true)
+
+    @Mapping(source = "parentId", target = "parent")
     Team toEntity(TeamDTO teamDTO);
     default Team fromId(Long id) {
         if (id == null) {

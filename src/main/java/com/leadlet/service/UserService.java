@@ -1,12 +1,15 @@
 package com.leadlet.service;
 
-import com.leadlet.domain.Authority;
-import com.leadlet.domain.User;
+import com.leadlet.domain.*;
+import com.leadlet.domain.enumeration.PlanName;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
 import com.leadlet.config.Constants;
+import com.leadlet.repository.TeamRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
+import com.leadlet.service.dto.AppAccountDTO;
 import com.leadlet.service.util.RandomUtil;
 import com.leadlet.service.dto.UserDTO;
 
@@ -39,10 +42,18 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final AppAccountRepository appAccountRepository;
+
+    private final TeamRepository teamRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
+                       AppAccountRepository appAccountRepository, TeamRepository teamRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.appAccountRepository = appAccountRepository;
+        this.teamRepository = teamRepository;
+
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -80,13 +91,58 @@ public class UserService {
             });
     }
 
-    public User createUser(String login, String password, String firstName, String lastName, String email,
-        String imageUrl, String langKey) {
+    public User createAccountWithUser(String login, String password, String firstName, String lastName, String email,
+        String companyName, String langKey) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setLogin(login);
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+        newUser.setFirstName(firstName);
+        newUser.setLastName(lastName);
+        newUser.setEmail(email);
+        newUser.setLangKey(langKey);
+        // new user is not active
+        newUser.setActivated(false);
+        // new user gets registration key
+        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        authorities.add(authority);
+        newUser.setAuthorities(authorities);
+        newUser = userRepository.save(newUser);
+        log.debug("Created Information for User: {}", newUser);
+
+        // TODO implement subscription plan logic
+        // Create AppAccount
+        AppAccount newAppAccount = new AppAccount();
+        newAppAccount.setName(companyName);
+        newAppAccount = appAccountRepository.save(newAppAccount);
+
+
+        Team newTeam = new Team();
+        newTeam.setAppAccount(newAppAccount);
+        newTeam.setName(companyName);
+        newTeam.setLeader(newUser);
+        newTeam = teamRepository.save(newTeam);
+
+        newUser.setAppAccount(newAppAccount);
+        newUser.setTeam(newTeam);
+        newUser.setTeamLeader(true);
+
+        newUser = userRepository.save(newUser);
+        return newUser;
+    }
+
+    public User createUser(String login, String password, String firstName, String lastName, String email,
+                           String imageUrl, String langKey) {
+
+        User newUser = new User();
+        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Set<Authority> authorities = new HashSet<>();
+        String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setLogin(login);
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(firstName);
@@ -107,6 +163,7 @@ public class UserService {
 
     public User createUser(UserDTO userDTO) {
         User user = new User();
+        user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -143,7 +200,7 @@ public class UserService {
      * @param imageUrl image URL of user
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
-        userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail()).ifPresent(user -> {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
@@ -163,6 +220,7 @@ public class UserService {
         return Optional.of(userRepository
             .findOne(userDTO.getId()))
             .map(user -> {
+                user.setLogin(userDTO.getLogin());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
                 user.setEmail(userDTO.getEmail());
@@ -180,15 +238,15 @@ public class UserService {
             .map(UserDTO::new);
     }
 
-    public void deleteUser(String email) {
-        userRepository.findOneByEmail(email).ifPresent(user -> {
+    public void deleteUser(String login) {
+        userRepository.findOneByLogin(login).ifPresent(user -> {
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });
     }
 
     public void changePassword(String password) {
-        userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail()).ifPresent(user -> {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             String encryptedPassword = passwordEncoder.encode(password);
             user.setPassword(encryptedPassword);
             log.debug("Changed password for User: {}", user);
@@ -197,12 +255,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByEmailNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthoritiesByEmail(String email) {
-        return userRepository.findOneWithAuthoritiesByEmail(email);
+    public Optional<User> getUserWithAuthoritiesByLogin(String login) {
+        return userRepository.findOneWithAuthoritiesByLogin(login);
     }
 
     @Transactional(readOnly = true)
@@ -212,7 +270,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
-        return userRepository.findOneWithAuthoritiesByEmail(SecurityUtils.getCurrentUserEmail()).orElse(null);
+        return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
     }
 
 
@@ -225,7 +283,7 @@ public class UserService {
     public void removeNotActivatedUsers() {
         List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
         for (User user : users) {
-            log.debug("Deleting not activated user {}", user.getEmail());
+            log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);
         }
     }
@@ -235,10 +293,5 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
-    }
-
-    public User createUser(String email, String password, String companyName) {
-
-        return null;
     }
 }

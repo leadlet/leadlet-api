@@ -5,8 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
-import java.util.Optional;
-
 
 /**
  * Spring Data JPA repository for the Team entity.
@@ -14,7 +12,5 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface TeamRepository extends JpaRepository<Team,Long> {
-
-    Optional<Team> findOneByName(String name);
-
+    
 }

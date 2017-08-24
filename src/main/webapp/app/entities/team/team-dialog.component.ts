@@ -9,8 +9,9 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Team } from './team.model';
 import { TeamPopupService } from './team-popup.service';
 import { TeamService } from './team.service';
-import { AppUser, AppUserService } from '../app-user';
 import { ResponseWrapper } from '../../shared';
+import {User} from '../../shared/user/user.model';
+import {UserService} from '../../shared/user/user.service';
 
 @Component({
     selector: 'jhi-team-dialog',
@@ -21,32 +22,36 @@ export class TeamDialogComponent implements OnInit {
     team: Team;
     isSaving: boolean;
 
-    leaders: AppUser[];
+    leaders: User[];
+
+    teams: Team[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
         private teamService: TeamService,
-        private appUserService: AppUserService,
+        private userService: UserService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.appUserService
+        this.userService
             .query({filter: 'team-is-null'})
             .subscribe((res: ResponseWrapper) => {
                 if (!this.team.leaderId) {
                     this.leaders = res.json;
                 } else {
-                    this.appUserService
-                        .find(this.team.leaderId)
-                        .subscribe((subRes: AppUser) => {
+                    this.userService
+                        .find('TODO')
+                        .subscribe((subRes: User) => {
                             this.leaders = [subRes].concat(res.json);
                         }, (subRes: ResponseWrapper) => this.onError(subRes.json));
                 }
             }, (res: ResponseWrapper) => this.onError(res.json));
+        this.teamService.query()
+            .subscribe((res: ResponseWrapper) => { this.teams = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -89,7 +94,11 @@ export class TeamDialogComponent implements OnInit {
         this.alertService.error(error.message, null, null);
     }
 
-    trackAppUserById(index: number, item: AppUser) {
+    trackUserById(index: number, item: User) {
+        return item.id;
+    }
+
+    trackTeamById(index: number, item: Team) {
         return item.id;
     }
 }

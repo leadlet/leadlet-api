@@ -31,10 +31,8 @@ public class Team implements Serializable {
     @JoinColumn(unique = true)
     private User leader;
 
-    @OneToMany(mappedBy = "team")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<User> users = new HashSet<>();
+    @ManyToOne
+    private AppAccount appAccount;
 
     public Long getId() {
         return id;
@@ -61,38 +59,21 @@ public class Team implements Serializable {
         return leader;
     }
 
-    public Team leader(User user) {
-        this.leader = user;
+    public Team leader(User appUser) {
+        this.leader = appUser;
         return this;
     }
 
-    public void setLeader(User user) {
-        this.leader = user;
+    public void setLeader(User appUser) {
+        this.leader = appUser;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public AppAccount getAppAccount() {
+        return appAccount;
     }
 
-    public Team users(Set<User> users) {
-        this.users = users;
-        return this;
-    }
-
-    public Team addUser(User user) {
-        this.users.add(user);
-        user.setTeam(this);
-        return this;
-    }
-
-    public Team removeUser(User user) {
-        this.users.remove(user);
-        user.setTeam(null);
-        return this;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setAppAccount(AppAccount appAccount) {
+        this.appAccount = appAccount;
     }
 
     @Override

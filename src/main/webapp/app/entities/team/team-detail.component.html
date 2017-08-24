@@ -14,6 +14,12 @@
                 <a [routerLink]="['/app-user', team.leaderId]">{{team.leaderId}}</a>
             </div>
         </dd>
+        <dt><span jhiTranslate="leadletApiApp.team.parent">Parent</span></dt>
+        <dd>
+            <div *ngIf="team.parentId">
+                <a [routerLink]="['/team', team.parentId]">{{team.parentId}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

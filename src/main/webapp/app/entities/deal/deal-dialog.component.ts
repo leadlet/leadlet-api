@@ -12,8 +12,9 @@ import { DealService } from './deal.service';
 import { PipelineStage, PipelineStageService } from '../pipeline-stage';
 import { Contact, ContactService } from '../contact';
 import { AppAccount, AppAccountService } from '../app-account';
-import { AppUser, AppUserService } from '../app-user';
 import { ResponseWrapper } from '../../shared';
+import {User} from '../../shared/user/user.model';
+import {UserService} from '../../shared/user/user.service';
 
 @Component({
     selector: 'jhi-deal-dialog',
@@ -30,7 +31,7 @@ export class DealDialogComponent implements OnInit {
 
     appaccounts: AppAccount[];
 
-    appusers: AppUser[];
+    users: User[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -39,7 +40,7 @@ export class DealDialogComponent implements OnInit {
         private pipelineStageService: PipelineStageService,
         private contactService: ContactService,
         private appAccountService: AppAccountService,
-        private appUserService: AppUserService,
+        private userService: UserService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -52,8 +53,8 @@ export class DealDialogComponent implements OnInit {
             .subscribe((res: ResponseWrapper) => { this.contacts = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.appAccountService.query()
             .subscribe((res: ResponseWrapper) => { this.appaccounts = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.appUserService.query()
-            .subscribe((res: ResponseWrapper) => { this.appusers = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.userService.query()
+            .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -108,7 +109,7 @@ export class DealDialogComponent implements OnInit {
         return item.id;
     }
 
-    trackAppUserById(index: number, item: AppUser) {
+    trackUserById(index: number, item: User) {
         return item.id;
     }
 }

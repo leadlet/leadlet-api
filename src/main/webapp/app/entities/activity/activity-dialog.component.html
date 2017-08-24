@@ -79,7 +79,7 @@
             <label jhiTranslate="leadletApiApp.activity.user" for="field_user">User</label>
             <select class="form-control" id="field_user" name="user" [(ngModel)]="activity.userId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="appUserOption.id" *ngFor="let appUserOption of appusers; trackBy: trackAppUserById">{{appUserOption.id}}</option>
+                <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
             </select>
         </div>
     </div>

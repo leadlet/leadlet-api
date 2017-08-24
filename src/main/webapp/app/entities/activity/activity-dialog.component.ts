@@ -12,8 +12,9 @@ import { ActivityService } from './activity.service';
 import { Deal, DealService } from '../deal';
 import { Contact, ContactService } from '../contact';
 import { AppAccount, AppAccountService } from '../app-account';
-import { AppUser, AppUserService } from '../app-user';
 import { ResponseWrapper } from '../../shared';
+import {User} from '../../shared/user/user.model';
+import {UserService} from '../../shared/user/user.service';
 
 @Component({
     selector: 'jhi-activity-dialog',
@@ -30,7 +31,7 @@ export class ActivityDialogComponent implements OnInit {
 
     appaccounts: AppAccount[];
 
-    appusers: AppUser[];
+    users: User[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -39,7 +40,7 @@ export class ActivityDialogComponent implements OnInit {
         private dealService: DealService,
         private contactService: ContactService,
         private appAccountService: AppAccountService,
-        private appUserService: AppUserService,
+        private appUserService: UserService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -53,7 +54,7 @@ export class ActivityDialogComponent implements OnInit {
         this.appAccountService.query()
             .subscribe((res: ResponseWrapper) => { this.appaccounts = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.appUserService.query()
-            .subscribe((res: ResponseWrapper) => { this.appusers = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -108,7 +109,7 @@ export class ActivityDialogComponent implements OnInit {
         return item.id;
     }
 
-    trackAppUserById(index: number, item: AppUser) {
+    trackUserById(index: number, item: User) {
         return item.id;
     }
 }

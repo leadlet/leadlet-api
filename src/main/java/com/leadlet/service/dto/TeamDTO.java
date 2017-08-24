@@ -17,6 +17,8 @@ public class TeamDTO implements Serializable {
 
     private Long leaderId;
 
+    private Long parentId;
+
     public Long getId() {
         return id;
     }
@@ -39,6 +41,14 @@ public class TeamDTO implements Serializable {
 
     public void setLeaderId(Long appUserId) {
         this.leaderId = appUserId;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long teamId) {
+        this.parentId = teamId;
     }
 
     @Override

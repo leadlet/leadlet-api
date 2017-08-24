@@ -20,13 +20,17 @@ public class UserDTO {
 
     private Long id;
 
+    @NotBlank
+    @Pattern(regexp = Constants.LOGIN_REGEX)
+    @Size(min = 1, max = 50)
+    private String login;
+
     @Size(max = 50)
     private String firstName;
 
     @Size(max = 50)
     private String lastName;
 
-    @NotBlank
     @Email
     @Size(min = 5, max = 100)
     private String email;
@@ -54,19 +58,20 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
-        this(user.getId(), user.getFirstName(), user.getLastName(),
+        this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()));
     }
 
-    public UserDTO(Long id, String firstName, String lastName,
+    public UserDTO(Long id, String login, String firstName, String lastName,
         String email, boolean activated, String imageUrl, String langKey,
         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
         Set<String> authorities) {
 
         this.id = id;
+        this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -86,6 +91,14 @@ public class UserDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getFirstName() {
@@ -139,6 +152,7 @@ public class UserDTO {
     @Override
     public String toString() {
         return "UserDTO{" +
+            "login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +

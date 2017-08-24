@@ -34,6 +34,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Pattern(regexp = Constants.LOGIN_REGEX)
+    @Size(min = 1, max = 50)
+    @Column(length = 50, unique = true, nullable = false)
+    private String login;
+
     @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
@@ -48,10 +54,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @NotNull
     @Email
     @Size(min = 5, max = 100)
-    @Column(length = 100, unique = true, nullable = false)
+    @Column(length = 100, unique = true)
     private String email;
 
     @NotNull
@@ -95,6 +100,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private AppAccount appAccount;
 
+    @Column(name = "team_leader")
+    private boolean teamLeader = false;
+
 
     public Long getId() {
         return id;
@@ -102,6 +110,15 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    //Lowercase the login before saving it in database
+    public void setLogin(String login) {
+        this.login = StringUtils.lowerCase(login, Locale.ENGLISH);
     }
 
     public String getPassword() {
@@ -207,6 +224,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.appAccount = appAccount;
     }
 
+    public boolean isTeamLeader() {
+        return teamLeader;
+    }
+
+    public void setTeamLeader(boolean teamLeader) {
+        this.teamLeader = teamLeader;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -228,6 +253,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "User{" +
+            "login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
