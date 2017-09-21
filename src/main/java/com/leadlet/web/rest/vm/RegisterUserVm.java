@@ -35,6 +35,8 @@ public class RegisterUserVm {
     @Size(max = 50)
     private String companyName;
 
+    public RegisterUserVm() {
+    }
 
     public RegisterUserVm(String login, String email, String password, String firstName, String lastName, String companyName) {
         this.login = login;

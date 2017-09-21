@@ -14,7 +14,6 @@ import com.leadlet.service.dto.AppAccountDTO;
 import com.leadlet.service.dto.TeamDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.web.rest.vm.KeyAndPasswordVM;
-import com.leadlet.web.rest.vm.ManagedUserVM;
 import com.leadlet.web.rest.vm.RegisterUserVm;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -208,21 +207,15 @@ public class AccountResourceIntTest {
     @Test
     @Transactional
     public void testRegisterInvalidLogin() throws Exception {
-        ManagedUserVM invalidUser = new ManagedUserVM(
-            null,                   // id
+
+        RegisterUserVm invalidUser = new RegisterUserVm(
             "funky-log!n",          // login <-- invalid
+            "funky@example.com",    // email
             "password",             // password
             "Funky",                // firstName
             "One",                  // lastName
-            "funky@example.com",    // email
-            true,                   // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)));
+            "John Doe Consultancy"            // companyName
+        );
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -237,21 +230,14 @@ public class AccountResourceIntTest {
     @Test
     @Transactional
     public void testRegisterInvalidEmail() throws Exception {
-        ManagedUserVM invalidUser = new ManagedUserVM(
-            null,               // id
+        RegisterUserVm invalidUser = new RegisterUserVm(
             "bob",              // login
-            "password",         // password
-            "Bob",              // firstName
-            "Green",            // lastName
             "invalid",          // email <-- invalid
-            true,               // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)));
+            "password",             // password
+            "Funky",                // firstName
+            "One",                  // lastName
+            "John Doe Consultancy"            // companyName
+        );
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -266,21 +252,15 @@ public class AccountResourceIntTest {
     @Test
     @Transactional
     public void testRegisterInvalidPassword() throws Exception {
-        ManagedUserVM invalidUser = new ManagedUserVM(
-            null,               // id
+
+        RegisterUserVm invalidUser = new RegisterUserVm(
             "bob",              // login
-            "123",              // password with only 3 digits
-            "Bob",              // firstName
-            "Green",            // lastName
             "bob@example.com",  // email
-            true,               // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)));
+            "123",              // password with only 3 digits
+            "Funky",                // firstName
+            "One",                  // lastName
+            "John Doe Consultancy"            // companyName
+        );
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -295,21 +275,15 @@ public class AccountResourceIntTest {
     @Test
     @Transactional
     public void testRegisterNullPassword() throws Exception {
-        ManagedUserVM invalidUser = new ManagedUserVM(
-            null,               // id
+
+        RegisterUserVm invalidUser = new RegisterUserVm(
             "bob",              // login
-            null,               // invalid null password
-            "Bob",              // firstName
-            "Green",            // lastName
             "bob@example.com",  // email
-            true,               // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)));
+            null,               // invalid null password
+            "Funky",                // firstName
+            "One",                  // lastName
+            "John Doe Consultancy"            // companyName
+        );
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -325,25 +299,18 @@ public class AccountResourceIntTest {
     @Transactional
     public void testRegisterDuplicateLogin() throws Exception {
         // Good
-        ManagedUserVM validUser = new ManagedUserVM(
-            null,                   // id
-            "alice",                // login
+        RegisterUserVm validUser = new RegisterUserVm(
+            "joe",                  // login
+            "joe@example.com",      // email
             "password",             // password
-            "Alice",                // firstName
-            "Something",            // lastName
-            "alice@example.com",    // email
-            true,                   // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)));
+            "Joe",                  // firstName
+            "Shmoe",                // lastName
+            "John Doe Consultancy"            // companyName
+        );
 
         // Duplicate login, different email
-        ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getFirstName(), validUser.getLastName(),
-            "alicejr@example.com", true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
+        RegisterUserVm duplicatedUser = new RegisterUserVm(validUser.getLogin(),"alicejr@example.com",validUser.getPassword(),
+            validUser.getFirstName(), validUser.getLastName(),validUser.getCompanyName());
 
         // Good user
         restMvc.perform(
@@ -366,26 +333,20 @@ public class AccountResourceIntTest {
     @Test
     @Transactional
     public void testRegisterDuplicateEmail() throws Exception {
+
         // Good
-        ManagedUserVM validUser = new ManagedUserVM(
-            null,                   // id
-            "john",                 // login
+        RegisterUserVm validUser = new RegisterUserVm(
+            "joe",                  // login
+            "joe@example.com",      // email
             "password",             // password
-            "John",                 // firstName
-            "Doe",                  // lastName
-            "john@example.com",     // email
-            true,                   // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)));
+            "Joe",                  // firstName
+            "Shmoe",                // lastName
+            "John Doe Consultancy"            // companyName
+        );
 
         // Duplicate email, different login
-        ManagedUserVM duplicatedUser = new ManagedUserVM(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
-            validUser.getEmail(), true, validUser.getImageUrl(), validUser.getLangKey(), validUser.getCreatedBy(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(), validUser.getAuthorities());
+        RegisterUserVm duplicatedUser = new RegisterUserVm("johnjr",validUser.getEmail(),validUser.getPassword(),
+            validUser.getFirstName(), validUser.getLastName(),validUser.getCompanyName());
 
         // Good user
         restMvc.perform(
@@ -403,37 +364,6 @@ public class AccountResourceIntTest {
 
         Optional<User> userDup = userRepository.findOneByLogin("johnjr");
         assertThat(userDup.isPresent()).isFalse();
-    }
-
-    @Test
-    @Transactional
-    public void testRegisterAdminIsIgnored() throws Exception {
-        ManagedUserVM validUser = new ManagedUserVM(
-            null,                   // id
-            "badguy",               // login
-            "password",             // password
-            "Bad",                  // firstName
-            "Guy",                  // lastName
-            "badguy@example.com",   // email
-            true,                   // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)));
-
-        restMvc.perform(
-            post("/api/register")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(validUser)))
-            .andExpect(status().isCreated());
-
-        Optional<User> userDup = userRepository.findOneByLogin("badguy");
-        assertThat(userDup.isPresent()).isTrue();
-        assertThat(userDup.get().getAuthorities()).hasSize(1)
-            .containsExactly(authorityRepository.findOne(AuthoritiesConstants.USER));
     }
 
     @Test
