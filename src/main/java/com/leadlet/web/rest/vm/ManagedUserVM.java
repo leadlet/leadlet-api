@@ -1,5 +1,6 @@
 package com.leadlet.web.rest.vm;
 
+import com.leadlet.domain.Team;
 import com.leadlet.service.dto.UserDTO;
 import javax.validation.constraints.Size;
 
@@ -18,6 +19,8 @@ public class ManagedUserVM extends UserDTO {
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 
+    private Team team;
+
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
     }
@@ -25,7 +28,7 @@ public class ManagedUserVM extends UserDTO {
     public ManagedUserVM(Long id, String login, String password, String firstName, String lastName,
                          String email, boolean activated, String imageUrl, String langKey,
                          String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                        Set<String> authorities) {
+                         Set<String> authorities) {
 
         super(id, login, firstName, lastName, email, activated, imageUrl, langKey,
             createdBy, createdDate, lastModifiedBy, lastModifiedDate,  authorities);
@@ -33,8 +36,28 @@ public class ManagedUserVM extends UserDTO {
         this.password = password;
     }
 
+    public ManagedUserVM(Long id, String login, String password, String firstName, String lastName,
+                         String email, boolean activated, String imageUrl, String langKey,
+                         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
+                        Set<String> authorities, Team team) {
+
+        super(id, login, firstName, lastName, email, activated, imageUrl, langKey,
+            createdBy, createdDate, lastModifiedBy, lastModifiedDate,  authorities);
+
+        this.password = password;
+        this.team = team;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override

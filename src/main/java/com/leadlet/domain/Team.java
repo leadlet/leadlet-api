@@ -1,6 +1,7 @@
 package com.leadlet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,6 +30,7 @@ public class Team implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
+    @JsonManagedReference
     private User leader;
 
     @ManyToOne

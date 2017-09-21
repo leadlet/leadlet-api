@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.el.MethodNotFoundException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -137,31 +138,11 @@ public class UserService {
 
     public User createUser(String login, String password, String firstName, String lastName, String email,
                            String imageUrl, String langKey) {
-
-        User newUser = new User();
-        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
-        Set<Authority> authorities = new HashSet<>();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(login);
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setEmail(email);
-        newUser.setImageUrl(imageUrl);
-        newUser.setLangKey(langKey);
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
-        authorities.add(authority);
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        log.debug("Created Information for User: {}", newUser);
-        return newUser;
+        throw new MethodNotFoundException();
     }
 
-    public User createUser(UserDTO userDTO) {
+
+    public User createUser(UserDTO userDTO, Team team, AppAccount appAccount ) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
@@ -185,6 +166,8 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
+        user.setTeam(team);
+        user.setAppAccount(appAccount);
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;

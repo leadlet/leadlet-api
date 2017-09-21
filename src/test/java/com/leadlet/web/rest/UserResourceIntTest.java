@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,8 +36,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -101,6 +101,8 @@ public class UserResourceIntTest {
 
     private User user;
 
+    private static User appUser;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -110,6 +112,12 @@ public class UserResourceIntTest {
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter)
             .build();
+
+        synchronized(this) {
+            if (this.appUser == null) {
+                this.appUser = this.userRepository.findOneByLogin("emusk").get();
+            }
+        }
     }
 
     /**
@@ -138,7 +146,55 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("emusk")
     public void createUser() throws Exception {
+        int databaseSizeBeforeCreate = userRepository.findAll().size();
+
+        // Create the User
+        Set<String> authorities = new HashSet<>();
+        authorities.add("ROLE_USER");
+        ManagedUserVM managedUserVM = new ManagedUserVM(
+            null,
+            DEFAULT_LOGIN,
+            DEFAULT_PASSWORD,
+            DEFAULT_FIRSTNAME,
+            DEFAULT_LASTNAME,
+            DEFAULT_EMAIL,
+            true,
+            DEFAULT_IMAGEURL,
+            DEFAULT_LANGKEY,
+            null,
+            null,
+            null,
+            null,
+            authorities,
+            appUser.getTeam());
+
+        restUserMockMvc.perform(post("/api/users")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .andExpect(status().isCreated());
+
+        // Validate the User in the database
+        List<User> userList = userRepository.findAll();
+        assertThat(userList).hasSize(databaseSizeBeforeCreate + 1);
+        User testUser = userList.get(userList.size() - 1);
+        assertThat(testUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
+        assertThat(testUser.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
+        assertThat(testUser.getLastName()).isEqualTo(DEFAULT_LASTNAME);
+        assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
+        assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
+
+        assertThat(testUser.getAppAccount()).isEqualTo(appUser.getAppAccount());
+        assertThat(testUser.getTeam()).isEqualTo(appUser.getTeam());
+        assertThat(testUser.isTeamLeader()).isFalse();
+
+    }
+
+    @Test
+    @Transactional
+    public void createUserWithoutTeam() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
         // Create the User
@@ -163,18 +219,8 @@ public class UserResourceIntTest {
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
-        // Validate the User in the database
-        List<User> userList = userRepository.findAll();
-        assertThat(userList).hasSize(databaseSizeBeforeCreate + 1);
-        User testUser = userList.get(userList.size() - 1);
-        assertThat(testUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
-        assertThat(testUser.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
-        assertThat(testUser.getLastName()).isEqualTo(DEFAULT_LASTNAME);
-        assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
-        assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
     }
 
     @Test
@@ -198,7 +244,8 @@ public class UserResourceIntTest {
             null,
             null,
             null,
-            authorities);
+            authorities,
+            appUser.getTeam());
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc.perform(post("/api/users")
@@ -234,7 +281,8 @@ public class UserResourceIntTest {
             null,
             null,
             null,
-            authorities);
+            authorities,
+            appUser.getTeam());
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
@@ -270,7 +318,8 @@ public class UserResourceIntTest {
             null,
             null,
             null,
-            authorities);
+            authorities,
+            appUser.getTeam());
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")

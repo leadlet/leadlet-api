@@ -42,7 +42,8 @@ public class DomainUserDetailsService implements UserDetailsService {
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());
-            return new org.springframework.security.core.userdetails.User(lowercaseLogin,
+            return new AppUserDetail(user.getAppAccount(),
+                lowercaseLogin,
                 user.getPassword(),
                 grantedAuthorities);
         }).orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the " +

@@ -4,6 +4,7 @@ import com.leadlet.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.domain.User;
 import com.leadlet.repository.UserRepository;
+import com.leadlet.security.AppUserDetail;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.service.MailService;
 import com.leadlet.service.UserService;
@@ -22,11 +23,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.Principal;
 import java.util.*;
 
 /**
@@ -89,9 +96,16 @@ public class UserResource {
     @PostMapping("/users")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity createUser(@Valid @RequestBody ManagedUserVM managedUserVM) throws URISyntaxException {
+    public ResponseEntity createUser(@Valid @RequestBody ManagedUserVM managedUserVM ) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
 
+        AppUserDetail appUserDetail = (AppUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if( managedUserVM.getTeam() == null || managedUserVM.getTeam().getId() == null){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "missingteam", "A new user cannot be created without team"))
+                .body(null);
+        }
         if (managedUserVM.getId() != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
@@ -106,7 +120,7 @@ public class UserResource {
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
                 .body(null);
         } else {
-            User newUser = userService.createUser(managedUserVM);
+            User newUser = userService.createUser(managedUserVM, managedUserVM.getTeam(), appUserDetail.getAppAccount());
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))

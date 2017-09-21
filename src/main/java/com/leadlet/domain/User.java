@@ -1,5 +1,6 @@
 package com.leadlet.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.leadlet.config.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -95,6 +96,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private Set<Authority> authorities = new HashSet<>();
 
     @ManyToOne
+    @JsonBackReference
     private Team team;
 
     @ManyToOne
