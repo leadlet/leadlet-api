@@ -10,9 +10,8 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface SubscriptionPlanMapper extends EntityMapper <SubscriptionPlanDTO, SubscriptionPlan> {
-    
-    @Mapping(target = "subscriptionPlans", ignore = true)
-    SubscriptionPlan toEntity(SubscriptionPlanDTO subscriptionPlanDTO); 
+
+    SubscriptionPlan toEntity(SubscriptionPlanDTO subscriptionPlanDTO);
     default SubscriptionPlan fromId(Long id) {
         if (id == null) {
             return null;

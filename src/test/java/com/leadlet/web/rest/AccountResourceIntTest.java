@@ -1,9 +1,7 @@
 package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
-import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
-import com.leadlet.domain.Team;
 import com.leadlet.domain.User;
 import com.leadlet.repository.AuthorityRepository;
 import com.leadlet.repository.UserRepository;
@@ -34,7 +32,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import sun.jvm.hotspot.asm.Register;
 
 import java.time.Instant;
 import java.util.Collections;
