@@ -1,0 +1,23 @@
+{
+    "leadletApiApp": {
+        "pipelineStage" : {
+            "home": {
+                "title": "Pipeline Stages",
+                "createLabel": "Create a new Pipeline Stage",
+                "createOrEditLabel": "Create or edit a Pipeline Stage"
+            },
+            "created": "A new Pipeline Stage is created with identifier {{ param }}",
+            "updated": "A Pipeline Stage is updated with identifier {{ param }}",
+            "deleted": "A Pipeline Stage is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Pipeline Stage {{ id }}?"
+            },
+            "detail": {
+                "title": "Pipeline Stage"
+            },
+            "stageOrder": "Stage Order",
+            "pipeline": "Pipeline",
+            "stage": "Stage"
+        }
+    }
+}

@@ -12,6 +12,7 @@ import com.leadlet.web.rest.vm.KeyAndPasswordVM;
 import com.leadlet.web.rest.vm.ManagedUserVM;
 import com.leadlet.web.rest.util.HeaderUtil;
 
+import com.leadlet.web.rest.vm.RegisterUserVm;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,29 +54,28 @@ public class AccountResource {
     /**
      * POST  /register : register the user.
      *
-     * @param managedUserVM the managed user View Model
+     * @param registerUserVM the managed user View Model
      * @return the ResponseEntity with status 201 (Created) if the user is registered or 400 (Bad Request) if the login or email is already in use
      */
     @PostMapping(path = "/register",
         produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity registerAccount(@Valid @RequestBody RegisterUserVm registerUserVM) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
-        if (!checkPasswordLength(managedUserVM.getPassword())) {
+        if (!checkPasswordLength(registerUserVM.getPassword())) {
             return new ResponseEntity<>(CHECK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
         }
-        return userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase())
+        return userRepository.findOneByLogin(registerUserVM.getLogin().toLowerCase())
             .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
+            .orElseGet(() -> userRepository.findOneByEmail(registerUserVM.getEmail())
                 .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> {
                     User user = userService
-                        .createUser(managedUserVM.getLogin(), managedUserVM.getPassword(),
-                            managedUserVM.getFirstName(), managedUserVM.getLastName(),
-                            managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
-                            managedUserVM.getLangKey());
+                        .createAccountWithUser(registerUserVM.getLogin(), registerUserVM.getPassword(),
+                            registerUserVM.getFirstName(), registerUserVM.getLastName(),
+                            registerUserVM.getEmail().toLowerCase(), registerUserVM.getCompanyName(), null);
 
                     mailService.sendActivationEmail(user);
                     return new ResponseEntity<>(HttpStatus.CREATED);

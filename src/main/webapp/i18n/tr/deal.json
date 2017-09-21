@@ -1,0 +1,28 @@
+{
+    "leadletApiApp": {
+        "deal" : {
+            "home": {
+                "title": "Deals",
+                "createLabel": "Create a new Deal",
+                "createOrEditLabel": "Create or edit a Deal"
+            },
+            "created": "A new Deal is created with identifier {{ param }}",
+            "updated": "A Deal is updated with identifier {{ param }}",
+            "deleted": "A Deal is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Deal {{ id }}?"
+            },
+            "detail": {
+                "title": "Deal"
+            },
+            "name": "Name",
+            "order": "Order",
+            "potentialValue": "Potential Value",
+            "pipelineStage": "Pipeline Stage",
+            "person": "Person",
+            "organization": "Organization",
+            "appAccount": "App Account",
+            "user": "User"
+        }
+    }
+}

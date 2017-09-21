@@ -1,0 +1,32 @@
+{
+    "leadletApiApp": {
+        "activity" : {
+            "home": {
+                "title": "Activities",
+                "createLabel": "Create a new Activity",
+                "createOrEditLabel": "Create or edit a Activity"
+            },
+            "created": "A new Activity is created with identifier {{ param }}",
+            "updated": "A Activity is updated with identifier {{ param }}",
+            "deleted": "A Activity is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Activity {{ id }}?"
+            },
+            "detail": {
+                "title": "Activity"
+            },
+            "name": "Name",
+            "order": "Order",
+            "memo": "Memo",
+            "potentialValue": "Potential Value",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "document": "Document",
+            "deal": "Deal",
+            "person": "Person",
+            "organization": "Organization",
+            "appAccount": "App Account",
+            "user": "User"
+        }
+    }
+}

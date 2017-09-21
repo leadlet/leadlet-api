@@ -1,0 +1,23 @@
+{
+    "leadletApiApp": {
+        "subscriptionPlan" : {
+            "home": {
+                "title": "Subscription Plans",
+                "createLabel": "Create a new Subscription Plan",
+                "createOrEditLabel": "Create or edit a Subscription Plan"
+            },
+            "created": "A new Subscription Plan is created with identifier {{ param }}",
+            "updated": "A Subscription Plan is updated with identifier {{ param }}",
+            "deleted": "A Subscription Plan is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Subscription Plan {{ id }}?"
+            },
+            "detail": {
+                "title": "Subscription Plan"
+            },
+            "planName": "Plan Name",
+            "allowedFeatures": "Allowed Features",
+            "subscriptionPlan": "Subscription Plan"
+        }
+    }
+}

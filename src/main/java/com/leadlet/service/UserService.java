@@ -1,12 +1,15 @@
 package com.leadlet.service;
 
-import com.leadlet.domain.Authority;
-import com.leadlet.domain.User;
+import com.leadlet.domain.*;
+import com.leadlet.domain.enumeration.PlanName;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
 import com.leadlet.config.Constants;
+import com.leadlet.repository.TeamRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
+import com.leadlet.service.dto.AppAccountDTO;
 import com.leadlet.service.util.RandomUtil;
 import com.leadlet.service.dto.UserDTO;
 
@@ -39,10 +42,18 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final AppAccountRepository appAccountRepository;
+
+    private final TeamRepository teamRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
+                       AppAccountRepository appAccountRepository, TeamRepository teamRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.appAccountRepository = appAccountRepository;
+        this.teamRepository = teamRepository;
+
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -80,8 +91,52 @@ public class UserService {
             });
     }
 
+    public User createAccountWithUser(String login, String password, String firstName, String lastName, String email,
+        String companyName, String langKey) {
+
+        User newUser = new User();
+        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Set<Authority> authorities = new HashSet<>();
+        String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setLogin(login);
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+        newUser.setFirstName(firstName);
+        newUser.setLastName(lastName);
+        newUser.setEmail(email);
+        newUser.setLangKey(langKey);
+        // new user is not active
+        newUser.setActivated(false);
+        // new user gets registration key
+        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        authorities.add(authority);
+        newUser.setAuthorities(authorities);
+        newUser = userRepository.save(newUser);
+        log.debug("Created Information for User: {}", newUser);
+
+        // TODO implement subscription plan logic
+        // Create AppAccount
+        AppAccount newAppAccount = new AppAccount();
+        newAppAccount.setName(companyName);
+        newAppAccount = appAccountRepository.save(newAppAccount);
+
+
+        Team newTeam = new Team();
+        newTeam.setAppAccount(newAppAccount);
+        newTeam.setName(companyName);
+        newTeam.setLeader(newUser);
+        newTeam = teamRepository.save(newTeam);
+
+        newUser.setAppAccount(newAppAccount);
+        newUser.setTeam(newTeam);
+        newUser.setTeamLeader(true);
+
+        newUser = userRepository.save(newUser);
+        return newUser;
+    }
+
     public User createUser(String login, String password, String firstName, String lastName, String email,
-        String imageUrl, String langKey) {
+                           String imageUrl, String langKey) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);

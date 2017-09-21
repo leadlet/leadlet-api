@@ -46,12 +46,16 @@
             </column>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
+            <column name="team_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="app_account_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="team_leader" type="boolean" valueBoolean="false">
+                <constraints nullable="true" />
+            </column>
         </createTable>
-        <createIndex indexName="idx_user_login"
-            tableName="jhi_user"
-            unique="true">
-            <column name="login" type="varchar(50)"/>
-        </createIndex>
 
         <createIndex indexName="idx_user_email"
             tableName="jhi_user"
@@ -86,11 +90,14 @@
                                  constraintName="fk_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
+
+
         <loadData encoding="UTF-8"
                   file="config/liquibase/users.csv"
                   separator=";"
                   tableName="jhi_user">
             <column name="activated" type="boolean"/>
+            <column name="team_leader" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>

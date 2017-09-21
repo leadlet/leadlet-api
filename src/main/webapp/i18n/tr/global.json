@@ -7,6 +7,22 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Varlıklar",
+                "appUser": "App User",
+                "team": "Team",
+                "appAccount": "App Account",
+                "subscriptionPlan": "Subscription Plan",
+                "companySubscriptionPlan": "Company Subscription Plan",
+                "emailTemplates": "Email Templates",
+                "objective": "Objective",
+                "pipeline": "Pipeline",
+                "stage": "Stage",
+                "pipelineStage": "Pipeline Stage",
+                "contact": "Contact",
+                "document": "Document",
+                "contactEmail": "Contact Email",
+                "contactPhone": "Contact Phone",
+                "deal": "Deal",
+                "activity": "Activity",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

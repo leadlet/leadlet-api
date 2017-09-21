@@ -1,0 +1,24 @@
+{
+    "leadletApiApp": {
+        "companySubscriptionPlan" : {
+            "home": {
+                "title": "Company Subscription Plans",
+                "createLabel": "Create a new Company Subscription Plan",
+                "createOrEditLabel": "Create or edit a Company Subscription Plan"
+            },
+            "created": "A new Company Subscription Plan is created with identifier {{ param }}",
+            "updated": "A Company Subscription Plan is updated with identifier {{ param }}",
+            "deleted": "A Company Subscription Plan is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Company Subscription Plan {{ id }}?"
+            },
+            "detail": {
+                "title": "Company Subscription Plan"
+            },
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "appAccount": "App Account",
+            "subscriptionPlan": "Subscription Plan"
+        }
+    }
+}

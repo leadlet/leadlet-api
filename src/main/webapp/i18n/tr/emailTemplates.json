@@ -1,0 +1,22 @@
+{
+    "leadletApiApp": {
+        "emailTemplates" : {
+            "home": {
+                "title": "Email Templates",
+                "createLabel": "Create a new Email Templates",
+                "createOrEditLabel": "Create or edit a Email Templates"
+            },
+            "created": "A new Email Templates is created with identifier {{ param }}",
+            "updated": "A Email Templates is updated with identifier {{ param }}",
+            "deleted": "A Email Templates is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Email Templates {{ id }}?"
+            },
+            "detail": {
+                "title": "Email Templates"
+            },
+            "templateName": "Template Name",
+            "template": "Template"
+        }
+    }
+}

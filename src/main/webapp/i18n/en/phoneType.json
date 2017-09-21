@@ -1,0 +1,10 @@
+{
+    "leadletApiApp": {
+        "PhoneType" : {
+            "null": "",
+            "HOME": "HOME",
+            "WORK": "WORK",
+            "OTHER": "OTHER"
+        }
+    }
+}

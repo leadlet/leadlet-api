@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "subscriptionPlan",
+            "otherEntityName": "companySubscriptionPlan",
+            "otherEntityRelationshipName": "subscriptionPlan"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "planName",
+            "fieldType": "PlanName",
+            "fieldValues": "TRIAL,BASIC,ADVANCED"
+        },
+        {
+            "fieldName": "allowedFeatures",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170820143141",
+    "entityTableName": "subscription_plan",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
+}

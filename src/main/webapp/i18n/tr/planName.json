@@ -1,0 +1,10 @@
+{
+    "leadletApiApp": {
+        "PlanName" : {
+            "null": "",
+            "TRIAL": "TRIAL",
+            "BASIC": "BASIC",
+            "ADVANCED": "ADVANCED"
+        }
+    }
+}

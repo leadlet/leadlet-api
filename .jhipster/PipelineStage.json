@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "pipeline",
+            "otherEntityName": "pipeline",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "stage",
+            "otherEntityName": "stage",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "stageOrder",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170820143147",
+    "entityTableName": "pipeline_stage",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceImpl"
+}

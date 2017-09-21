@@ -1,16 +1,23 @@
 package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
+import com.leadlet.domain.Team;
 import com.leadlet.domain.User;
 import com.leadlet.repository.AuthorityRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
+import com.leadlet.service.AppAccountService;
 import com.leadlet.service.MailService;
+import com.leadlet.service.TeamService;
 import com.leadlet.service.UserService;
+import com.leadlet.service.dto.AppAccountDTO;
+import com.leadlet.service.dto.TeamDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.web.rest.vm.KeyAndPasswordVM;
 import com.leadlet.web.rest.vm.ManagedUserVM;
+import com.leadlet.web.rest.vm.RegisterUserVm;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +34,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import sun.jvm.hotspot.asm.Register;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -59,6 +67,12 @@ public class AccountResourceIntTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TeamService teamService;
+
+    @Autowired
+    private AppAccountService appAccountService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -152,24 +166,28 @@ public class AccountResourceIntTest {
             .andExpect(status().isInternalServerError());
     }
 
+    /**
+     *  On user registration
+     *   1. A new account is created with company name
+     *   2. A new team is created with company name
+     *   3. A user is created
+     *   4. User account is set to new created account
+     *   5. User team is set to new created team
+     *   6. User set as team leader
+     * Create a valid account and user.
+     * @result Account will be persisted without any errors
+     */
     @Test
     @Transactional
     public void testRegisterValid() throws Exception {
-        ManagedUserVM validUser = new ManagedUserVM(
-            null,                   // id
+        RegisterUserVm validUser = new RegisterUserVm(
             "joe",                  // login
+            "joe@example.com",      // email
             "password",             // password
             "Joe",                  // firstName
             "Shmoe",                // lastName
-            "joe@example.com",      // email
-            true,                   // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)));
+            "John Doe Consultancy"            // companyName
+        );
 
         restMvc.perform(
             post("/api/register")
@@ -179,6 +197,15 @@ public class AccountResourceIntTest {
 
         Optional<User> user = userRepository.findOneByLogin("joe");
         assertThat(user.isPresent()).isTrue();
+
+        AppAccountDTO appAccountDTO = appAccountService.findOne(user.get().getAppAccount().getId());
+        assertThat(appAccountDTO.getName()).isEqualTo(validUser.getCompanyName());
+        assertThat(user.get().getAppAccount().getId()).isEqualTo(appAccountDTO.getId());
+
+        TeamDTO teamDTO = teamService.findOne(user.get().getTeam().getId());
+        assertThat(teamDTO.getName()).isEqualTo(validUser.getCompanyName());
+        assertThat(user.get().getTeam().getId()).isEqualTo(teamDTO.getId());
+        assertThat(teamDTO.getLeaderId()).isEqualTo(user.get().getId());
     }
 
     @Test

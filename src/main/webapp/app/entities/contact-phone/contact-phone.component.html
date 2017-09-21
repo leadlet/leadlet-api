@@ -1,0 +1,73 @@
+<div>
+    <h2>
+        <span jhiTranslate="leadletApiApp.contactPhone.home.title">Contact Phones</span>
+        <button class="btn btn-primary float-right jh-create-entity create-contact-phone" [routerLink]="['/', { outlets: { popup: ['contact-phone-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="leadletApiApp.contactPhone.home.createLabel">
+            Create new Contact Phone
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="contactPhones">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="phone"><span jhiTranslate="leadletApiApp.contactPhone.phone">Phone</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="type"><span jhiTranslate="leadletApiApp.contactPhone.type">Type</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="contactId"><span jhiTranslate="leadletApiApp.contactPhone.contact">Contact</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let contactPhone of contactPhones ;trackBy: trackId">
+                <td><a [routerLink]="['../contact-phone', contactPhone.id ]">{{contactPhone.id}}</a></td>
+                <td>{{contactPhone.phone}}</td>
+                <td jhiTranslate="{{'leadletApiApp.PhoneType.' + contactPhone.type}}">{{contactPhone.type}}</td>
+                <td>
+                    <div *ngIf="contactPhone.contactId">
+                        <a [routerLink]="['../contact', contactPhone.contactId  ]" >{{contactPhone.contactId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../contact-phone', contactPhone.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'contact-phone/'+ contactPhone.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'contact-phone/'+ contactPhone.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <!-- Pager is not implemented yet, so this is normal pagination instead -->
+        <div *ngIf="contactPhones && contactPhones.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page"  (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
+</div>
