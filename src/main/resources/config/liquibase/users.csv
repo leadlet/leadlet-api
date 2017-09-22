@@ -1,3 +1,4 @@
 id;login;password_hash;first_name;last_name;email;image_url;activated;lang_key;created_by;last_modified_by;team_leader;team_id;app_account_id
 1;admin;$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC;Administrator;Administrator;admin@localhost;;true;en;system;system;true;1;1
 2;emusk;$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC;Elon;Musk;emusk@spacex.com;;true;en;system;system;true;2;2
+3;zmuren;$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC;Zeki;Muren;zmuren@spacex.com;;true;en;system;system;true;3;3

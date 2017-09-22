@@ -1,5 +1,6 @@
 package com.leadlet.security;
 
+import com.leadlet.domain.AppAccount;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +32,24 @@ public final class SecurityUtils {
             }
         }
         return userName;
+    }
+
+    /**
+     * Get the login of the current user.
+     *
+     * @return the login of the current user
+     */
+    public static AppAccount getCurrentUserAppAccount() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        AppAccount appAccount = null;
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof UserDetails) {
+                AppUserDetail springSecurityUser = (AppUserDetail) authentication.getPrincipal();
+                appAccount = springSecurityUser.getAppAccount();
+            }
+        }
+        return appAccount;
     }
 
     /**

@@ -242,8 +242,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneWithAuthoritiesByLogin(login);
+    public Optional<User> getUserWithAuthoritiesByLoginAndAppAccount(String login) {
+        return userRepository.findOneWithAuthoritiesByLoginAndAppAccount(login, SecurityUtils.getCurrentUserAppAccount());
     }
 
     @Transactional(readOnly = true)

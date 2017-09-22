@@ -105,8 +105,11 @@ public class UserResource {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "missingteam", "A new user cannot be created without team"))
                 .body(null);
-        }
-        if (managedUserVM.getId() != null) {
+        } else if ( ! managedUserVM.getTeam().getAppAccount().equals(appUserDetail.getAppAccount())){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "wrongaccount", "A new user cannot be created with other company's team"))
+                .body(null);
+        } else if (managedUserVM.getId() != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
                 .body(null);
@@ -141,6 +144,15 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody ManagedUserVM managedUserVM) {
         log.debug("REST request to update User : {}", managedUserVM);
+        AppUserDetail appUserDetail = (AppUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if ( ( managedUserVM.getTeam() != null ) &&
+            ( managedUserVM.getTeam().getAppAccount() != appUserDetail.getAppAccount()) ){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "wrongaccount", "A new user cannot be created with other company's team"))
+                .body(null);
+        }
+
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserVM.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use")).body(null);
@@ -190,7 +202,7 @@ public class UserResource {
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(
-            userService.getUserWithAuthoritiesByLogin(login)
+            userService.getUserWithAuthoritiesByLoginAndAppAccount(login)
                 .map(UserDTO::new));
     }
 
