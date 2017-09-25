@@ -10,9 +10,9 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface StageMapper extends EntityMapper <StageDTO, Stage> {
-    
-    @Mapping(target = "pipelineStages", ignore = true)
-    Stage toEntity(StageDTO stageDTO); 
+
+    @Mapping(target = "pipeline", ignore = true)
+    Stage toEntity(StageDTO stageDTO);
     default Stage fromId(Long id) {
         if (id == null) {
             return null;

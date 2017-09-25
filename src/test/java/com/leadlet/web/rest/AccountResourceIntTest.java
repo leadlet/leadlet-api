@@ -1,8 +1,10 @@
 package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
 import com.leadlet.domain.User;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
@@ -56,6 +58,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AccountResourceIntTest {
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -85,6 +90,8 @@ public class AccountResourceIntTest {
     private MockMvc restUserMockMvc;
 
     private MockMvc restMvc;
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
 
     @Before
     public void setup() {
@@ -102,6 +109,13 @@ public class AccountResourceIntTest {
             .build();
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource).build();
     }
+
+    @Before
+    public void setAppAccountsUsers(){
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
+    }
+
 
     @Test
     public void testNonAuthenticatedUser() throws Exception {
@@ -376,6 +390,7 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(false);
         user.setActivationKey(activationKey);
+        user.setAppAccount(xCompanyAppAccount);
 
         userRepository.saveAndFlush(user);
 
@@ -401,6 +416,7 @@ public class AccountResourceIntTest {
         user.setLogin("save-account");
         user.setEmail("save-account@example.com");
         user.setPassword(RandomStringUtils.random(60));
+        user.setAppAccount(xCompanyAppAccount);
         user.setActivated(true);
 
         userRepository.saveAndFlush(user);
@@ -418,7 +434,9 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN))
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId()
         );
 
         restMvc.perform(
@@ -446,6 +464,7 @@ public class AccountResourceIntTest {
         user.setLogin("save-invalid-email");
         user.setEmail("save-invalid-email@example.com");
         user.setPassword(RandomStringUtils.random(60));
+        user.setAppAccount(xCompanyAppAccount);
         user.setActivated(true);
 
         userRepository.saveAndFlush(user);
@@ -463,7 +482,9 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN))
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId()
         );
 
         restMvc.perform(
@@ -484,7 +505,7 @@ public class AccountResourceIntTest {
         user.setEmail("save-existing-email@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
@@ -492,6 +513,7 @@ public class AccountResourceIntTest {
         anotherUser.setEmail("save-existing-email2@example.com");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
+        anotherUser.setAppAccount(xCompanyAppAccount);
 
         userRepository.saveAndFlush(anotherUser);
 
@@ -508,7 +530,9 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN))
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId()
         );
 
         restMvc.perform(
@@ -530,7 +554,7 @@ public class AccountResourceIntTest {
         user.setEmail("save-existing-email-and-login@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         UserDTO userDTO = new UserDTO(
@@ -546,7 +570,9 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN))
+            new HashSet<String>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId()
         );
 
         restMvc.perform(
@@ -567,6 +593,7 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setLogin("change-password");
         user.setEmail("change-password@example.com");
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content("new password"))
@@ -584,6 +611,7 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setLogin("change-password-too-small");
         user.setEmail("change-password-too-small@example.com");
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content("new"))
@@ -601,6 +629,7 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setLogin("change-password-too-long");
         user.setEmail("change-password-too-long@example.com");
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content(RandomStringUtils.random(101)))
@@ -618,6 +647,7 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setLogin("change-password-empty");
         user.setEmail("change-password-empty@example.com");
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content(RandomStringUtils.random(0)))
@@ -635,6 +665,7 @@ public class AccountResourceIntTest {
         user.setActivated(true);
         user.setLogin("password-reset");
         user.setEmail("password-reset@example.com");
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/reset_password/init")
@@ -659,6 +690,7 @@ public class AccountResourceIntTest {
         user.setEmail("finish-password-reset@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key");
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
@@ -684,6 +716,7 @@ public class AccountResourceIntTest {
         user.setEmail("finish-password-reset-too-small@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key too small");
+        user.setAppAccount(xCompanyAppAccount);
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();

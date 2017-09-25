@@ -1,8 +1,10 @@
 package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
 import com.leadlet.domain.User;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.service.MailService;
@@ -86,6 +88,9 @@ public class UserResourceIntTest {
     private static final String UPDATED_LANGKEY = "fr";
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -112,11 +117,12 @@ public class UserResourceIntTest {
     private MockMvc restUserMockMvc;
 
     private User user;
-    private User companyXUser;
-    private User companyYUser;
-
-    private static User companyXAppUser;
-    private static User companyYAppUser;
+    private User xCompanyNormalUser;
+    private User yCompanyNormalUser;
+    private static User xcompanyadminuser;
+    private static User ycompanyadminuser;
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
 
     @Before
     public void setup() {
@@ -149,48 +155,47 @@ public class UserResourceIntTest {
         return user;
     }
 
-    public static User createCompanyXEntity(EntityManager em) {
-        User companyXUser = new User();
-        companyXUser.setAppAccount(companyXAppUser.getAppAccount());
-        companyXUser.setTeam(companyXAppUser.getTeam());
-        companyXUser.setFirstName(DEFAULT_FIRSTNAME_X);
-        companyXUser.setLastName(DEFAULT_LASTNAME_X);
-        companyXUser.setLogin(DEFAULT_LOGIN_X);
-        companyXUser.setEmail(DEFAULT_EMAIL_X);
-        companyXUser.setPassword(RandomStringUtils.random(60));
-        return companyXUser;
-    }
-
-    public static User createCompanyYEntity(EntityManager em) {
-        User companyYUser = new User();
-        companyYUser.setAppAccount(companyYAppUser.getAppAccount());
-        companyYUser.setTeam(companyYAppUser.getTeam());
-        companyYUser.setFirstName(DEFAULT_FIRSTNAME_Y);
-        companyYUser.setLastName(DEFAULT_LASTNAME_Y);
-        companyYUser.setLogin(DEFAULT_LOGIN_Y);
-        companyYUser.setEmail(DEFAULT_EMAIL_Y);
-        companyYUser.setPassword(RandomStringUtils.random(60));
-        return companyYUser;
-    }
     @Before
     public void initTest() {
-        synchronized(this) {
-            if (this.companyXAppUser == null) {
-                this.companyXAppUser = this.userRepository.findOneByLogin("emusk").get();
-            }
-            if (this.companyYAppUser == null) {
-                this.companyYAppUser = this.userRepository.findOneByLogin("zmuren").get();
-            }
-        }
-
         user = createEntity(em);
-        companyXUser = createCompanyXEntity(em);
-        companyYUser = createCompanyYEntity(em);
+    }
+
+    @Before
+    public void setAppAccountsUsers(){
+
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
+
+        this.xcompanyadminuser = this.userRepository.findOneByLogin("xcompanyadminuser").get();
+        this.ycompanyadminuser = this.userRepository.findOneByLogin("ycompanyadminuser").get();
+
+        User xCompanyNormalUser = new User();
+        xCompanyNormalUser.setAppAccount(xCompanyAppAccount);
+        xCompanyNormalUser.setTeam(xcompanyadminuser.getTeam());
+        xCompanyNormalUser.setFirstName(DEFAULT_FIRSTNAME_X);
+        xCompanyNormalUser.setLastName(DEFAULT_LASTNAME_X);
+        xCompanyNormalUser.setLogin(DEFAULT_LOGIN_X);
+        xCompanyNormalUser.setEmail(DEFAULT_EMAIL_X);
+        xCompanyNormalUser.setPassword(RandomStringUtils.random(60));
+
+        this.xCompanyNormalUser = xCompanyNormalUser;
+
+        User yCompanyNormalUser = new User();
+        yCompanyNormalUser.setAppAccount(yCompanyAppAccount);
+        yCompanyNormalUser.setTeam(ycompanyadminuser.getTeam());
+        yCompanyNormalUser.setFirstName(DEFAULT_FIRSTNAME_Y);
+        yCompanyNormalUser.setLastName(DEFAULT_LASTNAME_Y);
+        yCompanyNormalUser.setLogin(DEFAULT_LOGIN_Y);
+        yCompanyNormalUser.setEmail(DEFAULT_EMAIL_Y);
+        yCompanyNormalUser.setPassword(RandomStringUtils.random(60));
+
+        this.yCompanyNormalUser = yCompanyNormalUser;
+
     }
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void createUser() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -212,7 +217,8 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            companyXAppUser.getTeam());
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -230,15 +236,15 @@ public class UserResourceIntTest {
         assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
 
-        assertThat(testUser.getAppAccount()).isEqualTo(companyXAppUser.getAppAccount());
-        assertThat(testUser.getTeam()).isEqualTo(companyXAppUser.getTeam());
+        assertThat(testUser.getAppAccount()).isEqualTo(xcompanyadminuser.getAppAccount());
+        assertThat(testUser.getTeam()).isEqualTo(xcompanyadminuser.getTeam());
         assertThat(testUser.isTeamLeader()).isFalse();
 
     }
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void createUserWithAnotherTeam() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -260,7 +266,8 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            companyYAppUser.getTeam());
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -271,7 +278,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void createUserWithoutTeam() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -292,7 +299,9 @@ public class UserResourceIntTest {
             null,
             null,
             null,
-            authorities);
+            authorities,
+            xCompanyAppAccount.getId(),
+            null);
 
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -303,7 +312,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void createUserWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -324,7 +333,8 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            companyXAppUser.getTeam());
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc.perform(post("/api/users")
@@ -339,7 +349,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void createUserWithExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -362,7 +372,8 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            companyXAppUser.getTeam());
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
@@ -377,7 +388,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void createUserWithExistingEmail() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -400,7 +411,8 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            companyXAppUser.getTeam());
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
@@ -415,11 +427,11 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void getAllUsers() throws Exception {
         // Initialize the database
-        userRepository.saveAndFlush(companyXUser);
-        userRepository.saveAndFlush(companyYUser);
+        userRepository.saveAndFlush(xCompanyNormalUser);
+        userRepository.saveAndFlush(yCompanyNormalUser);
 
         // Get all the users
         restUserMockMvc.perform(get("/api/users?sort=id,desc")
@@ -434,39 +446,39 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void getUser() throws Exception {
         // Initialize the database
-        userRepository.saveAndFlush(companyXUser);
+        userRepository.saveAndFlush(xCompanyNormalUser);
 
         // Get the user
-        restUserMockMvc.perform(get("/api/users/{login}", companyXUser.getLogin()))
+        restUserMockMvc.perform(get("/api/users/{login}", xCompanyNormalUser.getLogin()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.login").value(companyXUser.getLogin()))
-            .andExpect(jsonPath("$.firstName").value(companyXUser.getFirstName()))
-            .andExpect(jsonPath("$.lastName").value(companyXUser.getLastName()))
-            .andExpect(jsonPath("$.email").value(companyXUser.getEmail()))
-            .andExpect(jsonPath("$.imageUrl").value(companyXUser.getImageUrl()))
-            .andExpect(jsonPath("$.langKey").value(companyXUser.getLangKey()));
+            .andExpect(jsonPath("$.login").value(xCompanyNormalUser.getLogin()))
+            .andExpect(jsonPath("$.firstName").value(xCompanyNormalUser.getFirstName()))
+            .andExpect(jsonPath("$.lastName").value(xCompanyNormalUser.getLastName()))
+            .andExpect(jsonPath("$.email").value(xCompanyNormalUser.getEmail()))
+            .andExpect(jsonPath("$.imageUrl").value(xCompanyNormalUser.getImageUrl()))
+            .andExpect(jsonPath("$.langKey").value(xCompanyNormalUser.getLangKey()));
     }
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void getUserAnotherCompany() throws Exception {
         // Initialize the database
-        userRepository.saveAndFlush(companyXUser);
-        userRepository.saveAndFlush(companyYUser);
+        userRepository.saveAndFlush(xCompanyNormalUser);
+        userRepository.saveAndFlush(yCompanyNormalUser);
 
         // Get the user
-        restUserMockMvc.perform(get("/api/users/{login}", companyYUser.getLogin()))
+        restUserMockMvc.perform(get("/api/users/{login}", yCompanyNormalUser.getLogin()))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void getNonExistingUser() throws Exception {
         restUserMockMvc.perform(get("/api/users/unknown"))
             .andExpect(status().isNotFound());
@@ -474,7 +486,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void updateUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -499,7 +511,9 @@ public class UserResourceIntTest {
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
-            authorities);
+            authorities,
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -519,14 +533,14 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void updateUserWithAnotherTeam() throws Exception {
         // Initialize the database
-        userRepository.saveAndFlush(companyYUser);
+        userRepository.saveAndFlush(yCompanyNormalUser);
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findOne(companyYUser.getId());
+        User updatedUser = userRepository.findOne(yCompanyNormalUser.getId());
 
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");
@@ -545,7 +559,8 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            companyYAppUser.getTeam());
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -555,14 +570,14 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void updateUserLogin() throws Exception {
         // Initialize the database
-        userRepository.saveAndFlush(companyYUser);
+        userRepository.saveAndFlush(yCompanyNormalUser);
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findOne(companyYUser.getId());
+        User updatedUser = userRepository.findOne(yCompanyNormalUser.getId());
 
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");
@@ -580,7 +595,9 @@ public class UserResourceIntTest {
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
-            authorities);
+            authorities,
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -601,7 +618,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void updateUserExistingEmail() throws Exception {
         // Initialize the database with 2 users
         userRepository.saveAndFlush(user);
@@ -636,7 +653,9 @@ public class UserResourceIntTest {
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
-            authorities);
+            authorities,
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -646,7 +665,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void updateUserExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -681,7 +700,9 @@ public class UserResourceIntTest {
             updatedUser.getCreatedDate(),
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
-            authorities);
+            authorities,
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -691,7 +712,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void deleteUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -709,7 +730,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void getAllAuthorities() throws Exception {
         restUserMockMvc.perform(get("/api/users/authorities")
             .accept(TestUtil.APPLICATION_JSON_UTF8)
@@ -722,7 +743,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("emusk")
+    @WithUserDetails("xcompanyadminuser")
     public void testUserEquals() throws Exception {
         TestUtil.equalsVerifier(User.class);
         User user1 = new User();
@@ -757,7 +778,9 @@ public class UserResourceIntTest {
             null,
             DEFAULT_LOGIN,
             null,
-            Stream.of(AuthoritiesConstants.USER).collect(Collectors.toSet()));
+            Stream.of(AuthoritiesConstants.USER).collect(Collectors.toSet()),
+            xCompanyAppAccount.getId(),
+            xCompanyAppAccount.getRootTeam().getId());
         User user = userMapper.userDTOToUser(userDTO);
         assertThat(user.getId()).isEqualTo(DEFAULT_ID);
         assertThat(user.getLogin()).isEqualTo(DEFAULT_LOGIN);

@@ -17,6 +17,8 @@ import java.time.Instant;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    User findOneByIdAndAppAccount(Long login, AppAccount appAccount);
+
     Optional<User> findOneByActivationKey(String activationKey);
 
     List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Instant dateTime);
@@ -24,6 +26,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneByResetKey(String resetKey);
 
     Optional<User> findOneByEmail(String email);
+
+    Optional<User> findOneByLoginAndAppAccount(String login, AppAccount appAccount);
 
     Optional<User> findOneByLogin(String login);
 

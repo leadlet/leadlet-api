@@ -57,6 +57,9 @@ public class Contact implements Serializable {
     @ManyToOne
     private Contact organization;
 
+    @ManyToOne
+    private AppAccount appAccount;
+
     public Long getId() {
         return id;
     }
@@ -203,6 +206,14 @@ public class Contact implements Serializable {
 
     public void setOrganization(Contact contact) {
         this.organization = contact;
+    }
+
+    public AppAccount getAppAccount() {
+        return appAccount;
+    }
+
+    public void setAppAccount(AppAccount appAccount) {
+        this.appAccount = appAccount;
     }
 
     @Override

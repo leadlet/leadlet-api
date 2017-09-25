@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "company_subscription_plan")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CompanySubscriptionPlan implements Serializable {
+public class CompanySubscriptionPlan extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,9 +27,6 @@ public class CompanySubscriptionPlan implements Serializable {
 
     @Column(name = "end_date")
     private ZonedDateTime endDate;
-
-    @ManyToOne
-    private AppAccount appAccount;
 
     @ManyToOne
     private SubscriptionPlan subscriptionPlan;
@@ -66,19 +63,6 @@ public class CompanySubscriptionPlan implements Serializable {
 
     public void setEndDate(ZonedDateTime endDate) {
         this.endDate = endDate;
-    }
-
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    public CompanySubscriptionPlan appAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
-        return this;
-    }
-
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
     }
 
     public SubscriptionPlan getSubscriptionPlan() {

@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "deal")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Deal implements Serializable {
+public class Deal extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,16 +31,13 @@ public class Deal implements Serializable {
     private Double potentialValue;
 
     @ManyToOne
-    private PipelineStage pipelineStage;
+    private Stage stage;
 
     @ManyToOne
     private Contact person;
 
     @ManyToOne
     private Contact organization;
-
-    @ManyToOne
-    private AppAccount appAccount;
 
     @ManyToOne
     private User user;
@@ -92,17 +89,17 @@ public class Deal implements Serializable {
         this.potentialValue = potentialValue;
     }
 
-    public PipelineStage getPipelineStage() {
-        return pipelineStage;
+    public Stage getStage() {
+        return stage;
     }
 
-    public Deal pipelineStage(PipelineStage pipelineStage) {
-        this.pipelineStage = pipelineStage;
+    public Deal stage(Stage stage) {
+        this.stage = stage;
         return this;
     }
 
-    public void setPipelineStage(PipelineStage pipelineStage) {
-        this.pipelineStage = pipelineStage;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public Contact getPerson() {
@@ -129,19 +126,6 @@ public class Deal implements Serializable {
 
     public void setOrganization(Contact contact) {
         this.organization = contact;
-    }
-
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    public Deal appAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
-        return this;
-    }
-
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
     }
 
     public User getUser() {

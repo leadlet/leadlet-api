@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.AppAccount;
 import com.leadlet.service.PipelineService;
 import com.leadlet.domain.Pipeline;
 import com.leadlet.repository.PipelineRepository;
@@ -38,9 +39,10 @@ public class PipelineServiceImpl implements PipelineService{
      * @return the persisted entity
      */
     @Override
-    public PipelineDTO save(PipelineDTO pipelineDTO) {
+    public PipelineDTO save(PipelineDTO pipelineDTO, AppAccount appAccount) {
         log.debug("Request to save Pipeline : {}", pipelineDTO);
         Pipeline pipeline = pipelineMapper.toEntity(pipelineDTO);
+        pipeline.setAppAccount(appAccount);
         pipeline = pipelineRepository.save(pipeline);
         return pipelineMapper.toDto(pipeline);
     }
@@ -53,9 +55,9 @@ public class PipelineServiceImpl implements PipelineService{
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<PipelineDTO> findAll(Pageable pageable) {
+    public Page<PipelineDTO> findAll(Pageable pageable, AppAccount appAccount) {
         log.debug("Request to get all Pipelines");
-        return pipelineRepository.findAll(pageable)
+        return pipelineRepository.findByAppAccount(appAccount, pageable)
             .map(pipelineMapper::toDto);
     }
 

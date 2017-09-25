@@ -1,5 +1,6 @@
 package com.leadlet.service;
 
+import com.leadlet.domain.AppAccount;
 import com.leadlet.service.dto.PipelineDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ public interface PipelineService {
      * @param pipelineDTO the entity to save
      * @return the persisted entity
      */
-    PipelineDTO save(PipelineDTO pipelineDTO);
+    PipelineDTO save(PipelineDTO pipelineDTO, AppAccount appAccount);
 
     /**
      *  Get all the pipelines.
@@ -23,7 +24,7 @@ public interface PipelineService {
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<PipelineDTO> findAll(Pageable pageable);
+    Page<PipelineDTO> findAll(Pageable pageable, AppAccount appAccount);
 
     /**
      *  Get the "id" pipeline.

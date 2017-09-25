@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "document")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Document implements Serializable {
+public class Document extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,9 +29,6 @@ public class Document implements Serializable {
 
     @ManyToOne
     private Contact contact;
-
-    @ManyToOne
-    private AppAccount appAccount;
 
     @ManyToOne
     private Activity activity;
@@ -81,19 +78,6 @@ public class Document implements Serializable {
 
     public void setContact(Contact contact) {
         this.contact = contact;
-    }
-
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    public Document appAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
-        return this;
-    }
-
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
     }
 
     public Activity getActivity() {

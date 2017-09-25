@@ -1,6 +1,7 @@
 package com.leadlet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -39,6 +40,10 @@ public class AppAccount implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<User> users = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Team rootTeam;
 
     public Long getId() {
         return id;
@@ -122,6 +127,14 @@ public class AppAccount implements Serializable {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Team getRootTeam() {
+        return rootTeam;
+    }
+
+    public void setRootTeam(Team rootTeam) {
+        this.rootTeam = rootTeam;
     }
 
     @Override

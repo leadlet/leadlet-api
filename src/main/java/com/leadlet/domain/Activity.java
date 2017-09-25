@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "activity")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Activity implements Serializable {
+public class Activity extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,9 +56,6 @@ public class Activity implements Serializable {
 
     @ManyToOne
     private Contact organization;
-
-    @ManyToOne
-    private AppAccount appAccount;
 
     @ManyToOne
     private User user;
@@ -211,19 +208,6 @@ public class Activity implements Serializable {
 
     public void setOrganization(Contact contact) {
         this.organization = contact;
-    }
-
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    public Activity appAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
-        return this;
-    }
-
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
     }
 
     public User getUser() {

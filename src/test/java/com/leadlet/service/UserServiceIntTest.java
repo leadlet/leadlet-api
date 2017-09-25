@@ -1,11 +1,14 @@
 package com.leadlet.service;
 
 import com.leadlet.LeadletApiApp;
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.User;
 import com.leadlet.config.Constants;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.util.RandomUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +37,22 @@ import static org.assertj.core.api.Assertions.*;
 public class UserServiceIntTest {
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
+
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
+
+    @Before
+    public void setAppAccountsUsers(){
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
+    }
 
     @Test
     public void assertThatUserMustExistToResetPassword() {
@@ -54,7 +69,14 @@ public class UserServiceIntTest {
 
     @Test
     public void assertThatOnlyActivatedUserCanRequestPasswordReset() {
-        User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "http://placehold.it/50x50", "en-US");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setAppAccountId(xCompanyAppAccount.getId());
+        userDTO.setLogin("johndoe");
+        userDTO.setFirstName("John");
+        userDTO.setLastName("Doe");
+        userDTO.setEmail("john.doe@localhost");
+
+        User user = userService.createUser(userDTO);
         Optional<User> maybeUser = userService.requestPasswordReset("john.doe@localhost");
         assertThat(maybeUser.isPresent()).isFalse();
         userRepository.delete(user);
@@ -62,7 +84,14 @@ public class UserServiceIntTest {
 
     @Test
     public void assertThatResetKeyMustNotBeOlderThan24Hours() {
-        User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "http://placehold.it/50x50", "en-US");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setAppAccountId(xCompanyAppAccount.getId());
+        userDTO.setLogin("johndoe");
+        userDTO.setFirstName("John");
+        userDTO.setLastName("Doe");
+        userDTO.setEmail("john.doe@localhost");
+
+        User user = userService.createUser(userDTO);
 
         Instant daysAgo = Instant.now().minus(25, ChronoUnit.HOURS);
         String resetKey = RandomUtil.generateResetKey();
@@ -81,7 +110,14 @@ public class UserServiceIntTest {
 
     @Test
     public void assertThatResetKeyMustBeValid() {
-        User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "http://placehold.it/50x50", "en-US");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setAppAccountId(xCompanyAppAccount.getId());
+        userDTO.setLogin("johndoe");
+        userDTO.setFirstName("John");
+        userDTO.setLastName("Doe");
+        userDTO.setEmail("john.doe@localhost");
+
+        User user = userService.createUser(userDTO);
 
         Instant daysAgo = Instant.now().minus(25, ChronoUnit.HOURS);
         user.setActivated(true);
@@ -95,7 +131,14 @@ public class UserServiceIntTest {
 
     @Test
     public void assertThatUserCanResetPassword() {
-        User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "http://placehold.it/50x50", "en-US");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setAppAccountId(xCompanyAppAccount.getId());
+        userDTO.setLogin("johndoe");
+        userDTO.setFirstName("John");
+        userDTO.setLastName("Doe");
+        userDTO.setEmail("john.doe@localhost");
+
+        User user = userService.createUser(userDTO);
         String oldPassword = user.getPassword();
         Instant daysAgo = Instant.now().minus(2, ChronoUnit.HOURS);
         String resetKey = RandomUtil.generateResetKey();
@@ -131,7 +174,14 @@ public class UserServiceIntTest {
 
     @Test
     public void testRemoveNotActivatedUsers() {
-        User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "http://placehold.it/50x50", "en-US");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setAppAccountId(xCompanyAppAccount.getId());
+        userDTO.setLogin("johndoe");
+        userDTO.setFirstName("John");
+        userDTO.setLastName("Doe");
+        userDTO.setEmail("john.doe@localhost");
+
+        User user = userService.createUser(userDTO);
         user.setActivated(false);
         user.setCreatedDate(Instant.now().minus(30, ChronoUnit.DAYS));
         userRepository.save(user);

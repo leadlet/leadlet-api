@@ -10,9 +10,9 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface PipelineMapper extends EntityMapper <PipelineDTO, Pipeline> {
-    
-    @Mapping(target = "pipelineStages", ignore = true)
-    Pipeline toEntity(PipelineDTO pipelineDTO); 
+
+    @Mapping(target = "stages", ignore = true)
+    Pipeline toEntity(PipelineDTO pipelineDTO);
     default Pipeline fromId(Long id) {
         if (id == null) {
             return null;

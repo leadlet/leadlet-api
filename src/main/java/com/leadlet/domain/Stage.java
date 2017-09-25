@@ -27,10 +27,8 @@ public class Stage implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "stage")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PipelineStage> pipelineStages = new HashSet<>();
+    @ManyToOne
+    private Pipeline pipeline;
 
     public Long getId() {
         return id;
@@ -53,31 +51,6 @@ public class Stage implements Serializable {
         this.name = name;
     }
 
-    public Set<PipelineStage> getPipelineStages() {
-        return pipelineStages;
-    }
-
-    public Stage pipelineStages(Set<PipelineStage> pipelineStages) {
-        this.pipelineStages = pipelineStages;
-        return this;
-    }
-
-    public Stage addPipelineStage(PipelineStage pipelineStage) {
-        this.pipelineStages.add(pipelineStage);
-        pipelineStage.setStage(this);
-        return this;
-    }
-
-    public Stage removePipelineStage(PipelineStage pipelineStage) {
-        this.pipelineStages.remove(pipelineStage);
-        pipelineStage.setStage(null);
-        return this;
-    }
-
-    public void setPipelineStages(Set<PipelineStage> pipelineStages) {
-        this.pipelineStages = pipelineStages;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,6 +64,14 @@ public class Stage implements Serializable {
             return false;
         }
         return Objects.equals(getId(), stage.getId());
+    }
+
+    public Pipeline getPipeline() {
+        return pipeline;
+    }
+
+    public void setPipeline(Pipeline pipeline) {
+        this.pipeline = pipeline;
     }
 
     @Override

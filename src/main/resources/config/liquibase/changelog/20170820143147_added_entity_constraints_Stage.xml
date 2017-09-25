@@ -4,21 +4,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
-        Added the constraints for entity PipelineStage.
+        Added the constraints for entity Stage.
     -->
     <changeSet id="20170820143147-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="pipeline_id"
-                                 baseTableName="pipeline_stage"
-                                 constraintName="fk_pipeline_stage_pipeline_id"
+                                 baseTableName="stage"
+                                 constraintName="fk_pipeline_stage_id"
                                  referencedColumnNames="id"
                                  referencedTableName="pipeline"/>
-
-        <addForeignKeyConstraint baseColumnNames="stage_id"
-                                 baseTableName="pipeline_stage"
-                                 constraintName="fk_pipeline_stage_stage_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="stage"/>
-
     </changeSet>
 </databaseChangeLog>

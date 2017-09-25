@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "team")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Team implements Serializable {
+public class Team extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,9 +32,6 @@ public class Team implements Serializable {
     @JoinColumn(unique = true)
     @JsonManagedReference
     private User leader;
-
-    @ManyToOne
-    private AppAccount appAccount;
 
     public Long getId() {
         return id;
@@ -68,14 +65,6 @@ public class Team implements Serializable {
 
     public void setLeader(User appUser) {
         this.leader = appUser;
-    }
-
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
     }
 
     @Override

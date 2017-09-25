@@ -95,6 +95,11 @@ public class UserService {
     public User createAccountWithUser(String login, String password, String firstName, String lastName, String email,
         String companyName, String langKey) {
 
+        // Create AppAccount
+        AppAccount newAppAccount = new AppAccount();
+        newAppAccount.setName(companyName);
+        newAppAccount = appAccountRepository.save(newAppAccount);
+
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<Authority> authorities = new HashSet<>();
@@ -112,23 +117,17 @@ public class UserService {
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
+        newUser.setAppAccount(newAppAccount);
         newUser = userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
 
         // TODO implement subscription plan logic
-        // Create AppAccount
-        AppAccount newAppAccount = new AppAccount();
-        newAppAccount.setName(companyName);
-        newAppAccount = appAccountRepository.save(newAppAccount);
-
-
         Team newTeam = new Team();
         newTeam.setAppAccount(newAppAccount);
         newTeam.setName(companyName);
         newTeam.setLeader(newUser);
         newTeam = teamRepository.save(newTeam);
 
-        newUser.setAppAccount(newAppAccount);
         newUser.setTeam(newTeam);
         newUser.setTeamLeader(true);
 
@@ -136,13 +135,8 @@ public class UserService {
         return newUser;
     }
 
-    public User createUser(String login, String password, String firstName, String lastName, String email,
-                           String imageUrl, String langKey) {
-        throw new MethodNotFoundException();
-    }
+    public User createUser(UserDTO userDTO) {
 
-
-    public User createUser(UserDTO userDTO, Team team, AppAccount appAccount ) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
@@ -166,8 +160,8 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
-        user.setTeam(team);
-        user.setAppAccount(appAccount);
+        user.setTeam(teamRepository.getOne(userDTO.getTeamId()));
+        user.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;
@@ -201,7 +195,7 @@ public class UserService {
      */
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
         return Optional.of(userRepository
-            .findOne(userDTO.getId()))
+            .findOneByIdAndAppAccount(userDTO.getId(), SecurityUtils.getCurrentUserAppAccount()))
             .map(user -> {
                 user.setLogin(userDTO.getLogin());
                 user.setFirstName(userDTO.getFirstName());
@@ -222,14 +216,14 @@ public class UserService {
     }
 
     public void deleteUser(String login) {
-        userRepository.findOneByLogin(login).ifPresent(user -> {
+        userRepository.findOneByLoginAndAppAccount(login,SecurityUtils.getCurrentUserAppAccount()).ifPresent(user -> {
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });
     }
 
     public void changePassword(String password) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
+        userRepository.findOneByLoginAndAppAccount(SecurityUtils.getCurrentUserLogin(),SecurityUtils.getCurrentUserAppAccount()).ifPresent(user -> {
             String encryptedPassword = passwordEncoder.encode(password);
             user.setPassword(encryptedPassword);
             log.debug("Changed password for User: {}", user);

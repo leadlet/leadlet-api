@@ -51,10 +51,8 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.EmailTemplates.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Objective.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Pipeline.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Pipeline.class.getName() + ".pipelineStages", jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Pipeline.class.getName() + ".stages", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Stage.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Stage.class.getName() + ".pipelineStages", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.PipelineStage.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Contact.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Contact.class.getName() + ".phones", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Contact.class.getName() + ".emails", jcacheConfiguration);

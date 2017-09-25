@@ -33,7 +33,10 @@ public class Pipeline implements Serializable {
     @OneToMany(mappedBy = "pipeline")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PipelineStage> pipelineStages = new HashSet<>();
+    private Set<Stage> stages = new HashSet<>();
+
+    @ManyToOne
+    private AppAccount appAccount;
 
     public Long getId() {
         return id;
@@ -69,29 +72,32 @@ public class Pipeline implements Serializable {
         this.order = order;
     }
 
-    public Set<PipelineStage> getPipelineStages() {
-        return pipelineStages;
+    public Set<Stage> getStages() {
+        return stages;
     }
 
-    public Pipeline pipelineStages(Set<PipelineStage> pipelineStages) {
-        this.pipelineStages = pipelineStages;
+    public Pipeline addStage(Stage stage) {
+        this.stages.add(stage);
+        stage.setPipeline(this);
         return this;
     }
 
-    public Pipeline addPipelineStage(PipelineStage pipelineStage) {
-        this.pipelineStages.add(pipelineStage);
-        pipelineStage.setPipeline(this);
+    public Pipeline removeStage(Stage stage) {
+        this.stages.remove(stage);
+        stage.setPipeline(null);
         return this;
     }
 
-    public Pipeline removePipelineStage(PipelineStage pipelineStage) {
-        this.pipelineStages.remove(pipelineStage);
-        pipelineStage.setPipeline(null);
-        return this;
+    public void setPipelineStages(Set<Stage> pipelineStages) {
+        this.stages = pipelineStages;
     }
 
-    public void setPipelineStages(Set<PipelineStage> pipelineStages) {
-        this.pipelineStages = pipelineStages;
+    public AppAccount getAppAccount() {
+        return appAccount;
+    }
+
+    public void setAppAccount(AppAccount appAccount) {
+        this.appAccount = appAccount;
     }
 
     @Override

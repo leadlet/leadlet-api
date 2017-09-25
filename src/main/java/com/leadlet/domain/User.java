@@ -99,9 +99,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonBackReference
     private Team team;
 
-    @ManyToOne
-    private AppAccount appAccount;
-
     @Column(name = "team_leader")
     private boolean teamLeader = false;
 
@@ -216,14 +213,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setTeam(Team team) {
         this.team = team;
-    }
-
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
     }
 
     public boolean isTeamLeader() {

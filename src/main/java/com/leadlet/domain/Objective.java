@@ -16,7 +16,7 @@ import com.leadlet.domain.enumeration.ObjectiveSourceType;
 @Entity
 @Table(name = "objective")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Objective implements Serializable {
+public class Objective extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

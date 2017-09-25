@@ -2,10 +2,12 @@ package com.leadlet.web.rest;
 
 import com.leadlet.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.User;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AppUserDetail;
 import com.leadlet.security.AuthoritiesConstants;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.MailService;
 import com.leadlet.service.UserService;
 import com.leadlet.service.dto.UserDTO;
@@ -99,17 +101,7 @@ public class UserResource {
     public ResponseEntity createUser(@Valid @RequestBody ManagedUserVM managedUserVM ) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
 
-        AppUserDetail appUserDetail = (AppUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if( managedUserVM.getTeam() == null || managedUserVM.getTeam().getId() == null){
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "missingteam", "A new user cannot be created without team"))
-                .body(null);
-        } else if ( ! managedUserVM.getTeam().getAppAccount().equals(appUserDetail.getAppAccount())){
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "wrongaccount", "A new user cannot be created with other company's team"))
-                .body(null);
-        } else if (managedUserVM.getId() != null) {
+        if (managedUserVM.getId() != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
                 .body(null);
@@ -123,7 +115,7 @@ public class UserResource {
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
                 .body(null);
         } else {
-            User newUser = userService.createUser(managedUserVM, managedUserVM.getTeam(), appUserDetail.getAppAccount());
+            User newUser = userService.createUser(managedUserVM);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
@@ -144,14 +136,6 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody ManagedUserVM managedUserVM) {
         log.debug("REST request to update User : {}", managedUserVM);
-        AppUserDetail appUserDetail = (AppUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if ( ( managedUserVM.getTeam() != null ) &&
-            ( managedUserVM.getTeam().getAppAccount() != appUserDetail.getAppAccount()) ){
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "wrongaccount", "A new user cannot be created with other company's team"))
-                .body(null);
-        }
 
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserVM.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {

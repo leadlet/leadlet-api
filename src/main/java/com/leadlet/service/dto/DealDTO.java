@@ -19,7 +19,7 @@ public class DealDTO implements Serializable {
 
     private Double potentialValue;
 
-    private Long pipelineStageId;
+    private Long stageId;
 
     private Long personId;
 
@@ -61,12 +61,12 @@ public class DealDTO implements Serializable {
         this.potentialValue = potentialValue;
     }
 
-    public Long getPipelineStageId() {
-        return pipelineStageId;
+    public Long getStageId() {
+        return stageId;
     }
 
-    public void setPipelineStageId(Long pipelineStageId) {
-        this.pipelineStageId = pipelineStageId;
+    public void setStageId(Long stageId) {
+        this.stageId = stageId;
     }
 
     public Long getPersonId() {
