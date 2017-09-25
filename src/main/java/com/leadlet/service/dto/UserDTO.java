@@ -53,8 +53,10 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    @NotNull
     private Long appAccountId;
 
+    @NotNull
     private Long teamId;
 
     public UserDTO() {

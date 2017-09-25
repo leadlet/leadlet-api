@@ -121,8 +121,8 @@ public class UserResourceIntTest {
     private User yCompanyNormalUser;
     private static User xcompanyadminuser;
     private static User ycompanyadminuser;
-    private AppAccount xCompanyAppAccount;
-    private AppAccount yCompanyAppAccount;
+    private static AppAccount xCompanyAppAccount;
+    private static AppAccount yCompanyAppAccount;
 
     @Before
     public void setup() {
@@ -152,6 +152,8 @@ public class UserResourceIntTest {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+        user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         return user;
     }
 
@@ -245,7 +247,7 @@ public class UserResourceIntTest {
     @Test
     @Transactional
     @WithUserDetails("xcompanyadminuser")
-    public void createUserWithAnotherTeam() throws Exception {
+    public void createUserForAnotherAccount() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
         // Create the User
@@ -266,8 +268,8 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getId(),
-            xCompanyAppAccount.getRootTeam().getId());
+            yCompanyAppAccount.getId(),
+            yCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -536,11 +538,11 @@ public class UserResourceIntTest {
     @WithUserDetails("xcompanyadminuser")
     public void updateUserWithAnotherTeam() throws Exception {
         // Initialize the database
-        userRepository.saveAndFlush(yCompanyNormalUser);
+        userRepository.saveAndFlush(xCompanyNormalUser);
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findOne(yCompanyNormalUser.getId());
+        User updatedUser = userRepository.findOne(xCompanyNormalUser.getId());
 
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");
@@ -559,8 +561,7 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getId(),
-            xCompanyAppAccount.getRootTeam().getId());
+            yCompanyAppAccount.getId(),null);
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -573,11 +574,11 @@ public class UserResourceIntTest {
     @WithUserDetails("xcompanyadminuser")
     public void updateUserLogin() throws Exception {
         // Initialize the database
-        userRepository.saveAndFlush(yCompanyNormalUser);
+        userRepository.saveAndFlush(xCompanyNormalUser);
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findOne(yCompanyNormalUser.getId());
+        User updatedUser = userRepository.findOne(xCompanyNormalUser.getId());
 
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");
@@ -632,6 +633,8 @@ public class UserResourceIntTest {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setAppAccount(xCompanyAppAccount);
+        anotherUser.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
@@ -679,6 +682,8 @@ public class UserResourceIntTest {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setAppAccount(xCompanyAppAccount);
+        anotherUser.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user

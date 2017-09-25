@@ -97,6 +97,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @JsonBackReference
+    @NotNull
     private Team team;
 
     @Column(name = "team_leader")

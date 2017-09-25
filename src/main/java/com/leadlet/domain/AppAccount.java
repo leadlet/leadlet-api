@@ -42,7 +42,6 @@ public class AppAccount implements Serializable {
     private Set<User> users = new HashSet<>();
 
     @OneToOne
-    @JoinColumn(unique = true)
     private Team rootTeam;
 
     public Long getId() {

@@ -1,4 +1,4 @@
-id;name;address
-1;DummyX;Las Vegas Merkez Ibrahim Efendi Cad.
-2;CompanyX;Las Vegas Merkez Ibrahim Efendi Cad.
-3;CompanyY;Konya Merkez Ibrahim Efendi Cad.
+id;name;address;root_team_id
+1;DummyX;Las Vegas Merkez Ibrahim Efendi Cad.;1
+2;CompanyX;Las Vegas Merkez Ibrahim Efendi Cad.;2
+3;CompanyY;Konya Merkez Ibrahim Efendi Cad.;3

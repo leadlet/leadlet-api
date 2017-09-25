@@ -1,6 +1,8 @@
 package com.leadlet.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,6 +22,9 @@ import java.time.Instant;
  * Base abstract class for entities which will hold definitions for created, last modified by and created,
  * last modified by date.
  */
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id")
 @MappedSuperclass
 @Audited
 @EntityListeners(AuditingEntityListener.class)

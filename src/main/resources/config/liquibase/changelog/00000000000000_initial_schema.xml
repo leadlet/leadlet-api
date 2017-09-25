@@ -50,10 +50,10 @@
                 <constraints nullable="true" />
             </column>
             <column name="app_account_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="team_leader" type="boolean" valueBoolean="false">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
         </createTable>
 
