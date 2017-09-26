@@ -13,5 +13,12 @@
                                  constraintName="fk_pipeline_stage_id"
                                  referencedColumnNames="id"
                                  referencedTableName="pipeline"/>
+
+        <addForeignKeyConstraint baseColumnNames="app_account_id"
+                                 baseTableName="stage"
+                                 constraintName="fk_stage_app_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="app_account"/>
+
     </changeSet>
 </databaseChangeLog>

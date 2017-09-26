@@ -23,9 +23,6 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     @Autowired
-    AppAccountRepository appAccountRepository;
-
-    @Autowired
     TeamRepository teamRepository;
 
     public UserDTO userToUserDTO(User user) {
@@ -52,7 +49,6 @@ public class UserMapper {
             user.setImageUrl(userDTO.getImageUrl());
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
-            user.setAppAccount(appAccountRepository.findOne(userDTO.getAppAccountId()));
             user.setTeam(teamRepository.findOne(userDTO.getTeamId()));
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             if(authorities != null) {

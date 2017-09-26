@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DealService;
 import com.leadlet.domain.Deal;
 import com.leadlet.repository.DealRepository;
@@ -41,6 +42,7 @@ public class DealServiceImpl implements DealService{
     public DealDTO save(DealDTO dealDTO) {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
+        deal.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
         deal = dealRepository.save(deal);
         return dealMapper.toDto(deal);
     }
@@ -55,7 +57,7 @@ public class DealServiceImpl implements DealService{
     @Transactional(readOnly = true)
     public Page<DealDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Deals");
-        return dealRepository.findAll(pageable)
+        return dealRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
             .map(dealMapper::toDto);
     }
 
@@ -69,7 +71,7 @@ public class DealServiceImpl implements DealService{
     @Transactional(readOnly = true)
     public DealDTO findOne(Long id) {
         log.debug("Request to get Deal : {}", id);
-        Deal deal = dealRepository.findOne(id);
+        Deal deal = dealRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
         return dealMapper.toDto(deal);
     }
 
@@ -81,6 +83,6 @@ public class DealServiceImpl implements DealService{
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Deal : {}", id);
-        dealRepository.delete(id);
+        dealRepository.deleteByIdAndAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
     }
 }

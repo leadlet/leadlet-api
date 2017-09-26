@@ -13,17 +13,13 @@ public interface DocumentMapper extends EntityMapper <DocumentDTO, Document> {
 
     @Mapping(source = "contact.id", target = "contactId")
 
-    @Mapping(source = "appAccount.id", target = "appAccountId")
-
     @Mapping(source = "activity.id", target = "activityId")
-    DocumentDTO toDto(Document document); 
+    DocumentDTO toDto(Document document);
 
     @Mapping(source = "contactId", target = "contact")
 
-    @Mapping(source = "appAccountId", target = "appAccount")
-
     @Mapping(source = "activityId", target = "activity")
-    Document toEntity(DocumentDTO documentDTO); 
+    Document toEntity(DocumentDTO documentDTO);
     default Document fromId(Long id) {
         if (id == null) {
             return null;

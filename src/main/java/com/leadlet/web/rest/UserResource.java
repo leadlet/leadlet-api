@@ -101,14 +101,6 @@ public class UserResource {
     public ResponseEntity createUser(@Valid @RequestBody ManagedUserVM managedUserVM ) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
 
-        if( managedUserVM.getAppAccountId() == null ){
-            managedUserVM.setAppAccountId(SecurityUtils.getCurrentUserAppAccount().getId());
-        } else if ( !managedUserVM.getAppAccountId().equals(SecurityUtils.getCurrentUserAppAccount().getId())){
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "wrongaccount", "App Account is not valid"))
-                .body(null);
-        }
-
         if (managedUserVM.getId() != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
@@ -144,14 +136,6 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody ManagedUserVM managedUserVM) {
         log.debug("REST request to update User : {}", managedUserVM);
-
-        if( managedUserVM.getAppAccountId() == null ){
-            managedUserVM.setAppAccountId(SecurityUtils.getCurrentUserAppAccount().getId());
-        } else if ( !managedUserVM.getAppAccountId().equals(SecurityUtils.getCurrentUserAppAccount().getId())){
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "wrongaccount", "App Account is not valid"))
-                .body(null);
-        }
 
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserVM.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {

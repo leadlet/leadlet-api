@@ -227,7 +227,7 @@ public class PipelineResourceIntTest {
 
         // Get the pipeline
         restPipelineMockMvc.perform(get("/api/pipelines/{id}", pipelineY1.getId()))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isNotFound());
     }
 
     @Test

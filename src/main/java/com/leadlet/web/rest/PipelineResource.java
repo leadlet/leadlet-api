@@ -57,7 +57,7 @@ public class PipelineResource {
         if (pipelineDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new pipeline cannot already have an ID")).body(null);
         }
-        PipelineDTO result = pipelineService.save(pipelineDTO, currentAppAccount);
+        PipelineDTO result = pipelineService.save(pipelineDTO);
         return ResponseEntity.created(new URI("/api/pipelines/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -77,17 +77,10 @@ public class PipelineResource {
     public ResponseEntity<PipelineDTO> updatePipeline(@RequestBody PipelineDTO pipelineDTO) throws URISyntaxException {
         log.debug("REST request to update Pipeline : {}", pipelineDTO);
 
-        // TODO
-        AppAccount currentAppAccount = SecurityUtils.getCurrentUserAppAccount();
-
-        if (pipelineDTO.getAppAccountId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new pipeline cannot already have an ID")).body(null);
-        }
-
         if (pipelineDTO.getId() == null) {
             return createPipeline(pipelineDTO);
         }
-        PipelineDTO result = pipelineService.save(pipelineDTO, currentAppAccount);
+        PipelineDTO result = pipelineService.save(pipelineDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pipelineDTO.getId().toString()))
             .body(result);
@@ -104,7 +97,7 @@ public class PipelineResource {
     public ResponseEntity<List<PipelineDTO>> getAllPipelines(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Pipelines");
         AppAccount currentAppAccount = SecurityUtils.getCurrentUserAppAccount();
-        Page<PipelineDTO> page = pipelineService.findAll(pageable, currentAppAccount);
+        Page<PipelineDTO> page = pipelineService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pipelines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

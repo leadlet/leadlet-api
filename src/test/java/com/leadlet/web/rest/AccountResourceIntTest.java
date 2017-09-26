@@ -437,7 +437,6 @@ public class AccountResourceIntTest {
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
             new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId()
         );
 
@@ -485,7 +484,6 @@ public class AccountResourceIntTest {
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
             new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId()
         );
 
@@ -533,7 +531,6 @@ public class AccountResourceIntTest {
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
             new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId()
         );
 
@@ -573,7 +570,6 @@ public class AccountResourceIntTest {
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
             new HashSet<String>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId()
         );
 

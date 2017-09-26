@@ -70,7 +70,6 @@ public class UserServiceIntTest {
     @Test
     public void assertThatOnlyActivatedUserCanRequestPasswordReset() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setAppAccountId(xCompanyAppAccount.getId());
         userDTO.setLogin("johndoe");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
@@ -85,7 +84,6 @@ public class UserServiceIntTest {
     @Test
     public void assertThatResetKeyMustNotBeOlderThan24Hours() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setAppAccountId(xCompanyAppAccount.getId());
         userDTO.setLogin("johndoe");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
@@ -111,7 +109,6 @@ public class UserServiceIntTest {
     @Test
     public void assertThatResetKeyMustBeValid() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setAppAccountId(xCompanyAppAccount.getId());
         userDTO.setLogin("johndoe");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
@@ -132,7 +129,6 @@ public class UserServiceIntTest {
     @Test
     public void assertThatUserCanResetPassword() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setAppAccountId(xCompanyAppAccount.getId());
         userDTO.setLogin("johndoe");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
@@ -175,7 +171,6 @@ public class UserServiceIntTest {
     @Test
     public void testRemoveNotActivatedUsers() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setAppAccountId(xCompanyAppAccount.getId());
         userDTO.setLogin("johndoe");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");

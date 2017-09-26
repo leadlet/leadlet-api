@@ -25,8 +25,6 @@ public class DealDTO implements Serializable {
 
     private Long organizationId;
 
-    private Long appAccountId;
-
     private Long userId;
 
     public Long getId() {
@@ -83,14 +81,6 @@ public class DealDTO implements Serializable {
 
     public void setOrganizationId(Long contactId) {
         this.organizationId = contactId;
-    }
-
-    public Long getAppAccountId() {
-        return appAccountId;
-    }
-
-    public void setAppAccountId(Long appAccountId) {
-        this.appAccountId = appAccountId;
     }
 
     public Long getUserId() {

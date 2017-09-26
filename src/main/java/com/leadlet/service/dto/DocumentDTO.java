@@ -19,8 +19,6 @@ public class DocumentDTO implements Serializable {
 
     private Long contactId;
 
-    private Long appAccountId;
-
     private Long activityId;
 
     public Long getId() {
@@ -53,14 +51,6 @@ public class DocumentDTO implements Serializable {
 
     public void setContactId(Long contactId) {
         this.contactId = contactId;
-    }
-
-    public Long getAppAccountId() {
-        return appAccountId;
-    }
-
-    public void setAppAccountId(Long appAccountId) {
-        this.appAccountId = appAccountId;
     }
 
     public Long getActivityId() {

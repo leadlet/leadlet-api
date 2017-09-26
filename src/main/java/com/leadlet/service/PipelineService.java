@@ -16,7 +16,7 @@ public interface PipelineService {
      * @param pipelineDTO the entity to save
      * @return the persisted entity
      */
-    PipelineDTO save(PipelineDTO pipelineDTO, AppAccount appAccount);
+    PipelineDTO save(PipelineDTO pipelineDTO);
 
     /**
      *  Get all the pipelines.
@@ -24,7 +24,7 @@ public interface PipelineService {
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<PipelineDTO> findAll(Pageable pageable, AppAccount appAccount);
+    Page<PipelineDTO> findAll(Pageable pageable);
 
     /**
      *  Get the "id" pipeline.

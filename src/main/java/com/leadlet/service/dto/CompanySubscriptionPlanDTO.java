@@ -18,8 +18,6 @@ public class CompanySubscriptionPlanDTO implements Serializable {
 
     private ZonedDateTime endDate;
 
-    private Long appAccountId;
-
     private Long subscriptionPlanId;
 
     public Long getId() {
@@ -44,14 +42,6 @@ public class CompanySubscriptionPlanDTO implements Serializable {
 
     public void setEndDate(ZonedDateTime endDate) {
         this.endDate = endDate;
-    }
-
-    public Long getAppAccountId() {
-        return appAccountId;
-    }
-
-    public void setAppAccountId(Long appAccountId) {
-        this.appAccountId = appAccountId;
     }
 
     public Long getSubscriptionPlanId() {

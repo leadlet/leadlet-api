@@ -54,9 +54,6 @@ public class UserDTO {
     private Set<String> authorities;
 
     @NotNull
-    private Long appAccountId;
-
-    @NotNull
     private Long teamId;
 
     public UserDTO() {
@@ -68,13 +65,13 @@ public class UserDTO {
             user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getAppAccount().getId(), user.getTeam().getId());
+                .collect(Collectors.toSet()), user.getTeam().getId());
     }
 
     public UserDTO(Long id, String login, String firstName, String lastName,
         String email, boolean activated, String imageUrl, String langKey,
         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-        Set<String> authorities, Long appAccountId, Long teamId) {
+        Set<String> authorities, Long teamId) {
 
         this.id = id;
         this.login = login;
@@ -90,7 +87,6 @@ public class UserDTO {
         this.lastModifiedDate = lastModifiedDate;
         this.authorities = authorities;
         this.teamId = teamId;
-        this.appAccountId = appAccountId;
     }
 
     public Long getId() {
@@ -157,14 +153,6 @@ public class UserDTO {
         return authorities;
     }
 
-    public Long getAppAccountId() {
-        return appAccountId;
-    }
-
-    public void setAppAccountId(Long appAccountId) {
-        this.appAccountId = appAccountId;
-    }
-
     public Long getTeamId() {
         return teamId;
     }
@@ -217,7 +205,6 @@ public class UserDTO {
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
-            ", appAccountId=" + appAccountId +
             ", teamId=" + teamId +
             '}';
     }

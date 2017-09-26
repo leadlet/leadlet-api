@@ -1,6 +1,7 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.AppAccount;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.PipelineService;
 import com.leadlet.domain.Pipeline;
 import com.leadlet.repository.PipelineRepository;
@@ -39,10 +40,10 @@ public class PipelineServiceImpl implements PipelineService{
      * @return the persisted entity
      */
     @Override
-    public PipelineDTO save(PipelineDTO pipelineDTO, AppAccount appAccount) {
+    public PipelineDTO save(PipelineDTO pipelineDTO) {
         log.debug("Request to save Pipeline : {}", pipelineDTO);
         Pipeline pipeline = pipelineMapper.toEntity(pipelineDTO);
-        pipeline.setAppAccount(appAccount);
+        pipeline.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
         pipeline = pipelineRepository.save(pipeline);
         return pipelineMapper.toDto(pipeline);
     }
@@ -55,9 +56,9 @@ public class PipelineServiceImpl implements PipelineService{
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<PipelineDTO> findAll(Pageable pageable, AppAccount appAccount) {
+    public Page<PipelineDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Pipelines");
-        return pipelineRepository.findByAppAccount(appAccount, pageable)
+        return pipelineRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
             .map(pipelineMapper::toDto);
     }
 
@@ -71,7 +72,7 @@ public class PipelineServiceImpl implements PipelineService{
     @Transactional(readOnly = true)
     public PipelineDTO findOne(Long id) {
         log.debug("Request to get Pipeline : {}", id);
-        Pipeline pipeline = pipelineRepository.findOne(id);
+        Pipeline pipeline = pipelineRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
         return pipelineMapper.toDto(pipeline);
     }
 
@@ -83,6 +84,6 @@ public class PipelineServiceImpl implements PipelineService{
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Pipeline : {}", id);
-        pipelineRepository.delete(id);
+        pipelineRepository.deleteByIdAndAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
     }
 }

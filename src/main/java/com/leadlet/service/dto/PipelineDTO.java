@@ -17,8 +17,6 @@ public class PipelineDTO implements Serializable {
 
     private Integer order;
 
-    private Long appAccountId;
-
     public Long getId() {
         return id;
     }
@@ -41,14 +39,6 @@ public class PipelineDTO implements Serializable {
 
     public void setOrder(Integer order) {
         this.order = order;
-    }
-
-    public Long getAppAccountId() {
-        return appAccountId;
-    }
-
-    public void setAppAccountId(Long appAccountId) {
-        this.appAccountId = appAccountId;
     }
 
     @Override

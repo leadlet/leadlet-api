@@ -219,7 +219,6 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(post("/api/users")
@@ -247,40 +246,6 @@ public class UserResourceIntTest {
     @Test
     @Transactional
     @WithUserDetails("xcompanyadminuser")
-    public void createUserForAnotherAccount() throws Exception {
-        int databaseSizeBeforeCreate = userRepository.findAll().size();
-
-        // Create the User
-        Set<String> authorities = new HashSet<>();
-        authorities.add("ROLE_USER");
-        ManagedUserVM managedUserVM = new ManagedUserVM(
-            null,
-            DEFAULT_LOGIN,
-            DEFAULT_PASSWORD,
-            DEFAULT_FIRSTNAME,
-            DEFAULT_LASTNAME,
-            DEFAULT_EMAIL,
-            true,
-            DEFAULT_IMAGEURL,
-            DEFAULT_LANGKEY,
-            null,
-            null,
-            null,
-            null,
-            authorities,
-            yCompanyAppAccount.getId(),
-            yCompanyAppAccount.getRootTeam().getId());
-
-        restUserMockMvc.perform(post("/api/users")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
-            .andExpect(status().isBadRequest());
-
-    }
-
-    @Test
-    @Transactional
-    @WithUserDetails("xcompanyadminuser")
     public void createUserWithoutTeam() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -302,7 +267,6 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getId(),
             null);
 
         restUserMockMvc.perform(post("/api/users")
@@ -335,7 +299,6 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -374,7 +337,6 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
 
         // Create the User
@@ -413,7 +375,6 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
 
         // Create the User
@@ -514,7 +475,6 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
@@ -561,7 +521,7 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            yCompanyAppAccount.getId(),null);
+            null);
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -597,7 +557,6 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
@@ -657,7 +616,6 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
@@ -706,7 +664,6 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
 
         restUserMockMvc.perform(put("/api/users")
@@ -784,8 +741,8 @@ public class UserResourceIntTest {
             DEFAULT_LOGIN,
             null,
             Stream.of(AuthoritiesConstants.USER).collect(Collectors.toSet()),
-            xCompanyAppAccount.getId(),
             xCompanyAppAccount.getRootTeam().getId());
+
         User user = userMapper.userDTOToUser(userDTO);
         assertThat(user.getId()).isEqualTo(DEFAULT_ID);
         assertThat(user.getLogin()).isEqualTo(DEFAULT_LOGIN);
