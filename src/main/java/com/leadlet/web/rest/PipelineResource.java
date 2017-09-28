@@ -126,7 +126,14 @@ public class PipelineResource {
     @Timed
     public ResponseEntity<Void> deletePipeline(@PathVariable Long id) {
         log.debug("REST request to delete Pipeline : {}", id);
-        pipelineService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+
+        PipelineDTO pipelineDTO = pipelineService.findOne(id);
+        if (pipelineDTO != null){
+            pipelineService.delete(id);
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        }else {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        }
+
     }
 }

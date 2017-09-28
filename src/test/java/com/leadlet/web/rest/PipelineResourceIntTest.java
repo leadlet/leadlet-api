@@ -250,7 +250,6 @@ public class PipelineResourceIntTest {
         pipelineX.setAppAccount(xCompanyAppAccount);
         pipelineX = pipelineRepository.saveAndFlush(pipelineX);
 
-        pipelineX = pipelineRepository.saveAndFlush(pipelineX);
         int databaseSizeBeforeUpdate = pipelineRepository.findAll().size();
 
         // Update the pipeline
@@ -284,7 +283,6 @@ public class PipelineResourceIntTest {
         pipelineY.setAppAccount(yCompanyAppAccount);
         pipelineY = pipelineRepository.saveAndFlush(pipelineY);
 
-        pipelineY = pipelineRepository.saveAndFlush(pipelineY);
         int databaseSizeBeforeUpdate = pipelineRepository.findAll().size();
 
         // Update the pipeline

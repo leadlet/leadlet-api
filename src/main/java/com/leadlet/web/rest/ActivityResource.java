@@ -120,7 +120,15 @@ public class ActivityResource {
     @Timed
     public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
         log.debug("REST request to delete Activity : {}", id);
-        activityService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+
+        ActivityDTO activityDTO = activityService.findOne(id);
+        if (activityDTO != null){
+            activityService.delete(id);
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        }
+        else {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        }
+
     }
 }
