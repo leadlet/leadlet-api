@@ -1,9 +1,0 @@
-{
-    "leadletApiApp": {
-        "ObjectiveSourceType" : {
-            "null": "",
-            "USER": "USER",
-            "TEAM": "TEAM"
-        }
-    }
-}
