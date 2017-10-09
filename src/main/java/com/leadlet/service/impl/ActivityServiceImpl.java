@@ -21,7 +21,7 @@ import javax.persistence.EntityNotFoundException;
  */
 @Service
 @Transactional
-public class ActivityServiceImpl implements ActivityService{
+public class ActivityServiceImpl implements ActivityService {
 
     private final Logger log = LoggerFactory.getLogger(ActivityServiceImpl.class);
 
@@ -46,7 +46,7 @@ public class ActivityServiceImpl implements ActivityService{
         log.debug("Request to save Activity : {}", activityDTO);
         Activity activity = activityMapper.toEntity(activityDTO);
 
-        if(activity.getAppAccount().equals(SecurityUtils.getCurrentUserAppAccount())){
+        if (activity.getAppAccount().equals(SecurityUtils.getCurrentUserAppAccount())) {
             activity.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
             activity = activityRepository.save(activity);
             return activityMapper.toDto(activity);
@@ -63,13 +63,11 @@ public class ActivityServiceImpl implements ActivityService{
      */
     @Override
     public ActivityDTO update(ActivityDTO activityDTO) {
-
         log.debug("Request to update Activity : {}", activityDTO);
+
         Activity activity = activityMapper.toEntity(activityDTO);
-
-        Activity fromDb = activityRepository.findOneByIdAndAppAccount(activity.getId(),SecurityUtils.getCurrentUserAppAccount());
-
-        if( fromDb != null ){
+        Activity fromDb = activityRepository.findOneByIdAndAppAccount(activity.getId(), SecurityUtils.getCurrentUserAppAccount());
+        if (fromDb != null) {
             activity = activityRepository.save(activity);
             return activityMapper.toDto(activity);
         } else {
@@ -78,10 +76,10 @@ public class ActivityServiceImpl implements ActivityService{
     }
 
     /**
-     *  Get all the activities.
+     * Get all the activities.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
@@ -92,10 +90,10 @@ public class ActivityServiceImpl implements ActivityService{
     }
 
     /**
-     *  Get one activity by id.
+     * Get one activity by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Override
     @Transactional(readOnly = true)
@@ -106,13 +104,19 @@ public class ActivityServiceImpl implements ActivityService{
     }
 
     /**
-     *  Delete the  activity by id.
+     * Delete the  activity by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Activity : {}", id);
-        activityRepository.deleteByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+
+        Activity objectFormDb = activityRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        if (objectFormDb != null){
+            activityRepository.delete(id);
+        }else {
+            throw new EntityNotFoundException();
+        }
     }
 }
