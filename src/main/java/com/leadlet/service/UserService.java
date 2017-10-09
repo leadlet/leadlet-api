@@ -101,6 +101,12 @@ public class UserService {
         newAppAccount.setName(companyName);
         newAppAccount = appAccountRepository.save(newAppAccount);
 
+        // TODO implement subscription plan logic
+        Team newTeam = new Team();
+        newTeam.setAppAccount(newAppAccount);
+        newTeam.setName(companyName);
+        newTeam = teamRepository.save(newTeam);
+
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<Authority> authorities = new HashSet<>();
@@ -119,20 +125,19 @@ public class UserService {
         authorities.add(authority);
         newUser.setAuthorities(authorities);
         newUser.setAppAccount(newAppAccount);
+        newUser.setTeam(newTeam);
         newUser = userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
-
-        // TODO implement subscription plan logic
-        Team newTeam = new Team();
-        newTeam.setAppAccount(newAppAccount);
-        newTeam.setName(companyName);
-        newTeam.setLeader(newUser);
-        newTeam = teamRepository.save(newTeam);
 
         newUser.setTeam(newTeam);
         newUser.setTeamLeader(true);
 
         newUser = userRepository.save(newUser);
+
+        // TODO implement subscription plan logic
+        newTeam.setLeader(newUser);
+        newTeam = teamRepository.save(newTeam);
+
         return newUser;
     }
 
