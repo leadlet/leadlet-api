@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 
 /**
  * Service Implementation for managing Activity.
@@ -50,6 +52,29 @@ public class ActivityServiceImpl implements ActivityService{
             return activityMapper.toDto(activity);
         }
         return activityDTO;
+    }
+
+
+    /**
+     * Update a activity.
+     *
+     * @param activityDTO the entity to save
+     * @return the persisted entity
+     */
+    @Override
+    public ActivityDTO update(ActivityDTO activityDTO) {
+
+        log.debug("Request to update Activity : {}", activityDTO);
+        Activity activity = activityMapper.toEntity(activityDTO);
+
+        Activity fromDb = activityRepository.findOneByIdAndAppAccount(activity.getId(),SecurityUtils.getCurrentUserAppAccount());
+
+        if( fromDb != null ){
+            activity = activityRepository.save(activity);
+            return activityMapper.toDto(activity);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     /**

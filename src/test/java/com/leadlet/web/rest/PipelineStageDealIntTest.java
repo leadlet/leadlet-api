@@ -112,6 +112,9 @@ public class PipelineStageDealIntTest {
     private AppAccount xCompanyAppAccount;
     private AppAccount yCompanyAppAccount;
 
+    List<Pipeline> pipelineList;
+    Pipeline testPipeline;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -169,9 +172,9 @@ public class PipelineStageDealIntTest {
             .andExpect(status().isCreated());
 
         // Validate the Pipeline in the database
-        List<Pipeline> pipelineList = pipelineRepository.findAll();
+        pipelineList = pipelineRepository.findAll();
         assertThat(pipelineList).hasSize(databaseSizeBeforeCreateForPipeline + 1);
-        Pipeline testPipeline = pipelineList.get(pipelineList.size() - 1);
+        testPipeline = pipelineList.get(pipelineList.size() - 1);
         assertThat(testPipeline.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testPipeline.getOrder()).isEqualTo(DEFAULT_ORDER);
 
@@ -240,5 +243,59 @@ public class PipelineStageDealIntTest {
         assertThat(testDeal.getName()).isEqualTo("dealX1");
         assertThat(testDeal.getOrder()).isEqualTo(1);
         assertThat(testDeal.getPotentialValue()).isEqualTo(10.0);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser")
+    public void createPipelineAddStagesAndDealsForOtherAccount() throws Exception {
+
+        //Create 2 stages and add to the pipeline
+        Stage stageX1 = new Stage();
+        stageX1.setName("stageX1");
+        stageX1.setPipeline(testPipeline);
+        stageX1.setAppAccount(yCompanyAppAccount);
+        stageX1 = stageRepository.saveAndFlush(stageX1);
+
+        Deal dealX1 = new Deal();
+        dealX1.setAppAccount(yCompanyAppAccount);
+        dealX1.setName("dealX1");
+        dealX1.setOrder(1);
+        dealX1.setPotentialValue(10.0);
+        dealX1.setStage(stageX1);
+        dealX1 = dealRepository.saveAndFlush(dealX1);
+
+        restDealMockMvc.perform(get("/api/deals/{id}", dealX1.getId()))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser")
+    public void createPipelineAddStagesAndDealsForOtherAccount2() throws Exception {
+
+        //Create 2 stages and add to the pipeline
+        Stage stageX1 = new Stage();
+        stageX1.setName("stageX1");
+        stageX1.setPipeline(testPipeline);
+        stageX1.setAppAccount(yCompanyAppAccount);
+        stageX1 = stageRepository.saveAndFlush(stageX1);
+
+        Deal dealX1 = new Deal();
+        dealX1.setAppAccount(yCompanyAppAccount);
+        dealX1.setName("dealX1");
+        dealX1.setOrder(1);
+        dealX1.setPotentialValue(10.0);
+        dealX1.setStage(stageX1);
+        dealX1 = dealRepository.saveAndFlush(dealX1);
+
+        Deal updatedDeal = dealRepository.findOne(dealX1.getId());
+        updatedDeal.setStage(stageX1);
+        DealDTO dealDTO = dealMapper.toDto(updatedDeal);
+
+        restDealMockMvc.perform(put("/api/deals")
+        .contentType(TestUtil.APPLICATION_JSON_UTF8)
+        .content(TestUtil.convertObjectToJsonBytes(dealDTO)))
+        .andExpect(status().isNotFound());  //TODO: Spring JPA find and update.. DealResource'da update fonk. guncellenmeli
     }
 }
