@@ -62,7 +62,6 @@ public class UserServiceIntTest {
         maybeUser = userService.requestPasswordReset("admin@localhost");
         assertThat(maybeUser.isPresent()).isTrue();
 
-        assertThat(maybeUser.get().getEmail()).isEqualTo("admin@localhost");
         assertThat(maybeUser.get().getResetDate()).isNotNull();
         assertThat(maybeUser.get().getResetKey()).isNotNull();
     }
@@ -70,10 +69,9 @@ public class UserServiceIntTest {
     @Test
     public void assertThatOnlyActivatedUserCanRequestPasswordReset() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setLogin("johndoe");
+        userDTO.setLogin("john.doe@localhost");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
-        userDTO.setEmail("john.doe@localhost");
 
         User user = userService.createUser(userDTO);
         Optional<User> maybeUser = userService.requestPasswordReset("john.doe@localhost");
@@ -84,10 +82,9 @@ public class UserServiceIntTest {
     @Test
     public void assertThatResetKeyMustNotBeOlderThan24Hours() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setLogin("johndoe");
+        userDTO.setLogin("john.doe@localhost");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
-        userDTO.setEmail("john.doe@localhost");
 
         User user = userService.createUser(userDTO);
 
@@ -109,10 +106,9 @@ public class UserServiceIntTest {
     @Test
     public void assertThatResetKeyMustBeValid() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setLogin("johndoe");
+        userDTO.setLogin("john.doe@localhost");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
-        userDTO.setEmail("john.doe@localhost");
 
         User user = userService.createUser(userDTO);
 
@@ -129,10 +125,9 @@ public class UserServiceIntTest {
     @Test
     public void assertThatUserCanResetPassword() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setLogin("johndoe");
+        userDTO.setLogin("john.doe@localhost");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
-        userDTO.setEmail("john.doe@localhost");
 
         User user = userService.createUser(userDTO);
         String oldPassword = user.getPassword();
@@ -171,10 +166,9 @@ public class UserServiceIntTest {
     @Test
     public void testRemoveNotActivatedUsers() {
         UserDTO userDTO = new UserDTO();
-        userDTO.setLogin("johndoe");
+        userDTO.setLogin("john.doe@localhost");
         userDTO.setFirstName("John");
         userDTO.setLastName("Doe");
-        userDTO.setEmail("john.doe@localhost");
 
         User user = userService.createUser(userDTO);
         user.setActivated(false);
