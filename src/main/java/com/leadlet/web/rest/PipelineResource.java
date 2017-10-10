@@ -77,10 +77,7 @@ public class PipelineResource {
     public ResponseEntity<PipelineDTO> updatePipeline(@RequestBody PipelineDTO pipelineDTO) throws URISyntaxException {
         log.debug("REST request to update Pipeline : {}", pipelineDTO);
 
-        if (pipelineDTO.getId() == null) {
-            return createPipeline(pipelineDTO);
-        }
-        PipelineDTO result = pipelineService.save(pipelineDTO);
+        PipelineDTO result = pipelineService.update(pipelineDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pipelineDTO.getId().toString()))
             .body(result);
@@ -127,13 +124,7 @@ public class PipelineResource {
     public ResponseEntity<Void> deletePipeline(@PathVariable Long id) {
         log.debug("REST request to delete Pipeline : {}", id);
 
-        PipelineDTO pipelineDTO = pipelineService.findOne(id);
-        if (pipelineDTO != null){
-            pipelineService.delete(id);
-            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-        }else {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-        }
-
+        pipelineService.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

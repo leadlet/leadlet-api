@@ -13,13 +13,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 
 /**
  * Service Implementation for managing Deal.
  */
 @Service
 @Transactional
-public class DealServiceImpl implements DealService{
+public class DealServiceImpl implements DealService {
 
     private final Logger log = LoggerFactory.getLogger(DealServiceImpl.class);
 
@@ -48,10 +50,30 @@ public class DealServiceImpl implements DealService{
     }
 
     /**
-     *  Get all the deals.
+     * Update a deal.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param dealDTO the entity to update
+     * @return the persisted entity
+     */
+    @Override
+    public DealDTO update(DealDTO dealDTO) {
+        log.debug("Request to save Deal : {}", dealDTO);
+        Deal deal = dealMapper.toEntity(dealDTO);
+        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount(deal.getId(), SecurityUtils.getCurrentUserAppAccount());
+        if (dealFromDb != null) {
+            deal.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            deal = dealRepository.save(deal);
+            return dealMapper.toDto(deal);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Get all the deals.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
@@ -62,10 +84,10 @@ public class DealServiceImpl implements DealService{
     }
 
     /**
-     *  Get one deal by id.
+     * Get one deal by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Override
     @Transactional(readOnly = true)
@@ -76,13 +98,18 @@ public class DealServiceImpl implements DealService{
     }
 
     /**
-     *  Delete the  deal by id.
+     * Delete the  deal by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Deal : {}", id);
-        dealRepository.deleteByIdAndAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        if (dealFromDb != null) {
+            dealRepository.delete(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 }

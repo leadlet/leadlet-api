@@ -14,13 +14,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 
 /**
  * Service Implementation for managing Pipeline.
  */
 @Service
 @Transactional
-public class PipelineServiceImpl implements PipelineService{
+public class PipelineServiceImpl implements PipelineService {
 
     private final Logger log = LoggerFactory.getLogger(PipelineServiceImpl.class);
 
@@ -49,10 +51,30 @@ public class PipelineServiceImpl implements PipelineService{
     }
 
     /**
-     *  Get all the pipelines.
+     * Update a pipeline.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pipelineDTO the entity to update
+     * @return the persisted entity
+     */
+    @Override
+    public PipelineDTO update(PipelineDTO pipelineDTO) {
+        log.debug("Request to update Pipeline : {}", pipelineDTO);
+
+        Pipeline pipeline = pipelineMapper.toEntity(pipelineDTO);
+        Pipeline pipelineFromDb = pipelineRepository.findOneByIdAndAppAccount(pipeline.getId(), SecurityUtils.getCurrentUserAppAccount());
+        if (pipelineFromDb != null) {
+            pipeline = pipelineRepository.save(pipeline);
+            return pipelineMapper.toDto(pipeline);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Get all the pipelines.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
@@ -63,10 +85,10 @@ public class PipelineServiceImpl implements PipelineService{
     }
 
     /**
-     *  Get one pipeline by id.
+     * Get one pipeline by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Override
     @Transactional(readOnly = true)
@@ -77,13 +99,19 @@ public class PipelineServiceImpl implements PipelineService{
     }
 
     /**
-     *  Delete the  pipeline by id.
+     * Delete the  pipeline by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Pipeline : {}", id);
-        pipelineRepository.deleteByIdAndAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+
+        Pipeline pipelineFormDb = pipelineRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        if (pipelineFormDb != null) {
+            pipelineRepository.delete(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 }

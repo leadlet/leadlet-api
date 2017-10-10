@@ -18,25 +18,33 @@ public interface DealService {
     DealDTO save(DealDTO dealDTO);
 
     /**
-     *  Get all the deals.
+     * Update a deal.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param dealDTO the entity to update
+     * @return the persisted entity
+     */
+    DealDTO update(DealDTO dealDTO);
+
+    /**
+     * Get all the deals.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     Page<DealDTO> findAll(Pageable pageable);
 
     /**
-     *  Get the "id" deal.
+     * Get the "id" deal.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     DealDTO findOne(Long id);
 
     /**
-     *  Delete the "id" deal.
+     * Delete the "id" deal.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     void delete(Long id);
 }

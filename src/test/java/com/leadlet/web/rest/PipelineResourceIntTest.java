@@ -133,7 +133,6 @@ public class PipelineResourceIntTest {
         Pipeline testPipeline = pipelineList.get(pipelineList.size() - 1);
         assertThat(testPipeline.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testPipeline.getOrder()).isEqualTo(DEFAULT_ORDER);
-
         assertThat(testPipeline.getAppAccount()).isEqualTo(xCompanyAppAccount);
     }
 
@@ -295,8 +294,7 @@ public class PipelineResourceIntTest {
         restPipelineMockMvc.perform(put("/api/pipelines")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(pipelineDTO)))
-            .andExpect(status().isBadRequest());
-
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -312,11 +310,11 @@ public class PipelineResourceIntTest {
         restPipelineMockMvc.perform(put("/api/pipelines")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(pipelineDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isNotFound());
 
         // Validate the Pipeline in the database
         List<Pipeline> pipelineList = pipelineRepository.findAll();
-        assertThat(pipelineList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(pipelineList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -358,7 +356,7 @@ public class PipelineResourceIntTest {
         // Get the pipeline
         restPipelineMockMvc.perform(delete("/api/pipelines/{id}", pipelineY.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isNotFound());
     }
 
     @Test

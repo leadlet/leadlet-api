@@ -113,9 +113,9 @@ public class ActivityServiceImpl implements ActivityService {
         log.debug("Request to delete Activity : {}", id);
 
         Activity objectFormDb = activityRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
-        if (objectFormDb != null){
+        if (objectFormDb != null) {
             activityRepository.delete(id);
-        }else {
+        } else {
             throw new EntityNotFoundException();
         }
     }
