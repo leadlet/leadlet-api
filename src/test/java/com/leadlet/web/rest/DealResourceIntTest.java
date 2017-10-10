@@ -299,7 +299,6 @@ public class DealResourceIntTest {
         dealY1 = dealRepository.saveAndFlush(dealY1);
 
         int databaseSizeBeforeUpdate = dealRepository.findAll().size();
-
         Deal updatedDeal = dealRepository.findOne(dealY1.getId());
         updatedDeal
             .name(UPDATED_NAME)
