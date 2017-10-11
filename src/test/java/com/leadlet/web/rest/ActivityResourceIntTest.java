@@ -307,7 +307,7 @@ public class ActivityResourceIntTest {
         Activity activityX1 = new Activity();
         activityX1.setName("activityX1");
         activityX1.setOrder(1);
-        activityX1.setAppAccount(yCompanyAppAccount);
+        activityX1.setAppAccount(xCompanyAppAccount);
         activityX1 = activityRepository.saveAndFlush(activityX1);
 
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
@@ -365,7 +365,7 @@ public class ActivityResourceIntTest {
         restActivityMockMvc.perform(put("/api/activities")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(activityDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isNotFound());
 
     }
 
