@@ -15,6 +15,7 @@ import com.leadlet.service.UserService;
 import com.leadlet.service.dto.AppAccountDTO;
 import com.leadlet.service.dto.TeamDTO;
 import com.leadlet.service.dto.UserDTO;
+import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.web.rest.vm.KeyAndPasswordVM;
 import com.leadlet.web.rest.vm.RegisterUserVm;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -82,6 +83,9 @@ public class AccountResourceIntTest {
     @Autowired
     private HttpMessageConverter[] httpMessageConverters;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Mock
     private UserService mockUserService;
 
@@ -100,10 +104,10 @@ public class AccountResourceIntTest {
         doNothing().when(mockMailService).sendActivationEmail(anyObject());
 
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService);
+            new AccountResource(userRepository, userService, mockMailService, userMapper);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService);
+            new AccountResource(userRepository, mockUserService, mockMailService, userMapper);
 
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
@@ -444,6 +448,7 @@ public class AccountResourceIntTest {
         anotherUser.setLogin("save-existing-email2@example.com");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
+        anotherUser.setTeam(xCompanyAppAccount.getRootTeam());
         anotherUser.setAppAccount(xCompanyAppAccount);
 
         userRepository.saveAndFlush(anotherUser);
