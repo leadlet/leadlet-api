@@ -60,7 +60,9 @@ public class DealServiceImpl implements DealService {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount(deal.getId(), SecurityUtils.getCurrentUserAppAccount());
+
         if (dealFromDb != null) {
+            // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
             deal = dealRepository.save(deal);
             return dealMapper.toDto(deal);

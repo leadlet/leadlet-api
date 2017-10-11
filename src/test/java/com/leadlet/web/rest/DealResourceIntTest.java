@@ -217,7 +217,7 @@ public class DealResourceIntTest {
         dealX1 = dealRepository.saveAndFlush(dealX1);
 
         // Get the deal
-        restDealMockMvc.perform(get("/api/deals/{id}", deal.getId()))
+        restDealMockMvc.perform(get("/api/deals/{id}", dealX1.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(dealX1.getId()))
