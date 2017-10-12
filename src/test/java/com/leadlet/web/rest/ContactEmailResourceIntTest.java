@@ -2,7 +2,9 @@ package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
 
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.ContactEmail;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.ContactEmailRepository;
 import com.leadlet.service.ContactEmailService;
 import com.leadlet.service.dto.ContactEmailDTO;
@@ -18,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -51,6 +54,9 @@ public class ContactEmailResourceIntTest {
     private ContactEmailRepository contactEmailRepository;
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
     private ContactEmailMapper contactEmailMapper;
 
     @Autowired
@@ -71,6 +77,8 @@ public class ContactEmailResourceIntTest {
     private MockMvc restContactEmailMockMvc;
 
     private ContactEmail contactEmail;
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
 
     @Before
     public void setup() {
@@ -80,6 +88,12 @@ public class ContactEmailResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
+    public void setAppAccountsUsers() {
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
     }
 
     /**
@@ -102,6 +116,7 @@ public class ContactEmailResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void createContactEmail() throws Exception {
         int databaseSizeBeforeCreate = contactEmailRepository.findAll().size();
 
@@ -118,10 +133,12 @@ public class ContactEmailResourceIntTest {
         ContactEmail testContactEmail = contactEmailList.get(contactEmailList.size() - 1);
         assertThat(testContactEmail.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testContactEmail.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testContactEmail.getAppAccount()).isEqualTo(xCompanyAppAccount);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void createContactEmailWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = contactEmailRepository.findAll().size();
 
@@ -142,27 +159,52 @@ public class ContactEmailResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void getAllContactEmails() throws Exception {
-        // Initialize the database
-        contactEmailRepository.saveAndFlush(contactEmail);
+
+        ContactEmail contactEmailX1 = new ContactEmail();
+        contactEmailX1.setEmail("contactEmailX1");
+        contactEmailX1.setType(DEFAULT_TYPE);
+        contactEmailX1.setAppAccount(xCompanyAppAccount);
+        contactEmailX1 = contactEmailRepository.saveAndFlush(contactEmailX1);
+
+        ContactEmail contactEmailX2 = new ContactEmail();
+        contactEmailX2.setEmail("contactEmailX2");
+        contactEmailX2.setType(DEFAULT_TYPE);
+        contactEmailX2.setAppAccount(xCompanyAppAccount);
+        contactEmailX2 = contactEmailRepository.saveAndFlush(contactEmailX2);
+
+        ContactEmail contactEmailY1 = new ContactEmail();
+        contactEmailY1.setEmail("contactEmailY1");
+        contactEmailY1.setType(DEFAULT_TYPE);
+        contactEmailY1.setAppAccount(yCompanyAppAccount);
+        contactEmailY1 = contactEmailRepository.saveAndFlush(contactEmailY1);
 
         // Get all the contactEmailList
         restContactEmailMockMvc.perform(get("/api/contact-emails?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(contactEmail.getId().intValue())))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+            .andExpect(jsonPath("$.[0].id").value(contactEmailX2.getId()))
+            .andExpect(jsonPath("$.[0].email").value(contactEmailX2.getEmail()))
+            .andExpect(jsonPath("$.[0].type").value(contactEmailX2.getType()))
+            .andExpect(jsonPath("$.[1].id").value(contactEmailX1.getId()))
+            .andExpect(jsonPath("$.[1].email").value(contactEmailX1.getEmail()))
+            .andExpect(jsonPath("$.[1].type").value(contactEmailX1.getType()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void getContactEmail() throws Exception {
-        // Initialize the database
-        contactEmailRepository.saveAndFlush(contactEmail);
+
+        ContactEmail contactEmailX1 = new ContactEmail();
+        contactEmailX1.setEmail("contactEmailX1");
+        contactEmailX1.setType(DEFAULT_TYPE);
+        contactEmailX1.setAppAccount(xCompanyAppAccount);
+        contactEmailX1 = contactEmailRepository.saveAndFlush(contactEmailX1);
 
         // Get the contactEmail
-        restContactEmailMockMvc.perform(get("/api/contact-emails/{id}", contactEmail.getId()))
+        restContactEmailMockMvc.perform(get("/api/contact-emails/{id}", contactEmailX1.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(contactEmail.getId().intValue()))
