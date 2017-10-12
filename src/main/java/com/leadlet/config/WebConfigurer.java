@@ -76,7 +76,10 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
         setLocationForStaticAssets(container);
 
-        container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/"));
+        if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+            container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/"));
+        }
+
         /*
          * Enable HTTP/2 for Undertow - https://twitter.com/ankinson/status/829256167700492288
          * HTTP/2 requires HTTPS, so HTTP requests will fallback to HTTP/1.1.
