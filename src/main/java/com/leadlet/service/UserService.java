@@ -1,32 +1,33 @@
 package com.leadlet.service;
 
-import com.leadlet.domain.*;
-import com.leadlet.domain.enumeration.PlanName;
+import com.leadlet.config.Constants;
+import com.leadlet.domain.AppAccount;
+import com.leadlet.domain.Authority;
+import com.leadlet.domain.Team;
+import com.leadlet.domain.User;
 import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
-import com.leadlet.config.Constants;
 import com.leadlet.repository.TeamRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
-import com.leadlet.service.dto.AppAccountDTO;
-import com.leadlet.service.util.RandomUtil;
 import com.leadlet.service.dto.UserDTO;
-
+import com.leadlet.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.el.MethodNotFoundException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -84,7 +85,7 @@ public class UserService {
     }
 
     public Optional<User> requestPasswordReset(String mail) {
-        return userRepository.findOneByEmail(mail)
+        return userRepository.findOneByLogin(mail)
             .filter(User::getActivated)
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
@@ -93,13 +94,16 @@ public class UserService {
             });
     }
 
-    public User createAccountWithUser(String login, String password, String firstName, String lastName, String email,
-        String companyName, String langKey) {
+    public User createAccountWithUser(String login, String password ) {
 
         // Create AppAccount
         AppAccount newAppAccount = new AppAccount();
-        newAppAccount.setName(companyName);
         newAppAccount = appAccountRepository.save(newAppAccount);
+
+        // TODO implement subscription plan logic
+        Team newTeam = new Team();
+        newTeam.setAppAccount(newAppAccount);
+        newTeam = teamRepository.save(newTeam);
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
@@ -108,10 +112,6 @@ public class UserService {
         newUser.setLogin(login);
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setEmail(email);
-        newUser.setLangKey(langKey);
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
@@ -119,20 +119,19 @@ public class UserService {
         authorities.add(authority);
         newUser.setAuthorities(authorities);
         newUser.setAppAccount(newAppAccount);
+        newUser.setTeam(newTeam);
         newUser = userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
-
-        // TODO implement subscription plan logic
-        Team newTeam = new Team();
-        newTeam.setAppAccount(newAppAccount);
-        newTeam.setName(companyName);
-        newTeam.setLeader(newUser);
-        newTeam = teamRepository.save(newTeam);
 
         newUser.setTeam(newTeam);
         newUser.setTeamLeader(true);
 
         newUser = userRepository.save(newUser);
+
+        // TODO implement subscription plan logic
+        newTeam.setLeader(newUser);
+        newTeam = teamRepository.save(newTeam);
+
         return newUser;
     }
 
@@ -142,7 +141,6 @@ public class UserService {
         user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
         user.setImageUrl(userDTO.getImageUrl());
         if (userDTO.getLangKey() == null) {
             user.setLangKey("en"); // default language
@@ -173,15 +171,13 @@ public class UserService {
      *
      * @param firstName first name of user
      * @param lastName last name of user
-     * @param email email id of user
      * @param langKey language key
      * @param imageUrl image URL of user
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String langKey, String imageUrl) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
-            user.setEmail(email);
             user.setLangKey(langKey);
             user.setImageUrl(imageUrl);
             log.debug("Changed Information for User: {}", user);
@@ -201,7 +197,6 @@ public class UserService {
                 user.setLogin(userDTO.getLogin());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
-                user.setEmail(userDTO.getEmail());
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());

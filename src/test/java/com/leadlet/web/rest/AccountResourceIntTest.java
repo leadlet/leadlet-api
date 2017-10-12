@@ -15,6 +15,7 @@ import com.leadlet.service.UserService;
 import com.leadlet.service.dto.AppAccountDTO;
 import com.leadlet.service.dto.TeamDTO;
 import com.leadlet.service.dto.UserDTO;
+import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.web.rest.vm.KeyAndPasswordVM;
 import com.leadlet.web.rest.vm.RegisterUserVm;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -82,6 +83,9 @@ public class AccountResourceIntTest {
     @Autowired
     private HttpMessageConverter[] httpMessageConverters;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Mock
     private UserService mockUserService;
 
@@ -100,10 +104,10 @@ public class AccountResourceIntTest {
         doNothing().when(mockMailService).sendActivationEmail(anyObject());
 
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService);
+            new AccountResource(userRepository, userService, mockMailService, userMapper);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService);
+            new AccountResource(userRepository, mockUserService, mockMailService, userMapper);
 
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
@@ -147,10 +151,9 @@ public class AccountResourceIntTest {
         authorities.add(authority);
 
         User user = new User();
-        user.setLogin("test");
+        user.setLogin("john.doe@jhipster.com");
         user.setFirstName("john");
         user.setLastName("doe");
-        user.setEmail("john.doe@jhipster.com");
         user.setImageUrl("http://placehold.it/50x50");
         user.setLangKey("en");
         user.setAuthorities(authorities);
@@ -193,12 +196,8 @@ public class AccountResourceIntTest {
     @Transactional
     public void testRegisterValid() throws Exception {
         RegisterUserVm validUser = new RegisterUserVm(
-            "joe",                  // login
-            "joe@example.com",      // email
-            "password",             // password
-            "Joe",                  // firstName
-            "Shmoe",                // lastName
-            "John Doe Consultancy"            // companyName
+            "joe@example.com",      // login
+            "password"             // password
         );
 
         restMvc.perform(
@@ -207,15 +206,13 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
             .andExpect(status().isCreated());
 
-        Optional<User> user = userRepository.findOneByLogin("joe");
+        Optional<User> user = userRepository.findOneByLogin("joe@example.com");
         assertThat(user.isPresent()).isTrue();
 
         AppAccountDTO appAccountDTO = appAccountService.findOne(user.get().getAppAccount().getId());
-        assertThat(appAccountDTO.getName()).isEqualTo(validUser.getCompanyName());
         assertThat(user.get().getAppAccount().getId()).isEqualTo(appAccountDTO.getId());
 
         TeamDTO teamDTO = teamService.findOne(user.get().getTeam().getId());
-        assertThat(teamDTO.getName()).isEqualTo(validUser.getCompanyName());
         assertThat(user.get().getTeam().getId()).isEqualTo(teamDTO.getId());
         assertThat(teamDTO.getLeaderId()).isEqualTo(user.get().getId());
     }
@@ -226,11 +223,7 @@ public class AccountResourceIntTest {
 
         RegisterUserVm invalidUser = new RegisterUserVm(
             "funky-log!n",          // login <-- invalid
-            "funky@example.com",    // email
-            "password",             // password
-            "Funky",                // firstName
-            "One",                  // lastName
-            "John Doe Consultancy"            // companyName
+            "password"             // password
         );
 
         restUserMockMvc.perform(
@@ -239,7 +232,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
             .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByEmail("funky@example.com");
+        Optional<User> user = userRepository.findOneByLogin("funky-log!n");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -247,12 +240,8 @@ public class AccountResourceIntTest {
     @Transactional
     public void testRegisterInvalidEmail() throws Exception {
         RegisterUserVm invalidUser = new RegisterUserVm(
-            "bob",              // login
-            "invalid",          // email <-- invalid
-            "password",             // password
-            "Funky",                // firstName
-            "One",                  // lastName
-            "John Doe Consultancy"            // companyName
+            "invalid",              // login
+            "password"             // password
         );
 
         restUserMockMvc.perform(
@@ -270,12 +259,8 @@ public class AccountResourceIntTest {
     public void testRegisterInvalidPassword() throws Exception {
 
         RegisterUserVm invalidUser = new RegisterUserVm(
-            "bob",              // login
-            "bob@example.com",  // email
-            "123",              // password with only 3 digits
-            "Funky",                // firstName
-            "One",                  // lastName
-            "John Doe Consultancy"            // companyName
+            "bob@example.com",              // login
+            "123"              // password with only 3 digits
         );
 
         restUserMockMvc.perform(
@@ -284,7 +269,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
             .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional<User> user = userRepository.findOneByLogin("bob@example.com");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -293,12 +278,8 @@ public class AccountResourceIntTest {
     public void testRegisterNullPassword() throws Exception {
 
         RegisterUserVm invalidUser = new RegisterUserVm(
-            "bob",              // login
-            "bob@example.com",  // email
-            null,               // invalid null password
-            "Funky",                // firstName
-            "One",                  // lastName
-            "John Doe Consultancy"            // companyName
+            "bob@example.com",              // login
+            null               // invalid null password
         );
 
         restUserMockMvc.perform(
@@ -307,7 +288,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
             .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional<User> user = userRepository.findOneByLogin("bob@example.com");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -316,17 +297,12 @@ public class AccountResourceIntTest {
     public void testRegisterDuplicateLogin() throws Exception {
         // Good
         RegisterUserVm validUser = new RegisterUserVm(
-            "joe",                  // login
-            "joe@example.com",      // email
-            "password",             // password
-            "Joe",                  // firstName
-            "Shmoe",                // lastName
-            "John Doe Consultancy"            // companyName
+            "joe@example.com",      // login
+            "password"             // password
         );
 
         // Duplicate login, different email
-        RegisterUserVm duplicatedUser = new RegisterUserVm(validUser.getLogin(),"alicejr@example.com",validUser.getPassword(),
-            validUser.getFirstName(), validUser.getLastName(),validUser.getCompanyName());
+        RegisterUserVm duplicatedUser = new RegisterUserVm(validUser.getLogin(), validUser.getPassword());
 
         // Good user
         restMvc.perform(
@@ -342,57 +318,20 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(duplicatedUser)))
             .andExpect(status().is4xxClientError());
 
-        Optional<User> userDup = userRepository.findOneByEmail("alicejr@example.com");
-        assertThat(userDup.isPresent()).isFalse();
     }
 
-    @Test
-    @Transactional
-    public void testRegisterDuplicateEmail() throws Exception {
-
-        // Good
-        RegisterUserVm validUser = new RegisterUserVm(
-            "joe",                  // login
-            "joe@example.com",      // email
-            "password",             // password
-            "Joe",                  // firstName
-            "Shmoe",                // lastName
-            "John Doe Consultancy"            // companyName
-        );
-
-        // Duplicate email, different login
-        RegisterUserVm duplicatedUser = new RegisterUserVm("johnjr",validUser.getEmail(),validUser.getPassword(),
-            validUser.getFirstName(), validUser.getLastName(),validUser.getCompanyName());
-
-        // Good user
-        restMvc.perform(
-            post("/api/register")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(validUser)))
-            .andExpect(status().isCreated());
-
-        // Duplicate email
-        restMvc.perform(
-            post("/api/register")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(duplicatedUser)))
-            .andExpect(status().is4xxClientError());
-
-        Optional<User> userDup = userRepository.findOneByLogin("johnjr");
-        assertThat(userDup.isPresent()).isFalse();
-    }
 
     @Test
     @Transactional
     public void testActivateAccount() throws Exception {
         final String activationKey = "some activation key";
         User user = new User();
-        user.setLogin("activate-account");
-        user.setEmail("activate-account@example.com");
+        user.setLogin("activate-account@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(false);
         user.setActivationKey(activationKey);
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
 
         userRepository.saveAndFlush(user);
 
@@ -415,20 +354,19 @@ public class AccountResourceIntTest {
     @WithMockUser("save-account")
     public void testSaveAccount() throws Exception {
         User user = new User();
-        user.setLogin("save-account");
-        user.setEmail("save-account@example.com");
+        user.setLogin("save-account@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setAppAccount(xCompanyAppAccount);
         user.setActivated(true);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
 
         userRepository.saveAndFlush(user);
 
         UserDTO userDTO = new UserDTO(
             null,                   // id
-            "not-used",          // login
+            "save-account@example.com",          // login
             "firstname",                // firstName
             "lastname",                  // lastName
-            "save-account@example.com",    // email
             false,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
@@ -449,7 +387,6 @@ public class AccountResourceIntTest {
         User updatedUser = userRepository.findOneByLogin(user.getLogin()).orElse(null);
         assertThat(updatedUser.getFirstName()).isEqualTo(userDTO.getFirstName());
         assertThat(updatedUser.getLastName()).isEqualTo(userDTO.getLastName());
-        assertThat(updatedUser.getEmail()).isEqualTo(userDTO.getEmail());
         assertThat(updatedUser.getLangKey()).isEqualTo(userDTO.getLangKey());
         assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
         assertThat(updatedUser.getImageUrl()).isEqualTo(userDTO.getImageUrl());
@@ -462,20 +399,19 @@ public class AccountResourceIntTest {
     @WithMockUser("save-invalid-email")
     public void testSaveInvalidEmail() throws Exception {
         User user = new User();
-        user.setLogin("save-invalid-email");
-        user.setEmail("save-invalid-email@example.com");
+        user.setLogin("save-invalid-email@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setAppAccount(xCompanyAppAccount);
         user.setActivated(true);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
 
         userRepository.saveAndFlush(user);
 
         UserDTO userDTO = new UserDTO(
             null,                   // id
-            "not-used",          // login
+            "invalid email",          // login
             "firstname",                // firstName
             "lastname",                  // lastName
-            "invalid email",    // email
             false,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
@@ -493,7 +429,7 @@ public class AccountResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(userDTO)))
             .andExpect(status().isBadRequest());
 
-        assertThat(userRepository.findOneByEmail("invalid email")).isNotPresent();
+        assertThat(userRepository.findOneByLogin("invalid email")).isNotPresent();
     }
 
     @Test
@@ -501,28 +437,27 @@ public class AccountResourceIntTest {
     @WithMockUser("save-existing-email")
     public void testSaveExistingEmail() throws Exception {
         User user = new User();
-        user.setLogin("save-existing-email");
-        user.setEmail("save-existing-email@example.com");
+        user.setLogin("save-existing-email@example.com");
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
-        anotherUser.setLogin("save-existing-email2");
-        anotherUser.setEmail("save-existing-email2@example.com");
+        anotherUser.setLogin("save-existing-email2@example.com");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
+        anotherUser.setTeam(xCompanyAppAccount.getRootTeam());
         anotherUser.setAppAccount(xCompanyAppAccount);
 
         userRepository.saveAndFlush(anotherUser);
 
         UserDTO userDTO = new UserDTO(
             null,                   // id
-            "not-used",          // login
+            "save-existing-email2@example.com",          // login
             "firstname",                // firstName
             "lastname",                  // lastName
-            "save-existing-email2@example.com",    // email
             false,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "en",                   // langKey
@@ -541,46 +476,7 @@ public class AccountResourceIntTest {
             .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("save-existing-email").orElse(null);
-        assertThat(updatedUser.getEmail()).isEqualTo("save-existing-email@example.com");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("save-existing-email-and-login")
-    public void testSaveExistingEmailAndLogin() throws Exception {
-        User user = new User();
-        user.setLogin("save-existing-email-and-login");
-        user.setEmail("save-existing-email-and-login@example.com");
-        user.setPassword(RandomStringUtils.random(60));
-        user.setActivated(true);
-        user.setAppAccount(xCompanyAppAccount);
-        userRepository.saveAndFlush(user);
-
-        UserDTO userDTO = new UserDTO(
-            null,                   // id
-            "not-used",          // login
-            "firstname",                // firstName
-            "lastname",                  // lastName
-            "save-existing-email-and-login@example.com",    // email
-            false,                   // activated
-            "http://placehold.it/50x50", //imageUrl
-            "en",                   // langKey
-            null,                   // createdBy
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                   // lastModifiedDate
-            new HashSet<String>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
-            xCompanyAppAccount.getRootTeam().getId()
-        );
-
-        restMvc.perform(
-            post("/api/account")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(userDTO)))
-            .andExpect(status().isOk());
-
-        User updatedUser = userRepository.findOneByLogin("save-existing-email-and-login").orElse(null);
-        assertThat(updatedUser.getEmail()).isEqualTo("save-existing-email-and-login@example.com");
+        assertThat(updatedUser.getLogin()).isEqualTo("save-existing-email@example.com");
     }
 
     @Test
@@ -589,9 +485,9 @@ public class AccountResourceIntTest {
     public void testChangePassword() throws Exception {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("change-password");
-        user.setEmail("change-password@example.com");
+        user.setLogin("change-password@example.com");
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content("new password"))
@@ -607,9 +503,9 @@ public class AccountResourceIntTest {
     public void testChangePasswordTooSmall() throws Exception {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("change-password-too-small");
-        user.setEmail("change-password-too-small@example.com");
+        user.setLogin("change-password-too-small@example.com");
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content("new"))
@@ -625,9 +521,9 @@ public class AccountResourceIntTest {
     public void testChangePasswordTooLong() throws Exception {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("change-password-too-long");
-        user.setEmail("change-password-too-long@example.com");
+        user.setLogin("change-password-too-long@example.com");
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content(RandomStringUtils.random(101)))
@@ -643,9 +539,9 @@ public class AccountResourceIntTest {
     public void testChangePasswordEmpty() throws Exception {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("change-password-empty");
-        user.setEmail("change-password-empty@example.com");
+        user.setLogin("change-password-empty@example.com");
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content(RandomStringUtils.random(0)))
@@ -661,9 +557,9 @@ public class AccountResourceIntTest {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-        user.setLogin("password-reset");
-        user.setEmail("password-reset@example.com");
+        user.setLogin("password-reset@example.com");
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/reset_password/init")
@@ -684,11 +580,11 @@ public class AccountResourceIntTest {
     public void testFinishPasswordReset() throws Exception {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("finish-password-reset");
-        user.setEmail("finish-password-reset@example.com");
+        user.setLogin("finish-password-reset@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key");
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
@@ -710,11 +606,11 @@ public class AccountResourceIntTest {
     public void testFinishPasswordResetTooSmall() throws Exception {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));
-        user.setLogin("finish-password-reset-too-small");
-        user.setEmail("finish-password-reset-too-small@example.com");
+        user.setLogin("finish-password-reset-too-small@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key too small");
         user.setAppAccount(xCompanyAppAccount);
+        user.setTeam(xCompanyAppAccount.getRootTeam());
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
