@@ -158,7 +158,7 @@ public class PipelineStageDealIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createPipelineAddStagesAndDeals() throws Exception {
 
         //---------- For the Pipeline --------
@@ -247,7 +247,7 @@ public class PipelineStageDealIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createPipelineAddStagesAndDealsForOtherAccount() throws Exception {
 
         //Create 2 stages and add to the pipeline
@@ -271,7 +271,7 @@ public class PipelineStageDealIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createPipelineAddStagesAndDealsForOtherAccount2() throws Exception {
 
         //Create 2 stages and add to the pipeline

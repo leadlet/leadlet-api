@@ -1,7 +1,5 @@
 package com.leadlet.service.dto;
 
-import com.leadlet.config.Constants;
-
 import com.leadlet.domain.Authority;
 import com.leadlet.domain.User;
 
@@ -21,8 +19,8 @@ public class UserDTO {
     private Long id;
 
     @NotBlank
-    @Pattern(regexp = Constants.LOGIN_REGEX)
-    @Size(min = 1, max = 50)
+    @Email
+    @Size(min = 5, max = 100)
     private String login;
 
     @Size(max = 50)
@@ -30,10 +28,6 @@ public class UserDTO {
 
     @Size(max = 50)
     private String lastName;
-
-    @Email
-    @Size(min = 5, max = 100)
-    private String email;
 
     @Size(max = 256)
     private String imageUrl;
@@ -62,14 +56,14 @@ public class UserDTO {
 
     public UserDTO(User user) {
         this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
+            user.getActivated(), user.getImageUrl(), user.getLangKey(),
             user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()), user.getTeam().getId());
     }
 
     public UserDTO(Long id, String login, String firstName, String lastName,
-        String email, boolean activated, String imageUrl, String langKey,
+        boolean activated, String imageUrl, String langKey,
         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
         Set<String> authorities, Long teamId) {
 
@@ -77,7 +71,6 @@ public class UserDTO {
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.activated = activated;
         this.imageUrl = imageUrl;
         this.langKey = langKey;
@@ -111,10 +104,6 @@ public class UserDTO {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public String getImageUrl() {
@@ -169,10 +158,6 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
@@ -196,7 +181,6 @@ public class UserDTO {
             ", login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +

@@ -8,6 +8,7 @@ import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.MailService;
 import com.leadlet.service.UserService;
 import com.leadlet.service.dto.UserDTO;
+import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.web.rest.vm.KeyAndPasswordVM;
 import com.leadlet.web.rest.vm.ManagedUserVM;
 import com.leadlet.web.rest.util.HeaderUtil;
@@ -33,6 +34,8 @@ import java.util.*;
 @RequestMapping("/api")
 public class AccountResource {
 
+    private final static String ENTITY_NAME = "Account";
+
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
 
     private final UserRepository userRepository;
@@ -41,14 +44,18 @@ public class AccountResource {
 
     private final MailService mailService;
 
+    private final UserMapper userMapper;
+
     private static final String CHECK_ERROR_MESSAGE = "Incorrect password";
 
     public AccountResource(UserRepository userRepository, UserService userService,
-            MailService mailService) {
+            MailService mailService, UserMapper userMapper) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.userMapper = userMapper;
+
     }
 
     /**
@@ -65,22 +72,19 @@ public class AccountResource {
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
         if (!checkPasswordLength(registerUserVM.getPassword())) {
-            return new ResponseEntity<>(CHECK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "invalidPassword", CHECK_ERROR_MESSAGE)).body(null);
         }
         return userRepository.findOneByLogin(registerUserVM.getLogin().toLowerCase())
-            .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(registerUserVM.getEmail())
-                .map(user -> new ResponseEntity<>("email address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> {
-                    User user = userService
-                        .createAccountWithUser(registerUserVM.getLogin(), registerUserVM.getPassword(),
-                            registerUserVM.getFirstName(), registerUserVM.getLastName(),
-                            registerUserVM.getEmail().toLowerCase(), registerUserVM.getCompanyName(), null);
+            .map(user -> ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "loginInUse", "login is already in use")).body(null))
+            .orElseGet(() -> {
+                User user = userService
+                    .createAccountWithUser(registerUserVM.getLogin(), registerUserVM.getPassword());
 
-                    mailService.sendActivationEmail(user);
-                    return new ResponseEntity<>(HttpStatus.CREATED);
-                })
-        );
+                mailService.sendActivationEmail(user);
+
+                UserDTO result = userMapper.userToUserDTO(user);
+                return ResponseEntity.ok().headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+            });
     }
 
     /**
@@ -133,14 +137,10 @@ public class AccountResource {
     @Timed
     public ResponseEntity saveAccount(@Valid @RequestBody UserDTO userDTO) {
         final String userLogin = SecurityUtils.getCurrentUserLogin();
-        Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userLogin))) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
-        }
         return userRepository
             .findOneByLogin(userLogin)
             .map(u -> {
-                userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
+                userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(),
                     userDTO.getLangKey(), userDTO.getImageUrl());
                 return new ResponseEntity(HttpStatus.OK);
             })

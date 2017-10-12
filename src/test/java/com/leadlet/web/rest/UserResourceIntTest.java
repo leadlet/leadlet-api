@@ -54,20 +54,15 @@ public class UserResourceIntTest {
 
     private static final Long DEFAULT_ID = 1L;
 
-    private static final String DEFAULT_LOGIN = "johndoe";
-    private static final String DEFAULT_LOGIN_X = "johndoe_x";
-    private static final String DEFAULT_LOGIN_Y = "johndoe_y";
-    private static final String UPDATED_LOGIN = "jhipster";
+    private static final String DEFAULT_LOGIN = "johndoe@localhost";
+    private static final String DEFAULT_LOGIN_X = "johndoe@localhostx";
+    private static final String DEFAULT_LOGIN_Y = "johndoe@localhosty";
+    private static final String UPDATED_LOGIN = "jhipster@localhost";
 
     private static final String DEFAULT_PASSWORD = "passjohndoe";
     private static final String DEFAULT_PASSWORD_X = "passjohndoe_x";
     private static final String DEFAULT_PASSWORD_Y = "passjohndoe_y";
     private static final String UPDATED_PASSWORD = "passjhipster";
-
-    private static final String DEFAULT_EMAIL = "johndoe@localhost";
-    private static final String DEFAULT_EMAIL_X = "johndoe@localhostx";
-    private static final String DEFAULT_EMAIL_Y = "johndoe@localhosty";
-    private static final String UPDATED_EMAIL = "jhipster@localhost";
 
     private static final String DEFAULT_FIRSTNAME = "john";
     private static final String DEFAULT_FIRSTNAME_X = "john_x";
@@ -147,7 +142,6 @@ public class UserResourceIntTest {
         user.setLogin(DEFAULT_LOGIN);
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
-        user.setEmail(DEFAULT_EMAIL);
         user.setFirstName(DEFAULT_FIRSTNAME);
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
@@ -177,7 +171,6 @@ public class UserResourceIntTest {
         xCompanyNormalUser.setFirstName(DEFAULT_FIRSTNAME_X);
         xCompanyNormalUser.setLastName(DEFAULT_LASTNAME_X);
         xCompanyNormalUser.setLogin(DEFAULT_LOGIN_X);
-        xCompanyNormalUser.setEmail(DEFAULT_EMAIL_X);
         xCompanyNormalUser.setPassword(RandomStringUtils.random(60));
 
         this.xCompanyNormalUser = xCompanyNormalUser;
@@ -188,7 +181,6 @@ public class UserResourceIntTest {
         yCompanyNormalUser.setFirstName(DEFAULT_FIRSTNAME_Y);
         yCompanyNormalUser.setLastName(DEFAULT_LASTNAME_Y);
         yCompanyNormalUser.setLogin(DEFAULT_LOGIN_Y);
-        yCompanyNormalUser.setEmail(DEFAULT_EMAIL_Y);
         yCompanyNormalUser.setPassword(RandomStringUtils.random(60));
 
         this.yCompanyNormalUser = yCompanyNormalUser;
@@ -197,7 +189,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUser() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -210,7 +202,6 @@ public class UserResourceIntTest {
             DEFAULT_PASSWORD,
             DEFAULT_FIRSTNAME,
             DEFAULT_LASTNAME,
-            DEFAULT_EMAIL,
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
@@ -233,7 +224,6 @@ public class UserResourceIntTest {
         assertThat(testUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
         assertThat(testUser.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
         assertThat(testUser.getLastName()).isEqualTo(DEFAULT_LASTNAME);
-        assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
 
@@ -245,7 +235,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUserWithoutTeam() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -258,7 +248,6 @@ public class UserResourceIntTest {
             DEFAULT_PASSWORD,
             DEFAULT_FIRSTNAME,
             DEFAULT_LASTNAME,
-            DEFAULT_EMAIL,
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
@@ -278,7 +267,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUserWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -290,7 +279,6 @@ public class UserResourceIntTest {
             DEFAULT_PASSWORD,
             DEFAULT_FIRSTNAME,
             DEFAULT_LASTNAME,
-            DEFAULT_EMAIL,
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
@@ -314,7 +302,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUserWithExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -328,7 +316,6 @@ public class UserResourceIntTest {
             DEFAULT_PASSWORD,
             DEFAULT_FIRSTNAME,
             DEFAULT_LASTNAME,
-            "anothermail@localhost",
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
@@ -352,7 +339,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUserWithExistingEmail() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -366,7 +353,6 @@ public class UserResourceIntTest {
             DEFAULT_PASSWORD,
             DEFAULT_FIRSTNAME,
             DEFAULT_LASTNAME,
-            DEFAULT_EMAIL, // this email should already be used
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
@@ -390,7 +376,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllUsers() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -403,13 +389,12 @@ public class UserResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN_X)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRSTNAME_X)))
-            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LASTNAME_X)))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL_X)));
+            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LASTNAME_X)));
     }
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -421,14 +406,13 @@ public class UserResourceIntTest {
             .andExpect(jsonPath("$.login").value(xCompanyNormalUser.getLogin()))
             .andExpect(jsonPath("$.firstName").value(xCompanyNormalUser.getFirstName()))
             .andExpect(jsonPath("$.lastName").value(xCompanyNormalUser.getLastName()))
-            .andExpect(jsonPath("$.email").value(xCompanyNormalUser.getEmail()))
             .andExpect(jsonPath("$.imageUrl").value(xCompanyNormalUser.getImageUrl()))
             .andExpect(jsonPath("$.langKey").value(xCompanyNormalUser.getLangKey()));
     }
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getUserAnotherCompany() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -441,7 +425,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingUser() throws Exception {
         restUserMockMvc.perform(get("/api/users/unknown"))
             .andExpect(status().isNotFound());
@@ -449,7 +433,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -466,7 +450,6 @@ public class UserResourceIntTest {
             UPDATED_PASSWORD,
             UPDATED_FIRSTNAME,
             UPDATED_LASTNAME,
-            UPDATED_EMAIL,
             updatedUser.getActivated(),
             UPDATED_IMAGEURL,
             UPDATED_LANGKEY,
@@ -488,14 +471,13 @@ public class UserResourceIntTest {
         User testUser = userList.get(userList.size() - 1);
         assertThat(testUser.getFirstName()).isEqualTo(UPDATED_FIRSTNAME);
         assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
-        assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
     }
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUserWithAnotherTeam() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -512,7 +494,6 @@ public class UserResourceIntTest {
             UPDATED_PASSWORD,
             UPDATED_FIRSTNAME,
             UPDATED_LASTNAME,
-            UPDATED_EMAIL,
             updatedUser.getActivated(),
             UPDATED_IMAGEURL,
             UPDATED_LANGKEY,
@@ -531,7 +512,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUserLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -548,7 +529,6 @@ public class UserResourceIntTest {
             UPDATED_PASSWORD,
             UPDATED_FIRSTNAME,
             UPDATED_LASTNAME,
-            UPDATED_EMAIL,
             updatedUser.getActivated(),
             UPDATED_IMAGEURL,
             UPDATED_LANGKEY,
@@ -571,23 +551,21 @@ public class UserResourceIntTest {
         assertThat(testUser.getLogin()).isEqualTo(UPDATED_LOGIN);
         assertThat(testUser.getFirstName()).isEqualTo(UPDATED_FIRSTNAME);
         assertThat(testUser.getLastName()).isEqualTo(UPDATED_LASTNAME);
-        assertThat(testUser.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testUser.getImageUrl()).isEqualTo(UPDATED_IMAGEURL);
         assertThat(testUser.getLangKey()).isEqualTo(UPDATED_LANGKEY);
     }
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUserExistingEmail() throws Exception {
         // Initialize the database with 2 users
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
-        anotherUser.setLogin("jhipster");
+        anotherUser.setLogin("jhipster@localhost");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
-        anotherUser.setEmail("jhipster@localhost");
         anotherUser.setFirstName("java");
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
@@ -603,11 +581,10 @@ public class UserResourceIntTest {
         authorities.add("ROLE_USER");
         ManagedUserVM managedUserVM = new ManagedUserVM(
             updatedUser.getId(),
-            updatedUser.getLogin(),
+            "jhipster@localhost",
             updatedUser.getPassword(),
             updatedUser.getFirstName(),
             updatedUser.getLastName(),
-            "jhipster@localhost",  // this email should already be used by anotherUser
             updatedUser.getActivated(),
             updatedUser.getImageUrl(),
             updatedUser.getLangKey(),
@@ -626,16 +603,15 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUserExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
-        anotherUser.setLogin("jhipster");
+        anotherUser.setLogin("jhipster@localhost");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
-        anotherUser.setEmail("jhipster@localhost");
         anotherUser.setFirstName("java");
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
@@ -655,7 +631,6 @@ public class UserResourceIntTest {
             updatedUser.getPassword(),
             updatedUser.getFirstName(),
             updatedUser.getLastName(),
-            updatedUser.getEmail(),
             updatedUser.getActivated(),
             updatedUser.getImageUrl(),
             updatedUser.getLangKey(),
@@ -674,7 +649,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -692,7 +667,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllAuthorities() throws Exception {
         restUserMockMvc.perform(get("/api/users/authorities")
             .accept(TestUtil.APPLICATION_JSON_UTF8)
@@ -705,7 +680,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void testUserEquals() throws Exception {
         TestUtil.equalsVerifier(User.class);
         User user1 = new User();
@@ -732,7 +707,6 @@ public class UserResourceIntTest {
             DEFAULT_LOGIN,
             DEFAULT_FIRSTNAME,
             DEFAULT_LASTNAME,
-            DEFAULT_EMAIL,
             true,
             DEFAULT_IMAGEURL,
             DEFAULT_LANGKEY,
@@ -748,7 +722,6 @@ public class UserResourceIntTest {
         assertThat(user.getLogin()).isEqualTo(DEFAULT_LOGIN);
         assertThat(user.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
         assertThat(user.getLastName()).isEqualTo(DEFAULT_LASTNAME);
-        assertThat(user.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(user.getActivated()).isEqualTo(true);
         assertThat(user.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(user.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
@@ -779,7 +752,6 @@ public class UserResourceIntTest {
         assertThat(userDTO.getLogin()).isEqualTo(DEFAULT_LOGIN);
         assertThat(userDTO.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
         assertThat(userDTO.getLastName()).isEqualTo(DEFAULT_LASTNAME);
-        assertThat(userDTO.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(userDTO.isActivated()).isEqualTo(true);
         assertThat(userDTO.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(userDTO.getLangKey()).isEqualTo(DEFAULT_LANGKEY);

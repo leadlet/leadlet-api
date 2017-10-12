@@ -1,9 +1,0 @@
-{
-    "leadletApiApp": {
-        "ContactType" : {
-            "null": "",
-            "PERSON": "PERSON",
-            "ORGANIZATION": "ORGANIZATION"
-        }
-    }
-}

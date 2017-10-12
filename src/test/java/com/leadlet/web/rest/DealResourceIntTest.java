@@ -120,7 +120,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createDeal() throws Exception {
         int databaseSizeBeforeCreate = dealRepository.findAll().size();
 
@@ -143,7 +143,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createDealWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = dealRepository.findAll().size();
 
@@ -164,7 +164,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllDeals() throws Exception {
 
         Deal dealX1 = new Deal();
@@ -206,7 +206,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getDeal() throws Exception {
 
         Deal dealX1 = new Deal();
@@ -228,7 +228,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getDealForOtherAccount() throws Exception {
 
         Deal dealY1 = new Deal();
@@ -244,7 +244,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingDeal() throws Exception {
         // Get the deal
         restDealMockMvc.perform(get("/api/deals/{id}", Long.MAX_VALUE))
@@ -253,7 +253,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateDeal() throws Exception {
         Deal dealX1 = new Deal();
         dealX1.setName("dealX1");
@@ -288,7 +288,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateDealForOtherAccount() throws Exception {
 
         Deal dealY1 = new Deal();
@@ -317,7 +317,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateNonExistingDeal() throws Exception {
         int databaseSizeBeforeUpdate = dealRepository.findAll().size();
 
@@ -337,7 +337,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteDeal() throws Exception {
         Deal dealX1 = new Deal();
         dealX1.setName("dealX1");
