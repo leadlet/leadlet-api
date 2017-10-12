@@ -31,6 +31,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -175,11 +176,11 @@ public class ContactEmailResourceIntTest {
         contactEmailX2.setAppAccount(xCompanyAppAccount);
         contactEmailX2 = contactEmailRepository.saveAndFlush(contactEmailX2);
 
-        /*ContactEmail contactEmailY1 = new ContactEmail();
+        ContactEmail contactEmailY1 = new ContactEmail();
         contactEmailY1.setEmail("contactEmailY1");
         contactEmailY1.setType(DEFAULT_TYPE);
         contactEmailY1.setAppAccount(yCompanyAppAccount);
-        contactEmailY1 = contactEmailRepository.saveAndFlush(contactEmailY1);*/
+        contactEmailY1 = contactEmailRepository.saveAndFlush(contactEmailY1);
 
         // Get all the contactEmailList
         restContactEmailMockMvc.perform(get("/api/contact-emails?sort=id,desc"))

@@ -36,6 +36,10 @@ public class Contact implements Serializable {
     @Column(name = "jhi_type")
     private ContactType type;
 
+    public Boolean getContactPerson() {
+        return isContactPerson;
+    }
+
     @Column(name = "is_contact_person")
     private Boolean isContactPerson;
 

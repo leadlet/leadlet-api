@@ -18,6 +18,14 @@ public interface ContactService {
     ContactDTO save(ContactDTO contactDTO);
 
     /**
+     * Update a contact.
+     *
+     * @param contactDTO the entity to update
+     * @return the persisted entity
+     */
+    ContactDTO update(ContactDTO contactDTO);
+
+    /**
      *  Get all the contacts.
      *
      *  @param pageable the pagination information

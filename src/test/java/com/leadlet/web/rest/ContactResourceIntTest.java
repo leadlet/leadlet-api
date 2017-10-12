@@ -2,8 +2,11 @@ package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
 
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Contact;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.ContactRepository;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ContactService;
 import com.leadlet.service.dto.ContactDTO;
 import com.leadlet.service.mapper.ContactMapper;
@@ -18,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -57,6 +61,9 @@ public class ContactResourceIntTest {
     private ContactRepository contactRepository;
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
     private ContactMapper contactMapper;
 
     @Autowired
@@ -77,6 +84,8 @@ public class ContactResourceIntTest {
     private MockMvc restContactMockMvc;
 
     private Contact contact;
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
 
     @Before
     public void setup() {
@@ -86,6 +95,12 @@ public class ContactResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
+    public void setAppAccountsUsers() {
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
     }
 
     /**
@@ -110,6 +125,7 @@ public class ContactResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createContact() throws Exception {
         int databaseSizeBeforeCreate = contactRepository.findAll().size();
 
@@ -128,10 +144,12 @@ public class ContactResourceIntTest {
         assertThat(testContact.getLocation()).isEqualTo(DEFAULT_LOCATION);
         assertThat(testContact.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testContact.isIsContactPerson()).isEqualTo(DEFAULT_IS_CONTACT_PERSON);
+        assertThat(testContact.getAppAccount()).isEqualTo(xCompanyAppAccount);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createContactWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = contactRepository.findAll().size();
 
@@ -152,40 +170,93 @@ public class ContactResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllContacts() throws Exception {
-        // Initialize the database
-        contactRepository.saveAndFlush(contact);
+
+        Contact contactX1 = new Contact();
+        contactX1.setName("contactX1");
+        contactX1.setLocation("contactX1Location");
+        contactX1.setType(DEFAULT_TYPE);
+        contactX1.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactX1.setAppAccount(xCompanyAppAccount);
+        contactX1 = contactRepository.saveAndFlush(contactX1);
+
+        Contact contactX2 = new Contact();
+        contactX2.setName("contactX2");
+        contactX2.setLocation("contactX2Location");
+        contactX2.setType(DEFAULT_TYPE);
+        contactX2.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactX2.setAppAccount(xCompanyAppAccount);
+        contactX2 = contactRepository.saveAndFlush(contactX2);
+
+        Contact contactY1 = new Contact();
+        contactY1.setName("contactY1");
+        contactY1.setLocation("contactY1Location");
+        contactY1.setType(DEFAULT_TYPE);
+        contactY1.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactY1.setAppAccount(yCompanyAppAccount);
+        contactY1 = contactRepository.saveAndFlush(contactY1);
 
         // Get all the contactList
         restContactMockMvc.perform(get("/api/contacts?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(contact.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].isContactPerson").value(hasItem(DEFAULT_IS_CONTACT_PERSON.booleanValue())));
+            .andExpect(jsonPath("$.[0].id").value(contactX2.getId()))
+            .andExpect(jsonPath("$.[0].name").value(contactX2.getName()))
+            .andExpect(jsonPath("$.[0].location").value(contactX2.getLocation()))
+            .andExpect(jsonPath("$.[0].type").value(contactX2.getType().name().toString()))
+            .andExpect(jsonPath("$.[0].isContactPerson").value(contactX2.getContactPerson().toString()))
+            .andExpect(jsonPath("$.[1].id").value(contactX1.getId()))
+            .andExpect(jsonPath("$.[1].name").value(contactX1.getName()))
+            .andExpect(jsonPath("$.[1].location").value(contactX1.getLocation()))
+            .andExpect(jsonPath("$.[1].type").value(contactX1.getType().name().toString()))
+            .andExpect(jsonPath("$.[1].isContactPerson").value(contactX1.getContactPerson().toString()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getContact() throws Exception {
-        // Initialize the database
-        contactRepository.saveAndFlush(contact);
+
+        Contact contactX1 = new Contact();
+        contactX1.setName("contactX1");
+        contactX1.setLocation("contactX1Location");
+        contactX1.setType(DEFAULT_TYPE);
+        contactX1.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactX1.setAppAccount(xCompanyAppAccount);
+        contactX1 = contactRepository.saveAndFlush(contactX1);
 
         // Get the contact
-        restContactMockMvc.perform(get("/api/contacts/{id}", contact.getId()))
+        restContactMockMvc.perform(get("/api/contacts/{id}", contactX1.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(contact.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.toString()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.isContactPerson").value(DEFAULT_IS_CONTACT_PERSON.booleanValue()));
+            .andExpect(jsonPath("$.id").value(contactX1.getId()))
+            .andExpect(jsonPath("$.name").value(contactX1.getName()))
+            .andExpect(jsonPath("$.location").value(contactX1.getLocation()))
+            .andExpect(jsonPath("$.type").value(contactX1.getType().name().toString()))
+            .andExpect(jsonPath("$.isContactPerson").value(contactX1.getContactPerson().toString()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void getContactForOtherAccount() throws Exception {
+
+        Contact contactY1 = new Contact();
+        contactY1.setName("contactY1");
+        contactY1.setLocation("contactY1Location");
+        contactY1.setType(DEFAULT_TYPE);
+        contactY1.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactY1.setAppAccount(yCompanyAppAccount);
+        contactY1 = contactRepository.saveAndFlush(contactY1);
+
+        restContactMockMvc.perform(get("/api/contacts/{id}", contactY1.getId()))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingContact() throws Exception {
         // Get the contact
         restContactMockMvc.perform(get("/api/contacts/{id}", Long.MAX_VALUE))
@@ -194,13 +265,21 @@ public class ContactResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateContact() throws Exception {
-        // Initialize the database
-        contactRepository.saveAndFlush(contact);
+
+        Contact contactX1 = new Contact();
+        contactX1.setName("contactX1");
+        contactX1.setLocation("contactX1Location");
+        contactX1.setType(DEFAULT_TYPE);
+        contactX1.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactX1.setAppAccount(xCompanyAppAccount);
+        contactX1 = contactRepository.saveAndFlush(contactX1);
+
         int databaseSizeBeforeUpdate = contactRepository.findAll().size();
 
         // Update the contact
-        Contact updatedContact = contactRepository.findOne(contact.getId());
+        Contact updatedContact = contactRepository.findOne(contactX1.getId());
         updatedContact
             .name(UPDATED_NAME)
             .location(UPDATED_LOCATION)
@@ -225,6 +304,37 @@ public class ContactResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void updateContactForOtherAccount() throws Exception {
+
+        Contact contactY1 = new Contact();
+        contactY1.setName("contactY1");
+        contactY1.setLocation("contactY1Location");
+        contactY1.setType(DEFAULT_TYPE);
+        contactY1.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactY1.setAppAccount(yCompanyAppAccount);
+        contactY1 = contactRepository.saveAndFlush(contactY1);
+
+        int databaseSizeBeforeUpdate = contactRepository.findAll().size();
+
+        // Update the contact
+        Contact updatedContact = contactRepository.findOne(contactY1.getId());
+        updatedContact
+            .name(UPDATED_NAME)
+            .location(UPDATED_LOCATION)
+            .type(UPDATED_TYPE)
+            .isContactPerson(UPDATED_IS_CONTACT_PERSON);
+        ContactDTO contactDTO = contactMapper.toDto(updatedContact);
+
+        restContactMockMvc.perform(put("/api/contacts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateNonExistingContact() throws Exception {
         int databaseSizeBeforeUpdate = contactRepository.findAll().size();
 
@@ -235,22 +345,29 @@ public class ContactResourceIntTest {
         restContactMockMvc.perform(put("/api/contacts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isNotFound());
 
         // Validate the Contact in the database
         List<Contact> contactList = contactRepository.findAll();
-        assertThat(contactList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(contactList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteContact() throws Exception {
-        // Initialize the database
-        contactRepository.saveAndFlush(contact);
+        Contact contactX1 = new Contact();
+        contactX1.setName("contactX1");
+        contactX1.setLocation("contactX1Location");
+        contactX1.setType(DEFAULT_TYPE);
+        contactX1.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactX1.setAppAccount(xCompanyAppAccount);
+        contactX1 = contactRepository.saveAndFlush(contactX1);
+
         int databaseSizeBeforeDelete = contactRepository.findAll().size();
 
         // Get the contact
-        restContactMockMvc.perform(delete("/api/contacts/{id}", contact.getId())
+        restContactMockMvc.perform(delete("/api/contacts/{id}", contactX1.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
@@ -258,6 +375,28 @@ public class ContactResourceIntTest {
         List<Contact> contactList = contactRepository.findAll();
         assertThat(contactList).hasSize(databaseSizeBeforeDelete - 1);
     }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void deleteContactForOtherAccount() throws Exception {
+
+        Contact contactY1 = new Contact();
+        contactY1.setName("contactY1");
+        contactY1.setLocation("contactY1Location");
+        contactY1.setType(DEFAULT_TYPE);
+        contactY1.setIsContactPerson(DEFAULT_IS_CONTACT_PERSON);
+        contactY1.setAppAccount(yCompanyAppAccount);
+        contactY1 = contactRepository.saveAndFlush(contactY1);
+
+        int databaseSizeBeforeDelete = contactRepository.findAll().size();
+
+        // Get the contact
+        restContactMockMvc.perform(delete("/api/contacts/{id}", contactY1.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isNotFound());
+    }
+
 
     @Test
     @Transactional
