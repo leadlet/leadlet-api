@@ -148,7 +148,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createActivity() throws Exception {
         int databaseSizeBeforeCreate = activityRepository.findAll().size();
 
@@ -176,7 +176,7 @@ public class ActivityResourceIntTest {
     //TODO: burada verilen accounta ozel test eklenmeli
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createActivityWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = activityRepository.findAll().size();
 
@@ -197,7 +197,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllActivities() throws Exception {
         // Initialize the database
 
@@ -249,7 +249,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getActivity() throws Exception {
         // Initialize the database
         Activity activityX1 = new Activity();
@@ -276,7 +276,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getActivityForOtherAccount() throws Exception {
 
         Activity activityY1 = new Activity();
@@ -292,7 +292,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingActivity() throws Exception {
         // Get the activity
         restActivityMockMvc.perform(get("/api/activities/{id}", Long.MAX_VALUE))
@@ -301,7 +301,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateActivity() throws Exception {
         // Initialize the database
         Activity activityX1 = new Activity();
@@ -343,7 +343,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateActivityForOtherAccount() throws Exception {
 
         // Initialize the database
@@ -371,7 +371,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateNonExistingActivity() throws Exception {
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
 
@@ -391,7 +391,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteActivity() throws Exception {
         // Initialize the database
         Activity activityX1 = new Activity();
@@ -414,7 +414,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteActivityForOtherAccount() throws Exception {
         // Initialize the database
         Activity activityY1 = new Activity();

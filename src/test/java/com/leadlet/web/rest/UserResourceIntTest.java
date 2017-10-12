@@ -189,7 +189,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUser() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -235,7 +235,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUserWithoutTeam() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -267,7 +267,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUserWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
@@ -302,7 +302,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUserWithExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -339,7 +339,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createUserWithExistingEmail() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -376,7 +376,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllUsers() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -394,7 +394,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -412,7 +412,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getUserAnotherCompany() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -425,7 +425,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingUser() throws Exception {
         restUserMockMvc.perform(get("/api/users/unknown"))
             .andExpect(status().isNotFound());
@@ -433,7 +433,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -477,7 +477,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUserWithAnotherTeam() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -512,7 +512,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUserLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(xCompanyNormalUser);
@@ -557,7 +557,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUserExistingEmail() throws Exception {
         // Initialize the database with 2 users
         userRepository.saveAndFlush(user);
@@ -603,7 +603,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateUserExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -649,7 +649,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
@@ -667,7 +667,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllAuthorities() throws Exception {
         restUserMockMvc.perform(get("/api/users/authorities")
             .accept(TestUtil.APPLICATION_JSON_UTF8)
@@ -680,7 +680,7 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void testUserEquals() throws Exception {
         TestUtil.equalsVerifier(User.class);
         User user1 = new User();

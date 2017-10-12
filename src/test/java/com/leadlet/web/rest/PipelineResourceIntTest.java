@@ -116,7 +116,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createPipeline() throws Exception {
         int databaseSizeBeforeCreate = pipelineRepository.findAll().size();
 
@@ -138,7 +138,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createPipelineWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = pipelineRepository.findAll().size();
 
@@ -159,7 +159,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllPipelines() throws Exception {
         // Initialize the database
         Pipeline pipelineX1 = new Pipeline();
@@ -195,7 +195,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getPipeline() throws Exception {
 
         Pipeline pipelineX1 = new Pipeline();
@@ -215,7 +215,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getPipelineForOtherAccount() throws Exception {
 
         Pipeline pipelineY1 = new Pipeline();
@@ -231,7 +231,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingPipeline() throws Exception {
         // Get the pipeline
         restPipelineMockMvc.perform(get("/api/pipelines/{id}", Long.MAX_VALUE))
@@ -240,7 +240,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updatePipeline() throws Exception {
         // Initialize the database
         Pipeline pipelineX = new Pipeline();
@@ -273,7 +273,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updatePipelineForOtherAccount() throws Exception {
         // Initialize the database
         Pipeline pipelineY = new Pipeline();
@@ -299,7 +299,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateNonExistingPipeline() throws Exception {
         int databaseSizeBeforeUpdate = pipelineRepository.findAll().size();
 
@@ -319,7 +319,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deletePipeline() throws Exception {
         // Initialize the database
         Pipeline pipelineX = new Pipeline();
@@ -342,7 +342,7 @@ public class PipelineResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deletePipelineForOtherAccount() throws Exception {
         // Initialize the database
         Pipeline pipelineY = new Pipeline();

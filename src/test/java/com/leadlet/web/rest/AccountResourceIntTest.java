@@ -143,7 +143,7 @@ public class AccountResourceIntTest {
     }
 
     @Test
-    @WithUserDetails("xcompanyadminuser")
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void testGetExistingAccount() throws Exception {
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
