@@ -126,6 +126,9 @@ public class UserService {
         newUser.setTeam(newTeam);
         newUser.setTeamLeader(true);
 
+        // TODO not set activated true
+        newUser.setActivated(true);
+
         newUser = userRepository.save(newUser);
 
         // TODO implement subscription plan logic
