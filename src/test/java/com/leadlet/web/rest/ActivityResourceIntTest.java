@@ -3,7 +3,11 @@ package com.leadlet.web.rest;
 import com.leadlet.LeadletApiApp;
 
 import com.leadlet.domain.Activity;
+import com.leadlet.domain.AppAccount;
+import com.leadlet.domain.User;
 import com.leadlet.repository.ActivityRepository;
+import com.leadlet.repository.AppAccountRepository;
+import com.leadlet.repository.UserRepository;
 import com.leadlet.service.ActivityService;
 import com.leadlet.service.dto.ActivityDTO;
 import com.leadlet.service.mapper.ActivityMapper;
@@ -18,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,9 +35,8 @@ import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
 
-import static com.leadlet.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -64,6 +68,12 @@ public class ActivityResourceIntTest {
     private static final ZonedDateTime UPDATED_END_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ActivityRepository activityRepository;
 
     @Autowired
@@ -88,6 +98,12 @@ public class ActivityResourceIntTest {
 
     private Activity activity;
 
+    private User user;
+    private static User xcompanyadminuser;
+    private static User ycompanyadminuser;
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -98,9 +114,19 @@ public class ActivityResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
+    @Before
+    public void setAppAccountsUsers() {
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
+
+        this.xcompanyadminuser = this.userRepository.findOneByLogin("xcompanyadminuser").get();
+        this.ycompanyadminuser = this.userRepository.findOneByLogin("ycompanyadminuser").get();
+
+    }
+
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -122,6 +148,7 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void createActivity() throws Exception {
         int databaseSizeBeforeCreate = activityRepository.findAll().size();
 
@@ -142,10 +169,14 @@ public class ActivityResourceIntTest {
         assertThat(testActivity.getPotentialValue()).isEqualTo(DEFAULT_POTENTIAL_VALUE);
         assertThat(testActivity.getStartDate()).isEqualTo(DEFAULT_START_DATE);
         assertThat(testActivity.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+
+        assertThat(testActivity.getAppAccount()).isEqualTo(xCompanyAppAccount);
     }
 
+    //TODO: burada verilen accounta ozel test eklenmeli
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void createActivityWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = activityRepository.findAll().size();
 
@@ -166,44 +197,102 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void getAllActivities() throws Exception {
         // Initialize the database
-        activityRepository.saveAndFlush(activity);
+
+        Activity activityX1 = new Activity();
+        activityX1.setName("activityX1");
+        activityX1.setOrder(1);
+        activityX1.setMemo("activityMemoX1");
+        activityX1.setPotentialValue(12.2);
+        activityX1.setStartDate(DEFAULT_START_DATE);
+        activityX1.setEndDate(DEFAULT_END_DATE);
+        activityX1.setUser(xcompanyadminuser);
+        activityX1.setAppAccount(xCompanyAppAccount);
+        activityX1 = activityRepository.saveAndFlush(activityX1);
+
+        Activity activityX2 = new Activity();
+        activityX2.setName("activityX2");
+        activityX2.setOrder(2);
+        activityX2.setMemo("activityMemoX2");
+        activityX2.setPotentialValue(14.0);
+        activityX2.setStartDate(DEFAULT_START_DATE);
+        activityX2.setEndDate(DEFAULT_END_DATE);
+        activityX2.setUser(xcompanyadminuser);
+        activityX2.setAppAccount(xCompanyAppAccount);
+        activityX2 = activityRepository.saveAndFlush(activityX2);
+
+        Activity activityY1 = new Activity();
+        activityY1.setName("activityY1");
+        activityY1.setOrder(2);
+        activityY1.setMemo("activityMemoY1");
+        activityY1.setPotentialValue(14.0);
+        activityY1.setStartDate(DEFAULT_START_DATE);
+        activityY1.setEndDate(DEFAULT_END_DATE);
+        activityY1.setUser(ycompanyadminuser);
+        activityY1.setAppAccount(yCompanyAppAccount);
+        activityY1 = activityRepository.saveAndFlush(activityY1);
 
         // Get all the activityList
         restActivityMockMvc.perform(get("/api/activities?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(activity.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)))
-            .andExpect(jsonPath("$.[*].memo").value(hasItem(DEFAULT_MEMO.toString())))
-            .andExpect(jsonPath("$.[*].potentialValue").value(hasItem(DEFAULT_POTENTIAL_VALUE.doubleValue())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(sameInstant(DEFAULT_START_DATE))))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_DATE))));
+            .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$.[0].id").value(activityX2.getId()))
+            .andExpect(jsonPath("$.[0].name").value("activityX2"))
+            .andExpect(jsonPath("$.[0].order").value(2))
+            .andExpect(jsonPath("$.[1].id").value(activityX1.getId()))
+            .andExpect(jsonPath("$.[1].name").value("activityX1"))
+            .andExpect(jsonPath("$.[1].order").value(1));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void getActivity() throws Exception {
         // Initialize the database
-        activityRepository.saveAndFlush(activity);
+        Activity activityX1 = new Activity();
+        activityX1.setName("activityX1");
+        activityX1.setOrder(1);
+        activityX1.setMemo("activityMemoX1");
+        activityX1.setPotentialValue(12.2);
+        activityX1.setStartDate(DEFAULT_START_DATE);
+        activityX1.setEndDate(DEFAULT_END_DATE);
+        activityX1.setUser(xcompanyadminuser);
+        activityX1.setAppAccount(xCompanyAppAccount);
+        activityX1 = activityRepository.saveAndFlush(activityX1);
 
         // Get the activity
-        restActivityMockMvc.perform(get("/api/activities/{id}", activity.getId()))
+        restActivityMockMvc.perform(get("/api/activities/{id}", activityX1.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(activity.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.order").value(DEFAULT_ORDER))
-            .andExpect(jsonPath("$.memo").value(DEFAULT_MEMO.toString()))
-            .andExpect(jsonPath("$.potentialValue").value(DEFAULT_POTENTIAL_VALUE.doubleValue()))
-            .andExpect(jsonPath("$.startDate").value(sameInstant(DEFAULT_START_DATE)))
-            .andExpect(jsonPath("$.endDate").value(sameInstant(DEFAULT_END_DATE)));
+            .andExpect(jsonPath("$.id").value(activityX1.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(activityX1.getName()))
+            .andExpect(jsonPath("$.order").value(activityX1.getOrder()))
+            .andExpect(jsonPath("$.memo").value(activityX1.getMemo()))
+            .andExpect(jsonPath("$.potentialValue").value(activityX1.getPotentialValue()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
+    public void getActivityForOtherAccount() throws Exception {
+
+        Activity activityY1 = new Activity();
+        activityY1.setName("activityY1");
+        activityY1.setOrder(1);
+        activityY1.setAppAccount(yCompanyAppAccount);
+        activityY1 = activityRepository.saveAndFlush(activityY1);
+
+        //Get the activity
+        restActivityMockMvc.perform(get("/api/activities/{id}", activityY1.getId()))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void getNonExistingActivity() throws Exception {
         // Get the activity
         restActivityMockMvc.perform(get("/api/activities/{id}", Long.MAX_VALUE))
@@ -212,13 +301,20 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void updateActivity() throws Exception {
         // Initialize the database
-        activityRepository.saveAndFlush(activity);
+        Activity activityX1 = new Activity();
+        activityX1.setName("activityX1");
+        activityX1.setOrder(1);
+        activityX1.setAppAccount(yCompanyAppAccount);
+        activityX1 = activityRepository.saveAndFlush(activityX1);
+
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
 
         // Update the activity
-        Activity updatedActivity = activityRepository.findOne(activity.getId());
+        Activity updatedActivity = activityRepository.findOne(activityX1.getId());
+
         updatedActivity
             .name(UPDATED_NAME)
             .order(UPDATED_ORDER)
@@ -247,6 +343,35 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
+    public void updateActivityForOtherAccount() throws Exception {
+
+        // Initialize the database
+        Activity activityY1 = new Activity();
+        activityY1.setName("activityY1");
+        activityY1.setOrder(1);
+        activityY1.setAppAccount(yCompanyAppAccount);
+        activityY1 = activityRepository.saveAndFlush(activityY1);
+
+        int databaseSizeBeforeUpdate = activityRepository.findAll().size();
+
+        //update the activity
+        Activity updatedActivity = activityRepository.findOne(activityY1.getId());
+        updatedActivity
+            .name(UPDATED_NAME)
+            .order(UPDATED_ORDER);
+        ActivityDTO activityDTO = activityMapper.toDto(updatedActivity);
+
+        restActivityMockMvc.perform(put("/api/activities")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(activityDTO)))
+            .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void updateNonExistingActivity() throws Exception {
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
 
@@ -266,19 +391,44 @@ public class ActivityResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser")
     public void deleteActivity() throws Exception {
         // Initialize the database
-        activityRepository.saveAndFlush(activity);
+        Activity activityX1 = new Activity();
+        activityX1.setName("activityX1");
+        activityX1.setOrder(1);
+        activityX1.setAppAccount(xCompanyAppAccount);
+        activityX1 = activityRepository.saveAndFlush(activityX1);
+
         int databaseSizeBeforeDelete = activityRepository.findAll().size();
 
         // Get the activity
-        restActivityMockMvc.perform(delete("/api/activities/{id}", activity.getId())
+        restActivityMockMvc.perform(delete("/api/activities/{id}", activityX1.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
         // Validate the database is empty
         List<Activity> activityList = activityRepository.findAll();
         assertThat(activityList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser")
+    public void deleteActivityForOtherAccount() throws Exception {
+        // Initialize the database
+        Activity activityY1 = new Activity();
+        activityY1.setName("activityY1");
+        activityY1.setOrder(1);
+        activityY1.setAppAccount(yCompanyAppAccount);
+        activityY1 = activityRepository.saveAndFlush(activityY1);
+
+        int databaseSizeBeforeDelete = activityRepository.findAll().size();
+
+        // Get the activity
+        restActivityMockMvc.perform(delete("/api/activities/{id}", activityY1.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ActivityService;
 import com.leadlet.domain.Activity;
 import com.leadlet.repository.ActivityRepository;
@@ -39,10 +40,16 @@ public class ActivityServiceImpl implements ActivityService{
      */
     @Override
     public ActivityDTO save(ActivityDTO activityDTO) {
+
         log.debug("Request to save Activity : {}", activityDTO);
         Activity activity = activityMapper.toEntity(activityDTO);
-        activity = activityRepository.save(activity);
-        return activityMapper.toDto(activity);
+
+        if(activity.getAppAccount().equals(SecurityUtils.getCurrentUserAppAccount())){
+            activity.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            activity = activityRepository.save(activity);
+            return activityMapper.toDto(activity);
+        }
+        return activityDTO;
     }
 
     /**
@@ -55,7 +62,7 @@ public class ActivityServiceImpl implements ActivityService{
     @Transactional(readOnly = true)
     public Page<ActivityDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Activities");
-        return activityRepository.findAll(pageable)
+        return activityRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
             .map(activityMapper::toDto);
     }
 
@@ -69,7 +76,7 @@ public class ActivityServiceImpl implements ActivityService{
     @Transactional(readOnly = true)
     public ActivityDTO findOne(Long id) {
         log.debug("Request to get Activity : {}", id);
-        Activity activity = activityRepository.findOne(id);
+        Activity activity = activityRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
         return activityMapper.toDto(activity);
     }
 
@@ -81,6 +88,6 @@ public class ActivityServiceImpl implements ActivityService{
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Activity : {}", id);
-        activityRepository.delete(id);
+        activityRepository.deleteByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
     }
 }
