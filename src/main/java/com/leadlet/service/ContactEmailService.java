@@ -18,6 +18,14 @@ public interface ContactEmailService {
     ContactEmailDTO save(ContactEmailDTO contactEmailDTO);
 
     /**
+     * Update a contactEmail.
+     *
+     * @param contactEmailDTO the entity to update
+     * @return the persisted entity
+     */
+    ContactEmailDTO update(ContactEmailDTO contactEmailDTO);
+
+    /**
      *  Get all the contactEmails.
      *
      *  @param pageable the pagination information
