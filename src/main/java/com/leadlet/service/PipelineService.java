@@ -19,25 +19,33 @@ public interface PipelineService {
     PipelineDTO save(PipelineDTO pipelineDTO);
 
     /**
-     *  Get all the pipelines.
+     * Update a pipeline.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pipelineDTO the entity to update
+     * @return the persisted entity
+     */
+    PipelineDTO update(PipelineDTO pipelineDTO);
+
+    /**
+     * Get all the pipelines.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     Page<PipelineDTO> findAll(Pageable pageable);
 
     /**
-     *  Get the "id" pipeline.
+     * Get the "id" pipeline.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     PipelineDTO findOne(Long id);
 
     /**
-     *  Delete the "id" pipeline.
+     * Delete the "id" pipeline.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     void delete(Long id);
 }

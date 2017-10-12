@@ -16,6 +16,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
  */
@@ -83,5 +85,12 @@ public class ExceptionTranslator {
             errorVM = new ErrorVM(ErrorConstants.ERR_INTERNAL_SERVER_ERROR, "Internal server error");
         }
         return builder.body(errorVM);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorVM processEntityNotFoundError(EntityNotFoundException ex) {
+        return new ErrorVM(ErrorConstants.ERR_ENTITY_NOT_FOUND, ex.getMessage());
     }
 }

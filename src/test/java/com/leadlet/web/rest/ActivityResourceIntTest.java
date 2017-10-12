@@ -382,11 +382,11 @@ public class ActivityResourceIntTest {
         restActivityMockMvc.perform(put("/api/activities")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(activityDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isNotFound());
 
         // Validate the Activity in the database
         List<Activity> activityList = activityRepository.findAll();
-        assertThat(activityList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(activityList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -428,7 +428,7 @@ public class ActivityResourceIntTest {
         // Get the activity
         restActivityMockMvc.perform(delete("/api/activities/{id}", activityY1.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isNotFound());
     }
 
     @Test

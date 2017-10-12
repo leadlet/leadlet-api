@@ -18,6 +18,14 @@ public interface ActivityService {
     ActivityDTO save(ActivityDTO activityDTO);
 
     /**
+     * Update a activity.
+     *
+     * @param activityDTO the entity to save
+     * @return the persisted entity
+     */
+    ActivityDTO update(ActivityDTO activityDTO);
+
+    /**
      *  Get all the activities.
      *
      *  @param pageable the pagination information

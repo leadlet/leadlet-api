@@ -72,10 +72,8 @@ public class ActivityResource {
     @Timed
     public ResponseEntity<ActivityDTO> updateActivity(@RequestBody ActivityDTO activityDTO) throws URISyntaxException {
         log.debug("REST request to update Activity : {}", activityDTO);
-        if (activityDTO.getId() == null) {
-            return createActivity(activityDTO);
-        }
-        ActivityDTO result = activityService.save(activityDTO);
+
+        ActivityDTO result = activityService.update(activityDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, activityDTO.getId().toString()))
             .body(result);
@@ -121,14 +119,7 @@ public class ActivityResource {
     public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
         log.debug("REST request to delete Activity : {}", id);
 
-        ActivityDTO activityDTO = activityService.findOne(id);
-        if (activityDTO != null){
-            activityService.delete(id);
-            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-        }
-        else {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-        }
-
+        activityService.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

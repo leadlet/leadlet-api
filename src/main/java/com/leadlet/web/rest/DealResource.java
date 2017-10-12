@@ -72,10 +72,8 @@ public class DealResource {
     @Timed
     public ResponseEntity<DealDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException {
         log.debug("REST request to update Deal : {}", dealDTO);
-        if (dealDTO.getId() == null) {
-            return createDeal(dealDTO);
-        }
-        DealDTO result = dealService.save(dealDTO);
+
+        DealDTO result = dealService.update(dealDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealDTO.getId().toString()))
             .body(result);

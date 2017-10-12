@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "pipeline")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Pipeline implements Serializable {
+public class Pipeline extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,9 +34,6 @@ public class Pipeline implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Stage> stages = new HashSet<>();
-
-    @ManyToOne
-    private AppAccount appAccount;
 
     public Long getId() {
         return id;
@@ -90,14 +87,6 @@ public class Pipeline implements Serializable {
 
     public void setPipelineStages(Set<Stage> pipelineStages) {
         this.stages = pipelineStages;
-    }
-
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
     }
 
     @Override
