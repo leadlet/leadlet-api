@@ -14,13 +14,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 
 /**
  * Service Implementation for managing Stage.
  */
 @Service
 @Transactional
-public class StageServiceImpl implements StageService{
+public class StageServiceImpl implements StageService {
 
     private final Logger log = LoggerFactory.getLogger(StageServiceImpl.class);
 
@@ -49,10 +51,31 @@ public class StageServiceImpl implements StageService{
     }
 
     /**
-     *  Get all the stages.
+     * Update a stage.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param stageDTO the entity to update
+     * @return the persisted entity
+     */
+    @Override
+    public StageDTO update(StageDTO stageDTO) {
+        log.debug("Request to save Stage : {}", stageDTO);
+        Stage stage = stageMapper.toEntity(stageDTO);
+
+        Stage stageFromDb = stageRepository.findOneByIdAndAppAccount(stage.getId(), SecurityUtils.getCurrentUserAppAccount());
+        if (stageFromDb != null) {
+            stage.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            stage = stageRepository.save(stage);
+            return stageMapper.toDto(stage);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Get all the stages.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
@@ -63,10 +86,10 @@ public class StageServiceImpl implements StageService{
     }
 
     /**
-     *  Get one stage by id.
+     * Get one stage by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Override
     @Transactional(readOnly = true)
@@ -77,13 +100,18 @@ public class StageServiceImpl implements StageService{
     }
 
     /**
-     *  Delete the  stage by id.
+     * Delete the  stage by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Stage : {}", id);
-        stageRepository.deleteByIdAndAndAppAccount(id,SecurityUtils.getCurrentUserAppAccount());
+        Stage stageFromDb = stageRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        if (stageFromDb != null) {
+            stageRepository.delete(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 }

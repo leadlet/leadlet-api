@@ -72,10 +72,8 @@ public class StageResource {
     @Timed
     public ResponseEntity<StageDTO> updateStage(@RequestBody StageDTO stageDTO) throws URISyntaxException {
         log.debug("REST request to update Stage : {}", stageDTO);
-        if (stageDTO.getId() == null) {
-            return createStage(stageDTO);
-        }
-        StageDTO result = stageService.save(stageDTO);
+
+        StageDTO result = stageService.update(stageDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, stageDTO.getId().toString()))
             .body(result);

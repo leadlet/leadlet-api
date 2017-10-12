@@ -18,6 +18,14 @@ public interface StageService {
     StageDTO save(StageDTO stageDTO);
 
     /**
+     * Update a stage.
+     *
+     * @param stageDTO the entity to update
+     * @return the persisted entity
+     */
+    StageDTO update(StageDTO stageDTO);
+
+    /**
      *  Get all the stages.
      *
      *  @param pageable the pagination information

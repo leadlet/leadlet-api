@@ -360,7 +360,7 @@ public class DealResourceIntTest {
 
     @Test
     @Transactional
-    @WithUserDetails("ycompanyadminuser")
+    @WithUserDetails("ycompanyadminuser@spacex.com")
     public void deleteDealForOtherAccount() throws Exception {
 
         Deal dealX1 = new Deal();
