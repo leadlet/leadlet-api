@@ -72,10 +72,8 @@ public class ContactPhoneResource {
     @Timed
     public ResponseEntity<ContactPhoneDTO> updateContactPhone(@RequestBody ContactPhoneDTO contactPhoneDTO) throws URISyntaxException {
         log.debug("REST request to update ContactPhone : {}", contactPhoneDTO);
-        if (contactPhoneDTO.getId() == null) {
-            return createContactPhone(contactPhoneDTO);
-        }
-        ContactPhoneDTO result = contactPhoneService.save(contactPhoneDTO);
+
+        ContactPhoneDTO result = contactPhoneService.update(contactPhoneDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, contactPhoneDTO.getId().toString()))
             .body(result);
