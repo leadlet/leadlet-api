@@ -170,8 +170,8 @@ public class UserResourceIntTest {
         this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
         this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
 
-        this.xcompanyadminuser = this.userRepository.findOneByLogin("xcompanyadminuser").get();
-        this.ycompanyadminuser = this.userRepository.findOneByLogin("ycompanyadminuser").get();
+        this.xcompanyadminuser = this.userRepository.findOneByLogin("xcompanyadminuser@spacex.com").get();
+        this.ycompanyadminuser = this.userRepository.findOneByLogin("ycompanyadminuser@spacex.com").get();
 
         this.xAppAccountTeam = this.teamRepository.findOneByAppAccountAndRootIsTrue(xCompanyAppAccount);
         this.yAppAccountTeam = this.teamRepository.findOneByAppAccountAndRootIsTrue(yCompanyAppAccount);

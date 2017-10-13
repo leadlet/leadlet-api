@@ -492,7 +492,7 @@ public class AccountResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("change-password")
+    @WithMockUser("change-password@example.com")
     public void testChangePassword() throws Exception {
         User user = new User();
         user.setPassword(RandomStringUtils.random(60));

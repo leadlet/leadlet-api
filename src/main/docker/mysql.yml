@@ -8,6 +8,6 @@ services:
             - MYSQL_USER=leadlet
             - MYSQL_PASSWORD=leadlet_123
             - MYSQL_DATABASE=leadlet_api
+            - MYSQL_RANDOM_ROOT_PASSWORD=yes
         ports:
             - 3306:3306
-        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8 --explicit_defaults_for_timestamp
