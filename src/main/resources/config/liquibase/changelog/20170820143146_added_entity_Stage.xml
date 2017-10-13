@@ -35,5 +35,14 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/stages.csv"
+                  separator=";"
+                  tableName="stage">
+            <column name="id" type="NUMERIC"/>
+            <column name="pipeline_id" type="NUMERIC" />
+            <column name="app_account_id" type="NUMERIC" />
+        </loadData>
+
     </changeSet>
 </databaseChangeLog>
