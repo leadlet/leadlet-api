@@ -15,9 +15,9 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface TeamRepository extends JpaRepository<Team,Long> {
-    Page<Team> findByAppAccount(AppAccount appAccount, Pageable page);
-    Team findOneByIdAndAppAccount(Long id, AppAccount appAccount);
+    Page<Team> findByAppAccount_Id(Long appAccountId, Pageable page);
+    Team findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     Team findOneByAppAccountAndRootIsTrue(AppAccount appAccount);
-    void deleteByIdAndAndAppAccount(Long id, AppAccount appAccount);
+    void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 
 }

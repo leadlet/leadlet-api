@@ -15,8 +15,8 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface StageRepository extends JpaRepository<Stage,Long> {
-    Page<Stage> findByAppAccount(AppAccount appAccount, Pageable page);
-    Stage findOneByIdAndAppAccount(Long id, AppAccount appAccount);
-    void deleteByIdAndAndAppAccount(Long id, AppAccount appAccount);
+    Page<Stage> findByAppAccount_Id(Long appAccountId, Pageable page);
+    Stage findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+    void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 
 }

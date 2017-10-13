@@ -163,7 +163,7 @@ public class UserService {
         user.setResetDate(Instant.now());
         user.setActivated(true);
         user.setTeam(teamRepository.getOne(userDTO.getTeamId()));
-        user.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+        user.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;
@@ -195,7 +195,7 @@ public class UserService {
      */
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
         return Optional.of(userRepository
-            .findOneByIdAndAppAccount(userDTO.getId(), SecurityUtils.getCurrentUserAppAccount()))
+            .findOneByIdAndAppAccount_Id(userDTO.getId(), SecurityUtils.getCurrentUserAppAccountId()))
             .map(user -> {
                 user.setLogin(userDTO.getLogin());
                 user.setFirstName(userDTO.getFirstName());
@@ -215,14 +215,14 @@ public class UserService {
     }
 
     public void deleteUser(String login) {
-        userRepository.findOneByLoginAndAppAccount(login,SecurityUtils.getCurrentUserAppAccount()).ifPresent(user -> {
+        userRepository.findOneByLoginAndAppAccount_Id(login,SecurityUtils.getCurrentUserAppAccountId()).ifPresent(user -> {
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });
     }
 
     public void changePassword(String password) {
-        userRepository.findOneByLoginAndAppAccount(SecurityUtils.getCurrentUserLogin(),SecurityUtils.getCurrentUserAppAccount()).ifPresent(user -> {
+        userRepository.findOneByLoginAndAppAccount_Id(SecurityUtils.getCurrentUserLogin(),SecurityUtils.getCurrentUserAppAccountId()).ifPresent(user -> {
             String encryptedPassword = passwordEncoder.encode(password);
             user.setPassword(encryptedPassword);
             log.debug("Changed password for User: {}", user);
@@ -231,13 +231,13 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNotAndAppAccount(pageable, Constants.ANONYMOUS_USER,
-            SecurityUtils.getCurrentUserAppAccount()).map(UserDTO::new);
+        return userRepository.findAllByLoginNotAndAppAccount_Id(pageable, Constants.ANONYMOUS_USER,
+            SecurityUtils.getCurrentUserAppAccountId()).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLoginAndAppAccount(String login) {
-        return userRepository.findOneWithAuthoritiesByLoginAndAppAccount(login, SecurityUtils.getCurrentUserAppAccount());
+        return userRepository.findOneWithAuthoritiesByLoginAndAppAccount_Id(login, SecurityUtils.getCurrentUserAppAccountId());
     }
 
     @Transactional(readOnly = true)

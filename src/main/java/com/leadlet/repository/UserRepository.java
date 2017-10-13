@@ -17,7 +17,7 @@ import java.time.Instant;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findOneByIdAndAppAccount(Long login, AppAccount appAccount);
+    User findOneByIdAndAppAccount_Id(Long login, Long appAccountId);
 
     Optional<User> findOneByActivationKey(String activationKey);
 
@@ -25,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneByResetKey(String resetKey);
 
-    Optional<User> findOneByLoginAndAppAccount(String login, AppAccount appAccount);
+    Optional<User> findOneByLoginAndAppAccount_Id(String login,Long appAccountId);
 
     Optional<User> findOneByLogin(String login);
 
@@ -33,10 +33,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findOneWithAuthoritiesById(Long id);
 
     @EntityGraph(attributePaths = "authorities")
-    Optional<User> findOneWithAuthoritiesByLoginAndAppAccount(String login, AppAccount appAccount);
+    Optional<User> findOneWithAuthoritiesByLoginAndAppAccount_Id(String login, Long appAccountId);
 
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesByLogin(String login);
 
-    Page<User> findAllByLoginNotAndAppAccount(Pageable pageable, String login, AppAccount appAccount);
+    Page<User> findAllByLoginNotAndAppAccount_Id(Pageable pageable, String login, Long appAccountId);
 }

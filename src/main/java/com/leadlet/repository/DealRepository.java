@@ -15,8 +15,8 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface DealRepository extends JpaRepository<Deal,Long> {
-    Page<Deal> findByAppAccount(AppAccount appAccount, Pageable page);
-    Deal findOneByIdAndAppAccount(Long id, AppAccount appAccount);
-    void deleteByIdAndAndAppAccount(Long id, AppAccount appAccount);
+    Page<Deal> findByAppAccount_Id(Long appAccountId, Pageable page);
+    Deal findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+    void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 
 }

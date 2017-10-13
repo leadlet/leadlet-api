@@ -17,7 +17,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity,Long> {
-    Page<Activity> findByAppAccount(AppAccount appAccount, Pageable page);
-    Activity findOneByIdAndAppAccount(Long id, AppAccount appAccount);
-    void deleteByIdAndAppAccount(Long id, AppAccount appAccount);
+    Page<Activity> findByAppAccount_Id(Long appAccountId, Pageable page);
+    Activity findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+    void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 }

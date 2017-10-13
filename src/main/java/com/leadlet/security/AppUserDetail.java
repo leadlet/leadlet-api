@@ -8,12 +8,12 @@ import java.util.Collection;
 
 public class AppUserDetail extends User{
 
-    private AppAccount appAccount;
+    private Long appAccountId;
 
 
-    public AppUserDetail(AppAccount appAccount, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public AppUserDetail(Long appAccountId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
-        this.appAccount = appAccount;
+        this.appAccountId = appAccountId;
     }
 
     public AppUserDetail(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -24,7 +24,7 @@ public class AppUserDetail extends User{
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public AppAccount getAppAccount() {
-        return appAccount;
+    public Long getAppAccountId() {
+        return appAccountId;
     }
 }

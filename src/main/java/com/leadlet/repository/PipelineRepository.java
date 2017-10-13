@@ -19,7 +19,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface PipelineRepository extends JpaRepository<Pipeline,Long> {
-    Page<Pipeline> findByAppAccount(AppAccount appAccount, Pageable page);
-    Pipeline findOneByIdAndAppAccount(Long id, AppAccount appAccount);
-    void deleteByIdAndAndAppAccount(Long id, AppAccount appAccount);
+    Page<Pipeline> findByAppAccount_Id(Long appAccountId, Pageable page);
+    Pipeline findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+    void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 }

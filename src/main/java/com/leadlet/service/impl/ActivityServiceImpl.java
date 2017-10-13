@@ -45,7 +45,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         log.debug("Request to save Activity : {}", activityDTO);
         Activity activity = activityMapper.toEntity(activityDTO);
-        activity.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+        activity.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         activity = activityRepository.save(activity);
         return activityMapper.toDto(activity);
 
@@ -63,10 +63,10 @@ public class ActivityServiceImpl implements ActivityService {
         log.debug("Request to update Activity : {}", activityDTO);
 
         Activity activity = activityMapper.toEntity(activityDTO);
-        Activity fromDb = activityRepository.findOneByIdAndAppAccount(activity.getId(), SecurityUtils.getCurrentUserAppAccount());
+        Activity fromDb = activityRepository.findOneByIdAndAppAccount_Id(activity.getId(), SecurityUtils.getCurrentUserAppAccountId());
         if (fromDb != null) {
             //TODO: appaccount todo'su..
-            activity.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            activity.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             activity = activityRepository.save(activity);
             return activityMapper.toDto(activity);
         } else {
@@ -84,7 +84,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional(readOnly = true)
     public Page<ActivityDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Activities");
-        return activityRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
+        return activityRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(activityMapper::toDto);
     }
 
@@ -98,7 +98,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional(readOnly = true)
     public ActivityDTO findOne(Long id) {
         log.debug("Request to get Activity : {}", id);
-        Activity activity = activityRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Activity activity = activityRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return activityMapper.toDto(activity);
     }
 
@@ -111,7 +111,7 @@ public class ActivityServiceImpl implements ActivityService {
     public void delete(Long id) {
         log.debug("Request to delete Activity : {}", id);
 
-        Activity objectFormDb = activityRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Activity objectFormDb = activityRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (objectFormDb != null) {
             activityRepository.delete(id);
         } else {

@@ -52,7 +52,6 @@ public class PipelineResource {
     @Timed
     public ResponseEntity<PipelineDTO> createPipeline(@RequestBody PipelineDTO pipelineDTO) throws URISyntaxException {
         log.debug("REST request to save Pipeline : {}", pipelineDTO);
-        AppAccount currentAppAccount = SecurityUtils.getCurrentUserAppAccount();
 
         if (pipelineDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new pipeline cannot already have an ID")).body(null);
@@ -93,7 +92,6 @@ public class PipelineResource {
     @Timed
     public ResponseEntity<List<PipelineDTO>> getAllPipelines(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Pipelines");
-        AppAccount currentAppAccount = SecurityUtils.getCurrentUserAppAccount();
         Page<PipelineDTO> page = pipelineService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pipelines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

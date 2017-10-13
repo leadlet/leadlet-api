@@ -44,7 +44,7 @@ public class ContactEmailServiceImpl implements ContactEmailService {
     public ContactEmailDTO save(ContactEmailDTO contactEmailDTO) {
         log.debug("Request to save ContactEmail : {}", contactEmailDTO);
         ContactEmail contactEmail = contactEmailMapper.toEntity(contactEmailDTO);
-        contactEmail.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+        contactEmail.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         contactEmail = contactEmailRepository.save(contactEmail);
         return contactEmailMapper.toDto(contactEmail);
     }
@@ -60,10 +60,10 @@ public class ContactEmailServiceImpl implements ContactEmailService {
         log.debug("Request to update ContactEmail : {}", contactEmailDTO);
 
         ContactEmail contactEmail = contactEmailMapper.toEntity(contactEmailDTO);
-        ContactEmail contactEmailFromDb = contactEmailRepository.findOneByIdAndAppAccount(contactEmail.getId(), SecurityUtils.getCurrentUserAppAccount());
+        ContactEmail contactEmailFromDb = contactEmailRepository.findOneByIdAndAppAccount_Id(contactEmail.getId(), SecurityUtils.getCurrentUserAppAccountId());
 
         if (contactEmailFromDb != null) {
-            contactEmail.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            contactEmail.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             contactEmail = contactEmailRepository.save(contactEmail);
             return contactEmailMapper.toDto(contactEmail);
         } else {
@@ -81,7 +81,7 @@ public class ContactEmailServiceImpl implements ContactEmailService {
     @Transactional(readOnly = true)
     public Page<ContactEmailDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ContactEmails");
-        return contactEmailRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
+        return contactEmailRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(contactEmailMapper::toDto);
     }
 
@@ -95,7 +95,7 @@ public class ContactEmailServiceImpl implements ContactEmailService {
     @Transactional(readOnly = true)
     public ContactEmailDTO findOne(Long id) {
         log.debug("Request to get ContactEmail : {}", id);
-        ContactEmail contactEmail = contactEmailRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        ContactEmail contactEmail = contactEmailRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return contactEmailMapper.toDto(contactEmail);
     }
 
@@ -107,7 +107,7 @@ public class ContactEmailServiceImpl implements ContactEmailService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ContactEmail : {}", id);
-        ContactEmail contactEmailFromDb = contactEmailRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        ContactEmail contactEmailFromDb = contactEmailRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (contactEmailFromDb != null) {
             contactEmailRepository.delete(id);
         } else {

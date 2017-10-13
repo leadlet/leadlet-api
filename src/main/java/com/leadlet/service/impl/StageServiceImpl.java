@@ -1,6 +1,7 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.AppAccount;
+import com.leadlet.security.AppUserDetail;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.StageService;
 import com.leadlet.domain.Stage;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 
 
@@ -45,7 +47,8 @@ public class StageServiceImpl implements StageService {
     public StageDTO save(StageDTO stageDTO) {
         log.debug("Request to save Stage : {}", stageDTO);
         Stage stage = stageMapper.toEntity(stageDTO);
-        stage.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+
+        stage.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         stage = stageRepository.save(stage);
         return stageMapper.toDto(stage);
     }
@@ -61,10 +64,10 @@ public class StageServiceImpl implements StageService {
         log.debug("Request to save Stage : {}", stageDTO);
         Stage stage = stageMapper.toEntity(stageDTO);
 
-        Stage stageFromDb = stageRepository.findOneByIdAndAppAccount(stage.getId(), SecurityUtils.getCurrentUserAppAccount());
+        Stage stageFromDb = stageRepository.findOneByIdAndAppAccount_Id(stage.getId(), SecurityUtils.getCurrentUserAppAccountId());
 
         if (stageFromDb != null) {
-            stage.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            stage.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             stage = stageRepository.save(stage);
             return stageMapper.toDto(stage);
         } else {
@@ -82,7 +85,7 @@ public class StageServiceImpl implements StageService {
     @Transactional(readOnly = true)
     public Page<StageDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Stages");
-        return stageRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
+        return stageRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(stageMapper::toDto);
     }
 
@@ -96,7 +99,7 @@ public class StageServiceImpl implements StageService {
     @Transactional(readOnly = true)
     public StageDTO findOne(Long id) {
         log.debug("Request to get Stage : {}", id);
-        Stage stage = stageRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Stage stage = stageRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return stageMapper.toDto(stage);
     }
 
@@ -108,7 +111,7 @@ public class StageServiceImpl implements StageService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Stage : {}", id);
-        Stage stageFromDb = stageRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Stage stageFromDb = stageRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (stageFromDb != null) {
             stageRepository.delete(id);
         } else {

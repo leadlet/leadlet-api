@@ -44,7 +44,7 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     public ContactPhoneDTO save(ContactPhoneDTO contactPhoneDTO) {
         log.debug("Request to save ContactPhone : {}", contactPhoneDTO);
         ContactPhone contactPhone = contactPhoneMapper.toEntity(contactPhoneDTO);
-        contactPhone.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+        contactPhone.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         contactPhone = contactPhoneRepository.save(contactPhone);
         return contactPhoneMapper.toDto(contactPhone);
     }
@@ -59,10 +59,10 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     public ContactPhoneDTO update(ContactPhoneDTO contactPhoneDTO) {
         log.debug("Request to save ContactPhone : {}", contactPhoneDTO);
         ContactPhone contactPhone = contactPhoneMapper.toEntity(contactPhoneDTO);
-        ContactPhone contactPhoneFromDb = contactPhoneRepository.findOneByIdAndAppAccount(contactPhone.getId(), SecurityUtils.getCurrentUserAppAccount());
+        ContactPhone contactPhoneFromDb = contactPhoneRepository.findOneByIdAndAppAccount_Id(contactPhone.getId(), SecurityUtils.getCurrentUserAppAccountId());
 
         if (contactPhoneFromDb != null) {
-            contactPhone.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            contactPhone.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             contactPhone = contactPhoneRepository.save(contactPhone);
             return contactPhoneMapper.toDto(contactPhone);
         } else {
@@ -80,7 +80,7 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     @Transactional(readOnly = true)
     public Page<ContactPhoneDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ContactPhones");
-        return contactPhoneRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
+        return contactPhoneRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(contactPhoneMapper::toDto);
     }
 
@@ -94,7 +94,7 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     @Transactional(readOnly = true)
     public ContactPhoneDTO findOne(Long id) {
         log.debug("Request to get ContactPhone : {}", id);
-        ContactPhone contactPhone = contactPhoneRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        ContactPhone contactPhone = contactPhoneRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return contactPhoneMapper.toDto(contactPhone);
     }
 
@@ -106,7 +106,7 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ContactPhone : {}", id);
-        ContactPhone contactPhone = contactPhoneRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        ContactPhone contactPhone = contactPhoneRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (contactPhone != null){
             contactPhoneRepository.delete(id);
         }

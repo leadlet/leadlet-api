@@ -44,7 +44,7 @@ public class TeamServiceImpl implements TeamService {
     public TeamDTO save(TeamDTO teamDTO) {
         log.debug("Request to save Team : {}", teamDTO);
         Team team = teamMapper.toEntity(teamDTO);
-        team.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+        team.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         team = teamRepository.save(team);
         return teamMapper.toDto(team);
     }
@@ -60,10 +60,10 @@ public class TeamServiceImpl implements TeamService {
         log.debug("Request to save Team : {}", teamDTO);
         Team team = teamMapper.toEntity(teamDTO);
 
-        Team teamFromDb = teamRepository.findOneByIdAndAppAccount(team.getId(), SecurityUtils.getCurrentUserAppAccount());
+        Team teamFromDb = teamRepository.findOneByIdAndAppAccount_Id(team.getId(), SecurityUtils.getCurrentUserAppAccountId());
 
         if (teamFromDb != null) {
-            team.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            team.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             team = teamRepository.save(team);
             return teamMapper.toDto(team);
         } else {
@@ -81,7 +81,7 @@ public class TeamServiceImpl implements TeamService {
     @Transactional(readOnly = true)
     public Page<TeamDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Teams");
-        return teamRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
+        return teamRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(teamMapper::toDto);
     }
 
@@ -95,7 +95,7 @@ public class TeamServiceImpl implements TeamService {
     @Transactional(readOnly = true)
     public TeamDTO findOne(Long id) {
         log.debug("Request to get Team : {}", id);
-        Team team = teamRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Team team = teamRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return teamMapper.toDto(team);
     }
 
@@ -107,7 +107,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Team : {}", id);
-        Team teamFromDb = teamRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Team teamFromDb = teamRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
 
         if (teamFromDb != null) {
             teamRepository.delete(id);

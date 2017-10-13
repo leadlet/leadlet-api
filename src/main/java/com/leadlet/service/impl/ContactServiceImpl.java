@@ -44,7 +44,7 @@ public class ContactServiceImpl implements ContactService {
     public ContactDTO save(ContactDTO contactDTO) {
         log.debug("Request to save Contact : {}", contactDTO);
         Contact contact = contactMapper.toEntity(contactDTO);
-        contact.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+        contact.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         contact = contactRepository.save(contact);
         return contactMapper.toDto(contact);
     }
@@ -60,9 +60,9 @@ public class ContactServiceImpl implements ContactService {
         log.debug("Request to update Contact : {}", contactDTO);
 
         Contact contact = contactMapper.toEntity(contactDTO);
-        Contact contactFromDb = contactRepository.findOneByIdAndAppAccount(contact.getId(), SecurityUtils.getCurrentUserAppAccount());
+        Contact contactFromDb = contactRepository.findOneByIdAndAppAccount_Id(contact.getId(), SecurityUtils.getCurrentUserAppAccountId());
         if (contactFromDb != null) {
-            contact.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            contact.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             contact = contactRepository.save(contact);
             return contactMapper.toDto(contact);
         } else {
@@ -80,7 +80,7 @@ public class ContactServiceImpl implements ContactService {
     @Transactional(readOnly = true)
     public Page<ContactDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Contacts");
-        return contactRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
+        return contactRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(contactMapper::toDto);
     }
 
@@ -94,7 +94,7 @@ public class ContactServiceImpl implements ContactService {
     @Transactional(readOnly = true)
     public ContactDTO findOne(Long id) {
         log.debug("Request to get Contact : {}", id);
-        Contact contact = contactRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Contact contact = contactRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return contactMapper.toDto(contact);
     }
 
@@ -107,7 +107,7 @@ public class ContactServiceImpl implements ContactService {
     public void delete(Long id) {
         log.debug("Request to delete Contact : {}", id);
 
-        Contact contact = contactRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Contact contact = contactRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (contact != null) {
             contactRepository.delete(id);
         } else {

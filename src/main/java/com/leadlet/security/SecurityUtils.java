@@ -6,12 +6,17 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.EntityManager;
+
 /**
  * Utility class for Spring Security.
  */
 public final class SecurityUtils {
 
-    private SecurityUtils() {
+    private static EntityManager entityManager;
+
+    private SecurityUtils(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     /**
@@ -34,22 +39,42 @@ public final class SecurityUtils {
         return userName;
     }
 
+
     /**
      * Get the login of the current user.
      *
      * @return the login of the current user
      */
-    public static AppAccount getCurrentUserAppAccount() {
+    public static AppAccount getCurrentUserAppAccountReference() {
+
+        Long appAccountId = getCurrentUserAppAccountId();
+
+        AppAccount appAccountRef = null;
+
+        if( appAccountId != null ){
+            appAccountRef = entityManager.getReference(AppAccount.class, appAccountId);
+        }
+
+        return appAccountRef;
+    }
+
+
+    /**
+     * Get the login of the current user.
+     *
+     * @return the login of the current user
+     */
+    public static Long getCurrentUserAppAccountId() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        AppAccount appAccount = null;
+        Long appAccountId = null;
         if (authentication != null) {
             if (authentication.getPrincipal() instanceof UserDetails) {
                 AppUserDetail springSecurityUser = (AppUserDetail) authentication.getPrincipal();
-                appAccount = springSecurityUser.getAppAccount();
+                appAccountId = springSecurityUser.getAppAccountId();
             }
         }
-        return appAccount;
+        return appAccountId;
     }
 
     /**

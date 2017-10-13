@@ -16,8 +16,8 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface ContactEmailRepository extends JpaRepository<ContactEmail,Long> {
 
-    Page<ContactEmail> findByAppAccount(AppAccount appAccount, Pageable page);
-    ContactEmail findOneByIdAndAppAccount(Long id, AppAccount appAccount);
-    void deleteByIdAndAndAppAccount(Long id, AppAccount appAccount);
+    Page<ContactEmail> findByAppAccount_Id(Long appAccountId, Pageable page);
+    ContactEmail findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+    void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 
 }

@@ -1,5 +1,6 @@
 package com.leadlet.security.jwt;
 
+import com.leadlet.security.AppUserDetail;
 import io.github.jhipster.config.JHipsterProperties;
 
 import java.util.*;
@@ -23,6 +24,7 @@ public class TokenProvider {
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
+    private static final String APP_ACCOUNT_KEY = "account";
 
     private String secretKey;
 
@@ -52,6 +54,8 @@ public class TokenProvider {
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
 
+        Long appAccountId = ((AppUserDetail) authentication.getPrincipal()).getAppAccountId();
+
         long now = (new Date()).getTime();
         Date validity;
         if (rememberMe) {
@@ -63,6 +67,7 @@ public class TokenProvider {
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
+            .claim(APP_ACCOUNT_KEY,appAccountId)
             .signWith(SignatureAlgorithm.HS512, secretKey)
             .setExpiration(validity)
             .compact();
@@ -79,7 +84,9 @@ public class TokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        User principal = new User(claims.getSubject(), "", authorities);
+        Long appAccountId = Long.valueOf(claims.get(APP_ACCOUNT_KEY).toString());
+
+        User principal = new AppUserDetail(appAccountId, claims.getSubject(), "", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }

@@ -44,7 +44,7 @@ public class DealServiceImpl implements DealService {
     public DealDTO save(DealDTO dealDTO) {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
-        deal.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+        deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         deal = dealRepository.save(deal);
         return dealMapper.toDto(deal);
     }
@@ -59,11 +59,11 @@ public class DealServiceImpl implements DealService {
     public DealDTO update(DealDTO dealDTO) {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
-        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount(deal.getId(), SecurityUtils.getCurrentUserAppAccount());
+        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
 
         if (dealFromDb != null) {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
-            deal.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             deal = dealRepository.save(deal);
             return dealMapper.toDto(deal);
         } else {
@@ -81,7 +81,7 @@ public class DealServiceImpl implements DealService {
     @Transactional(readOnly = true)
     public Page<DealDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Deals");
-        return dealRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
+        return dealRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(dealMapper::toDto);
     }
 
@@ -95,7 +95,7 @@ public class DealServiceImpl implements DealService {
     @Transactional(readOnly = true)
     public DealDTO findOne(Long id) {
         log.debug("Request to get Deal : {}", id);
-        Deal deal = dealRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Deal deal = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return dealMapper.toDto(deal);
     }
 
@@ -107,7 +107,7 @@ public class DealServiceImpl implements DealService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Deal : {}", id);
-        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (dealFromDb != null) {
             dealRepository.delete(id);
         } else {
