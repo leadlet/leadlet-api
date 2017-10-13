@@ -62,6 +62,7 @@ public class StageServiceImpl implements StageService {
         Stage stage = stageMapper.toEntity(stageDTO);
 
         Stage stageFromDb = stageRepository.findOneByIdAndAppAccount(stage.getId(), SecurityUtils.getCurrentUserAppAccount());
+
         if (stageFromDb != null) {
             stage.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
             stage = stageRepository.save(stage);

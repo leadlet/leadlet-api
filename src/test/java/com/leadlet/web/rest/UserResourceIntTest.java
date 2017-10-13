@@ -3,8 +3,10 @@ package com.leadlet.web.rest;
 import com.leadlet.LeadletApiApp;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
+import com.leadlet.domain.Team;
 import com.leadlet.domain.User;
 import com.leadlet.repository.AppAccountRepository;
+import com.leadlet.repository.TeamRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.service.MailService;
@@ -86,6 +88,9 @@ public class UserResourceIntTest {
     private AppAccountRepository appAccountRepository;
 
     @Autowired
+    private TeamRepository teamRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -119,6 +124,9 @@ public class UserResourceIntTest {
     private static AppAccount xCompanyAppAccount;
     private static AppAccount yCompanyAppAccount;
 
+    private static Team xAppAccountTeam;
+    private static Team yAppAccountTeam;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -133,7 +141,7 @@ public class UserResourceIntTest {
 
     /**
      * Create a User.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which has a required relationship to the User entity.
      */
@@ -147,7 +155,7 @@ public class UserResourceIntTest {
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xCompanyAppAccount.getRootTeam());
+        user.setTeam(xAppAccountTeam);
         return user;
     }
 
@@ -157,13 +165,16 @@ public class UserResourceIntTest {
     }
 
     @Before
-    public void setAppAccountsUsers(){
+    public void setAppAccountsUsers() {
 
         this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
         this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
 
         this.xcompanyadminuser = this.userRepository.findOneByLogin("xcompanyadminuser").get();
         this.ycompanyadminuser = this.userRepository.findOneByLogin("ycompanyadminuser").get();
+
+        this.xAppAccountTeam = this.teamRepository.findOneByAppAccountAndRootIsTrue(xCompanyAppAccount);
+        this.yAppAccountTeam = this.teamRepository.findOneByAppAccountAndRootIsTrue(yCompanyAppAccount);
 
         User xCompanyNormalUser = new User();
         xCompanyNormalUser.setAppAccount(xCompanyAppAccount);
@@ -210,7 +221,7 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -287,7 +298,7 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc.perform(post("/api/users")
@@ -324,7 +335,7 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
@@ -361,7 +372,7 @@ public class UserResourceIntTest {
             null,
             null,
             authorities,
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
@@ -458,7 +469,7 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -537,7 +548,7 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -571,7 +582,7 @@ public class UserResourceIntTest {
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
         anotherUser.setAppAccount(xCompanyAppAccount);
-        anotherUser.setTeam(xCompanyAppAccount.getRootTeam());
+        anotherUser.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
@@ -593,7 +604,7 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -617,7 +628,7 @@ public class UserResourceIntTest {
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
         anotherUser.setAppAccount(xCompanyAppAccount);
-        anotherUser.setTeam(xCompanyAppAccount.getRootTeam());
+        anotherUser.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
@@ -639,7 +650,7 @@ public class UserResourceIntTest {
             updatedUser.getLastModifiedBy(),
             updatedUser.getLastModifiedDate(),
             authorities,
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -715,7 +726,7 @@ public class UserResourceIntTest {
             DEFAULT_LOGIN,
             null,
             Stream.of(AuthoritiesConstants.USER).collect(Collectors.toSet()),
-            xCompanyAppAccount.getRootTeam().getId());
+            xAppAccountTeam.getId());
 
         User user = userMapper.userDTOToUser(userDTO);
         assertThat(user.getId()).isEqualTo(DEFAULT_ID);

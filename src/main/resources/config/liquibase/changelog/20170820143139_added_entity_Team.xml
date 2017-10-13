@@ -31,6 +31,9 @@
             <column name="app_account_id" type="bigint">
                 <constraints unique="true" nullable="false" />
             </column>
+            <column name="root" type="boolean" valueBoolean="false">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <loadData encoding="UTF-8"
@@ -40,6 +43,7 @@
             <column name="id" type="NUMERIC"/>
             <column name="leader_id" type="NUMERIC"/>
             <column name="app_account_id" type="NUMERIC"/>
+            <column name="root" type="boolean"/>
         </loadData>
 
     </changeSet>

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.el.MethodNotFoundException;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -40,9 +41,6 @@ public class AppAccount implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<User> users = new HashSet<>();
-
-    @OneToOne
-    private Team rootTeam;
 
     public Long getId() {
         return id;
@@ -126,14 +124,6 @@ public class AppAccount implements Serializable {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }
-
-    public Team getRootTeam() {
-        return rootTeam;
-    }
-
-    public void setRootTeam(Team rootTeam) {
-        this.rootTeam = rootTeam;
     }
 
     @Override
