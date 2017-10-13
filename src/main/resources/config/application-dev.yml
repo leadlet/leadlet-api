@@ -27,8 +27,8 @@ spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3306/leadlet_api?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password:
+        username: leadlet
+        password: leadlet_123
         hikari:
             data-source-properties:
                 cachePrepStmts: true

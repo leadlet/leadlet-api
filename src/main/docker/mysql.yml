@@ -5,8 +5,8 @@ services:
         # volumes:
         #     - ~/volumes/jhipster/leadlet_api/mysql/:/var/lib/mysql/
         environment:
-            - MYSQL_USER=root
-            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_USER=leadlet
+            - MYSQL_PASSWORD=leadlet_123
             - MYSQL_DATABASE=leadlet_api
         ports:
             - 3306:3306
