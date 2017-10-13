@@ -15,7 +15,7 @@ import com.leadlet.domain.enumeration.EmailType;
 @Entity
 @Table(name = "contact_email")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ContactEmail implements Serializable {
+public class ContactEmail extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

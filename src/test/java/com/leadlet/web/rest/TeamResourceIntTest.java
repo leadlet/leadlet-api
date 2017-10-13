@@ -2,7 +2,9 @@ package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
 
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Team;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.TeamRepository;
 import com.leadlet.service.TeamService;
 import com.leadlet.service.dto.TeamDTO;
@@ -18,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -47,6 +50,9 @@ public class TeamResourceIntTest {
     private TeamRepository teamRepository;
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
     private TeamMapper teamMapper;
 
     @Autowired
@@ -67,6 +73,8 @@ public class TeamResourceIntTest {
     private MockMvc restTeamMockMvc;
 
     private Team team;
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
 
     @Before
     public void setup() {
@@ -78,9 +86,15 @@ public class TeamResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
+    @Before
+    public void setAppAccountsUsers() {
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
+    }
+
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -97,6 +111,7 @@ public class TeamResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createTeam() throws Exception {
         int databaseSizeBeforeCreate = teamRepository.findAll().size();
 
@@ -112,10 +127,12 @@ public class TeamResourceIntTest {
         assertThat(teamList).hasSize(databaseSizeBeforeCreate + 1);
         Team testTeam = teamList.get(teamList.size() - 1);
         assertThat(testTeam.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testTeam.getAppAccount()).isEqualTo(xCompanyAppAccount);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createTeamWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = teamRepository.findAll().size();
 
@@ -136,34 +153,69 @@ public class TeamResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllTeams() throws Exception {
-        // Initialize the database
-        teamRepository.saveAndFlush(team);
+
+        Team teamX1 = new Team();
+        teamX1.setName("teamX1");
+        teamX1.setAppAccount(xCompanyAppAccount);
+        teamX1 = teamRepository.saveAndFlush(teamX1);
+
+        Team teamX2 = new Team();
+        teamX2.setName("teamX2");
+        teamX2.setAppAccount(xCompanyAppAccount);
+        teamX2 = teamRepository.saveAndFlush(teamX2);
+
+        Team teamY1 = new Team();
+        teamY1.setName("teamY1");
+        teamY1.setAppAccount(yCompanyAppAccount);
+        teamY1 = teamRepository.saveAndFlush(teamY1);
 
         // Get all the teamList
         restTeamMockMvc.perform(get("/api/teams?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(team.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(jsonPath("$.[0].id").value(teamX2.getId()))
+            .andExpect(jsonPath("$.[0].name").value(teamX2.getName()))
+            .andExpect(jsonPath("$.[1].id").value(teamX1.getId()))
+            .andExpect(jsonPath("$.[1].name").value(teamX1.getName()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getTeam() throws Exception {
-        // Initialize the database
-        teamRepository.saveAndFlush(team);
+
+        Team teamX1 = new Team();
+        teamX1.setName("teamX1");
+        teamX1.setAppAccount(xCompanyAppAccount);
+        teamX1 = teamRepository.saveAndFlush(teamX1);
 
         // Get the team
-        restTeamMockMvc.perform(get("/api/teams/{id}", team.getId()))
+        restTeamMockMvc.perform(get("/api/teams/{id}", teamX1.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(team.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+            .andExpect(jsonPath("$.id").value(teamX1.getId()))
+            .andExpect(jsonPath("$.name").value(teamX1.getName()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void getTeamForOtherAccount() throws Exception {
+
+        Team teamY1 = new Team();
+        teamY1.setName("teamY1");
+        teamY1.setAppAccount(yCompanyAppAccount);
+        teamY1 = teamRepository.saveAndFlush(teamY1);
+
+        restTeamMockMvc.perform(get("/api/teams/{id}", teamY1.getId()))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingTeam() throws Exception {
         // Get the team
         restTeamMockMvc.perform(get("/api/teams/{id}", Long.MAX_VALUE))
@@ -172,13 +224,18 @@ public class TeamResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateTeam() throws Exception {
-        // Initialize the database
-        teamRepository.saveAndFlush(team);
+
+        Team teamX1 = new Team();
+        teamX1.setName("teamX1");
+        teamX1.setAppAccount(xCompanyAppAccount);
+        teamX1 = teamRepository.saveAndFlush(teamX1);
+
         int databaseSizeBeforeUpdate = teamRepository.findAll().size();
 
         // Update the team
-        Team updatedTeam = teamRepository.findOne(team.getId());
+        Team updatedTeam = teamRepository.findOne(teamX1.getId());
         updatedTeam
             .name(UPDATED_NAME);
         TeamDTO teamDTO = teamMapper.toDto(updatedTeam);
@@ -197,6 +254,31 @@ public class TeamResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void updateStageForOtherAccount() throws Exception {
+
+        Team teamY1 = new Team();
+        teamY1.setName("teamY1");
+        teamY1.setAppAccount(yCompanyAppAccount);
+        teamY1 = teamRepository.saveAndFlush(teamY1);
+
+        int databaseSizeBeforeUpdate = teamRepository.findAll().size();
+
+        // Update the team
+        Team updatedTeam = teamRepository.findOne(teamY1.getId());
+        updatedTeam
+            .name(UPDATED_NAME);
+        TeamDTO teamDTO = teamMapper.toDto(updatedTeam);
+
+        restTeamMockMvc.perform(put("/api/teams")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(teamDTO)))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateNonExistingTeam() throws Exception {
         int databaseSizeBeforeUpdate = teamRepository.findAll().size();
 
@@ -207,22 +289,27 @@ public class TeamResourceIntTest {
         restTeamMockMvc.perform(put("/api/teams")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(teamDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isNotFound());
 
         // Validate the Team in the database
         List<Team> teamList = teamRepository.findAll();
-        assertThat(teamList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(teamList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteTeam() throws Exception {
-        // Initialize the database
-        teamRepository.saveAndFlush(team);
+
+        Team teamX1 = new Team();
+        teamX1.setName("teamX1");
+        teamX1.setAppAccount(xCompanyAppAccount);
+        teamX1 = teamRepository.saveAndFlush(teamX1);
+
         int databaseSizeBeforeDelete = teamRepository.findAll().size();
 
         // Get the team
-        restTeamMockMvc.perform(delete("/api/teams/{id}", team.getId())
+        restTeamMockMvc.perform(delete("/api/teams/{id}", teamX1.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

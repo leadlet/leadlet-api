@@ -18,6 +18,14 @@ public interface TeamService {
     TeamDTO save(TeamDTO teamDTO);
 
     /**
+     * Update a team.
+     *
+     * @param teamDTO the entity to update
+     * @return the persisted entity
+     */
+    TeamDTO update(TeamDTO teamDTO);
+
+    /**
      *  Get all the teams.
      *
      *  @param pageable the pagination information

@@ -1,0 +1,3 @@
+id;name;location;jhi_type;is_contact_person;app_account_id
+1;orgX;location_x;ORGANIZATION;true;1
+3;orgY;location_y;ORGANIZATION;true;2

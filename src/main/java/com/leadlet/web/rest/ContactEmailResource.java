@@ -72,10 +72,8 @@ public class ContactEmailResource {
     @Timed
     public ResponseEntity<ContactEmailDTO> updateContactEmail(@RequestBody ContactEmailDTO contactEmailDTO) throws URISyntaxException {
         log.debug("REST request to update ContactEmail : {}", contactEmailDTO);
-        if (contactEmailDTO.getId() == null) {
-            return createContactEmail(contactEmailDTO);
-        }
-        ContactEmailDTO result = contactEmailService.save(contactEmailDTO);
+
+        ContactEmailDTO result = contactEmailService.update(contactEmailDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, contactEmailDTO.getId().toString()))
             .body(result);

@@ -31,7 +31,7 @@
             </column>
 
             <column name="app_account_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="subscription_plan_id" type="bigint">
@@ -42,6 +42,6 @@
         </createTable>
         <dropDefaultValue tableName="company_subscription_plan" columnName="start_date" columnDataType="datetime"/>
         <dropDefaultValue tableName="company_subscription_plan" columnName="end_date" columnDataType="datetime"/>
-        
+
     </changeSet>
 </databaseChangeLog>

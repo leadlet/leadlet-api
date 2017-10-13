@@ -15,7 +15,7 @@ import com.leadlet.domain.enumeration.PhoneType;
 @Entity
 @Table(name = "contact_phone")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ContactPhone implements Serializable {
+public class ContactPhone extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

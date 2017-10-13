@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,10 @@ public class Team extends AbstractAccountSpecificEntity implements Serializable 
     @JoinColumn(unique = true)
     @JsonManagedReference
     private User leader;
+
+    @NotNull
+    @Column(nullable = false)
+    private boolean root = false;
 
     public Long getId() {
         return id;
@@ -66,6 +71,14 @@ public class Team extends AbstractAccountSpecificEntity implements Serializable 
 
     public void setLeader(User appUser) {
         this.leader = appUser;
+    }
+
+    public void setRoot(boolean root) {
+        this.root = root;
+    }
+
+    public boolean isRoot() {
+        return root;
     }
 
     @Override

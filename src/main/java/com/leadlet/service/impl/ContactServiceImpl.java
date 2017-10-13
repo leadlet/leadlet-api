@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ContactService;
 import com.leadlet.domain.Contact;
 import com.leadlet.repository.ContactRepository;
@@ -12,13 +13,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 
 /**
  * Service Implementation for managing Contact.
  */
 @Service
 @Transactional
-public class ContactServiceImpl implements ContactService{
+public class ContactServiceImpl implements ContactService {
 
     private final Logger log = LoggerFactory.getLogger(ContactServiceImpl.class);
 
@@ -41,46 +44,74 @@ public class ContactServiceImpl implements ContactService{
     public ContactDTO save(ContactDTO contactDTO) {
         log.debug("Request to save Contact : {}", contactDTO);
         Contact contact = contactMapper.toEntity(contactDTO);
+        contact.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
         contact = contactRepository.save(contact);
         return contactMapper.toDto(contact);
     }
 
     /**
-     *  Get all the contacts.
+     * Update a contact.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param contactDTO the entity to update
+     * @return the persisted entity
+     */
+    @Override
+    public ContactDTO update(ContactDTO contactDTO) {
+        log.debug("Request to update Contact : {}", contactDTO);
+
+        Contact contact = contactMapper.toEntity(contactDTO);
+        Contact contactFromDb = contactRepository.findOneByIdAndAppAccount(contact.getId(), SecurityUtils.getCurrentUserAppAccount());
+        if (contactFromDb != null) {
+            contact.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            contact = contactRepository.save(contact);
+            return contactMapper.toDto(contact);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Get all the contacts.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
     public Page<ContactDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Contacts");
-        return contactRepository.findAll(pageable)
+        return contactRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
             .map(contactMapper::toDto);
     }
 
     /**
-     *  Get one contact by id.
+     * Get one contact by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Override
     @Transactional(readOnly = true)
     public ContactDTO findOne(Long id) {
         log.debug("Request to get Contact : {}", id);
-        Contact contact = contactRepository.findOne(id);
+        Contact contact = contactRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
         return contactMapper.toDto(contact);
     }
 
     /**
-     *  Delete the  contact by id.
+     * Delete the  contact by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Contact : {}", id);
-        contactRepository.delete(id);
+
+        Contact contact = contactRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        if (contact != null) {
+            contactRepository.delete(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 }

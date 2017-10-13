@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ContactPhoneService;
 import com.leadlet.domain.ContactPhone;
 import com.leadlet.repository.ContactPhoneRepository;
@@ -12,13 +13,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 
 /**
  * Service Implementation for managing ContactPhone.
  */
 @Service
 @Transactional
-public class ContactPhoneServiceImpl implements ContactPhoneService{
+public class ContactPhoneServiceImpl implements ContactPhoneService {
 
     private final Logger log = LoggerFactory.getLogger(ContactPhoneServiceImpl.class);
 
@@ -41,46 +44,74 @@ public class ContactPhoneServiceImpl implements ContactPhoneService{
     public ContactPhoneDTO save(ContactPhoneDTO contactPhoneDTO) {
         log.debug("Request to save ContactPhone : {}", contactPhoneDTO);
         ContactPhone contactPhone = contactPhoneMapper.toEntity(contactPhoneDTO);
+        contactPhone.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
         contactPhone = contactPhoneRepository.save(contactPhone);
         return contactPhoneMapper.toDto(contactPhone);
     }
 
     /**
-     *  Get all the contactPhones.
+     * Update a contactPhone.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param contactPhoneDTO the entity to update
+     * @return the persisted entity
+     */
+    @Override
+    public ContactPhoneDTO update(ContactPhoneDTO contactPhoneDTO) {
+        log.debug("Request to save ContactPhone : {}", contactPhoneDTO);
+        ContactPhone contactPhone = contactPhoneMapper.toEntity(contactPhoneDTO);
+        ContactPhone contactPhoneFromDb = contactPhoneRepository.findOneByIdAndAppAccount(contactPhone.getId(), SecurityUtils.getCurrentUserAppAccount());
+
+        if (contactPhoneFromDb != null) {
+            contactPhone.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+            contactPhone = contactPhoneRepository.save(contactPhone);
+            return contactPhoneMapper.toDto(contactPhone);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Get all the contactPhones.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
     public Page<ContactPhoneDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ContactPhones");
-        return contactPhoneRepository.findAll(pageable)
+        return contactPhoneRepository.findByAppAccount(SecurityUtils.getCurrentUserAppAccount(), pageable)
             .map(contactPhoneMapper::toDto);
     }
 
     /**
-     *  Get one contactPhone by id.
+     * Get one contactPhone by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Override
     @Transactional(readOnly = true)
     public ContactPhoneDTO findOne(Long id) {
         log.debug("Request to get ContactPhone : {}", id);
-        ContactPhone contactPhone = contactPhoneRepository.findOne(id);
+        ContactPhone contactPhone = contactPhoneRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
         return contactPhoneMapper.toDto(contactPhone);
     }
 
     /**
-     *  Delete the  contactPhone by id.
+     * Delete the  contactPhone by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ContactPhone : {}", id);
-        contactPhoneRepository.delete(id);
+        ContactPhone contactPhone = contactPhoneRepository.findOneByIdAndAppAccount(id, SecurityUtils.getCurrentUserAppAccount());
+        if (contactPhone != null){
+            contactPhoneRepository.delete(id);
+        }
+        else {
+            throw new EntityNotFoundException();
+        }
     }
 }

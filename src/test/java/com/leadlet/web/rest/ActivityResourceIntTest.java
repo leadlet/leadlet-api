@@ -119,8 +119,8 @@ public class ActivityResourceIntTest {
         this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
         this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
 
-        this.xcompanyadminuser = this.userRepository.findOneByLogin("xcompanyadminuser").get();
-        this.ycompanyadminuser = this.userRepository.findOneByLogin("ycompanyadminuser").get();
+        this.xcompanyadminuser = this.userRepository.findOneByLogin("xcompanyadminuser@spacex.com").get();
+        this.ycompanyadminuser = this.userRepository.findOneByLogin("ycompanyadminuser@spacex.com").get();
 
     }
 
@@ -225,7 +225,7 @@ public class ActivityResourceIntTest {
 
         Activity activityY1 = new Activity();
         activityY1.setName("activityY1");
-        activityY1.setOrder(2);
+        activityY1.setOrder(3);
         activityY1.setMemo("activityMemoY1");
         activityY1.setPotentialValue(14.0);
         activityY1.setStartDate(DEFAULT_START_DATE);
@@ -307,7 +307,7 @@ public class ActivityResourceIntTest {
         Activity activityX1 = new Activity();
         activityX1.setName("activityX1");
         activityX1.setOrder(1);
-        activityX1.setAppAccount(yCompanyAppAccount);
+        activityX1.setAppAccount(xCompanyAppAccount);
         activityX1 = activityRepository.saveAndFlush(activityX1);
 
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
@@ -365,7 +365,7 @@ public class ActivityResourceIntTest {
         restActivityMockMvc.perform(put("/api/activities")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(activityDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isNotFound());
 
     }
 

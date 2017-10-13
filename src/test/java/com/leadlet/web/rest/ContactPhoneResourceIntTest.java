@@ -2,8 +2,11 @@ package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
 
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.ContactPhone;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.ContactPhoneRepository;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ContactPhoneService;
 import com.leadlet.service.dto.ContactPhoneDTO;
 import com.leadlet.service.mapper.ContactPhoneMapper;
@@ -18,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -51,6 +55,9 @@ public class ContactPhoneResourceIntTest {
     private ContactPhoneRepository contactPhoneRepository;
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
     private ContactPhoneMapper contactPhoneMapper;
 
     @Autowired
@@ -71,6 +78,8 @@ public class ContactPhoneResourceIntTest {
     private MockMvc restContactPhoneMockMvc;
 
     private ContactPhone contactPhone;
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
 
     @Before
     public void setup() {
@@ -80,6 +89,12 @@ public class ContactPhoneResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
+    public void setAppAccountsUsers() {
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
     }
 
     /**
@@ -102,6 +117,7 @@ public class ContactPhoneResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createContactPhone() throws Exception {
         int databaseSizeBeforeCreate = contactPhoneRepository.findAll().size();
 
@@ -118,10 +134,12 @@ public class ContactPhoneResourceIntTest {
         ContactPhone testContactPhone = contactPhoneList.get(contactPhoneList.size() - 1);
         assertThat(testContactPhone.getPhone()).isEqualTo(DEFAULT_PHONE);
         assertThat(testContactPhone.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testContactPhone.getAppAccount()).isEqualTo(xCompanyAppAccount);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createContactPhoneWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = contactPhoneRepository.findAll().size();
 
@@ -142,36 +160,72 @@ public class ContactPhoneResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllContactPhones() throws Exception {
-        // Initialize the database
-        contactPhoneRepository.saveAndFlush(contactPhone);
+
+        ContactPhone contactPhoneX1 = new ContactPhone();
+        contactPhoneX1.setPhone("contactPhoneX1");
+        contactPhoneX1.setType(DEFAULT_TYPE);
+        contactPhoneX1.setAppAccount(xCompanyAppAccount);
+        contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
+
+        ContactPhone contactPhoneX2 = new ContactPhone();
+        contactPhoneX2.setPhone("contactPhoneX2");
+        contactPhoneX2.setType(DEFAULT_TYPE);
+        contactPhoneX2.setAppAccount(xCompanyAppAccount);
+        contactPhoneX2 = contactPhoneRepository.saveAndFlush(contactPhoneX2);
+
 
         // Get all the contactPhoneList
         restContactPhoneMockMvc.perform(get("/api/contact-phones?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(contactPhone.getId().intValue())))
-            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+            .andExpect(jsonPath("$.[0].id").value(contactPhoneX2.getId()))
+            .andExpect(jsonPath("$.[0].phone").value(contactPhoneX2.getPhone()))
+            .andExpect(jsonPath("$.[0].type").value(contactPhoneX2.getType().name().toString()))
+            .andExpect(jsonPath("$.[1].id").value(contactPhoneX1.getId()))
+            .andExpect(jsonPath("$.[1].phone").value(contactPhoneX1.getPhone()))
+            .andExpect(jsonPath("$.[1].type").value(contactPhoneX1.getType().name().toString()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getContactPhone() throws Exception {
-        // Initialize the database
-        contactPhoneRepository.saveAndFlush(contactPhone);
+
+        ContactPhone contactPhoneX1 = new ContactPhone();
+        contactPhoneX1.setPhone("contactPhoneX1");
+        contactPhoneX1.setType(DEFAULT_TYPE);
+        contactPhoneX1.setAppAccount(xCompanyAppAccount);
+        contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
 
         // Get the contactPhone
-        restContactPhoneMockMvc.perform(get("/api/contact-phones/{id}", contactPhone.getId()))
+        restContactPhoneMockMvc.perform(get("/api/contact-phones/{id}", contactPhoneX1.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(contactPhone.getId().intValue()))
-            .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE.toString()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
+            .andExpect(jsonPath("$.id").value(contactPhoneX1.getId()))
+            .andExpect(jsonPath("$.phone").value(contactPhoneX1.getPhone()))
+            .andExpect(jsonPath("$.type").value(contactPhoneX1.getType().name().toString()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void getContactPhoneForOtherAccount() throws Exception {
+
+        ContactPhone contactPhoneY1 = new ContactPhone();
+        contactPhoneY1.setPhone("contactPhoneX1");
+        contactPhoneY1.setType(DEFAULT_TYPE);
+        contactPhoneY1.setAppAccount(yCompanyAppAccount);
+        contactPhoneY1 = contactPhoneRepository.saveAndFlush(contactPhoneY1);
+
+        restContactPhoneMockMvc.perform(get("/api/contact-phones/{id}", contactPhoneY1.getId()))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingContactPhone() throws Exception {
         // Get the contactPhone
         restContactPhoneMockMvc.perform(get("/api/contact-phones/{id}", Long.MAX_VALUE))
@@ -180,13 +234,19 @@ public class ContactPhoneResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateContactPhone() throws Exception {
-        // Initialize the database
-        contactPhoneRepository.saveAndFlush(contactPhone);
+
+        ContactPhone contactPhoneX1 = new ContactPhone();
+        contactPhoneX1.setPhone("contactPhoneX1");
+        contactPhoneX1.setType(DEFAULT_TYPE);
+        contactPhoneX1.setAppAccount(xCompanyAppAccount);
+        contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
+
         int databaseSizeBeforeUpdate = contactPhoneRepository.findAll().size();
 
         // Update the contactPhone
-        ContactPhone updatedContactPhone = contactPhoneRepository.findOne(contactPhone.getId());
+        ContactPhone updatedContactPhone = contactPhoneRepository.findOne(contactPhoneX1.getId());
         updatedContactPhone
             .phone(UPDATED_PHONE)
             .type(UPDATED_TYPE);
@@ -207,6 +267,33 @@ public class ContactPhoneResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void updateContactPhoneForOtherAccount() throws Exception {
+
+        ContactPhone contactPhoneY1 = new ContactPhone();
+        contactPhoneY1.setPhone("contactPhoneX1");
+        contactPhoneY1.setType(DEFAULT_TYPE);
+        contactPhoneY1.setAppAccount(yCompanyAppAccount);
+        contactPhoneY1 = contactPhoneRepository.saveAndFlush(contactPhoneY1);
+
+        int databaseSizeBeforeUpdate = contactPhoneRepository.findAll().size();
+
+        // Update the contactPhone
+        ContactPhone updatedContactPhone = contactPhoneRepository.findOne(contactPhoneY1.getId());
+        updatedContactPhone
+            .phone(UPDATED_PHONE)
+            .type(UPDATED_TYPE);
+        ContactPhoneDTO contactPhoneDTO = contactPhoneMapper.toDto(updatedContactPhone);
+
+        restContactPhoneMockMvc.perform(put("/api/contact-phones")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(contactPhoneDTO)))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateNonExistingContactPhone() throws Exception {
         int databaseSizeBeforeUpdate = contactPhoneRepository.findAll().size();
 
@@ -217,28 +304,53 @@ public class ContactPhoneResourceIntTest {
         restContactPhoneMockMvc.perform(put("/api/contact-phones")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(contactPhoneDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isNotFound());
 
         // Validate the ContactPhone in the database
         List<ContactPhone> contactPhoneList = contactPhoneRepository.findAll();
-        assertThat(contactPhoneList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(contactPhoneList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteContactPhone() throws Exception {
-        // Initialize the database
-        contactPhoneRepository.saveAndFlush(contactPhone);
+
+        ContactPhone contactPhoneX1 = new ContactPhone();
+        contactPhoneX1.setPhone("contactPhoneX1");
+        contactPhoneX1.setType(DEFAULT_TYPE);
+        contactPhoneX1.setAppAccount(xCompanyAppAccount);
+        contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
+
         int databaseSizeBeforeDelete = contactPhoneRepository.findAll().size();
 
         // Get the contactPhone
-        restContactPhoneMockMvc.perform(delete("/api/contact-phones/{id}", contactPhone.getId())
+        restContactPhoneMockMvc.perform(delete("/api/contact-phones/{id}", contactPhoneX1.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
         // Validate the database is empty
         List<ContactPhone> contactPhoneList = contactPhoneRepository.findAll();
         assertThat(contactPhoneList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("ycompanyadminuser@spacex.com")
+    public void deleteContactPhoneForOtherAccount() throws Exception {
+
+        ContactPhone contactPhoneX1 = new ContactPhone();
+        contactPhoneX1.setPhone("contactPhoneX1");
+        contactPhoneX1.setType(DEFAULT_TYPE);
+        contactPhoneX1.setAppAccount(xCompanyAppAccount);
+        contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
+
+        int databaseSizeBeforeDelete = contactPhoneRepository.findAll().size();
+
+        // Get the contactPhone
+        restContactPhoneMockMvc.perform(delete("/api/contact-phones/{id}", contactPhoneX1.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isNotFound());
     }
 
     @Test

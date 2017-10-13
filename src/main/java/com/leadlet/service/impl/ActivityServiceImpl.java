@@ -45,13 +45,10 @@ public class ActivityServiceImpl implements ActivityService {
 
         log.debug("Request to save Activity : {}", activityDTO);
         Activity activity = activityMapper.toEntity(activityDTO);
+        activity.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
+        activity = activityRepository.save(activity);
+        return activityMapper.toDto(activity);
 
-        if (activity.getAppAccount().equals(SecurityUtils.getCurrentUserAppAccount())) {
-            activity.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
-            activity = activityRepository.save(activity);
-            return activityMapper.toDto(activity);
-        }
-        return activityDTO;
     }
 
 
@@ -68,6 +65,8 @@ public class ActivityServiceImpl implements ActivityService {
         Activity activity = activityMapper.toEntity(activityDTO);
         Activity fromDb = activityRepository.findOneByIdAndAppAccount(activity.getId(), SecurityUtils.getCurrentUserAppAccount());
         if (fromDb != null) {
+            //TODO: appaccount todo'su..
+            activity.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
             activity = activityRepository.save(activity);
             return activityMapper.toDto(activity);
         } else {

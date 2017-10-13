@@ -73,10 +73,8 @@ public class TeamResource {
     @Timed
     public ResponseEntity<TeamDTO> updateTeam(@RequestBody TeamDTO teamDTO) throws URISyntaxException {
         log.debug("REST request to update Team : {}", teamDTO);
-        if (teamDTO.getId() == null) {
-            return createTeam(teamDTO);
-        }
-        TeamDTO result = teamService.save(teamDTO);
+
+        TeamDTO result = teamService.update(teamDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, teamDTO.getId().toString()))
             .body(result);

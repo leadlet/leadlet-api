@@ -7,12 +7,18 @@
         Added the constraints for entity ContactEmail.
     -->
     <changeSet id="20170820143150-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="contact_id"
                                  baseTableName="contact_email"
                                  constraintName="fk_contact_email_contact_id"
                                  referencedColumnNames="id"
                                  referencedTableName="contact"/>
+
+        <addForeignKeyConstraint baseColumnNames="app_account_id"
+                                 baseTableName="contact_email"
+                                 constraintName="fk_contact_email_app_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="app_account"/>
 
     </changeSet>
 </databaseChangeLog>

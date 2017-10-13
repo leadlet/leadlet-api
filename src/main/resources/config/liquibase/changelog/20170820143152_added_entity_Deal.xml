@@ -47,7 +47,7 @@
             </column>
 
             <column name="app_account_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="user_id" type="bigint">
@@ -56,6 +56,20 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/deals.csv"
+                  separator=";"
+                  tableName="deal">
+            <column name="id" type="NUMERIC"/>
+            <column name="jhi_order" type="NUMERIC"/>
+            <column name="potential_value" type="NUMERIC"/>
+            <column name="stage_id" type="NUMERIC" />
+            <column name="person_id" type="NUMERIC" />
+            <column name="organization_id" type="NUMERIC" />
+            <column name="app_account_id" type="NUMERIC" />
+            <column name="user_id" type="NUMERIC" />
+        </loadData>
 
     </changeSet>
 </databaseChangeLog>

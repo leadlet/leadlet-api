@@ -2,7 +2,9 @@ package com.leadlet.web.rest;
 
 import com.leadlet.LeadletApiApp;
 
+import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Stage;
+import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.StageRepository;
 import com.leadlet.service.StageService;
 import com.leadlet.service.dto.StageDTO;
@@ -18,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -47,6 +50,9 @@ public class StageResourceIntTest {
     private StageRepository stageRepository;
 
     @Autowired
+    private AppAccountRepository appAccountRepository;
+
+    @Autowired
     private StageMapper stageMapper;
 
     @Autowired
@@ -67,6 +73,8 @@ public class StageResourceIntTest {
     private MockMvc restStageMockMvc;
 
     private Stage stage;
+    private AppAccount xCompanyAppAccount;
+    private AppAccount yCompanyAppAccount;
 
     @Before
     public void setup() {
@@ -76,6 +84,12 @@ public class StageResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
+    public void setAppAccountsUsers() {
+        this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
+        this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
     }
 
     /**
@@ -97,6 +111,7 @@ public class StageResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createStage() throws Exception {
         int databaseSizeBeforeCreate = stageRepository.findAll().size();
 
@@ -112,10 +127,12 @@ public class StageResourceIntTest {
         assertThat(stageList).hasSize(databaseSizeBeforeCreate + 1);
         Stage testStage = stageList.get(stageList.size() - 1);
         assertThat(testStage.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testStage.getAppAccount()).isEqualTo(xCompanyAppAccount);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void createStageWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = stageRepository.findAll().size();
 
@@ -136,34 +153,69 @@ public class StageResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllStages() throws Exception {
-        // Initialize the database
-        stageRepository.saveAndFlush(stage);
+
+        Stage stageX1 = new Stage();
+        stageX1.setName("stageX1");
+        stageX1.setAppAccount(xCompanyAppAccount);
+        stageX1 = stageRepository.saveAndFlush(stageX1);
+
+        Stage stageX2 = new Stage();
+        stageX2.setName("stageX2");
+        stageX2.setAppAccount(xCompanyAppAccount);
+        stageX2 = stageRepository.saveAndFlush(stageX2);
+
+        Stage stageY1 = new Stage();
+        stageY1.setName("stageY1");
+        stageY1.setAppAccount(yCompanyAppAccount);
+        stageY1 = stageRepository.saveAndFlush(stageY1);
 
         // Get all the stageList
         restStageMockMvc.perform(get("/api/stages?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(stage.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(jsonPath("$.[0].id").value(stageX2.getId()))
+            .andExpect(jsonPath("$.[0].name").value(stageX2.getName()))
+            .andExpect(jsonPath("$.[1].id").value(stageX1.getId()))
+            .andExpect(jsonPath("$.[1].name").value(stageX1.getName()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getStage() throws Exception {
-        // Initialize the database
-        stageRepository.saveAndFlush(stage);
+
+        Stage stageX1 = new Stage();
+        stageX1.setName("stageX1");
+        stageX1.setAppAccount(xCompanyAppAccount);
+        stageX1 = stageRepository.saveAndFlush(stageX1);
 
         // Get the stage
-        restStageMockMvc.perform(get("/api/stages/{id}", stage.getId()))
+        restStageMockMvc.perform(get("/api/stages/{id}", stageX1.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(stage.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+            .andExpect(jsonPath("$.id").value(stageX1.getId()))
+            .andExpect(jsonPath("$.name").value(stageX1.getName()));
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void getStageForOtherAccount() throws Exception {
+
+        Stage stageY1 = new Stage();
+        stageY1.setName("stageY1");
+        stageY1.setAppAccount(yCompanyAppAccount);
+        stageY1 = stageRepository.saveAndFlush(stageY1);
+
+        restStageMockMvc.perform(get("/api/stages/{id}", stageY1.getId()))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getNonExistingStage() throws Exception {
         // Get the stage
         restStageMockMvc.perform(get("/api/stages/{id}", Long.MAX_VALUE))
@@ -172,13 +224,18 @@ public class StageResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateStage() throws Exception {
-        // Initialize the database
-        stageRepository.saveAndFlush(stage);
+
+        Stage stageX1 = new Stage();
+        stageX1.setName("stageX1");
+        stageX1.setAppAccount(xCompanyAppAccount);
+        stageX1 = stageRepository.saveAndFlush(stageX1);
+
         int databaseSizeBeforeUpdate = stageRepository.findAll().size();
 
         // Update the stage
-        Stage updatedStage = stageRepository.findOne(stage.getId());
+        Stage updatedStage = stageRepository.findOne(stageX1.getId());
         updatedStage
             .name(UPDATED_NAME);
         StageDTO stageDTO = stageMapper.toDto(updatedStage);
@@ -197,6 +254,31 @@ public class StageResourceIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void updateStageForOtherAccount() throws Exception {
+
+        Stage stageY1 = new Stage();
+        stageY1.setName("stageY1");
+        stageY1.setAppAccount(yCompanyAppAccount);
+        stageY1 = stageRepository.saveAndFlush(stageY1);
+
+        int databaseSizeBeforeUpdate = stageRepository.findAll().size();
+
+        // Update the stage
+        Stage updatedStage = stageRepository.findOne(stageY1.getId());
+        updatedStage
+            .name(UPDATED_NAME);
+        StageDTO stageDTO = stageMapper.toDto(updatedStage);
+
+        restStageMockMvc.perform(put("/api/stages")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(stageDTO)))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void updateNonExistingStage() throws Exception {
         int databaseSizeBeforeUpdate = stageRepository.findAll().size();
 
@@ -207,28 +289,50 @@ public class StageResourceIntTest {
         restStageMockMvc.perform(put("/api/stages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(stageDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isNotFound());
 
         // Validate the Stage in the database
         List<Stage> stageList = stageRepository.findAll();
-        assertThat(stageList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(stageList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
     public void deleteStage() throws Exception {
-        // Initialize the database
-        stageRepository.saveAndFlush(stage);
+
+        Stage stageX1 = new Stage();
+        stageX1.setName("stageX1");
+        stageX1.setAppAccount(xCompanyAppAccount);
+        stageX1 = stageRepository.saveAndFlush(stageX1);
+
         int databaseSizeBeforeDelete = stageRepository.findAll().size();
 
         // Get the stage
-        restStageMockMvc.perform(delete("/api/stages/{id}", stage.getId())
+        restStageMockMvc.perform(delete("/api/stages/{id}", stageX1.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
         // Validate the database is empty
         List<Stage> stageList = stageRepository.findAll();
         assertThat(stageList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("ycompanyadminuser@spacex.com")
+    public void deleteStageForOtherAccount() throws Exception {
+
+        Stage stageX1 = new Stage();
+        stageX1.setName("stageX1");
+        stageX1.setAppAccount(xCompanyAppAccount);
+        stageX1 = stageRepository.saveAndFlush(stageX1);
+
+        int databaseSizeBeforeDelete = stageRepository.findAll().size();
+
+        restStageMockMvc.perform(delete("/api/stages/{id}", stageX1.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isNotFound());
     }
 
     @Test

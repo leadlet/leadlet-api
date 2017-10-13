@@ -63,6 +63,8 @@ public class PipelineServiceImpl implements PipelineService {
         Pipeline pipeline = pipelineMapper.toEntity(pipelineDTO);
         Pipeline pipelineFromDb = pipelineRepository.findOneByIdAndAppAccount(pipeline.getId(), SecurityUtils.getCurrentUserAppAccount());
         if (pipelineFromDb != null) {
+            //TODO: appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
+            pipeline.setAppAccount(SecurityUtils.getCurrentUserAppAccount());
             pipeline = pipelineRepository.save(pipeline);
             return pipelineMapper.toDto(pipeline);
         } else {

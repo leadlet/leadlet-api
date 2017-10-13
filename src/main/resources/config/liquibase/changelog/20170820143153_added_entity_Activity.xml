@@ -59,7 +59,7 @@
             </column>
 
             <column name="app_account_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="user_id" type="bigint">
@@ -70,6 +70,6 @@
         </createTable>
         <dropDefaultValue tableName="activity" columnName="start_date" columnDataType="datetime"/>
         <dropDefaultValue tableName="activity" columnName="end_date" columnDataType="datetime"/>
-        
+
     </changeSet>
 </databaseChangeLog>

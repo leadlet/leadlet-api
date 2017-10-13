@@ -43,10 +43,28 @@
             </column>
 
             <column name="app_account_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/contacts.csv"
+                  separator=";"
+                  tableName="contact">
+            <column name="id" type="NUMERIC"/>
+            <column name="is_contact_person" type="boolean" />
+            <column name="organization_id" type="NUMERIC" />
+            <column name="app_account_id" type="NUMERIC" />
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/organizations.csv"
+                  separator=";"
+                  tableName="contact">
+            <column name="id" type="NUMERIC"/>
+            <column name="is_contact_person" type="boolean" />
+            <column name="app_account_id" type="NUMERIC" />
+        </loadData>
 
     </changeSet>
 </databaseChangeLog>
