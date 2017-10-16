@@ -1,5 +1,6 @@
 package com.leadlet.service;
 
+import com.leadlet.domain.enumeration.ContactType;
 import com.leadlet.service.dto.ContactDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,14 @@ public interface ContactService {
      *  @return the list of entities
      */
     Page<ContactDTO> findAll(Pageable pageable);
+
+    /**
+     *  Get all the contacts.
+     *
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    Page<ContactDTO> findByType(ContactType type, Pageable pageable);
 
     /**
      *  Get the "id" contact.

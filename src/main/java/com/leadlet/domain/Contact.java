@@ -32,6 +32,9 @@ public class Contact implements Serializable {
     @Column(name = "location")
     private String location;
 
+    @Column(name = "title")
+    private String title;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "jhi_type")
     private ContactType type;
@@ -220,6 +223,14 @@ public class Contact implements Serializable {
         this.appAccount = appAccount;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -245,6 +256,7 @@ public class Contact implements Serializable {
         return "Contact{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", title='" + getTitle() + "'" +
             ", location='" + getLocation() + "'" +
             ", type='" + getType() + "'" +
             ", isContactPerson='" + isIsContactPerson() + "'" +

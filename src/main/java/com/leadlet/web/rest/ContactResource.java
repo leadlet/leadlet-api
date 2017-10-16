@@ -1,6 +1,8 @@
 package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.leadlet.domain.Contact;
+import com.leadlet.domain.enumeration.ContactType;
 import com.leadlet.service.ContactService;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
@@ -89,7 +91,7 @@ public class ContactResource {
     @Timed
     public ResponseEntity<List<ContactDTO>> getAllContacts(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Contacts");
-        Page<ContactDTO> page = contactService.findAll(pageable);
+        Page<ContactDTO> page = contactService.findByType(ContactType.PERSON, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

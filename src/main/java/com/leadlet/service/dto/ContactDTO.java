@@ -3,8 +3,12 @@ package com.leadlet.service.dto;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
+
+import com.leadlet.domain.Contact;
+import com.leadlet.domain.ContactPhone;
 import com.leadlet.domain.enumeration.ContactType;
 
 /**
@@ -18,11 +22,17 @@ public class ContactDTO implements Serializable {
 
     private String location;
 
+    private String title;
+
     private ContactType type;
 
     private Boolean isContactPerson;
 
-    private Long organizationId;
+    private Contact organization;
+
+    private List<ContactPhoneDTO> phones;
+
+    private List<ContactEmailDTO> emails;
 
     public Long getId() {
         return id;
@@ -64,12 +74,36 @@ public class ContactDTO implements Serializable {
         this.isContactPerson = isContactPerson;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public Contact getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(Long contactId) {
-        this.organizationId = contactId;
+    public void setOrganization(Contact organization) {
+        this.organization = organization;
+    }
+
+    public List<ContactEmailDTO> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<ContactEmailDTO> emails) {
+        this.emails = emails;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public List<ContactPhoneDTO> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<ContactPhoneDTO> phones) {
+        this.phones = phones;
     }
 
     @Override
@@ -99,6 +133,7 @@ public class ContactDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", location='" + getLocation() + "'" +
+            ", title='" + getTitle() + "'" +
             ", type='" + getType() + "'" +
             ", isContactPerson='" + isIsContactPerson() + "'" +
             "}";

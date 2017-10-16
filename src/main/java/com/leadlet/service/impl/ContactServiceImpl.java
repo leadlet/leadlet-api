@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.enumeration.ContactType;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ContactService;
 import com.leadlet.domain.Contact;
@@ -82,6 +83,14 @@ public class ContactServiceImpl implements ContactService {
         log.debug("Request to get all Contacts");
         return contactRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(contactMapper::toDto);
+    }
+
+    @Override
+    public Page<ContactDTO> findByType(ContactType type, Pageable pageable) {
+        log.debug("Request to get all Contacts");
+        return contactRepository.findByTypeAndAppAccount_Id(type, SecurityUtils.getCurrentUserAppAccountId(), pageable)
+            .map(contactMapper::toDto);
+
     }
 
     /**
