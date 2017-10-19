@@ -1,9 +1,12 @@
 package com.leadlet.service;
 
 import com.leadlet.domain.enumeration.ContactType;
+import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.service.dto.ContactDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * Service Interface for managing Contact.
@@ -56,4 +59,6 @@ public interface ContactService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    Page<ContactDTO> search(List<SearchCriteria> criteriaList, Pageable pageable);
 }

@@ -3,6 +3,7 @@ package com.leadlet.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.domain.Contact;
 import com.leadlet.domain.enumeration.ContactType;
+import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.service.ContactService;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
@@ -87,14 +88,30 @@ public class ContactResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of contacts in body
      */
-    @GetMapping("/contacts")
+    @PostMapping("/contacts2")
     @Timed
-    public ResponseEntity<List<ContactDTO>> getAllContacts(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<ContactDTO>> getAllContacts2(@RequestBody List<SearchCriteria> q, @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Contacts");
-        Page<ContactDTO> page = contactService.findByType(ContactType.PERSON, pageable);
+        Page<ContactDTO> page = contactService.search(q, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    /**
+     * GET  /contacts : get all the contacts.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of contacts in body
+     */
+    @GetMapping("/contacts")
+    @Timed
+    public ResponseEntity<List<ContactDTO>> getAllContacts(@ApiParam List<SearchCriteria> q, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Contacts");
+        Page<ContactDTO> page = contactService.search(q, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 
     /**
      * GET  /contacts/:id : get the "id" contact.

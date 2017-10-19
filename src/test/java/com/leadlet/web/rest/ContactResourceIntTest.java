@@ -6,6 +6,7 @@ import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Contact;
 import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.ContactRepository;
+import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ContactService;
 import com.leadlet.service.dto.ContactDTO;
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -211,6 +213,22 @@ public class ContactResourceIntTest {
             .andExpect(jsonPath("$.[1].location").value(contactX1.getLocation()))
             .andExpect(jsonPath("$.[1].type").value(contactX1.getType().name().toString()))
             .andExpect(jsonPath("$.[1].isContactPerson").value(contactX1.getContactPerson().toString()));
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void getAllContactsWithFilter() throws Exception {
+
+        List<SearchCriteria> q = new ArrayList<>();
+        q.add(new SearchCriteria("name",":","Jay Milburne"));
+        q.add(new SearchCriteria("type",":",ContactType.PERSON));
+
+        restContactMockMvc.perform(post("/api/contacts2")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(q)))
+            .andExpect(status().isCreated());
+
     }
 
     @Test

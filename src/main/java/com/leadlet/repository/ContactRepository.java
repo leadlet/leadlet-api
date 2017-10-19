@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ContactRepository extends JpaRepository<Contact,Long> {
+public interface ContactRepository extends JpaRepository<Contact,Long> ,  JpaSpecificationExecutor<Contact> {
     Page<Contact> findByAppAccount_Id(Long appAccountId, Pageable page);
     Page<Contact> findByTypeAndAppAccount_Id(ContactType type, Long appAccountId, Pageable page);
 
