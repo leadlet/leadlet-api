@@ -38,14 +38,6 @@ public interface ContactService {
     Page<ContactDTO> findAll(Pageable pageable);
 
     /**
-     *  Get all the contacts.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
-    Page<ContactDTO> findByType(ContactType type, Pageable pageable);
-
-    /**
      *  Get the "id" contact.
      *
      *  @param id the id of the entity

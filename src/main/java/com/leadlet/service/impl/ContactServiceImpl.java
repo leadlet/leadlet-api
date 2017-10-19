@@ -90,14 +90,6 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Page<ContactDTO> findByType(ContactType type, Pageable pageable) {
-        log.debug("Request to get all Contacts");
-        return contactRepository.findByTypeAndAppAccount_Id(type, SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(contactMapper::toDto);
-
-    }
-
-    @Override
     public Page<ContactDTO> search(List<SearchCriteria> criteriaList, Pageable pageable) {
         log.debug("Request to get all Contacts");
         SpecificationsBuilder builder = new SpecificationsBuilder();
@@ -105,6 +97,10 @@ public class ContactServiceImpl implements ContactService {
         for(SearchCriteria criteria: criteriaList){
             builder.with(criteria);
         }
+
+        // TODO add accound criteria
+        // builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
+
         Specification<Contact> spec = builder.build();
 
         return contactRepository.findAll(spec, pageable)

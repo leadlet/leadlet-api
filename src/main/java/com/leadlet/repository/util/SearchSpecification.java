@@ -2,6 +2,7 @@ package com.leadlet.repository.util;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.management.Descriptor;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -33,9 +34,10 @@ public class SearchSpecification<T> implements Specification<T> {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
                 return builder.like(
                   root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
-            } else if (root.get(criteria.getKey()).getJavaType().getClass() instanceof Class<Enum<?>>) {
-            } else {
-                return builder.equal(root.get(criteria.getKey()), criteria.getValue());
+            }
+            else {
+                Class c = root.get(criteria.getKey()).getJavaType();
+                return builder.equal(root.get(criteria.getKey()), Enum.valueOf(c,criteria.getValue().toString()));
             }
         }
         return null;

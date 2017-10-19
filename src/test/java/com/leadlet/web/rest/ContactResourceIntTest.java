@@ -220,14 +220,12 @@ public class ContactResourceIntTest {
     @WithUserDetails("xcompanyadminuser@spacex.com")
     public void getAllContactsWithFilter() throws Exception {
 
-        List<SearchCriteria> q = new ArrayList<>();
-        q.add(new SearchCriteria("name",":","Jay Milburne"));
-        q.add(new SearchCriteria("type",":",ContactType.PERSON));
-
-        restContactMockMvc.perform(post("/api/contacts2")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(q)))
-            .andExpect(status().isCreated());
+        // Get all the contactList
+        restContactMockMvc.perform(get("/api/contacts?sort=id,desc&filter=name:Jay%20Milburne,type:PERSON"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[0].name").value("Jay Milburne"))
+        ;
 
     }
 

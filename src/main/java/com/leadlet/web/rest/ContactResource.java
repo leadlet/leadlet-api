@@ -8,6 +8,7 @@ import com.leadlet.service.ContactService;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
 import com.leadlet.service.dto.ContactDTO;
+import com.leadlet.web.rest.util.ParameterUtil;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -22,8 +23,11 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * REST controller for managing Contact.
@@ -82,20 +86,6 @@ public class ContactResource {
             .body(result);
     }
 
-    /**
-     * GET  /contacts : get all the contacts.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of contacts in body
-     */
-    @PostMapping("/contacts2")
-    @Timed
-    public ResponseEntity<List<ContactDTO>> getAllContacts2(@RequestBody List<SearchCriteria> q, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Contacts");
-        Page<ContactDTO> page = contactService.search(q, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
 
     /**
      * GET  /contacts : get all the contacts.
@@ -105,9 +95,10 @@ public class ContactResource {
      */
     @GetMapping("/contacts")
     @Timed
-    public ResponseEntity<List<ContactDTO>> getAllContacts(@ApiParam List<SearchCriteria> q, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<ContactDTO>> getAllContacts(@ApiParam String filter, @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Contacts");
-        Page<ContactDTO> page = contactService.search(q, pageable);
+
+        Page<ContactDTO> page = contactService.search(ParameterUtil.createCriterias(filter), pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
