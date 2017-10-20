@@ -11,6 +11,8 @@ import com.leadlet.domain.Contact;
 import com.leadlet.domain.ContactPhone;
 import com.leadlet.domain.enumeration.ContactType;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * A DTO for the Contact entity.
  */

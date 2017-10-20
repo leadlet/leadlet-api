@@ -18,8 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -55,7 +57,7 @@ public class ContactResource {
      */
     @PostMapping("/contacts")
     @Timed
-    public ResponseEntity<ContactDTO> createContact(@RequestBody ContactDTO contactDTO) throws URISyntaxException {
+    public ResponseEntity<ContactDTO> createContact(@Validated @RequestBody ContactDTO contactDTO) throws URISyntaxException {
         log.debug("REST request to save Contact : {}", contactDTO);
         if (contactDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new contact cannot already have an ID")).body(null);
