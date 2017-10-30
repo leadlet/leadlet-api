@@ -27,6 +27,10 @@ public class Stage extends AbstractAccountSpecificEntity implements Serializable
     @Column(name = "name")
     private String name;
 
+    @Column(name = "color")
+    private String color;
+
+
     @ManyToOne
     private Pipeline pipeline;
 
@@ -49,6 +53,15 @@ public class Stage extends AbstractAccountSpecificEntity implements Serializable
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     @Override
@@ -84,6 +97,7 @@ public class Stage extends AbstractAccountSpecificEntity implements Serializable
         return "Stage{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", color='" + getColor() + "'" +
             "}";
     }
 }
