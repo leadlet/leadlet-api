@@ -15,6 +15,8 @@ public class StageDTO implements Serializable {
 
     private String name;
 
+    private Long pipelineId;
+
     public Long getId() {
         return id;
     }
@@ -29,6 +31,14 @@ public class StageDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getPipelineId() {
+        return pipelineId;
+    }
+
+    public void setPipelineId(Long pipelineId) {
+        this.pipelineId = pipelineId;
     }
 
     @Override
@@ -57,6 +67,7 @@ public class StageDTO implements Serializable {
         return "StageDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", pipelineId='" + getPipelineId() + "'" +
             "}";
     }
 }

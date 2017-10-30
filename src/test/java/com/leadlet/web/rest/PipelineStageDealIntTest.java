@@ -15,6 +15,7 @@ import com.leadlet.service.PipelineService;
 import com.leadlet.service.StageService;
 import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.PipelineDTO;
+import com.leadlet.service.dto.StageDTO;
 import com.leadlet.service.mapper.DealMapper;
 import com.leadlet.service.mapper.PipelineMapper;
 import com.leadlet.service.mapper.StageMapper;
@@ -298,4 +299,30 @@ public class PipelineStageDealIntTest {
         .content(TestUtil.convertObjectToJsonBytes(dealDTO)))
         .andExpect(status().isNotFound());  //TODO: Spring JPA find and update.. DealResource'da update fonk. guncellenmeli
     }
+
+    @Test
+    @Transactional
+    @WithUserDetails("xcompanyadminuser@spacex.com")
+    public void testStageMapper() throws Exception {
+
+        Pipeline p1 = new Pipeline();
+        p1.setAppAccount(xCompanyAppAccount);
+        p1.setName("Test Pipeline 1");
+        p1.setOrder(1);
+
+        p1 = pipelineRepository.save(p1);
+
+        Stage s1 = new Stage();
+        s1.setAppAccount(xCompanyAppAccount);
+        s1.setPipeline(p1);
+        s1.setName("Test Stage 1");
+
+        s1 = stageRepository.save(s1);
+
+        StageDTO stageDTO = stageMapper.toDto(s1);
+
+        assertThat(stageDTO.getName()).isEqualTo(s1.getName());
+        assertThat(stageDTO.getPipelineId()).isEqualTo(p1.getId());
+    }
+
 }
