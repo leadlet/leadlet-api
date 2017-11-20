@@ -116,9 +116,18 @@ public class StageResource {
      */
     @DeleteMapping("/stages/{id}")
     @Timed
-    public ResponseEntity<Void> deleteStage(@PathVariable Long id) {
+    public ResponseEntity<StageDTO> deleteStage(@PathVariable Long id) {
         log.debug("REST request to delete Stage : {}", id);
         stageService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+
+        // TODO ygokirmak dirty-fix for null response body
+
+        StageDTO result = new StageDTO();
+        result.setId(id);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
+            .body(result);
+
     }
 }
