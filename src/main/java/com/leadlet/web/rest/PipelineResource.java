@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.PipelineService;
+import com.leadlet.service.dto.StageDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
 import com.leadlet.service.dto.PipelineDTO;
@@ -119,10 +120,17 @@ public class PipelineResource {
      */
     @DeleteMapping("/pipelines/{id}")
     @Timed
-    public ResponseEntity<Void> deletePipeline(@PathVariable Long id) {
+    public ResponseEntity<PipelineDTO> deletePipeline(@PathVariable Long id) {
         log.debug("REST request to delete Pipeline : {}", id);
 
         pipelineService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+
+        PipelineDTO result = new PipelineDTO();
+        result.setId(id);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
+            .body(result);
+
     }
 }
