@@ -1,6 +1,7 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.AppAccount;
+import com.leadlet.repository.StageRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.PipelineService;
 import com.leadlet.domain.Pipeline;
@@ -28,11 +29,15 @@ public class PipelineServiceImpl implements PipelineService {
 
     private final PipelineRepository pipelineRepository;
 
+    private final StageRepository stageRepository;
+
+
     private final PipelineMapper pipelineMapper;
 
-    public PipelineServiceImpl(PipelineRepository pipelineRepository, PipelineMapper pipelineMapper) {
+    public PipelineServiceImpl(PipelineRepository pipelineRepository, StageRepository stageRepository, PipelineMapper pipelineMapper) {
         this.pipelineRepository = pipelineRepository;
         this.pipelineMapper = pipelineMapper;
+        this.stageRepository = stageRepository;
     }
 
     /**
@@ -107,7 +112,11 @@ public class PipelineServiceImpl implements PipelineService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Pipeline : {}", id);
+        log.debug("pipeline_delete: request to delete pipeline : {}", id);
+
+        log.debug("pipeline_delete: deleting stages for pipeine: {} started", id);
+        stageRepository.deleteByAppAccount_IdAndPipeline_Id(SecurityUtils.getCurrentUserAppAccountId(), id);
+        log.debug("pipeline_delete: deleting stages for pipeine: {} finished", id);
 
         Pipeline pipelineFormDb = pipelineRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (pipelineFormDb != null) {

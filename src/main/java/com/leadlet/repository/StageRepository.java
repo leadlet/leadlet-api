@@ -18,5 +18,6 @@ public interface StageRepository extends JpaRepository<Stage,Long> {
     Page<Stage> findByAppAccount_Id(Long appAccountId, Pageable page);
     Stage findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
+    void deleteByAppAccount_IdAndPipeline_Id(Long appAccountId, Long pipelineId);
 
 }

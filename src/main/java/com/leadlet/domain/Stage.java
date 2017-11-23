@@ -30,7 +30,6 @@ public class Stage extends AbstractAccountSpecificEntity implements Serializable
     @Column(name = "color")
     private String color;
 
-
     @ManyToOne
     private Pipeline pipeline;
 
