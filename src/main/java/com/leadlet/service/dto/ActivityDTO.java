@@ -1,10 +1,10 @@
 package com.leadlet.service.dto;
 
 
+import com.leadlet.domain.enumeration.ActivityType;
+
 import java.time.ZonedDateTime;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -14,17 +14,15 @@ public class ActivityDTO implements Serializable {
 
     private Long id;
 
-    private String name;
-
-    private Integer order;
+    private String title;
 
     private String memo;
 
-    private Double potentialValue;
+    private ZonedDateTime start;
 
-    private ZonedDateTime startDate;
+    private ZonedDateTime end;
 
-    private ZonedDateTime endDate;
+    private ActivityType type;
 
     private Long dealId;
 
@@ -42,20 +40,12 @@ public class ActivityDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getOrder() {
-        return order;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getMemo() {
@@ -66,28 +56,28 @@ public class ActivityDTO implements Serializable {
         this.memo = memo;
     }
 
-    public Double getPotentialValue() {
-        return potentialValue;
+    public ActivityType getType() {
+        return type;
     }
 
-    public void setPotentialValue(Double potentialValue) {
-        this.potentialValue = potentialValue;
+    public void setType(ActivityType type) {
+        this.type = type;
     }
 
-    public ZonedDateTime getStartDate() {
-        return startDate;
+    public ZonedDateTime getStart() {
+        return start;
     }
 
-    public void setStartDate(ZonedDateTime startDate) {
-        this.startDate = startDate;
+    public void setStart(ZonedDateTime start) {
+        this.start = start;
     }
 
-    public ZonedDateTime getEndDate() {
-        return endDate;
+    public ZonedDateTime getEnd() {
+        return end;
     }
 
-    public void setEndDate(ZonedDateTime endDate) {
-        this.endDate = endDate;
+    public void setEnd(ZonedDateTime end) {
+        this.end = end;
     }
 
     public Long getDealId() {
@@ -146,13 +136,16 @@ public class ActivityDTO implements Serializable {
     @Override
     public String toString() {
         return "ActivityDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", order='" + getOrder() + "'" +
-            ", memo='" + getMemo() + "'" +
-            ", potentialValue='" + getPotentialValue() + "'" +
-            ", startDate='" + getStartDate() + "'" +
-            ", endDate='" + getEndDate() + "'" +
-            "}";
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", memo='" + memo + '\'' +
+            ", start=" + start +
+            ", end=" + end +
+            ", type=" + type +
+            ", dealId=" + dealId +
+            ", personId=" + personId +
+            ", organizationId=" + organizationId +
+            ", userId=" + userId +
+            '}';
     }
 }

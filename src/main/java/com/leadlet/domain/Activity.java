@@ -1,10 +1,12 @@
 package com.leadlet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.leadlet.domain.enumeration.ActivityType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -25,23 +27,22 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "jhi_order")
-    private Integer order;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "memo")
     private String memo;
 
-    @Column(name = "potential_value")
-    private Double potentialValue;
+    @Column(name = "start")
+    private ZonedDateTime start;
 
-    @Column(name = "start_date")
-    private ZonedDateTime startDate;
+    @Column(name = "end")
+    private ZonedDateTime end;
 
-    @Column(name = "end_date")
-    private ZonedDateTime endDate;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type" , nullable = false)
+    @NotNull
+    private ActivityType type;
 
     @OneToMany(mappedBy = "activity")
     @JsonIgnore
@@ -60,6 +61,10 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     @ManyToOne
     private User user;
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
     public Long getId() {
         return id;
     }
@@ -68,103 +73,48 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public Activity name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getOrder() {
-        return order;
-    }
-
-    public Activity order(Integer order) {
-        this.order = order;
-        return this;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getMemo() {
         return memo;
     }
 
-    public Activity memo(String memo) {
-        this.memo = memo;
-        return this;
-    }
-
     public void setMemo(String memo) {
         this.memo = memo;
     }
 
-    public Double getPotentialValue() {
-        return potentialValue;
+    public ZonedDateTime getStart() {
+        return start;
     }
 
-    public Activity potentialValue(Double potentialValue) {
-        this.potentialValue = potentialValue;
-        return this;
+    public void setStart(ZonedDateTime start) {
+        this.start = start;
     }
 
-    public void setPotentialValue(Double potentialValue) {
-        this.potentialValue = potentialValue;
+    public ZonedDateTime getEnd() {
+        return end;
     }
 
-    public ZonedDateTime getStartDate() {
-        return startDate;
+    public void setEnd(ZonedDateTime start) {
+        this.end = start;
     }
 
-    public Activity startDate(ZonedDateTime startDate) {
-        this.startDate = startDate;
-        return this;
+    public ActivityType getType() {
+        return type;
     }
 
-    public void setStartDate(ZonedDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public ZonedDateTime getEndDate() {
-        return endDate;
-    }
-
-    public Activity endDate(ZonedDateTime endDate) {
-        this.endDate = endDate;
-        return this;
-    }
-
-    public void setEndDate(ZonedDateTime endDate) {
-        this.endDate = endDate;
+    public void setType(ActivityType type) {
+        this.type = type;
     }
 
     public Set<Document> getDocuments() {
         return documents;
-    }
-
-    public Activity documents(Set<Document> documents) {
-        this.documents = documents;
-        return this;
-    }
-
-    public Activity addDocument(Document document) {
-        this.documents.add(document);
-        document.setActivity(this);
-        return this;
-    }
-
-    public Activity removeDocument(Document document) {
-        this.documents.remove(document);
-        document.setActivity(null);
-        return this;
     }
 
     public void setDocuments(Set<Document> documents) {
@@ -175,11 +125,6 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         return deal;
     }
 
-    public Activity deal(Deal deal) {
-        this.deal = deal;
-        return this;
-    }
-
     public void setDeal(Deal deal) {
         this.deal = deal;
     }
@@ -188,35 +133,20 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         return person;
     }
 
-    public Activity person(Contact contact) {
-        this.person = contact;
-        return this;
-    }
-
-    public void setPerson(Contact contact) {
-        this.person = contact;
+    public void setPerson(Contact person) {
+        this.person = person;
     }
 
     public Contact getOrganization() {
         return organization;
     }
 
-    public Activity organization(Contact contact) {
-        this.organization = contact;
-        return this;
-    }
-
-    public void setOrganization(Contact contact) {
-        this.organization = contact;
+    public void setOrganization(Contact organization) {
+        this.organization = organization;
     }
 
     public User getUser() {
         return user;
-    }
-
-    public Activity user(User user) {
-        this.user = user;
-        return this;
     }
 
     public void setUser(User user) {
@@ -224,35 +154,19 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Activity activity = (Activity) o;
-        if (activity.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), activity.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
     public String toString() {
         return "Activity{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", order='" + getOrder() + "'" +
-            ", memo='" + getMemo() + "'" +
-            ", potentialValue='" + getPotentialValue() + "'" +
-            ", startDate='" + getStartDate() + "'" +
-            ", endDate='" + getEndDate() + "'" +
-            "}";
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", memo='" + memo + '\'' +
+            ", start=" + start +
+            ", end=" + end +
+            ", type=" + type +
+            ", documents=" + documents +
+            ", deal=" + deal +
+            ", person=" + person +
+            ", organization=" + organization +
+            ", user=" + user +
+            '}';
     }
 }

@@ -1,0 +1,3 @@
+id;title;memo;start;end;type;app_account_id;user_id
+1;Business Lunch;Possible big sales;2017-10-21T10:10:11;2017-11-21T10:10:11;MEETING;2;2
+2;Call Manager;Possible big sales;2017-10-20T10:10:11;2017-11-21T10:10:11;MEETING;2;2
