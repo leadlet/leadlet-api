@@ -2,6 +2,7 @@ package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.ActivityService;
+import com.leadlet.service.dto.StageDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
 import com.leadlet.service.dto.ActivityDTO;
@@ -116,10 +117,16 @@ public class ActivityResource {
      */
     @DeleteMapping("/activities/{id}")
     @Timed
-    public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
+    public ResponseEntity<ActivityDTO> deleteActivity(@PathVariable Long id) {
         log.debug("REST request to delete Activity : {}", id);
-
         activityService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+
+        ActivityDTO result = new ActivityDTO();
+        result.setId(id);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
+            .body(result);
+
     }
 }
