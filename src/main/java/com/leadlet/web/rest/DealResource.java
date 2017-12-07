@@ -2,6 +2,7 @@ package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.DealService;
+import com.leadlet.service.dto.ActivityDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
 import com.leadlet.service.dto.DealDTO;
@@ -116,9 +117,15 @@ public class DealResource {
      */
     @DeleteMapping("/deals/{id}")
     @Timed
-    public ResponseEntity<Void> deleteDeal(@PathVariable Long id) {
+    public ResponseEntity<DealDTO> deleteDeal(@PathVariable Long id) {
         log.debug("REST request to delete Deal : {}", id);
         dealService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+
+        DealDTO result = new DealDTO();
+        result.setId(id);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
+            .body(result);
     }
 }
