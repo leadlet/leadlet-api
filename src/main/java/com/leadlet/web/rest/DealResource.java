@@ -3,6 +3,7 @@ package com.leadlet.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.DealService;
 import com.leadlet.service.dto.ActivityDTO;
+import com.leadlet.service.dto.DealMoveDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
 import com.leadlet.service.dto.DealDTO;
@@ -57,6 +58,25 @@ public class DealResource {
         DealDTO result = dealService.save(dealDTO);
         return ResponseEntity.created(new URI("/api/deals/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * POST  /deals : Create a new deal.
+     *
+     * @param dealMoveDTO the dealDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new dealDTO, or with status 400 (Bad Request) if the deal has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/deals/move")
+    @Timed
+    public ResponseEntity<DealDTO> moveDeal(@RequestBody DealMoveDTO dealMoveDTO) throws URISyntaxException {
+        log.debug("REST request to move Deal : {}", dealMoveDTO);
+
+        dealService.move(dealMoveDTO);
+        DealDTO result = dealService.findOne(dealMoveDTO.getId());
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealMoveDTO.getId().toString()))
             .body(result);
     }
 

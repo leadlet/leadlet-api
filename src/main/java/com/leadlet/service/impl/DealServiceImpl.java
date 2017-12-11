@@ -5,6 +5,7 @@ import com.leadlet.service.DealService;
 import com.leadlet.domain.Deal;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.service.dto.DealDTO;
+import com.leadlet.service.dto.DealMoveDTO;
 import com.leadlet.service.mapper.DealMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,5 +114,17 @@ public class DealServiceImpl implements DealService {
         } else {
             throw new EntityNotFoundException();
         }
+    }
+
+    @Override
+    public void move(DealMoveDTO dealMoveDTO) {
+        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(dealMoveDTO.getId(), SecurityUtils.getCurrentUserAppAccountId());
+
+        if (dealFromDb == null) {
+            throw new EntityNotFoundException();
+        }
+
+        dealRepository.shiftDealsUp(SecurityUtils.getCurrentUserAppAccountId(),dealMoveDTO.getNewStageId(),dealMoveDTO.getNewOrder());
+        dealRepository.setStageAndOrder(dealFromDb.getId(),dealMoveDTO.getNewStageId(),dealMoveDTO.getNewOrder());
     }
 }

@@ -1,6 +1,7 @@
 package com.leadlet.service;
 
 import com.leadlet.service.dto.DealDTO;
+import com.leadlet.service.dto.DealMoveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -47,4 +48,12 @@ public interface DealService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Save a deal.
+     *
+     * @param dealMoveDTO the entity to save
+     * @return the persisted entity
+     */
+    void move(DealMoveDTO dealMoveDTO);
 }
