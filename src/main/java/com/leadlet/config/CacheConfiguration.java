@@ -58,7 +58,6 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.Contact.class.getName() + ".emails", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Contact.class.getName() + ".documents", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Document.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.ContactEmail.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.ContactPhone.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Deal.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Activity.class.getName(), jcacheConfiguration);

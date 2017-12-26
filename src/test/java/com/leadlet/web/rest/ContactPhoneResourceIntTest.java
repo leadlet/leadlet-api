@@ -48,7 +48,7 @@ public class ContactPhoneResourceIntTest {
     private static final String DEFAULT_PHONE = "AAAAAAAAAA";
     private static final String UPDATED_PHONE = "BBBBBBBBBB";
 
-    private static final PhoneType DEFAULT_TYPE = PhoneType.HOME;
+    private static final PhoneType DEFAULT_TYPE = PhoneType.MOBILE;
     private static final PhoneType UPDATED_TYPE = PhoneType.WORK;
 
     @Autowired

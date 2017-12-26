@@ -15,7 +15,6 @@
     <include file="config/liquibase/changelog/20170820143146_added_entity_Stage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143148_added_entity_Contact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143149_added_entity_Document.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170820143150_added_entity_ContactEmail.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143151_added_entity_ContactPhone.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143152_added_entity_Deal.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143153_added_entity_Activity.xml" relativeToChangelogFile="false"/>
@@ -28,7 +27,6 @@
     <include file="config/liquibase/changelog/20170820143147_added_entity_constraints_Stage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143148_added_entity_constraints_Contact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143149_added_entity_constraints_Document.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170820143150_added_entity_constraints_ContactEmail.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143151_added_entity_constraints_ContactPhone.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143152_added_entity_constraints_Deal.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143153_added_entity_constraints_Activity.xml" relativeToChangelogFile="false"/>

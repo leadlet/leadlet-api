@@ -37,7 +37,7 @@ public class Contact implements Serializable {
     private String title;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type" , nullable = false)
+    @Column(name = "jhi_type", nullable = false)
     @NotNull
     private ContactType type;
 
@@ -53,10 +53,8 @@ public class Contact implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ContactPhone> phones = new HashSet<>();
 
-    @OneToMany(mappedBy = "contact")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<ContactEmail> emails = new HashSet<>();
+    @Column(name = "email")
+    private String email;
 
     @OneToMany(mappedBy = "contact")
     @JsonIgnore
@@ -116,6 +114,20 @@ public class Contact implements Serializable {
         this.type = type;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public Contact email(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
     public Boolean isIsContactPerson() {
         return isContactPerson;
     }
@@ -152,31 +164,6 @@ public class Contact implements Serializable {
 
     public void setPhones(Set<ContactPhone> contactPhones) {
         this.phones = contactPhones;
-    }
-
-    public Set<ContactEmail> getEmails() {
-        return emails;
-    }
-
-    public Contact emails(Set<ContactEmail> contactEmails) {
-        this.emails = contactEmails;
-        return this;
-    }
-
-    public Contact addEmail(ContactEmail contactEmail) {
-        this.emails.add(contactEmail);
-        contactEmail.setContact(this);
-        return this;
-    }
-
-    public Contact removeEmail(ContactEmail contactEmail) {
-        this.emails.remove(contactEmail);
-        contactEmail.setContact(null);
-        return this;
-    }
-
-    public void setEmails(Set<ContactEmail> contactEmails) {
-        this.emails = contactEmails;
     }
 
     public Set<Document> getDocuments() {

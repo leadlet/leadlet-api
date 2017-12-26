@@ -34,7 +34,7 @@ public class ContactDTO implements Serializable {
 
     private List<ContactPhoneDTO> phones;
 
-    private List<ContactEmailDTO> emails;
+    private String email;
 
     public Long getId() {
         return id;
@@ -84,12 +84,12 @@ public class ContactDTO implements Serializable {
         this.organization = organization;
     }
 
-    public List<ContactEmailDTO> getEmails() {
-        return emails;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmails(List<ContactEmailDTO> emails) {
-        this.emails = emails;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getTitle() {

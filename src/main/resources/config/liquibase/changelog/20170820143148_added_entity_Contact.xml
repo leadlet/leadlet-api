@@ -34,6 +34,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="jhi_type" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
