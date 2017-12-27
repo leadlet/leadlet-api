@@ -11,9 +11,13 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {ContactPhoneMapper.class})
 public interface ContactMapper extends EntityMapper <ContactDTO, Contact> {
 
+    @Mapping(source = "organization.id", target = "organizationId")
+
     ContactDTO toDto(Contact contact);
     @Mapping(target = "documents", ignore = true)
     @Mapping(target = "appAccount", ignore = true)
+
+    @Mapping(source = "organizationId", target = "organization")
 
     Contact toEntity(ContactDTO contactDTO);
     default Contact fromId(Long id) {

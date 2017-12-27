@@ -30,7 +30,7 @@ public class ContactDTO implements Serializable {
 
     private Boolean isContactPerson;
 
-    private Contact organization;
+    private Long organizationId;
 
     private List<ContactPhoneDTO> phones;
 
@@ -76,12 +76,12 @@ public class ContactDTO implements Serializable {
         this.isContactPerson = isContactPerson;
     }
 
-    public Contact getOrganization() {
-        return organization;
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 
-    public void setOrganization(Contact organization) {
-        this.organization = organization;
+    public Long getOrganizationId() {
+        return organizationId;
     }
 
     public String getEmail() {
