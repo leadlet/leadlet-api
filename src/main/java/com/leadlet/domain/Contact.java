@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.Objects;
 
 import com.leadlet.domain.enumeration.ContactType;
+import org.hibernate.validator.constraints.Email;
 
 /**
  * A Contact.
@@ -55,6 +56,7 @@ public class Contact implements Serializable {
     private Set<ContactPhone> phones = new HashSet<>();
 
     @Column(name = "email")
+    @Email
     private String email;
 
     @OneToMany(mappedBy = "contact")
