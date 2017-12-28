@@ -11,6 +11,7 @@ import com.leadlet.domain.Contact;
 import com.leadlet.repository.ContactRepository;
 import com.leadlet.service.dto.ContactDTO;
 import com.leadlet.service.mapper.ContactMapper;
+import com.leadlet.web.rest.util.ParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -100,12 +102,17 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Page<ContactDTO> search(List<SearchCriteria> criteriaList, Pageable pageable) {
+    public Page<ContactDTO> search(String filter, Pageable pageable) {
         log.debug("Request to get all Contacts");
         SpecificationsBuilder builder = new SpecificationsBuilder();
 
-        for(SearchCriteria criteria: criteriaList){
-            builder.with(criteria);
+        if(!StringUtils.isEmpty(filter)){
+            List<SearchCriteria> criteriaList = ParameterUtil.createCriterias(filter);
+
+            for(SearchCriteria criteria: criteriaList){
+                builder.with(criteria);
+            }
+
         }
 
         // TODO add accound criteria

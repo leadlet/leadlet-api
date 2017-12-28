@@ -52,5 +52,5 @@ public interface ContactService {
      */
     void delete(Long id);
 
-    Page<ContactDTO> search(List<SearchCriteria> criteriaList, Pageable pageable);
+    Page<ContactDTO> search(String filter, Pageable pageable);
 }

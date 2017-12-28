@@ -100,7 +100,7 @@ public class ContactResource {
     public ResponseEntity<List<ContactDTO>> getAllContacts(@ApiParam String filter, @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Contacts");
 
-        Page<ContactDTO> page = contactService.search(ParameterUtil.createCriterias(filter), pageable);
+        Page<ContactDTO> page = contactService.search(filter, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
