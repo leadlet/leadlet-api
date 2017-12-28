@@ -1,6 +1,8 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.ContactPhone;
 import com.leadlet.domain.enumeration.ContactType;
+import com.leadlet.repository.ContactPhoneRepository;
 import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.SecurityUtils;
@@ -50,7 +52,15 @@ public class ContactServiceImpl implements ContactService {
         log.debug("Request to save Contact : {}", contactDTO);
         Contact contact = contactMapper.toEntity(contactDTO);
         contact.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
+
         contact = contactRepository.save(contact);
+
+        for (ContactPhone contactPhone: contact.getPhones()) {
+            contactPhone.setContact(contact);
+        }
+
+        contact = contactRepository.save(contact);
+
         return contactMapper.toDto(contact);
     }
 

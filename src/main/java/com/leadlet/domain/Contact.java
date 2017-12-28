@@ -28,6 +28,7 @@ public class Contact implements Serializable {
     private Long id;
 
     @Column(name = "name")
+    @NotNull
     private String name;
 
     @Column(name = "location")
@@ -48,7 +49,7 @@ public class Contact implements Serializable {
     @Column(name = "is_contact_person")
     private Boolean isContactPerson;
 
-    @OneToMany(mappedBy = "contact")
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ContactPhone> phones = new HashSet<>();

@@ -44,7 +44,6 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     public ContactPhoneDTO save(ContactPhoneDTO contactPhoneDTO) {
         log.debug("Request to save ContactPhone : {}", contactPhoneDTO);
         ContactPhone contactPhone = contactPhoneMapper.toEntity(contactPhoneDTO);
-        contactPhone.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         contactPhone = contactPhoneRepository.save(contactPhone);
         return contactPhoneMapper.toDto(contactPhone);
     }
@@ -59,10 +58,9 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     public ContactPhoneDTO update(ContactPhoneDTO contactPhoneDTO) {
         log.debug("Request to save ContactPhone : {}", contactPhoneDTO);
         ContactPhone contactPhone = contactPhoneMapper.toEntity(contactPhoneDTO);
-        ContactPhone contactPhoneFromDb = contactPhoneRepository.findOneByIdAndAppAccount_Id(contactPhone.getId(), SecurityUtils.getCurrentUserAppAccountId());
+        ContactPhone contactPhoneFromDb = contactPhoneRepository.findOneById(contactPhone.getId());
 
         if (contactPhoneFromDb != null) {
-            contactPhone.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             contactPhone = contactPhoneRepository.save(contactPhone);
             return contactPhoneMapper.toDto(contactPhone);
         } else {
@@ -80,7 +78,7 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     @Transactional(readOnly = true)
     public Page<ContactPhoneDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ContactPhones");
-        return contactPhoneRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
+        return contactPhoneRepository.findAll(pageable)
             .map(contactPhoneMapper::toDto);
     }
 
@@ -94,7 +92,7 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     @Transactional(readOnly = true)
     public ContactPhoneDTO findOne(Long id) {
         log.debug("Request to get ContactPhone : {}", id);
-        ContactPhone contactPhone = contactPhoneRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
+        ContactPhone contactPhone = contactPhoneRepository.findOneById(id);
         return contactPhoneMapper.toDto(contactPhone);
     }
 
@@ -106,7 +104,7 @@ public class ContactPhoneServiceImpl implements ContactPhoneService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ContactPhone : {}", id);
-        ContactPhone contactPhone = contactPhoneRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
+        ContactPhone contactPhone = contactPhoneRepository.findOneById(id);
         if (contactPhone != null){
             contactPhoneRepository.delete(id);
         }

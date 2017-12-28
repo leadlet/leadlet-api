@@ -132,12 +132,15 @@ public class ContactDTO implements Serializable {
     @Override
     public String toString() {
         return "ContactDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", location='" + getLocation() + "'" +
-            ", title='" + getTitle() + "'" +
-            ", type='" + getType() + "'" +
-            ", isContactPerson='" + isIsContactPerson() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", location='" + location + '\'' +
+            ", title='" + title + '\'' +
+            ", type=" + type +
+            ", isContactPerson=" + isContactPerson +
+            ", organizationId=" + organizationId +
+            ", phones=" + phones +
+            ", email='" + email + '\'' +
+            '}';
     }
 }

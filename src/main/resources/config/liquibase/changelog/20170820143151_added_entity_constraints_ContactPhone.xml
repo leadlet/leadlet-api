@@ -14,11 +14,7 @@
                                  referencedColumnNames="id"
                                  referencedTableName="contact"/>
 
-        <addForeignKeyConstraint baseColumnNames="app_account_id"
-                                 baseTableName="contact_phone"
-                                 constraintName="fk_contact_phone_app_account_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="app_account"/>
+
 
     </changeSet>
 </databaseChangeLog>

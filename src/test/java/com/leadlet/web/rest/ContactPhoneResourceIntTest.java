@@ -134,7 +134,6 @@ public class ContactPhoneResourceIntTest {
         ContactPhone testContactPhone = contactPhoneList.get(contactPhoneList.size() - 1);
         assertThat(testContactPhone.getPhone()).isEqualTo(DEFAULT_PHONE);
         assertThat(testContactPhone.getType()).isEqualTo(DEFAULT_TYPE);
-        assertThat(testContactPhone.getAppAccount()).isEqualTo(xCompanyAppAccount);
     }
 
     @Test
@@ -166,13 +165,11 @@ public class ContactPhoneResourceIntTest {
         ContactPhone contactPhoneX1 = new ContactPhone();
         contactPhoneX1.setPhone("contactPhoneX1");
         contactPhoneX1.setType(DEFAULT_TYPE);
-        contactPhoneX1.setAppAccount(xCompanyAppAccount);
         contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
 
         ContactPhone contactPhoneX2 = new ContactPhone();
         contactPhoneX2.setPhone("contactPhoneX2");
         contactPhoneX2.setType(DEFAULT_TYPE);
-        contactPhoneX2.setAppAccount(xCompanyAppAccount);
         contactPhoneX2 = contactPhoneRepository.saveAndFlush(contactPhoneX2);
 
 
@@ -196,7 +193,6 @@ public class ContactPhoneResourceIntTest {
         ContactPhone contactPhoneX1 = new ContactPhone();
         contactPhoneX1.setPhone("contactPhoneX1");
         contactPhoneX1.setType(DEFAULT_TYPE);
-        contactPhoneX1.setAppAccount(xCompanyAppAccount);
         contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
 
         // Get the contactPhone
@@ -216,7 +212,6 @@ public class ContactPhoneResourceIntTest {
         ContactPhone contactPhoneY1 = new ContactPhone();
         contactPhoneY1.setPhone("contactPhoneX1");
         contactPhoneY1.setType(DEFAULT_TYPE);
-        contactPhoneY1.setAppAccount(yCompanyAppAccount);
         contactPhoneY1 = contactPhoneRepository.saveAndFlush(contactPhoneY1);
 
         restContactPhoneMockMvc.perform(get("/api/contact-phones/{id}", contactPhoneY1.getId()))
@@ -240,7 +235,6 @@ public class ContactPhoneResourceIntTest {
         ContactPhone contactPhoneX1 = new ContactPhone();
         contactPhoneX1.setPhone("contactPhoneX1");
         contactPhoneX1.setType(DEFAULT_TYPE);
-        contactPhoneX1.setAppAccount(xCompanyAppAccount);
         contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
 
         int databaseSizeBeforeUpdate = contactPhoneRepository.findAll().size();
@@ -273,7 +267,6 @@ public class ContactPhoneResourceIntTest {
         ContactPhone contactPhoneY1 = new ContactPhone();
         contactPhoneY1.setPhone("contactPhoneX1");
         contactPhoneY1.setType(DEFAULT_TYPE);
-        contactPhoneY1.setAppAccount(yCompanyAppAccount);
         contactPhoneY1 = contactPhoneRepository.saveAndFlush(contactPhoneY1);
 
         int databaseSizeBeforeUpdate = contactPhoneRepository.findAll().size();
@@ -319,7 +312,6 @@ public class ContactPhoneResourceIntTest {
         ContactPhone contactPhoneX1 = new ContactPhone();
         contactPhoneX1.setPhone("contactPhoneX1");
         contactPhoneX1.setType(DEFAULT_TYPE);
-        contactPhoneX1.setAppAccount(xCompanyAppAccount);
         contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
 
         int databaseSizeBeforeDelete = contactPhoneRepository.findAll().size();
@@ -342,7 +334,6 @@ public class ContactPhoneResourceIntTest {
         ContactPhone contactPhoneX1 = new ContactPhone();
         contactPhoneX1.setPhone("contactPhoneX1");
         contactPhoneX1.setType(DEFAULT_TYPE);
-        contactPhoneX1.setAppAccount(xCompanyAppAccount);
         contactPhoneX1 = contactPhoneRepository.saveAndFlush(contactPhoneX1);
 
         int databaseSizeBeforeDelete = contactPhoneRepository.findAll().size();
