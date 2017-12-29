@@ -47,4 +47,12 @@ public interface ActivityService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     *  Get all the activities.
+     *
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    Page<ActivityDTO> findByPersonId(Long personId, Pageable pageable);
 }

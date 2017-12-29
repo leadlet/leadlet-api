@@ -20,4 +20,5 @@ public interface ActivityRepository extends JpaRepository<Activity,Long> {
     Page<Activity> findByAppAccount_Id(Long appAccountId, Pageable page);
     Activity findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
+    Page<Activity> findByPerson_Id(Long id, Pageable page);
 }
