@@ -118,4 +118,11 @@ public class ActivityServiceImpl implements ActivityService {
             throw new EntityNotFoundException();
         }
     }
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ActivityDTO> findByPersonId(Long personId, Pageable pageable) {
+        log.debug("Request to get all Activities");
+        return activityRepository.findByPerson_Id(personId, pageable)
+            .map(activityMapper::toDto);
+    }
 }
