@@ -5,12 +5,13 @@ import com.leadlet.domain.Note;
 import com.leadlet.domain.Timeline;
 import com.leadlet.domain.enumeration.TimelineItemType;
 import com.leadlet.repository.ActivityRepository;
+import com.leadlet.repository.NoteRepository;
 import com.leadlet.repository.TimelineRepository;
 import com.leadlet.security.SecurityUtils;
-import com.leadlet.service.ActivityService;
 import com.leadlet.service.TimelineService;
-import com.leadlet.service.dto.ActivityDTO;
-import com.leadlet.service.mapper.ActivityMapper;
+import com.leadlet.service.dto.TimelineDTO;
+import com.leadlet.service.mapper.TimelineMapper;
+import com.leadlet.web.rest.NoteResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,12 +20,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.sql.Time;
-
-
 /**
- * Service Implementation for managing Activity.
+ * Service Implementation for managing Timeline.
  */
 @Service
 @Transactional
@@ -33,9 +30,22 @@ public class TimelineServiceImpl implements TimelineService {
     private final Logger log = LoggerFactory.getLogger(TimelineServiceImpl.class);
 
     private final TimelineRepository timelineRepository;
+    private final TimelineMapper timelineMapper;
 
-    public TimelineServiceImpl(TimelineRepository timelineRepository) {
+    private final NoteRepository noteRepository;
+
+    private final ActivityRepository activityRepository;
+
+
+    public TimelineServiceImpl(TimelineRepository timelineRepository,
+                               TimelineMapper timelineMapper,
+                               NoteRepository noteRepository,
+                               ActivityRepository activityRepository) {
         this.timelineRepository = timelineRepository;
+        this.timelineMapper = timelineMapper;
+        this.noteRepository = noteRepository;
+        this.activityRepository = activityRepository;
+
     }
 
     @Override
@@ -45,9 +55,21 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public Page<Timeline> findAll(Pageable pageable) {
-        log.warn("findAll");
-        return null;
+    public Page<TimelineDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all Notes");
+        return timelineRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
+            .map(timelineMapper::toDto)
+            .map(timelineDTO -> {
+                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
+                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(note);
+                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
+                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(activity);
+                }
+
+                return timelineDTO;
+            });
     }
 
     @Override
@@ -65,15 +87,15 @@ public class TimelineServiceImpl implements TimelineService {
     @Override
     @Async
     public void noteCreated(Note note) {
-        Timeline timelineItem = new Timeline();
 
+        Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.NOTE_CREATED);
 
-        if(note.getContact() != null ){
+        if (note.getContact() != null) {
             timelineItem.setContact(note.getContact());
         }
 
-        if(note.getAppAccount() != null ){
+        if (note.getAppAccount() != null) {
             timelineItem.setAppAccount(note.getAppAccount());
         }
 
@@ -90,5 +112,14 @@ public class TimelineServiceImpl implements TimelineService {
     @Async
     public void activityCreated(Activity activity) {
 
+        Timeline timelineItem = new Timeline();
+        timelineItem.setType(TimelineItemType.ACTIVITY_CREATED);
+
+        timelineItem.setContact(activity.getPerson()); // TODO: ? getOrganization
+        timelineItem.setAppAccount(activity.getAppAccount());
+        timelineItem.setSourceId(activity.getId());
+        timelineItem.setUser(activity.getUser());
+
+        timelineRepository.save(timelineItem);
     }
 }

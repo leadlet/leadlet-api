@@ -4,6 +4,7 @@ import com.leadlet.domain.Activity;
 import com.leadlet.domain.Note;
 import com.leadlet.domain.Timeline;
 import com.leadlet.service.dto.ActivityDTO;
+import com.leadlet.service.dto.TimelineDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -21,7 +22,7 @@ public interface TimelineService {
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<Timeline> findAll(Pageable pageable);
+    Page<TimelineDTO> findAll(Pageable pageable);
 
     /**
      *  Get all the timelines.
