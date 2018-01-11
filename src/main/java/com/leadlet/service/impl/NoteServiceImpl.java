@@ -4,6 +4,7 @@ import com.leadlet.domain.Note;
 import com.leadlet.repository.NoteRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.NoteService;
+import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.NoteDTO;
 import com.leadlet.service.mapper.NoteMapper;
 import org.slf4j.Logger;
@@ -29,9 +30,12 @@ public class NoteServiceImpl implements NoteService {
 
     private final NoteMapper noteMapper;
 
-    public NoteServiceImpl(NoteRepository noteRepository, NoteMapper noteMapper) {
+    private final TimelineService timelineService;
+
+    public NoteServiceImpl(NoteRepository noteRepository, NoteMapper noteMapper, TimelineService timelineService) {
         this.noteRepository = noteRepository;
         this.noteMapper = noteMapper;
+        this.timelineService = timelineService;
     }
 
     /**
@@ -46,6 +50,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = noteMapper.toEntity(noteDTO);
         note.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         note = noteRepository.save(note);
+        timelineService.noteCreated(note);
         return noteMapper.toDto(note);
     }
 

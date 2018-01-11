@@ -4,6 +4,7 @@ import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ActivityService;
 import com.leadlet.domain.Activity;
 import com.leadlet.repository.ActivityRepository;
+import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.ActivityDTO;
 import com.leadlet.service.mapper.ActivityMapper;
 import org.slf4j.Logger;
@@ -29,9 +30,12 @@ public class ActivityServiceImpl implements ActivityService {
 
     private final ActivityMapper activityMapper;
 
-    public ActivityServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper) {
+    private final TimelineService timelineService;
+
+    public ActivityServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper, TimelineService timelineService) {
         this.activityRepository = activityRepository;
         this.activityMapper = activityMapper;
+        this.timelineService = timelineService;
     }
 
     /**
@@ -47,6 +51,7 @@ public class ActivityServiceImpl implements ActivityService {
         Activity activity = activityMapper.toEntity(activityDTO);
         activity.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         activity = activityRepository.save(activity);
+        timelineService.activityCreated(activity);
         return activityMapper.toDto(activity);
 
     }
