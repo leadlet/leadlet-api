@@ -1,20 +1,14 @@
 package com.leadlet.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.leadlet.domain.enumeration.ActivityType;
 import com.leadlet.domain.enumeration.TimelineItemType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- * A Activity.
+ * A Timeline.
  */
 @Entity
 @Table(name = "timeline")

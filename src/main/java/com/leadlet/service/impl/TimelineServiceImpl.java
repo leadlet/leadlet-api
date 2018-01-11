@@ -10,6 +10,8 @@ import com.leadlet.repository.TimelineRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.TimelineDTO;
+import com.leadlet.service.mapper.ActivityMapper;
+import com.leadlet.service.mapper.NoteMapper;
 import com.leadlet.service.mapper.TimelineMapper;
 import com.leadlet.web.rest.NoteResource;
 import org.slf4j.Logger;
@@ -34,17 +36,26 @@ public class TimelineServiceImpl implements TimelineService {
 
     private final NoteRepository noteRepository;
 
+    private final NoteMapper noteMapper;
+
+    private final ActivityMapper activityMapper;
+
+
     private final ActivityRepository activityRepository;
 
 
     public TimelineServiceImpl(TimelineRepository timelineRepository,
                                TimelineMapper timelineMapper,
                                NoteRepository noteRepository,
-                               ActivityRepository activityRepository) {
+                               ActivityRepository activityRepository,
+                               NoteMapper noteMapper,
+                               ActivityMapper activityMapper) {
         this.timelineRepository = timelineRepository;
         this.timelineMapper = timelineMapper;
         this.noteRepository = noteRepository;
         this.activityRepository = activityRepository;
+        this.noteMapper = noteMapper;
+        this.activityMapper = activityMapper;
 
     }
 
@@ -62,10 +73,10 @@ public class TimelineServiceImpl implements TimelineService {
             .map(timelineDTO -> {
                 if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
                     Note note = noteRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(note);
+                    timelineDTO.setSource(noteMapper.toDto(note));
                 } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
                     Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(activity);
+                    timelineDTO.setSource(activityMapper.toDto(activity));
                 }
 
                 return timelineDTO;

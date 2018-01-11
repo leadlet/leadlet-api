@@ -39,12 +39,12 @@ public class TimelineResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of timelines in body
      */
-    @GetMapping("/timelines")
+    @GetMapping("/timeLines")
     @Timed
     public ResponseEntity<List<TimelineDTO>> getAllTimelines(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Timelines");
         Page<TimelineDTO> page = timelineService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timelines");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.leadlet.service.dto;
 import com.leadlet.domain.enumeration.TimelineItemType;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 public class TimelineDTO implements Serializable {
@@ -18,6 +19,8 @@ public class TimelineDTO implements Serializable {
     private Long contactId;
 
     private Long userId;
+
+    private Instant createdDate;
 
     public Long getId() {
         return id;
@@ -67,6 +70,14 @@ public class TimelineDTO implements Serializable {
         return source;
     }
 
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,14 +86,16 @@ public class TimelineDTO implements Serializable {
         return Objects.equals(id, that.id) &&
             type == that.type &&
             Objects.equals(sourceId, that.sourceId) &&
+            Objects.equals(source, that.source) &&
             Objects.equals(contactId, that.contactId) &&
-            Objects.equals(userId, that.userId);
+            Objects.equals(userId, that.userId) &&
+            Objects.equals(createdDate, that.createdDate);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, type, sourceId, contactId, userId);
+        return Objects.hash(id, type, sourceId, source, contactId, userId, createdDate);
     }
 
     @Override
@@ -91,8 +104,10 @@ public class TimelineDTO implements Serializable {
             "id=" + id +
             ", type=" + type +
             ", sourceId=" + sourceId +
+            ", source=" + source +
             ", contactId=" + contactId +
             ", userId=" + userId +
+            ", createdDate=" + createdDate +
             '}';
     }
 }
