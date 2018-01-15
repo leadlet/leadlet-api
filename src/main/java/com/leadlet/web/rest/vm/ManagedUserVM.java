@@ -1,7 +1,7 @@
 package com.leadlet.web.rest.vm;
 
-import com.leadlet.domain.Team;
 import com.leadlet.service.dto.UserDTO;
+
 import javax.validation.constraints.Size;
 
 import java.time.Instant;
@@ -26,10 +26,10 @@ public class ManagedUserVM extends UserDTO {
     public ManagedUserVM(Long id, String login, String password, String firstName, String lastName,
                          boolean activated, String imageUrl, String langKey,
                          String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                         Set<String> authorities, Long teamId) {
+                         Set<String> authorities) {
 
         super(id, login, firstName, lastName, activated, imageUrl, langKey,
-            createdBy, createdDate, lastModifiedBy, lastModifiedDate,  authorities, teamId );
+            createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities);
 
         this.password = password;
     }

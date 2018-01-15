@@ -40,8 +40,6 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.User.class.getName() + ".authorities", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Team.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Team.class.getName() + ".users", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.AppAccount.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.AppAccount.class.getName() + ".subscriptionPlans", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.AppAccount.class.getName() + ".users", jcacheConfiguration);
@@ -62,7 +60,6 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.Deal.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Activity.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Activity.class.getName() + ".documents", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Team.class.getName() + ".subteams", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Note.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };

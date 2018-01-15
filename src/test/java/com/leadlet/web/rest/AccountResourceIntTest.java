@@ -3,19 +3,15 @@ package com.leadlet.web.rest;
 import com.leadlet.LeadletApiApp;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
-import com.leadlet.domain.Team;
 import com.leadlet.domain.User;
 import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
-import com.leadlet.repository.TeamRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.service.AppAccountService;
 import com.leadlet.service.MailService;
-import com.leadlet.service.TeamService;
 import com.leadlet.service.UserService;
 import com.leadlet.service.dto.AppAccountDTO;
-import com.leadlet.service.dto.TeamDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.web.rest.vm.KeyAndPasswordVM;
@@ -72,15 +68,8 @@ public class AccountResourceIntTest {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private TeamService teamService;
-
     @Autowired
     private AppAccountService appAccountService;
-
-    @Autowired
-    private TeamRepository teamRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -102,8 +91,6 @@ public class AccountResourceIntTest {
     private MockMvc restMvc;
     private AppAccount xCompanyAppAccount;
     private AppAccount yCompanyAppAccount;
-    private static Team xAppAccountTeam;
-    private static Team yAppAccountTeam;
 
     @Before
     public void setup() {
@@ -126,9 +113,6 @@ public class AccountResourceIntTest {
     public void setAppAccountsUsers(){
         this.xCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyX").get();
         this.yCompanyAppAccount = this.appAccountRepository.findOneByName("CompanyY").get();
-
-        this.xAppAccountTeam = this.teamRepository.findOneByAppAccountAndRootIsTrue(xCompanyAppAccount);
-        this.yAppAccountTeam = this.teamRepository.findOneByAppAccountAndRootIsTrue(yCompanyAppAccount);
 
     }
 
@@ -222,10 +206,6 @@ public class AccountResourceIntTest {
 
         AppAccountDTO appAccountDTO = appAccountService.findOne(user.get().getAppAccount().getId());
         assertThat(user.get().getAppAccount().getId()).isEqualTo(appAccountDTO.getId());
-
-        TeamDTO teamDTO = teamService.findOne(user.get().getTeam().getId());
-        assertThat(user.get().getTeam().getId()).isEqualTo(teamDTO.getId());
-        assertThat(teamDTO.getLeaderId()).isEqualTo(user.get().getId());
     }
 
     @Test
@@ -342,7 +322,6 @@ public class AccountResourceIntTest {
         user.setActivated(false);
         user.setActivationKey(activationKey);
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
 
         userRepository.saveAndFlush(user);
 
@@ -369,7 +348,6 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setAppAccount(xCompanyAppAccount);
         user.setActivated(true);
-        user.setTeam(xAppAccountTeam);
 
         userRepository.saveAndFlush(user);
 
@@ -385,8 +363,7 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
-            xAppAccountTeam.getId()
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN))
         );
 
         restMvc.perform(
@@ -414,7 +391,6 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setAppAccount(xCompanyAppAccount);
         user.setActivated(true);
-        user.setTeam(xAppAccountTeam);
 
         userRepository.saveAndFlush(user);
 
@@ -430,8 +406,7 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
-            xAppAccountTeam.getId()
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN))
         );
 
         restMvc.perform(
@@ -452,14 +427,12 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setActivated(true);
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
         anotherUser.setLogin("save-existing-email2@example.com");
         anotherUser.setPassword(RandomStringUtils.random(60));
         anotherUser.setActivated(true);
-        anotherUser.setTeam(xAppAccountTeam);
         anotherUser.setAppAccount(xCompanyAppAccount);
 
         userRepository.saveAndFlush(anotherUser);
@@ -476,8 +449,7 @@ public class AccountResourceIntTest {
             null,                   // createdDate
             null,                   // lastModifiedBy
             null,                   // lastModifiedDate
-            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)),
-            xAppAccountTeam.getId()
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN))
         );
 
         restMvc.perform(
@@ -498,7 +470,6 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setLogin("change-password@example.com");
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content("new password"))
@@ -516,7 +487,6 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setLogin("change-password-too-small@example.com");
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content("new"))
@@ -534,7 +504,6 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setLogin("change-password-too-long@example.com");
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content(RandomStringUtils.random(101)))
@@ -552,7 +521,6 @@ public class AccountResourceIntTest {
         user.setPassword(RandomStringUtils.random(60));
         user.setLogin("change-password-empty@example.com");
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change_password").content(RandomStringUtils.random(0)))
@@ -570,7 +538,6 @@ public class AccountResourceIntTest {
         user.setActivated(true);
         user.setLogin("password-reset@example.com");
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/reset_password/init")
@@ -595,7 +562,6 @@ public class AccountResourceIntTest {
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key");
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
@@ -621,7 +587,6 @@ public class AccountResourceIntTest {
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key too small");
         user.setAppAccount(xCompanyAppAccount);
-        user.setTeam(xAppAccountTeam);
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();

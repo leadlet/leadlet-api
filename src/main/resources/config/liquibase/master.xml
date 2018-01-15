@@ -5,7 +5,6 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170820143139_added_entity_Team.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143140_added_entity_AppAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143141_added_entity_SubscriptionPlan.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143142_added_entity_CompanySubscriptionPlan.xml" relativeToChangelogFile="false"/>
@@ -22,7 +21,6 @@
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20170820143138_added_entity_constraints_User.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143140_added_entity_constraints_AppAccount.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170820143139_added_entity_constraints_Team.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143142_added_entity_constraints_CompanySubscriptionPlan.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143144_added_entity_constraints_Objective.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143147_added_entity_constraints_Stage.xml" relativeToChangelogFile="false"/>

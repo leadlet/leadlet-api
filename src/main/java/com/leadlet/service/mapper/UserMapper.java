@@ -2,9 +2,6 @@ package com.leadlet.service.mapper;
 
 import com.leadlet.domain.Authority;
 import com.leadlet.domain.User;
-import com.leadlet.repository.AppAccountRepository;
-import com.leadlet.repository.TeamRepository;
-import com.leadlet.service.AppAccountService;
 import com.leadlet.service.dto.UserDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +18,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserMapper {
-
-    @Autowired
-    TeamRepository teamRepository;
 
     public UserDTO userToUserDTO(User user) {
         return new UserDTO(user);
@@ -48,7 +42,6 @@ public class UserMapper {
             user.setImageUrl(userDTO.getImageUrl());
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
-            user.setTeam(teamRepository.findOne(userDTO.getTeamId()));
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             if(authorities != null) {
                 user.setAuthorities(authorities);

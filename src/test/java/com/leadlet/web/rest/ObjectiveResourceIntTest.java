@@ -50,7 +50,6 @@ public class ObjectiveResourceIntTest {
     private static final Long UPDATED_SOURCE_ID = 2L;
 
     private static final ObjectiveSourceType DEFAULT_SOURCE_TYPE = ObjectiveSourceType.USER;
-    private static final ObjectiveSourceType UPDATED_SOURCE_TYPE = ObjectiveSourceType.TEAM;
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -222,7 +221,6 @@ public class ObjectiveResourceIntTest {
         Objective updatedObjective = objectiveRepository.findOne(objective.getId());
         updatedObjective
             .sourceId(UPDATED_SOURCE_ID)
-            .sourceType(UPDATED_SOURCE_TYPE)
             .name(UPDATED_NAME)
             .dueDate(UPDATED_DUE_DATE)
             .targetAmount(UPDATED_TARGET_AMOUNT)
@@ -239,7 +237,6 @@ public class ObjectiveResourceIntTest {
         assertThat(objectiveList).hasSize(databaseSizeBeforeUpdate);
         Objective testObjective = objectiveList.get(objectiveList.size() - 1);
         assertThat(testObjective.getSourceId()).isEqualTo(UPDATED_SOURCE_ID);
-        assertThat(testObjective.getSourceType()).isEqualTo(UPDATED_SOURCE_TYPE);
         assertThat(testObjective.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testObjective.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
         assertThat(testObjective.getTargetAmount()).isEqualTo(UPDATED_TARGET_AMOUNT);

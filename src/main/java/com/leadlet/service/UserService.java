@@ -3,11 +3,9 @@ package com.leadlet.service;
 import com.leadlet.config.Constants;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
-import com.leadlet.domain.Team;
 import com.leadlet.domain.User;
 import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
-import com.leadlet.repository.TeamRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
@@ -47,16 +45,12 @@ public class UserService {
 
     private final AppAccountRepository appAccountRepository;
 
-    private final TeamRepository teamRepository;
-
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
-                       AppAccountRepository appAccountRepository, TeamRepository teamRepository) {
+                       AppAccountRepository appAccountRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.appAccountRepository = appAccountRepository;
-        this.teamRepository = teamRepository;
-
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -100,11 +94,6 @@ public class UserService {
         AppAccount newAppAccount = new AppAccount();
         newAppAccount = appAccountRepository.save(newAppAccount);
 
-        // TODO implement subscription plan logic
-        Team newTeam = new Team();
-        newTeam.setAppAccount(newAppAccount);
-        newTeam = teamRepository.save(newTeam);
-
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<Authority> authorities = new HashSet<>();
@@ -119,21 +108,13 @@ public class UserService {
         authorities.add(authority);
         newUser.setAuthorities(authorities);
         newUser.setAppAccount(newAppAccount);
-        newUser.setTeam(newTeam);
         newUser = userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
-
-        newUser.setTeam(newTeam);
-        newUser.setTeamLeader(true);
 
         // TODO not set activated true
         newUser.setActivated(true);
 
         newUser = userRepository.save(newUser);
-
-        // TODO implement subscription plan logic
-        newTeam.setLeader(newUser);
-        newTeam = teamRepository.save(newTeam);
 
         return newUser;
     }
@@ -162,7 +143,6 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
-        user.setTeam(teamRepository.getOne(userDTO.getTeamId()));
         user.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
