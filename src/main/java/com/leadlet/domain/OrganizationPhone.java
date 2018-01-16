@@ -1,5 +1,6 @@
 package com.leadlet.domain;
 
+import com.leadlet.domain.enumeration.PhoneType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,15 +8,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.leadlet.domain.enumeration.PhoneType;
-
 /**
- * A ContactPhone.
+ * A OrganizationPhone.
  */
 @Entity
-@Table(name = "contact_phone")
+@Table(name = "organization_phone")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ContactPhone implements Serializable {
+public class OrganizationPhone implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,8 +29,8 @@ public class ContactPhone implements Serializable {
     @Column(name = "jhi_type")
     private PhoneType type;
 
-    @Column(name="person")
-    private Person person;
+    @Column(name="organization")
+    private Organization organization;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -61,38 +60,38 @@ public class ContactPhone implements Serializable {
         this.type = type;
     }
 
-    public Person getPerson() {
-        return person;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ContactPhone)) return false;
-        ContactPhone that = (ContactPhone) o;
+        if (!(o instanceof OrganizationPhone)) return false;
+        OrganizationPhone that = (OrganizationPhone) o;
         return Objects.equals(id, that.id) &&
             Objects.equals(phone, that.phone) &&
             type == that.type &&
-            Objects.equals(person, that.person);
+            Objects.equals(organization, that.organization);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, phone, type, person);
+        return Objects.hash(id, phone, type, organization);
     }
 
     @Override
     public String toString() {
-        return "ContactPhone{" +
+        return "OrganizationPhone{" +
             "id=" + id +
             ", phone='" + phone + '\'' +
             ", type=" + type +
-            ", person=" + person +
+            ", organization=" + organization +
             '}';
     }
 }

@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Activity and its DTO ActivityDTO.
  */
-@Mapper(componentModel = "spring", uses = {DealMapper.class, ContactMapper.class, UserMapper.class, })
+@Mapper(componentModel = "spring", uses = {DealMapper.class, PersonMapper.class, UserMapper.class, OrganizationMapper.class})
 public interface ActivityMapper extends EntityMapper <ActivityDTO, Activity> {
 
     @Mapping(source = "deal.id", target = "dealId")
@@ -19,7 +19,6 @@ public interface ActivityMapper extends EntityMapper <ActivityDTO, Activity> {
 
     @Mapping(source = "user.id", target = "userId")
     ActivityDTO toDto(Activity activity);
-    @Mapping(target = "documents", ignore = true)
 
     @Mapping(source = "dealId", target = "deal")
 

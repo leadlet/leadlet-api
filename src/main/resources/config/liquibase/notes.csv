@@ -1,4 +1,4 @@
-id;content;contact_id;app_account_id
+id;content;person_id;app_account_id
 1;nonummy integer non velit donec;156;1
 2;ante nulla;174;1
 3;sit amet eleifend pede;174;1

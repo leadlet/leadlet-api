@@ -18,7 +18,7 @@ public class ContactPhoneDTO implements Serializable {
 
     private PhoneType type;
 
-    private Long contactId;
+    private Long personId;
 
     public Long getId() {
         return id;
@@ -44,12 +44,12 @@ public class ContactPhoneDTO implements Serializable {
         this.type = type;
     }
 
-    public Long getContactId() {
-        return contactId;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
     @Override

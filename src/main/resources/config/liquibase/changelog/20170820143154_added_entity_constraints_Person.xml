@@ -4,19 +4,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
-        Added the constraints for entity Deal.
+        Added the constraints for entity Person.
     -->
-    <changeSet id="201801021129-2" author="jhipster">
+    <changeSet id="20170820143154-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="person_id"
-                                 baseTableName="note"
-                                 constraintName="fk_note_person_id"
+        <addForeignKeyConstraint baseColumnNames="organization_id"
+                                 baseTableName="person"
+                                 constraintName="fk_person_organization_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="person"/>
+                                 referencedTableName="organization"/>
 
         <addForeignKeyConstraint baseColumnNames="app_account_id"
-                                 baseTableName="note"
-                                 constraintName="fk_note_app_account_id"
+                                 baseTableName="person"
+                                 constraintName="fk_person_app_account_id"
                                  referencedColumnNames="id"
                                  referencedTableName="app_account"/>
 
