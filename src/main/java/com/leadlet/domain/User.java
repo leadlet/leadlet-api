@@ -90,15 +90,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
-    @ManyToOne
-    @JsonBackReference
-    @NotNull
-    private Team team;
-
-    @Column(name = "team_leader")
-    private boolean teamLeader = false;
-
-
     public Long getId() {
         return id;
     }
@@ -193,22 +184,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public boolean isTeamLeader() {
-        return teamLeader;
-    }
-
-    public void setTeamLeader(boolean teamLeader) {
-        this.teamLeader = teamLeader;
     }
 
     @Override

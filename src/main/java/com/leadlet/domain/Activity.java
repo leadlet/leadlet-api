@@ -44,19 +44,14 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     @NotNull
     private ActivityType type;
 
-    @OneToMany(mappedBy = "activity")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Document> documents = new HashSet<>();
-
     @ManyToOne
     private Deal deal;
 
     @ManyToOne
-    private Contact person;
+    private Person person;
 
     @ManyToOne
-    private Contact organization;
+    private Organization organization;
 
     @ManyToOne
     private User user;
@@ -101,8 +96,8 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         return end;
     }
 
-    public void setEnd(ZonedDateTime start) {
-        this.end = start;
+    public void setEnd(ZonedDateTime end) {
+        this.end = end;
     }
 
     public ActivityType getType() {
@@ -113,14 +108,6 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         this.type = type;
     }
 
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(Set<Document> documents) {
-        this.documents = documents;
-    }
-
     public Deal getDeal() {
         return deal;
     }
@@ -129,19 +116,19 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         this.deal = deal;
     }
 
-    public Contact getPerson() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(Contact person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 
-    public Contact getOrganization() {
+    public Organization getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Contact organization) {
+    public void setOrganization(Organization organization) {
         this.organization = organization;
     }
 
@@ -162,11 +149,34 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
             ", start=" + start +
             ", end=" + end +
             ", type=" + type +
-            ", documents=" + documents +
             ", deal=" + deal +
             ", person=" + person +
             ", organization=" + organization +
             ", user=" + user +
             '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Activity)) return false;
+        Activity activity = (Activity) o;
+        return Objects.equals(id, activity.id) &&
+            Objects.equals(title, activity.title) &&
+            Objects.equals(memo, activity.memo) &&
+            Objects.equals(start, activity.start) &&
+            Objects.equals(end, activity.end) &&
+            type == activity.type &&
+            Objects.equals(deal, activity.deal) &&
+            Objects.equals(person, activity.person) &&
+            Objects.equals(organization, activity.organization) &&
+            Objects.equals(user, activity.user);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, title, memo, start, end, type, deal, person, organization, user);
+    }
+
 }

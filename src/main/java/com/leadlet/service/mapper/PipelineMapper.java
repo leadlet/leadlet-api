@@ -3,7 +3,6 @@ package com.leadlet.service.mapper;
 import com.leadlet.domain.*;
 import com.leadlet.service.dto.PipelineDTO;
 
-import com.leadlet.service.dto.TeamDTO;
 import org.mapstruct.*;
 
 /**

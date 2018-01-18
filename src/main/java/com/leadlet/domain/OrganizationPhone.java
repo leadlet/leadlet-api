@@ -1,5 +1,6 @@
 package com.leadlet.domain;
 
+import com.leadlet.domain.enumeration.PhoneType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,15 +8,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.leadlet.domain.enumeration.PhoneType;
-
 /**
- * A ContactPhone.
+ * A OrganizationPhone.
  */
 @Entity
-@Table(name = "contact_phone")
+@Table(name = "organization_phone")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ContactPhone implements Serializable {
+public class OrganizationPhone implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +30,7 @@ public class ContactPhone implements Serializable {
     private PhoneType type;
 
     @ManyToOne
-    private Person person;
+    private Organization organization;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -61,12 +60,12 @@ public class ContactPhone implements Serializable {
         this.type = type;
     }
 
-    public Person getPerson() {
-        return person;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     @Override
@@ -77,11 +76,11 @@ public class ContactPhone implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ContactPhone contactPhone = (ContactPhone) o;
-        if (contactPhone.getId() == null || getId() == null) {
+        OrganizationPhone organizationPhone = (OrganizationPhone) o;
+        if (organizationPhone.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), contactPhone.getId());
+        return Objects.equals(getId(), organizationPhone.getId());
     }
 
     @Override
@@ -91,11 +90,11 @@ public class ContactPhone implements Serializable {
 
     @Override
     public String toString() {
-        return "ContactPhone{" +
+        return "OrganizationPhone{" +
             "id=" + id +
             ", phone='" + phone + '\'' +
             ", type=" + type +
-            ", person=" + person +
+            ", organization=" + organization +
             '}';
     }
 }

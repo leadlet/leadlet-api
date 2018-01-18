@@ -43,13 +43,7 @@
             </column>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
-            <column name="team_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="app_account_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="team_leader" type="boolean" valueBoolean="false">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -89,7 +83,6 @@
                   separator=";"
                   tableName="jhi_user">
             <column name="activated" type="boolean"/>
-            <column name="team_leader" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>

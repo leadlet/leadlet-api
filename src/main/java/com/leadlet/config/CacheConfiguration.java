@@ -40,8 +40,6 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.User.class.getName() + ".authorities", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Team.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Team.class.getName() + ".users", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.AppAccount.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.AppAccount.class.getName() + ".subscriptionPlans", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.AppAccount.class.getName() + ".users", jcacheConfiguration);
@@ -53,17 +51,18 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.Pipeline.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Pipeline.class.getName() + ".stages", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Stage.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Contact.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Contact.class.getName() + ".phones", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Contact.class.getName() + ".emails", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Contact.class.getName() + ".documents", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Document.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Organization.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Organization.class.getName() + ".phones", jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Organization.class.getName() + ".emails", jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Person.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Person.class.getName() + ".phones", jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Person.class.getName() + ".emails", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.ContactPhone.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Deal.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Activity.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Activity.class.getName() + ".documents", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Team.class.getName() + ".subteams", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Note.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.OrganizationPhone.class.getName(), jcacheConfiguration);
+
             cm.createCache(com.leadlet.domain.Timeline.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };

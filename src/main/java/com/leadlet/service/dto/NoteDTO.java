@@ -9,7 +9,7 @@ public class NoteDTO implements Serializable {
 
     private String content;
 
-    private Long contactId;
+    private Long personId;
 
     public Long getId() {
         return id;
@@ -27,12 +27,12 @@ public class NoteDTO implements Serializable {
         this.content = content;
     }
 
-    public Long getContactId() {
-        return contactId;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
     @Override
@@ -42,13 +42,13 @@ public class NoteDTO implements Serializable {
         NoteDTO noteDTO = (NoteDTO) o;
         return Objects.equals(id, noteDTO.id) &&
             Objects.equals(content, noteDTO.content) &&
-            Objects.equals(contactId, noteDTO.contactId);
+            Objects.equals(personId, noteDTO.personId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, content, contactId);
+        return Objects.hash(id, content, personId);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class NoteDTO implements Serializable {
         return "NoteDTO{" +
             "id=" + id +
             ", content='" + content + '\'' +
-            ", contactId=" + contactId +
+            ", personId=" + personId +
             '}';
     }
 }

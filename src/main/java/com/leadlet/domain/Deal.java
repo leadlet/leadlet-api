@@ -34,13 +34,17 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
     private Stage stage;
 
     @ManyToOne
-    private Contact person;
+    private Person person;
 
     @ManyToOne
-    private Contact organization;
+    private Organization organization;
 
     @ManyToOne
     private User user;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public Long getId() {
         return id;
@@ -54,22 +58,12 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
         return name;
     }
 
-    public Deal name(String name) {
-        this.name = name;
-        return this;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
     public Integer getOrder() {
         return order;
-    }
-
-    public Deal order(Integer order) {
-        this.order = order;
-        return this;
     }
 
     public void setOrder(Integer order) {
@@ -80,11 +74,6 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
         return potentialValue;
     }
 
-    public Deal potentialValue(Double potentialValue) {
-        this.potentialValue = potentialValue;
-        return this;
-    }
-
     public void setPotentialValue(Double potentialValue) {
         this.potentialValue = potentialValue;
     }
@@ -93,48 +82,28 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
         return stage;
     }
 
-    public Deal stage(Stage stage) {
-        this.stage = stage;
-        return this;
-    }
-
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
-    public Contact getPerson() {
+    public Person getPerson() {
         return person;
     }
 
-    public Deal person(Contact contact) {
-        this.person = contact;
-        return this;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
-    public void setPerson(Contact contact) {
-        this.person = contact;
-    }
-
-    public Contact getOrganization() {
+    public Organization getOrganization() {
         return organization;
     }
 
-    public Deal organization(Contact contact) {
-        this.organization = contact;
-        return this;
-    }
-
-    public void setOrganization(Contact contact) {
-        this.organization = contact;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public User getUser() {
         return user;
-    }
-
-    public Deal user(User user) {
-        this.user = user;
-        return this;
     }
 
     public void setUser(User user) {
@@ -143,31 +112,36 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof Deal)) return false;
         Deal deal = (Deal) o;
-        if (deal.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), deal.getId());
+        return Objects.equals(id, deal.id) &&
+            Objects.equals(name, deal.name) &&
+            Objects.equals(order, deal.order) &&
+            Objects.equals(potentialValue, deal.potentialValue) &&
+            Objects.equals(stage, deal.stage) &&
+            Objects.equals(person, deal.person) &&
+            Objects.equals(organization, deal.organization) &&
+            Objects.equals(user, deal.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+
+        return Objects.hash(id, name, order, potentialValue, stage, person, organization, user);
     }
 
     @Override
     public String toString() {
         return "Deal{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", order='" + getOrder() + "'" +
-            ", potentialValue='" + getPotentialValue() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", order=" + order +
+            ", potentialValue=" + potentialValue +
+            ", stage=" + stage +
+            ", person=" + person +
+            ", organization=" + organization +
+            ", user=" + user +
+            '}';
     }
 }
