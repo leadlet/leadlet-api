@@ -82,12 +82,13 @@ public class PersonDTO implements Serializable {
         this.email = email;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
-    }
-
     public String getOrganizationName() {
         return organizationName;
+    }
+
+    public PersonDTO setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+        return this;
     }
 
     @Override

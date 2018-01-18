@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Deal.
@@ -41,6 +42,9 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Activity> activities;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

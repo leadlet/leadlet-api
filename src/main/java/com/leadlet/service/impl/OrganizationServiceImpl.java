@@ -127,8 +127,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         }
 
-        // TODO add account criteria
-        // builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
+        builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
 
         Specification<Organization> spec = builder.build();
 
@@ -166,5 +165,11 @@ public class OrganizationServiceImpl implements OrganizationService {
         } else {
             throw new EntityNotFoundException();
         }
+    }
+
+    @Override
+    public void delete(List<Long> idList) {
+        organizationRepository.deleteByIdInAndAppAccount_Id(idList,SecurityUtils.getCurrentUserAppAccountId());
+
     }
 }

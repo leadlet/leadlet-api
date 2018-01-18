@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the Contact entity.
@@ -17,4 +19,5 @@ public interface PersonRepository extends JpaRepository<Person,Long> ,  JpaSpeci
     Page<Person> findByAppAccount_Id(Long appAccountId, Pageable page);
     Person findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
+    void deleteByIdInAndAppAccount_Id(List<Long> idList, Long appAccountId);
 }

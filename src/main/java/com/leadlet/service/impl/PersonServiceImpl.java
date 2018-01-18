@@ -107,7 +107,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         // TODO add account criteria
-        // builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
+        builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
 
         Specification<Person> spec = builder.build();
 
@@ -145,5 +145,17 @@ public class PersonServiceImpl implements PersonService {
         } else {
             throw new EntityNotFoundException();
         }
+    }
+
+    /**
+     * Delete the person by id.
+     *
+     * @param idList the id of the entity
+     */
+    @Override
+    public void delete(List<Long> idList) {
+        log.debug("Request to delete Person : {}", idList);
+        personRepository.deleteByIdInAndAppAccount_Id(idList,SecurityUtils.getCurrentUserAppAccountId());
+
     }
 }

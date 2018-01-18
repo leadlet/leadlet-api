@@ -110,16 +110,18 @@ public class PersonResource {
     }
 
     /**
-     * DELETE  /persons/:id : delete the "id" person.
+     * DELETE  /persons/:idList : delete the "idList" person.
      *
-     * @param id the id of the personDTO to delete
+     * @param idList the id of the personDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/persons/{id}")
+    @DeleteMapping("/persons/{idList}")
     @Timed
-    public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
-        log.debug("REST request to delete Person : {}", id);
-        personService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    public ResponseEntity<List<Long>> deletePerson(@PathVariable List<Long> idList) {
+        log.debug("REST request to delete Person : {}", idList);
+        personService.delete(idList);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME,""))
+            .body(idList);
     }
 }
