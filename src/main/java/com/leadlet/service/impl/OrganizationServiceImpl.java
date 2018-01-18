@@ -127,8 +127,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         }
 
-        // TODO add account criteria
-        // builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
+        builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
 
         Specification<Organization> spec = builder.build();
 

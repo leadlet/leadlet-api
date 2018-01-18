@@ -38,6 +38,7 @@ public class SearchSpecification<T> implements Specification<T> {
             }else if (root.get(criteria.getKey()).getJavaType() == Long.class){
                 return builder.equal(
                     root.<String>get(criteria.getKey()), criteria.getValue() );
+                //TODO ygokirmak fix below specific type
             }else if (root.get(criteria.getKey()).getJavaType() == AppAccount.class){
                 return builder.equal(
                     root.<String>get(criteria.getKey()), criteria.getValue() );
