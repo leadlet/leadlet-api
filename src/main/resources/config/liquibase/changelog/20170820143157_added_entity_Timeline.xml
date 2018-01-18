@@ -17,7 +17,7 @@
     <!--
         Added the entity Activity.
     -->
-    <changeSet id="20170820143154-1" author="jhipster">
+    <changeSet id="20170820143157-1" author="jhipster">
         <createTable tableName="timeline">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
@@ -29,7 +29,11 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="contact_id" type="bigint">
+            <column name="person_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="organization_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
@@ -60,7 +64,8 @@
             <column name="id" type="NUMERIC"/>
             <column name="source_id" type="NUMERIC"/>
             <column name="created_date" type="DATETIME" />
-            <column name="contact_id" type="NUMERIC" />
+            <column name="person_id" type="NUMERIC" />
+            <column name="organization_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
             <column name="user_id" type="NUMERIC" />
         </loadData>

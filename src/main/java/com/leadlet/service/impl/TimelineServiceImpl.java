@@ -84,8 +84,8 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public Page<Timeline> findByContactId(Long contactId, Pageable pageable) {
-        log.warn("findByContactId");
+    public Page<Timeline> findByPersonId(Long personId, Pageable pageable) {
+        log.warn("findByPersonId");
         return null;
     }
 
@@ -102,8 +102,8 @@ public class TimelineServiceImpl implements TimelineService {
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.NOTE_CREATED);
 
-        if (note.getContact() != null) {
-            timelineItem.setContact(note.getContact());
+        if (note.getPerson() != null) {
+            timelineItem.setPerson(note.getPerson());
         }
 
         if (note.getAppAccount() != null) {
@@ -126,7 +126,7 @@ public class TimelineServiceImpl implements TimelineService {
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.ACTIVITY_CREATED);
 
-        timelineItem.setContact(activity.getPerson()); // TODO: ? getOrganization
+        timelineItem.setPerson(activity.getPerson()); // TODO: ? getOrganization
         timelineItem.setAppAccount(activity.getAppAccount());
         timelineItem.setSourceId(activity.getId());
         timelineItem.setUser(activity.getUser());

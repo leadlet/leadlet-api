@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TimelineRepository extends JpaRepository<Timeline,Long> {
     Page<Timeline> findByAppAccount_Id(Long appAccountId, Pageable page);
-    Page<Timeline> findByContact_IdAndAppAccount_Id(Long contactId, Long appAccountId, Pageable page);
+    Page<Timeline> findByPerson_IdAndAppAccount_Id(Long personId, Long appAccountId, Pageable page);
     Page<Timeline> findByUser_IdAndAppAccount_Id(Long userId, Long appAccountId, Pageable page);
 }

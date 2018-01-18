@@ -16,7 +16,9 @@ public class TimelineDTO implements Serializable {
 
     private Object source;
 
-    private Long contactId;
+    private Long personId;
+
+    private Long organizationId;
 
     private Long userId;
 
@@ -46,12 +48,22 @@ public class TimelineDTO implements Serializable {
         this.sourceId = sourceId;
     }
 
-    public Long getContactId() {
-        return contactId;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
+    public TimelineDTO setPersonId(Long personId) {
+        this.personId = personId;
+        return this;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public TimelineDTO setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+        return this;
     }
 
     public Long getUserId() {
@@ -82,20 +94,31 @@ public class TimelineDTO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TimelineDTO)) return false;
+
         TimelineDTO that = (TimelineDTO) o;
-        return Objects.equals(id, that.id) &&
-            type == that.type &&
-            Objects.equals(sourceId, that.sourceId) &&
-            Objects.equals(source, that.source) &&
-            Objects.equals(contactId, that.contactId) &&
-            Objects.equals(userId, that.userId) &&
-            Objects.equals(createdDate, that.createdDate);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (type != that.type) return false;
+        if (sourceId != null ? !sourceId.equals(that.sourceId) : that.sourceId != null) return false;
+        if (source != null ? !source.equals(that.source) : that.source != null) return false;
+        if (personId != null ? !personId.equals(that.personId) : that.personId != null) return false;
+        if (organizationId != null ? !organizationId.equals(that.organizationId) : that.organizationId != null)
+            return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        return createdDate != null ? createdDate.equals(that.createdDate) : that.createdDate == null;
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, type, sourceId, source, contactId, userId, createdDate);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (sourceId != null ? sourceId.hashCode() : 0);
+        result = 31 * result + (source != null ? source.hashCode() : 0);
+        result = 31 * result + (personId != null ? personId.hashCode() : 0);
+        result = 31 * result + (organizationId != null ? organizationId.hashCode() : 0);
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -105,7 +128,8 @@ public class TimelineDTO implements Serializable {
             ", type=" + type +
             ", sourceId=" + sourceId +
             ", source=" + source +
-            ", contactId=" + contactId +
+            ", personId=" + personId +
+            ", organizationId=" + organizationId +
             ", userId=" + userId +
             ", createdDate=" + createdDate +
             '}';

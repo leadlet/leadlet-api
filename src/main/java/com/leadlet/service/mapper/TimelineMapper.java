@@ -1,19 +1,22 @@
 package com.leadlet.service.mapper;
 
+import com.leadlet.domain.Person;
 import com.leadlet.domain.Timeline;
 import com.leadlet.service.dto.TimelineDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {ContactMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring", uses = {PersonMapper.class, OrganizationMapper.class, UserMapper.class})
 public interface TimelineMapper extends EntityMapper<TimelineDTO, Timeline> {
 
-    @Mapping(source = "contact.id", target = "contactId")
+    @Mapping(source = "person.id", target = "personId")
+    @Mapping(source = "organization.id", target = "organizationId")
     @Mapping(source = "user.id", target = "userId")
 
     TimelineDTO toDto(Timeline timeline);
 
-    @Mapping(source = "contactId", target = "contact")
+    @Mapping(source = "personId", target = "person")
+    @Mapping(source = "organizationId", target = "organization")
     @Mapping(source = "userId", target = "user")
 
     Timeline toEntity(TimelineDTO timelineDTO);

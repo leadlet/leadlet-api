@@ -30,7 +30,7 @@ public interface TimelineService {
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<Timeline> findByContactId(Long contactId, Pageable pageable);
+    Page<Timeline> findByPersonId(Long personId, Pageable pageable);
 
     /**
      *  Get all the timelines.
