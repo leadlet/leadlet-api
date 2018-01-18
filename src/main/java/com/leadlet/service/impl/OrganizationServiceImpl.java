@@ -167,4 +167,10 @@ public class OrganizationServiceImpl implements OrganizationService {
             throw new EntityNotFoundException();
         }
     }
+
+    @Override
+    public void delete(List<Long> idList) {
+        organizationRepository.deleteByIdInAndAppAccount_Id(idList,SecurityUtils.getCurrentUserAppAccountId());
+
+    }
 }

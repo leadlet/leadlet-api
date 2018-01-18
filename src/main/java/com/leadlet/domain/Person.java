@@ -37,7 +37,7 @@ public class Person implements Serializable {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ContactPhone> phones = new HashSet<>();
@@ -51,6 +51,18 @@ public class Person implements Serializable {
 
     @ManyToOne
     private AppAccount appAccount;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Activity> activities;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Deal> deals;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Note> notes;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Timeline> timelines;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

@@ -4,6 +4,8 @@ import com.leadlet.service.dto.PersonDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing Person.
  */
@@ -47,6 +49,13 @@ public interface PersonService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     *  Delete the "id" person.
+     *
+     *  @param idList the id of the entity
+     */
+    void delete(List<Long> idList);
 
     Page<PersonDTO> search(String filter, Pageable pageable);
 }

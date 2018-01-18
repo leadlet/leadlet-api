@@ -45,6 +45,19 @@ public class Organization implements Serializable {
     @ManyToOne
     private AppAccount appAccount;
 
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Activity> activities;
+
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Deal> deals;
+
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Timeline> timelines;
+
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Person> persons;
+
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

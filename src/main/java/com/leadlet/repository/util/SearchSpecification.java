@@ -1,5 +1,6 @@
 package com.leadlet.repository.util;
 
+import com.leadlet.domain.AppAccount;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.management.Descriptor;
@@ -34,6 +35,12 @@ public class SearchSpecification<T> implements Specification<T> {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
                 return builder.like(
                   root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
+            }else if (root.get(criteria.getKey()).getJavaType() == Long.class){
+                return builder.equal(
+                    root.<String>get(criteria.getKey()), criteria.getValue() );
+            }else if (root.get(criteria.getKey()).getJavaType() == AppAccount.class){
+                return builder.equal(
+                    root.<String>get(criteria.getKey()), criteria.getValue() );
             }
             else {
                 Class c = root.get(criteria.getKey()).getJavaType();

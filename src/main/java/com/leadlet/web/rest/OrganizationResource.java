@@ -110,16 +110,18 @@ public class OrganizationResource {
     }
 
     /**
-     * DELETE  /organizations/:id : delete the "id" organization.
+     * DELETE  /persons/:idList : delete the "idList" person.
      *
-     * @param id the id of the organizationDTO to delete
+     * @param idList the id of the personDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/organizations/{id}")
+    @DeleteMapping("/organizations/{idList}")
     @Timed
-    public ResponseEntity<Void> deleteOrganization(@PathVariable Long id) {
-        log.debug("REST request to delete Organization : {}", id);
-        organizationService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    public ResponseEntity<List<Long>> deleteOrganization(@PathVariable List<Long> idList) {
+        log.debug("REST request to delete Person : {}", idList);
+        organizationService.delete(idList);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME,""))
+            .body(idList);
     }
 }
