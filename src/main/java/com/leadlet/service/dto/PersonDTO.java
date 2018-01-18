@@ -20,6 +20,8 @@ public class PersonDTO implements Serializable {
 
     private Long organizationId;
 
+    private String organizationName;
+
     private List<ContactPhoneDTO> phones;
 
     private String email;
@@ -78,6 +80,14 @@ public class PersonDTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
     }
 
     @Override
