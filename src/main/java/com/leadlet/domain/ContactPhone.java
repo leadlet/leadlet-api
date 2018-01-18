@@ -30,7 +30,7 @@ public class ContactPhone implements Serializable {
     @Column(name = "jhi_type")
     private PhoneType type;
 
-    @Column(name="person")
+    @ManyToOne
     private Person person;
 
     public static long getSerialVersionUID() {
@@ -71,19 +71,22 @@ public class ContactPhone implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ContactPhone)) return false;
-        ContactPhone that = (ContactPhone) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(phone, that.phone) &&
-            type == that.type &&
-            Objects.equals(person, that.person);
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ContactPhone contactPhone = (ContactPhone) o;
+        if (contactPhone.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), contactPhone.getId());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, phone, type, person);
+        return Objects.hashCode(getId());
     }
 
     @Override

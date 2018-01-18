@@ -29,7 +29,7 @@ public class OrganizationPhone implements Serializable {
     @Column(name = "jhi_type")
     private PhoneType type;
 
-    @Column(name="organization")
+    @ManyToOne
     private Organization organization;
 
     public static long getSerialVersionUID() {
@@ -70,19 +70,22 @@ public class OrganizationPhone implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OrganizationPhone)) return false;
-        OrganizationPhone that = (OrganizationPhone) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(phone, that.phone) &&
-            type == that.type &&
-            Objects.equals(organization, that.organization);
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        OrganizationPhone organizationPhone = (OrganizationPhone) o;
+        if (organizationPhone.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), organizationPhone.getId());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, phone, type, organization);
+        return Objects.hashCode(getId());
     }
 
     @Override
