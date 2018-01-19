@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the Deal entity.
@@ -15,7 +17,8 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface DealRepository extends JpaRepository<Deal,Long> {
-    Page<Deal> findByAppAccount_Id(Long appAccountId, Pageable page);
+    Page<Deal> findByAppAccount_IdOrderByIdAsc(Long appAccountId, Pageable page);
+
     Deal findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 

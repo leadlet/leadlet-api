@@ -82,7 +82,7 @@ public class DealServiceImpl implements DealService {
     @Transactional(readOnly = true)
     public Page<DealDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Deals");
-        return dealRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
+        return dealRepository.findByAppAccount_IdOrderByIdAsc(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(dealMapper::toDto);
     }
 

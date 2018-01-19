@@ -25,7 +25,7 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "jhi_order")
+    @Column(name = "order")
     private Integer order;
 
     @Column(name = "potential_value")

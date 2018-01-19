@@ -26,7 +26,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="jhi_order" type="integer">
+            <column name="order" type="integer" >
                 <constraints nullable="true" />
             </column>
 
