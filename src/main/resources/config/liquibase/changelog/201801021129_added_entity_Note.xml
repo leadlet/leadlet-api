@@ -26,7 +26,10 @@
                 <constraints nullable="false" />
             </column>
             <column name="person_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
+            </column>
+            <column name="organization_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
@@ -40,6 +43,7 @@
                   tableName="note">
             <column name="id" type="NUMERIC"/>
             <column name="person_id" type="NUMERIC" />
+            <column name="organization_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
         </loadData>
 
