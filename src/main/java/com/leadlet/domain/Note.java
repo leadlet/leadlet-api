@@ -27,8 +27,10 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
     private String content;
 
     @ManyToOne
-    @NotNull
     private Person person;
+
+    @ManyToOne
+    private Organization organization;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -58,6 +60,14 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
         this.person = person;
     }
 
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,13 +75,14 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
         Note note = (Note) o;
         return Objects.equals(id, note.id) &&
             Objects.equals(content, note.content) &&
-            Objects.equals(person, note.person);
+            Objects.equals(person, note.person) &&
+            Objects.equals(organization, note.organization);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, content, person);
+        return Objects.hash(id, content, person, organization);
     }
 
     @Override
@@ -80,6 +91,7 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
             "id=" + id +
             ", content='" + content + '\'' +
             ", person=" + person +
+            ", organization=" + organization +
             '}';
     }
 }

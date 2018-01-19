@@ -14,6 +14,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="person"/>
 
+        <addForeignKeyConstraint baseColumnNames="organization_id"
+                                 baseTableName="note"
+                                 constraintName="fk_note_organization_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organization"/>
+
         <addForeignKeyConstraint baseColumnNames="app_account_id"
                                  baseTableName="note"
                                  constraintName="fk_note_app_account_id"

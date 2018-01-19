@@ -84,11 +84,38 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public Page<Timeline> findByPersonId(Long personId, Pageable pageable) {
-        log.warn("findByPersonId");
-        return null;
+    public Page<TimelineDTO> findByPersonId(Long personId, Pageable pageable) {
+        return timelineRepository.findByPerson_IdAndAppAccount_Id(personId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+            .map(timelineMapper::toDto)
+            .map(timelineDTO -> {
+                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
+                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(noteMapper.toDto(note));
+                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
+                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(activityMapper.toDto(activity));
+                }
+
+                return timelineDTO;
+            });
     }
 
+    @Override
+    public Page<TimelineDTO> findByOrganizationId(Long organizationId, Pageable pageable) {
+        return timelineRepository.findByOrOrganization_IdAndAppAccount_Id(organizationId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+            .map(timelineMapper::toDto)
+            .map(timelineDTO -> {
+                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
+                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(noteMapper.toDto(note));
+                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
+                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(activityMapper.toDto(activity));
+                }
+
+                return timelineDTO;
+            });
+    }
     @Override
     public Page<Timeline> findByUserId(Long userId, Pageable pageable) {
         log.warn("findByUserId");
@@ -104,6 +131,9 @@ public class TimelineServiceImpl implements TimelineService {
 
         if (note.getPerson() != null) {
             timelineItem.setPerson(note.getPerson());
+        }
+        if(note.getOrganization() != null){
+            timelineItem.setOrganization(note.getOrganization());
         }
 
         if (note.getAppAccount() != null) {
