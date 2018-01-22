@@ -4,6 +4,8 @@ import com.leadlet.service.dto.ActivityDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing Activity.
  */
@@ -28,10 +30,9 @@ public interface ActivityService {
     /**
      *  Get all the activities.
      *
-     *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<ActivityDTO> findAll(Pageable pageable);
+    List<ActivityDTO> findAll();
 
     /**
      *  Get the "id" activity.

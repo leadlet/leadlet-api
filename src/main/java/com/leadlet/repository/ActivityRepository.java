@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,7 +18,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity,Long> {
-    Page<Activity> findByAppAccount_Id(Long appAccountId, Pageable page);
+    List<Activity> findByAppAccount_Id(Long appAccountId);
     Activity findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
     Page<Activity> findByPerson_Id(Long id, Pageable page);

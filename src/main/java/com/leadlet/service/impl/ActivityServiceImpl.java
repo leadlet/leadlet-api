@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 
 /**
@@ -56,7 +57,6 @@ public class ActivityServiceImpl implements ActivityService {
 
     }
 
-
     /**
      * Update a activity.
      *
@@ -82,15 +82,15 @@ public class ActivityServiceImpl implements ActivityService {
     /**
      * Get all the activities.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<ActivityDTO> findAll(Pageable pageable) {
+    public List<ActivityDTO> findAll() {
         log.debug("Request to get all Activities");
-        return activityRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(activityMapper::toDto);
+         List<Activity> activityList = activityRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId());
+        return activityMapper.toDto(activityList);
+
     }
 
     /**
