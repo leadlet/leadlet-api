@@ -83,16 +83,14 @@ public class ActivityResource {
     /**
      * GET  /activities : get all the activities.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of activities in body
      */
     @GetMapping("/activities")
     @Timed
-    public ResponseEntity<List<ActivityDTO>> getAllActivities(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Activities");
-        Page<ActivityDTO> page = activityService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activities");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public ResponseEntity<List<ActivityDTO>> getAllActivities() {
+        log.debug("REST request to get Activities");
+        List<ActivityDTO> activityDTOList = activityService.findAll();
+        return new ResponseEntity<>(activityDTOList, HttpStatus.OK);
     }
 
     /**
