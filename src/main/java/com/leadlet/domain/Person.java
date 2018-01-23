@@ -37,7 +37,7 @@ public class Person implements Serializable {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ContactPhone> phones = new HashSet<>();

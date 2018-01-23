@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -53,8 +55,18 @@ public class PersonServiceImpl implements PersonService {
         Person person = personMapper.toEntity(personDTO);
         person.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
 
-        person = personRepository.save(person);
-        return personMapper.toDto(person);
+        Person personFromDb = personRepository.save(person);
+
+        Set<ContactPhone> phones = person.getPhones();
+        Iterator<ContactPhone> iter = phones.iterator();
+        while (iter.hasNext()) {
+            iter.next().setPerson(personFromDb);
+        }
+
+        personFromDb.setPhones(phones);
+
+        personFromDb = personRepository.save(personFromDb);
+        return personMapper.toDto(personFromDb);
     }
 
     /**
@@ -71,6 +83,13 @@ public class PersonServiceImpl implements PersonService {
         Person personFromDb = personRepository.findOneByIdAndAppAccount_Id(person.getId(), SecurityUtils.getCurrentUserAppAccountId());
         if (personFromDb != null) {
             person.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
+
+            Set<ContactPhone> phones = person.getPhones();
+            Iterator<ContactPhone> iter = phones.iterator();
+            while (iter.hasNext()) {
+               iter.next().setPerson(personFromDb);
+            }
+
             person = personRepository.save(person);
             return personMapper.toDto(person);
         } else {
