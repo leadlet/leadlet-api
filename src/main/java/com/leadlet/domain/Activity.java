@@ -27,16 +27,19 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false, length = 64)
+    @NotNull
     private String title;
 
     @Column(name = "memo")
     private String memo;
 
-    @Column(name = "start")
+    @Column(name = "start", nullable = false)
+    @NotNull
     private ZonedDateTime start;
 
-    @Column(name = "end")
+    @Column(name = "end", nullable = false)
+    @NotNull
     private ZonedDateTime end;
 
     @Enumerated(EnumType.STRING)

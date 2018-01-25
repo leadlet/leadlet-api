@@ -23,19 +23,19 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="memo" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="start" type="timestamp">
-                <constraints nullable="true" />
+            <column name="start" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
             </column>
 
-            <column name="end" type="timestamp">
-                <constraints nullable="true" />
+            <column name="end" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
             </column>
 
             <column name="type" type="varchar(255)">
@@ -64,8 +64,6 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="activity" columnName="start" columnDataType="datetime"/>
-        <dropDefaultValue tableName="activity" columnName="end" columnDataType="datetime"/>
 
         <loadData encoding="UTF-8"
                   file="config/liquibase/activities.csv"
