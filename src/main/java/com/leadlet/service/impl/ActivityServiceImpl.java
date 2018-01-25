@@ -73,6 +73,7 @@ public class ActivityServiceImpl implements ActivityService {
             //TODO: appaccount todo'su..
             activity.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             activity = activityRepository.save(activity);
+            timelineService.activityCreated(activity);
             return activityMapper.toDto(activity);
         } else {
             throw new EntityNotFoundException();
@@ -123,11 +124,20 @@ public class ActivityServiceImpl implements ActivityService {
             throw new EntityNotFoundException();
         }
     }
+
     @Override
     @Transactional(readOnly = true)
     public Page<ActivityDTO> findByPersonId(Long personId, Pageable pageable) {
         log.debug("Request to get all Activities");
         return activityRepository.findByPerson_Id(personId, pageable)
+            .map(activityMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ActivityDTO> findByOrganizationId(Long organizationId, Pageable pageable) {
+        log.debug("Request to get all Activities");
+        return activityRepository.findByOrganization_Id(organizationId, pageable)
             .map(activityMapper::toDto);
     }
 }

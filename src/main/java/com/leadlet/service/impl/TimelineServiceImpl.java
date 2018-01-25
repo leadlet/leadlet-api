@@ -102,7 +102,7 @@ public class TimelineServiceImpl implements TimelineService {
 
     @Override
     public Page<TimelineDTO> findByOrganizationId(Long organizationId, Pageable pageable) {
-        return timelineRepository.findByOrOrganization_IdAndAppAccount_Id(organizationId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+        return timelineRepository.findByOrganization_IdAndAppAccount_Id(organizationId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(timelineMapper::toDto)
             .map(timelineDTO -> {
                 if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
@@ -156,7 +156,8 @@ public class TimelineServiceImpl implements TimelineService {
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.ACTIVITY_CREATED);
 
-        timelineItem.setPerson(activity.getPerson()); // TODO: ? getOrganization
+        timelineItem.setOrganization(activity.getOrganization());
+        timelineItem.setPerson(activity.getPerson());
         timelineItem.setAppAccount(activity.getAppAccount());
         timelineItem.setSourceId(activity.getId());
         timelineItem.setUser(activity.getUser());

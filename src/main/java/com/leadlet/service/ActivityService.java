@@ -56,4 +56,12 @@ public interface ActivityService {
      *  @return the list of entities
      */
     Page<ActivityDTO> findByPersonId(Long personId, Pageable pageable);
+
+    /**
+     *  Get all the activities.
+     *
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    Page<ActivityDTO> findByOrganizationId(Long personId, Pageable pageable);
 }
