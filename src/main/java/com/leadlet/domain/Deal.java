@@ -1,10 +1,18 @@
 package com.leadlet.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.leadlet.domain.enumeration.ActivityType;
+import com.leadlet.domain.enumeration.CurrencyType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Currency;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,6 +39,10 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
     @Column(name = "potential_value")
     private Double potentialValue;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency")
+    private CurrencyType currency;
+
     @ManyToOne
     private Stage stage;
 
@@ -41,7 +53,10 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
     private Organization organization;
 
     @ManyToOne
-    private User user;
+    private User owner;
+
+    @Column(name = "possible_close_date")
+    private ZonedDateTime possibleCloseDate;
 
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Activity> activities;
@@ -106,12 +121,30 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
         this.organization = organization;
     }
 
-    public User getUser() {
-        return user;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Deal setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
+        this.possibleCloseDate = possibleCloseDate;
+        return this;
+    }
+
+    public ZonedDateTime getPossibleCloseDate() {
+        return possibleCloseDate;
+    }
+
+    public Deal setCurrency(CurrencyType currency) {
+        this.currency = currency;
+        return this;
+    }
+
+    public CurrencyType getCurrency() {
+        return currency;
     }
 
     @Override
@@ -126,13 +159,13 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
             Objects.equals(stage, deal.stage) &&
             Objects.equals(person, deal.person) &&
             Objects.equals(organization, deal.organization) &&
-            Objects.equals(user, deal.user);
+            Objects.equals(owner, deal.owner);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, order, potentialValue, stage, person, organization, user);
+        return Objects.hash(id, name, order, potentialValue, stage, person, organization, owner);
     }
 
     @Override
@@ -145,7 +178,7 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
             ", stage=" + stage +
             ", person=" + person +
             ", organization=" + organization +
-            ", user=" + user +
+            ", owner=" + owner +
             '}';
     }
 }

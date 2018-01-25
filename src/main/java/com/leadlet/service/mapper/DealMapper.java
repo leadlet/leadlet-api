@@ -17,7 +17,7 @@ public interface DealMapper extends EntityMapper <DealDTO, Deal> {
 
     @Mapping(source = "organization.id", target = "organizationId")
 
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "owner.id", target = "ownerId")
     DealDTO toDto(Deal deal);
 
     @Mapping(source = "stageId", target = "stage")
@@ -26,7 +26,7 @@ public interface DealMapper extends EntityMapper <DealDTO, Deal> {
 
     @Mapping(source = "organizationId", target = "organization")
 
-    @Mapping(source = "userId", target = "user")
+    @Mapping(source = "ownerId", target = "owner")
     Deal toEntity(DealDTO dealDTO);
     default Deal fromId(Long id) {
         if (id == null) {

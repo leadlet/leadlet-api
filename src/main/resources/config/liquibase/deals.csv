@@ -1,4 +1,4 @@
-id;name;order;potential_value;stage_id;person_id;organization_id;app_account_id;user_id
+id;name;order;potential_value;stage_id;person_id;organization_id;app_account_id;owner_id
 100;amet justo morbi ut odio;1;74.07;10;118;1009;1;13
 101;id luctus nec molestie sed justo;2;11.25;10;127;1006;1;13
 102;in lacus curabitur;3;78.98;17;198;1005;1;12

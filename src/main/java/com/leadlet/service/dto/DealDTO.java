@@ -2,8 +2,7 @@ package com.leadlet.service.dto;
 
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -25,7 +24,11 @@ public class DealDTO implements Serializable {
 
     private Long organizationId;
 
-    private Long userId;
+    private Long ownerId;
+
+    private String currency;
+
+    private ZonedDateTime possibleCloseDate;
 
     public Long getId() {
         return id;
@@ -83,12 +86,30 @@ public class DealDTO implements Serializable {
         this.organizationId = contactId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setUserId(Long appUserId) {
-        this.userId = appUserId;
+    public void setOwnerId(Long appUserId) {
+        this.ownerId = appUserId;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public DealDTO setCurrency(String currency) {
+        this.currency = currency;
+        return this;
+    }
+
+    public ZonedDateTime getPossibleCloseDate() {
+        return possibleCloseDate;
+    }
+
+    public DealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
+        this.possibleCloseDate = possibleCloseDate;
+        return this;
     }
 
     @Override
