@@ -94,7 +94,6 @@ public class OrganizationPhone implements Serializable {
             "id=" + id +
             ", phone='" + phone + '\'' +
             ", type=" + type +
-            ", organization=" + organization +
             '}';
     }
 }
