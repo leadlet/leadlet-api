@@ -87,7 +87,7 @@ public class PersonServiceImpl implements PersonService {
             Set<ContactPhone> phones = person.getPhones();
             Iterator<ContactPhone> iter = phones.iterator();
             while (iter.hasNext()) {
-               iter.next().setPerson(personFromDb);
+                iter.next().setPerson(personFromDb);
             }
 
             person = personRepository.save(person);
@@ -126,7 +126,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         // TODO add account criteria
-        builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
+        builder.with("appAccount", ":", SecurityUtils.getCurrentUserAppAccountReference());
 
         Specification<Person> spec = builder.build();
 
@@ -174,7 +174,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void delete(List<Long> idList) {
         log.debug("Request to delete Person : {}", idList);
-        personRepository.deleteByIdInAndAppAccount_Id(idList,SecurityUtils.getCurrentUserAppAccountId());
+        personRepository.deleteByIdInAndAppAccount_Id(idList, SecurityUtils.getCurrentUserAppAccountId());
 
     }
 }

@@ -2,6 +2,7 @@ package com.leadlet.service.impl;
 
 import com.leadlet.domain.ContactPhone;
 import com.leadlet.domain.Organization;
+import com.leadlet.domain.OrganizationPhone;
 import com.leadlet.repository.OrganizationRepository;
 import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.repository.util.SpecificationsBuilder;
@@ -12,6 +13,7 @@ import com.leadlet.service.dto.ContactPhoneDTO;
 import com.leadlet.service.dto.OrganizationDTO;
 import com.leadlet.service.mapper.OrganizationMapper;
 import com.leadlet.web.rest.util.ParameterUtil;
+import io.swagger.models.Contact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -62,20 +65,18 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization organization = organizationMapper.toEntity(organizationDTO);
         organization.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
 
-        organization = organizationRepository.save(organization);
+        Organization organizationFromDb = organizationRepository.save(organization);
 
-        /*
-        Set<ContactPhone> phones = new HashSet<>();
-        for ( ContactPhoneDTO phoneDTO: organizationDTO.getPhones()) {
-            ContactPhoneDTO phone = contactPhoneService.save(phoneDTO);
-            phones.add(phone);
+        Set<OrganizationPhone> phones = organization.getPhones();
+        Iterator<OrganizationPhone> iter = phones.iterator();
+        while (iter.hasNext()) {
+            iter.next().setOrganization(organizationFromDb);
         }
 
-        organization.setPhones(phones);
-        organization = organizationRepository.save(organization);
-        */
+        organizationFromDb.setPhones(phones);
 
-        return organizationMapper.toDto(organization);
+        organizationFromDb = organizationRepository.save(organizationFromDb);
+        return organizationMapper.toDto(organizationFromDb);
     }
 
     /**
@@ -92,6 +93,13 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization organizationFromDb = organizationRepository.findOneByIdAndAppAccount_Id(organization.getId(), SecurityUtils.getCurrentUserAppAccountId());
         if (organizationFromDb != null) {
             organization.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
+
+            Set<OrganizationPhone> phones = organization.getPhones();
+            Iterator<OrganizationPhone> iter = phones.iterator();
+            while (iter.hasNext()) {
+                iter.next().setOrganization(organizationFromDb);
+            }
+
             organization = organizationRepository.save(organization);
             return organizationMapper.toDto(organization);
         } else {
@@ -127,7 +135,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         }
 
-        builder.with("appAccount",":", SecurityUtils.getCurrentUserAppAccountReference());
+        builder.with("appAccount", ":", SecurityUtils.getCurrentUserAppAccountReference());
 
         Specification<Organization> spec = builder.build();
 
@@ -169,7 +177,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public void delete(List<Long> idList) {
-        organizationRepository.deleteByIdInAndAppAccount_Id(idList,SecurityUtils.getCurrentUserAppAccountId());
+        organizationRepository.deleteByIdInAndAppAccount_Id(idList, SecurityUtils.getCurrentUserAppAccountId());
 
     }
 }
