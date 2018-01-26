@@ -17,34 +17,42 @@ public interface TimelineService {
     Timeline save(Timeline timeline);
 
     /**
-     *  Get all the activities.
+     * Get all the activities.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     Page<TimelineDTO> findAll(Pageable pageable);
 
     /**
-     *  Get all the timelines.
+     * Get all the timelines.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     Page<TimelineDTO> findByPersonId(Long personId, Pageable pageable);
 
     /**
-     *  Get all the timelines.
+     * Get all the timelines.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     Page<TimelineDTO> findByOrganizationId(Long organizationId, Pageable pageable);
 
     /**
-     *  Get all the timelines.
+     * Get all the timelines.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<TimelineDTO> findByDealId(Long dealId, Pageable pageable);
+
+    /**
+     * Get all the timelines.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     Page<Timeline> findByUserId(Long userId, Pageable pageable);
 

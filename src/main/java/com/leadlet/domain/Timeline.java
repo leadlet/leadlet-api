@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A Timeline.
@@ -33,6 +34,9 @@ public class Timeline extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     private Organization organization;
+
+    @ManyToOne
+    private Deal deal;
 
     @ManyToOne
     private User user;
@@ -91,31 +95,32 @@ public class Timeline extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public Deal getDeal() {
+        return deal;
+    }
+
+    public void setDeal(Deal deal) {
+        this.deal = deal;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Timeline)) return false;
-
         Timeline timeline = (Timeline) o;
-
-        if (!id.equals(timeline.id)) return false;
-        if (type != timeline.type) return false;
-        if (!sourceId.equals(timeline.sourceId)) return false;
-        if (person != null ? !person.equals(timeline.person) : timeline.person != null) return false;
-        if (organization != null ? !organization.equals(timeline.organization) : timeline.organization != null)
-            return false;
-        return user != null ? user.equals(timeline.user) : timeline.user == null;
+        return Objects.equals(id, timeline.id) &&
+            type == timeline.type &&
+            Objects.equals(sourceId, timeline.sourceId) &&
+            Objects.equals(person, timeline.person) &&
+            Objects.equals(organization, timeline.organization) &&
+            Objects.equals(deal, timeline.deal) &&
+            Objects.equals(user, timeline.user);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + sourceId.hashCode();
-        result = 31 * result + (person != null ? person.hashCode() : 0);
-        result = 31 * result + (organization != null ? organization.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        return result;
+
+        return Objects.hash(id, type, sourceId, person, organization, deal, user);
     }
 
     @Override
@@ -126,6 +131,7 @@ public class Timeline extends AbstractAuditingEntity implements Serializable {
             ", sourceId=" + sourceId +
             ", person=" + person +
             ", organization=" + organization +
+            ", deal=" + deal +
             ", user=" + user +
             '}';
     }

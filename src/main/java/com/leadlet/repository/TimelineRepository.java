@@ -7,13 +7,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spring Data JPA repository for the Activity entity.
+ * Spring Data JPA repository for the Timeline entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TimelineRepository extends JpaRepository<Timeline,Long> {
+public interface TimelineRepository extends JpaRepository<Timeline, Long> {
     Page<Timeline> findByAppAccount_Id(Long appAccountId, Pageable page);
+
     Page<Timeline> findByPerson_IdAndAppAccount_Id(Long personId, Long appAccountId, Pageable page);
+
     Page<Timeline> findByOrganization_IdAndAppAccount_Id(Long organizationId, Long appAccountId, Pageable page);
+
+    Page<Timeline> findByDeal_IdAndAppAccount_Id(Long dealId, Long appAccountId, Pageable page);
+
     Page<Timeline> findByUser_IdAndAppAccount_Id(Long userId, Long appAccountId, Pageable page);
 }

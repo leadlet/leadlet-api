@@ -21,11 +21,17 @@ public class DealDTO implements Serializable {
 
     private Long stageId;
 
+    private String stageName;
+
     private Long personId;
 
     private Long organizationId;
 
     private Long ownerId;
+
+    private String ownerFirstName;
+
+    private String ownerLastName;
 
     private String currency;
 
@@ -124,6 +130,30 @@ public class DealDTO implements Serializable {
         return createdDate;
     }
 
+    public String getOwnerFirstName() {
+        return ownerFirstName;
+    }
+
+    public void setOwnerFirstName(String ownerFirstName) {
+        this.ownerFirstName = ownerFirstName;
+    }
+
+    public String getOwnerLastName() {
+        return ownerLastName;
+    }
+
+    public void setOwnerLastName(String ownerLastName) {
+        this.ownerLastName = ownerLastName;
+    }
+
+    public String getStageName() {
+        return stageName;
+    }
+
+    public void setStageName(String stageName) {
+        this.stageName = stageName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -134,7 +164,7 @@ public class DealDTO implements Serializable {
         }
 
         DealDTO dealDTO = (DealDTO) o;
-        if(dealDTO.getId() == null || getId() == null) {
+        if (dealDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), dealDTO.getId());

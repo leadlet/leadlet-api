@@ -13,6 +13,8 @@ public class NoteDTO implements Serializable {
 
     private Long organizationId;
 
+    private Long dealId;
+
     public Long getId() {
         return id;
     }
@@ -45,6 +47,14 @@ public class NoteDTO implements Serializable {
         this.organizationId = organizationId;
     }
 
+    public Long getDealId() {
+        return dealId;
+    }
+
+    public void setDealId(Long dealId) {
+        this.dealId = dealId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,13 +63,14 @@ public class NoteDTO implements Serializable {
         return Objects.equals(id, noteDTO.id) &&
             Objects.equals(content, noteDTO.content) &&
             Objects.equals(personId, noteDTO.personId) &&
-            Objects.equals(organizationId, noteDTO.organizationId);
+            Objects.equals(organizationId, noteDTO.organizationId) &&
+            Objects.equals(dealId, noteDTO.dealId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, content, personId, organizationId);
+        return Objects.hash(id, content, personId, organizationId, dealId);
     }
 
     @Override
@@ -69,6 +80,7 @@ public class NoteDTO implements Serializable {
             ", content='" + content + '\'' +
             ", personId=" + personId +
             ", organizationId=" + organizationId +
+            ", dealId=" + dealId +
             '}';
     }
 }

@@ -20,6 +20,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="organization"/>
 
+        <addForeignKeyConstraint baseColumnNames="deal_id"
+                                 baseTableName="note"
+                                 constraintName="fk_note_deal_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="deal"/>
+
         <addForeignKeyConstraint baseColumnNames="app_account_id"
                                  baseTableName="note"
                                  constraintName="fk_note_app_account_id"

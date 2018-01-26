@@ -9,25 +9,23 @@ import org.mapstruct.*;
  * Mapper for the entity Deal and its DTO DealDTO.
  */
 @Mapper(componentModel = "spring", uses = {PersonMapper.class, OrganizationMapper.class, UserMapper.class, StageMapper.class})
-public interface DealMapper extends EntityMapper <DealDTO, Deal> {
+public interface DealMapper extends EntityMapper<DealDTO, Deal> {
 
     @Mapping(source = "stage.id", target = "stageId")
-
+    @Mapping(source = "stage.name", target = "stageName")
     @Mapping(source = "person.id", target = "personId")
-
     @Mapping(source = "organization.id", target = "organizationId")
-
     @Mapping(source = "owner.id", target = "ownerId")
+    @Mapping(source = "owner.firstName", target = "ownerFirstName")
+    @Mapping(source = "owner.lastName", target = "ownerLastName")
     DealDTO toDto(Deal deal);
 
     @Mapping(source = "stageId", target = "stage")
-
     @Mapping(source = "personId", target = "person")
-
     @Mapping(source = "organizationId", target = "organization")
-
     @Mapping(source = "ownerId", target = "owner")
     Deal toEntity(DealDTO dealDTO);
+
     default Deal fromId(Long id) {
         if (id == null) {
             return null;
