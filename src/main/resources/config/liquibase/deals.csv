@@ -1,901 +1,901 @@
-id;name;order;potential_value;stage_id;person_id;organization_id;app_account_id;owner_id
-100;amet justo morbi ut odio;1;74.07;10;118;1009;1;13
-101;id luctus nec molestie sed justo;2;11.25;10;127;1006;1;13
-102;in lacus curabitur;3;78.98;17;198;1005;1;12
-103;fermentum justo nec condimentum neque sapien;4;11.89;12;122;1049;1;12
-104;suspendisse potenti nullam porttitor lacus at;5;87.98;15;148;1001;1;11
-105;sollicitudin ut suscipit a;6;40.44;15;135;1050;1;12
-106;fusce congue diam id ornare;7;75.46;10;134;1004;1;11
-107;mi integer ac neque duis bibendum;8;79.14;17;149;1020;1;13
-108;habitasse platea;9;42.23;15;199;1016;1;11
-109;nec euismod scelerisque quam;10;62.39;14;167;1007;1;13
-110;hac habitasse platea dictumst aliquam augue;11;29.83;18;146;1033;1;14
-111;maecenas rhoncus aliquam lacus;12;95.44;18;163;1042;1;13
-112;eget congue eget;13;57.69;19;177;1047;1;10
-113;quisque porta volutpat erat;14;74.85;14;191;1009;1;13
-114;aliquam quis turpis eget;15;39.98;12;101;1017;1;14
-115;integer aliquet massa id;16;47.33;18;197;1049;1;11
-116;ut dolor;17;63.93;18;194;1001;1;13
-117;tristique est et;18;35.89;14;177;1046;1;14
-118;ipsum ac tellus semper interdum mauris;19;15.57;15;150;1003;1;11
-119;nunc nisl;20;69.28;14;182;1009;1;12
-120;in hac;21;25.57;18;186;1036;1;12
-121;nisi vulputate nonummy;22;98.83;12;124;1010;1;13
-122;lorem quisque ut erat curabitur gravida;23;94.96;17;108;1047;1;13
-123;sapien placerat;24;86.58;10;153;1012;1;11
-124;eleifend donec ut dolor;25;50.73;11;198;1043;1;10
-125;parturient montes;26;50.73;11;102;1020;1;14
-126;blandit nam nulla;27;77.64;16;120;1013;1;11
-127;vestibulum velit id pretium iaculis;28;13.51;19;199;1027;1;13
-128;nibh fusce lacus purus aliquet at;29;50.73;11;162;1026;1;12
-129;vestibulum rutrum rutrum neque aenean auctor;30;43.35;18;100;1011;1;13
-130;nulla nunc purus phasellus in felis;31;59.3;14;186;1026;1;10
-131;sapien quis libero nullam sit;32;53.26;18;190;1036;1;14
-132;donec ut;33;65.35;13;198;1038;1;14
-133;in libero ut massa volutpat;34;42.24;15;144;1024;1;10
-134;ipsum primis in faucibus;35;15.82;13;117;1019;1;10
-135;molestie sed justo pellentesque viverra;36;33.44;19;156;1004;1;14
-136;eget nunc donec quis orci;37;86.54;15;190;1030;1;12
-137;integer aliquet massa id lobortis convallis;38;15.82;15;124;1036;1;13
-138;massa volutpat convallis morbi odio odio;39;12.82;11;193;1026;1;13
-139;ligula in lacus curabitur at ipsum;40;50.73;18;157;1021;1;12
-140;nunc purus phasellus in felis;41;94.35;16;100;1010;1;10
-141;enim sit amet nunc viverra dapibus;42;38.93;18;183;1042;1;11
-142;sit amet diam in;43;39.24;10;119;1011;1;14
-143;dictumst morbi;44;65.6;17;108;1030;1;11
-144;sed nisl nunc rhoncus;45;50.73;18;168;1036;1;12
-145;faucibus orci luctus et;46;96.73;14;169;1006;1;12
-146;ipsum aliquam non mauris morbi;47;80.34;13;125;1050;1;11
-147;lorem integer tincidunt;48;52.1;13;153;1014;1;12
-148;dis parturient montes nascetur ridiculus mus;49;68.72;11;132;1032;1;14
-149;vulputate luctus cum sociis natoque penatibus;50;26.51;12;163;1022;1;12
-150;libero ut massa;51;54.13;10;137;1043;1;12
-151;metus arcu adipiscing;52;81.52;16;179;1007;1;11
-152;dictumst maecenas ut massa quis augue;53;67.91;11;136;1043;1;11
-153;curae mauris viverra diam;54;69.75;16;148;1017;1;13
-154;mauris vulputate;55;88.95;14;188;1004;1;10
-155;pede libero quis;56;37.19;12;121;1027;1;11
-156;justo sit amet sapien dignissim;57;84.74;11;111;1005;1;12
-157;fusce posuere felis sed lacus;58;59.89;14;172;1007;1;10
-158;eros elementum;59;71.0;13;147;1001;1;11
-159;curae donec pharetra magna vestibulum aliquet;60;63.48;17;199;1024;1;12
-160;sed vestibulum sit amet cursus id;61;73.1;16;183;1049;1;14
-161;magna vestibulum;62;70.68;14;103;1033;1;12
-162;diam nam tristique tortor eu pede;63;34.37;12;111;1037;1;13
-163;ligula vehicula consequat morbi a ipsum;64;63.15;13;183;1011;1;11
-164;at dolor quis odio consequat varius;65;94.25;17;198;1004;1;13
-165;mi nulla;66;52.93;15;138;1007;1;11
-166;erat vestibulum sed magna at;67;50.73;19;109;1014;1;14
-167;eu orci mauris lacinia sapien;68;66.14;16;128;1021;1;10
-168;volutpat in congue etiam justo etiam;69;83.35;15;145;1001;1;12
-169;luctus et;70;65.46;11;180;1009;1;11
-170;volutpat convallis morbi;71;93.22;11;144;1043;1;13
-171;in hac habitasse platea dictumst;72;83.28;11;111;1002;1;10
-172;varius nulla facilisi cras;73;83.12;17;169;1031;1;12
-173;neque vestibulum eget vulputate ut ultrices;74;34.75;15;108;1046;1;14
-174;leo odio porttitor id consequat in;75;81.62;19;107;1048;1;12
-175;vitae nisi nam ultrices;76;79.83;13;149;1050;1;12
-176;in faucibus orci;77;92.23;12;109;1021;1;14
-177;amet justo morbi ut;78;50.73;16;160;1023;1;13
-178;neque libero convallis eget;79;27.48;19;178;1021;1;13
-179;ligula sit amet eleifend;80;31.59;11;171;1021;1;12
-180;et commodo vulputate justo in;81;22.27;16;128;1044;1;10
-181;cras in purus;82;34.35;18;179;1011;1;13
-182;vel accumsan tellus nisi eu;83;17.68;11;158;1003;1;11
-183;ac neque duis bibendum morbi;84;87.89;10;103;1050;1;10
-184;natoque penatibus et magnis dis;85;84.44;18;128;1025;1;10
-185;ultrices enim lorem ipsum;86;57.97;17;122;1032;1;11
-186;lacus morbi sem mauris laoreet ut;87;21.99;10;178;1015;1;11
-187;accumsan odio;88;88.22;19;179;1005;1;12
-188;cras in;89;95.37;13;177;1013;1;11
-189;integer pede;90;87.82;15;122;1023;1;12
-190;proin eu;91;33.02;14;122;1011;1;12
-191;est lacinia;92;61.06;18;194;1030;1;12
-192;in quam;93;18.29;11;181;1005;1;11
-193;pede justo lacinia eget;94;26.55;18;133;1017;1;11
-194;donec odio justo sollicitudin ut;95;50.73;18;184;1012;1;14
-195;ullamcorper purus sit amet nulla quisque;96;78.08;16;176;1019;1;13
-196;dapibus dolor vel est;97;84.31;14;159;1020;1;12
-197;arcu adipiscing molestie hendrerit at vulputate;98;59.88;14;198;1044;1;12
-198;vel lectus in quam fringilla rhoncus;99;94.44;19;187;1027;1;10
-199;id turpis integer aliquet massa;100;97.93;15;189;1046;1;12
-200;tincidunt eget tempus;101;24.27;20;293;2050;2;23
-201;sit amet consectetuer;102;47.52;26;255;2027;2;22
-202;lobortis sapien;103;97.6;24;282;2039;2;24
-203;curabitur in libero ut massa volutpat;104;22.71;28;237;2048;2;22
-204;pretium iaculis justo in;105;60.73;25;272;2050;2;23
-205;ut ultrices vel augue vestibulum;106;23.78;22;262;2009;2;24
-206;non mattis pulvinar nulla pede;107;88.11;29;226;2006;2;23
-207;nibh fusce lacus purus aliquet at;108;73.04;20;286;2039;2;24
-208;interdum in;109;47.33;29;210;2019;2;22
-209;eu interdum eu tincidunt;110;63.13;23;255;2047;2;23
-210;metus aenean;111;23.0;27;299;2017;2;20
-211;lacinia eget tincidunt eget;112;72.81;22;290;2006;2;22
-212;viverra pede ac;113;90.04;28;261;2050;2;24
-213;lacinia eget tincidunt eget tempus vel;114;25.95;28;232;2033;2;20
-214;cubilia curae;115;45.72;24;261;2044;2;24
-215;non lectus aliquam sit;116;20.64;21;222;2049;2;20
-216;tellus in sagittis;117;88.03;20;279;2015;2;20
-217;nisi at nibh in hac;118;37.76;27;233;2010;2;24
-218;ut rhoncus aliquet;119;50.58;28;265;2032;2;23
-219;libero convallis eget eleifend;120;45.54;29;237;2027;2;22
-220;nullam varius nulla facilisi cras;121;58.96;22;237;2024;2;22
-221;curabitur convallis duis consequat dui nec;122;61.34;20;240;2035;2;21
-222;nullam molestie nibh in;123;53.68;25;246;2049;2;24
-223;etiam pretium iaculis justo;124;87.45;27;201;2019;2;24
-224;faucibus orci;125;83.29;23;213;2013;2;22
-225;cubilia curae donec pharetra magna;126;25.87;21;218;2016;2;23
-226;vitae mattis nibh ligula;127;76.07;23;264;2043;2;23
-227;justo nec condimentum;128;10.92;24;215;2021;2;21
-228;commodo vulputate;129;95.09;28;295;2027;2;21
-229;ac nibh;130;46.75;21;271;2031;2;23
-230;blandit mi;131;93.73;22;261;2036;2;21
-231;massa id;132;70.68;29;220;2026;2;23
-232;vitae nisi nam ultrices libero;133;65.93;24;240;2042;2;20
-233;cubilia curae donec pharetra;134;98.95;25;200;2040;2;24
-234;elit ac nulla;135;34.65;28;287;2036;2;23
-235;libero non;136;94.36;24;246;2021;2;24
-236;neque duis bibendum morbi;137;88.97;24;205;2010;2;24
-237;eget massa tempor convallis nulla;138;38.93;26;236;2027;2;23
-238;congue etiam justo etiam pretium;139;50.73;23;227;2045;2;22
-239;in faucibus orci luctus et;140;13.66;24;258;2042;2;21
-240;est phasellus sit amet erat;141;45.69;27;234;2004;2;22
-241;sollicitudin ut;142;61.8;24;239;2005;2;20
-242;maecenas pulvinar lobortis;143;47.96;27;280;2012;2;21
-243;lorem ipsum dolor sit;144;69.75;23;244;2044;2;21
-244;vestibulum ac est lacinia nisi venenatis;145;25.0;28;248;2014;2;24
-245;quis justo maecenas rhoncus;146;61.69;25;236;2006;2;21
-246;nulla integer pede justo lacinia;147;64.94;21;288;2043;2;21
-247;interdum in ante;148;34.3;25;257;2021;2;21
-248;et eros vestibulum;149;94.17;25;241;2043;2;21
-249;gravida nisi;150;51.28;24;246;2004;2;24
-250;sit amet cursus id turpis integer;151;53.08;23;289;2025;2;21
-251;eget eros;152;32.95;21;287;2029;2;24
-252;arcu sed augue;153;32.74;26;220;2016;2;21
-253;volutpat dui maecenas tristique est;154;98.92;28;222;2011;2;22
-254;condimentum neque sapien placerat;155;21.37;29;221;2031;2;23
-255;purus aliquet;156;50.73;29;236;2032;2;21
-256;id turpis integer aliquet massa;157;99.57;27;213;2023;2;20
-257;cubilia curae donec;158;50.73;23;256;2018;2;24
-258;enim lorem ipsum dolor sit amet;159;31.45;22;259;2049;2;23
-259;nulla facilisi;160;96.95;26;291;2024;2;22
-260;amet eros;161;94.86;21;227;2030;2;20
-261;ipsum aliquam non mauris morbi;162;60.17;23;293;2049;2;22
-262;nibh in hac;163;42.51;26;265;2046;2;23
-263;aliquet pulvinar sed nisl nunc rhoncus;164;51.81;27;228;2004;2;20
-264;curae duis faucibus;165;16.38;21;274;2040;2;24
-265;nisl ut volutpat sapien;166;88.93;28;212;2019;2;21
-266;justo pellentesque viverra pede ac diam;167;65.9;26;271;2006;2;24
-267;scelerisque quam turpis;168;74.61;24;298;2041;2;22
-268;nulla nisl nunc nisl duis;169;63.14;22;234;2034;2;24
-269;suscipit a feugiat et;170;26.43;24;224;2038;2;21
-270;morbi porttitor;171;25.39;20;236;2024;2;23
-271;in lacus curabitur;172;75.45;24;296;2035;2;20
-272;tempor convallis nulla neque libero convallis;173;87.31;24;245;2022;2;22
-273;luctus et;174;79.53;24;259;2017;2;22
-274;quam pharetra magna ac consequat;175;35.32;27;218;2046;2;24
-275;eget eros elementum pellentesque quisque porta;176;41.96;21;233;2047;2;20
-276;mi nulla ac enim;177;57.55;20;247;2045;2;20
-277;ac neque duis bibendum morbi;178;82.72;26;236;2025;2;21
-278;est risus auctor sed tristique;179;78.19;20;243;2046;2;21
-279;est donec odio;180;61.56;23;246;2015;2;20
-280;nec molestie sed justo pellentesque;181;99.06;28;275;2022;2;20
-281;vel augue vestibulum ante;182;13.93;21;254;2030;2;20
-282;volutpat in congue etiam justo;183;47.12;29;206;2047;2;20
-283;vel enim sit amet nunc;184;99.4;23;256;2003;2;23
-284;pretium quis;185;57.0;29;270;2008;2;20
-285;in porttitor;186;26.23;27;252;2049;2;21
-286;dui nec;187;39.61;25;278;2050;2;23
-287;tincidunt eget tempus vel;188;28.45;24;268;2001;2;22
-288;nibh ligula nec sem;189;57.86;24;274;2010;2;22
-289;ac consequat metus sapien ut;190;62.46;25;241;2048;2;21
-290;auctor sed tristique in tempus;191;38.84;23;271;2011;2;21
-291;vehicula condimentum curabitur in libero;192;72.24;20;260;2046;2;24
-292;mauris lacinia sapien quis;193;78.93;21;243;2033;2;23
-293;mi sit amet lobortis sapien sapien;194;14.58;25;294;2028;2;22
-294;porttitor lacus at turpis donec posuere;195;43.61;21;260;2010;2;24
-295;curabitur convallis duis consequat dui nec;196;10.39;28;250;2023;2;20
-296;leo rhoncus sed;197;83.89;25;253;2029;2;20
-297;pede morbi porttitor lorem id;198;25.29;21;225;2026;2;24
-298;varius integer;199;38.99;21;204;2028;2;20
-299;vel dapibus at diam nam;200;53.98;24;297;2010;2;20
-300;non quam;201;39.36;37;392;3020;3;34
-301;dictumst maecenas ut;202;38.48;39;316;3008;3;34
-302;metus sapien;203;65.59;36;346;3033;3;32
-303;lacus purus;204;62.53;35;350;3046;3;34
-304;diam in magna bibendum imperdiet;205;50.73;32;386;3020;3;33
-305;tristique fusce congue;206;58.4;38;317;3039;3;32
-306;nullam varius nulla facilisi cras non;207;14.67;31;387;3015;3;34
-307;eget elit sodales scelerisque;208;75.59;39;302;3015;3;33
-308;sollicitudin mi sit amet lobortis;209;72.73;38;373;3018;3;32
-309;mauris eget massa tempor;210;95.41;31;333;3027;3;30
-310;aliquam lacus morbi quis tortor;211;86.66;38;347;3002;3;34
-311;donec odio justo sollicitudin ut;212;91.43;37;333;3039;3;31
-312;ligula suspendisse ornare consequat lectus in;213;71.36;38;307;3004;3;31
-313;blandit nam nulla integer pede;214;20.88;39;394;3005;3;30
-314;vivamus vel nulla eget eros elementum;215;42.65;30;384;3041;3;31
-315;maecenas tristique est et;216;64.78;38;360;3008;3;30
-316;lorem ipsum dolor;217;97.28;37;339;3002;3;31
-317;erat nulla;218;55.76;34;348;3032;3;30
-318;orci vehicula;219;95.47;32;356;3043;3;34
-319;morbi non quam;220;29.32;35;317;3025;3;33
-320;felis sed interdum venenatis;221;85.61;38;316;3050;3;34
-321;massa quis augue luctus tincidunt nulla;222;63.16;36;382;3010;3;32
-322;morbi non lectus aliquam sit amet;223;17.69;37;348;3042;3;31
-323;vestibulum velit;224;51.2;39;394;3024;3;34
-324;ipsum primis in;225;21.76;30;320;3023;3;31
-325;orci eget orci;226;31.68;34;336;3023;3;31
-326;pede justo lacinia eget tincidunt eget;227;20.56;31;326;3003;3;34
-327;luctus rutrum nulla tellus in;228;16.56;34;393;3023;3;34
-328;blandit mi;229;75.01;36;333;3049;3;30
-329;ut massa quis augue luctus tincidunt;230;79.92;33;367;3050;3;31
-330;placerat praesent blandit nam nulla integer;231;54.33;30;382;3031;3;32
-331;mattis egestas;232;83.83;39;383;3045;3;34
-332;dui nec nisi volutpat eleifend donec;233;40.89;32;358;3004;3;30
-333;vulputate ut ultrices;234;37.63;36;391;3028;3;33
-334;justo sit amet sapien;235;10.51;31;329;3011;3;30
-335;convallis nulla;236;96.47;33;363;3043;3;33
-336;luctus nec molestie sed justo;237;63.36;35;340;3006;3;30
-337;morbi ut;238;91.82;33;395;3036;3;31
-338;ligula in;239;77.48;36;332;3001;3;33
-339;congue vivamus metus arcu;240;24.35;31;360;3038;3;34
-340;pellentesque ultrices;241;15.24;35;323;3026;3;33
-341;a ipsum integer a;242;17.62;37;377;3025;3;34
-342;lobortis ligula sit amet eleifend pede;243;47.21;32;343;3001;3;33
-343;ut erat curabitur;244;25.72;34;351;3024;3;34
-344;justo etiam pretium iaculis justo;245;96.47;34;313;3046;3;33
-345;in faucibus orci luctus;246;25.46;37;314;3049;3;32
-346;tellus nisi eu orci mauris lacinia;247;39.09;38;396;3050;3;30
-347;ipsum aliquam non mauris morbi non;248;80.23;37;303;3012;3;34
-348;tortor risus dapibus augue vel accumsan;249;61.62;30;376;3010;3;34
-349;felis donec;250;90.78;34;332;3022;3;31
-350;nibh in hac habitasse;251;73.83;37;343;3022;3;31
-351;consequat lectus in est;252;19.57;34;353;3008;3;34
-352;rutrum ac lobortis;253;67.03;35;369;3039;3;33
-353;at nulla suspendisse potenti;254;65.25;31;387;3026;3;32
-354;in magna bibendum imperdiet nullam;255;59.0;36;300;3045;3;31
-355;lectus pellentesque;256;63.21;32;334;3010;3;34
-356;eros viverra eget;257;33.92;36;375;3021;3;31
-357;ut erat id mauris;258;53.93;38;352;3038;3;34
-358;vivamus vel nulla eget;259;94.18;33;300;3011;3;33
-359;bibendum imperdiet nullam orci pede venenatis;260;55.99;31;375;3046;3;34
-360;eget eleifend;261;93.74;30;324;3017;3;34
-361;amet nulla quisque arcu libero;262;27.62;37;335;3007;3;33
-362;tristique est et tempus;263;55.23;34;304;3049;3;31
-363;suspendisse ornare consequat;264;76.94;30;304;3020;3;31
-364;in felis donec semper sapien;265;52.73;37;352;3044;3;32
-365;luctus et ultrices posuere cubilia curae;266;18.59;37;369;3023;3;34
-366;eget vulputate ut ultrices vel augue;267;97.54;34;360;3013;3;30
-367;pellentesque viverra pede ac diam cras;268;46.57;30;324;3038;3;31
-368;aenean fermentum donec ut;269;22.73;36;351;3048;3;32
-369;ante ipsum primis;270;16.54;38;374;3014;3;31
-370;porttitor lorem id;271;32.67;32;385;3028;3;32
-371;erat eros viverra eget congue eget;272;94.59;33;310;3004;3;30
-372;habitasse platea dictumst morbi vestibulum;273;12.35;37;347;3021;3;30
-373;amet lobortis sapien;274;50.73;39;384;3012;3;34
-374;hendrerit at vulputate vitae;275;74.09;31;374;3039;3;33
-375;dui proin;276;19.41;38;313;3011;3;31
-376;eget elit;277;21.56;35;386;3004;3;30
-377;dapibus nulla suscipit ligula in;278;97.32;34;342;3023;3;30
-378;lacinia nisi venenatis tristique fusce congue;279;41.63;32;309;3043;3;30
-379;lectus in est risus;280;23.49;33;321;3031;3;32
-380;convallis morbi odio;281;13.57;36;330;3050;3;31
-381;potenti cras in;282;67.58;36;392;3050;3;31
-382;congue diam id ornare imperdiet sapien;283;93.87;34;351;3036;3;30
-383;montes nascetur ridiculus mus;284;27.74;36;346;3023;3;30
-384;sapien ut;285;10.26;38;339;3033;3;32
-385;felis eu sapien;286;65.98;39;300;3035;3;30
-386;in hac habitasse platea dictumst etiam;287;27.17;35;339;3049;3;31
-387;varius integer ac leo;288;77.32;33;371;3037;3;30
-388;fusce consequat nulla nisl nunc;289;85.8;38;358;3014;3;34
-389;nam ultrices libero non mattis pulvinar;290;45.75;39;375;3027;3;34
-390;platea dictumst maecenas ut massa quis;291;17.18;34;389;3007;3;31
-391;erat tortor sollicitudin mi;292;26.53;39;329;3038;3;33
-392;blandit lacinia erat vestibulum sed;293;74.3;33;390;3023;3;31
-393;sit amet nunc;294;23.89;38;366;3044;3;32
-394;at lorem integer;295;75.48;34;322;3034;3;30
-395;scelerisque mauris sit;296;56.48;38;337;3037;3;32
-396;sapien arcu sed augue;297;25.21;39;378;3048;3;30
-397;sit amet consectetuer adipiscing elit;298;42.78;36;338;3009;3;34
-398;duis consequat dui nec nisi volutpat;299;17.38;36;355;3041;3;32
-399;dui nec nisi;300;91.25;33;301;3042;3;31
-400;duis ac nibh fusce lacus;301;86.82;43;468;4015;4;41
-401;ultrices posuere cubilia curae;302;37.9;41;400;4029;4;41
-402;mattis odio donec vitae;303;22.31;43;414;4013;4;44
-403;varius nulla;304;13.19;47;407;4037;4;43
-404;in est risus;305;14.79;45;429;4010;4;42
-405;interdum mauris non ligula;306;47.63;49;471;4003;4;41
-406;erat eros viverra eget;307;56.97;49;417;4044;4;44
-407;nunc proin at turpis;308;42.04;44;420;4026;4;41
-408;accumsan odio;309;13.47;40;446;4011;4;41
-409;risus semper porta volutpat;310;55.45;48;407;4044;4;41
-410;morbi ut odio cras mi;311;88.17;48;408;4022;4;43
-411;libero nam dui;312;24.75;47;496;4034;4;41
-412;sed accumsan felis;313;64.8;44;449;4018;4;44
-413;maecenas pulvinar lobortis;314;92.72;47;442;4049;4;43
-414;vel augue vestibulum ante ipsum primis;315;95.18;43;435;4006;4;41
-415;arcu sed augue aliquam erat;316;19.57;48;491;4024;4;43
-416;nunc purus phasellus;317;68.71;40;448;4003;4;42
-417;eget rutrum;318;79.33;49;472;4035;4;43
-418;sit amet consectetuer adipiscing elit proin;319;29.71;48;415;4023;4;41
-419;nec sem duis aliquam convallis;320;49.47;41;434;4037;4;43
-420;erat nulla tempus vivamus;321;30.47;42;413;4024;4;42
-421;rhoncus mauris enim leo;322;19.23;49;422;4039;4;40
-422;cursus urna ut tellus;323;68.61;48;444;4042;4;44
-423;adipiscing elit proin;324;50.73;41;408;4004;4;43
-424;vestibulum ac est;325;91.68;40;413;4023;4;42
-425;nulla integer pede justo;326;91.21;47;403;4028;4;41
-426;felis donec semper sapien a libero;327;32.92;44;471;4034;4;42
-427;sed interdum venenatis turpis enim blandit;328;36.31;40;482;4011;4;41
-428;quam a;329;86.95;41;475;4032;4;43
-429;vestibulum rutrum rutrum neque;330;62.88;40;445;4042;4;42
-430;mi pede malesuada in imperdiet et;331;76.74;48;415;4004;4;42
-431;aenean sit amet justo;332;97.18;49;488;4024;4;43
-432;posuere metus vitae ipsum;333;34.63;44;427;4017;4;40
-433;porttitor pede justo;334;75.72;48;492;4006;4;40
-434;non mauris morbi non lectus;335;56.74;44;414;4005;4;43
-435;ante ipsum primis in faucibus orci;336;33.64;44;418;4039;4;41
-436;nisi venenatis tristique fusce;337;50.36;48;448;4044;4;43
-437;parturient montes;338;36.05;43;417;4026;4;40
-438;aenean sit;339;51.97;42;424;4035;4;44
-439;ut odio cras mi pede malesuada;340;28.89;41;444;4039;4;44
-440;varius integer ac leo;341;37.44;45;418;4018;4;43
-441;turpis integer aliquet massa id;342;94.3;47;433;4041;4;43
-442;ante ipsum primis;343;94.5;42;435;4042;4;42
-443;sed nisl nunc rhoncus dui;344;70.88;41;489;4033;4;44
-444;rhoncus sed;345;29.54;46;434;4031;4;43
-445;hac habitasse;346;42.98;44;495;4044;4;40
-446;justo pellentesque viverra pede ac;347;41.39;40;424;4037;4;41
-447;non lectus aliquam sit;348;86.39;44;474;4030;4;40
-448;nisi nam ultrices;349;14.75;44;472;4026;4;43
-449;proin interdum mauris non;350;45.42;42;461;4043;4;40
-450;cursus urna ut tellus nulla;351;36.88;45;492;4050;4;44
-451;cubilia curae nulla dapibus dolor;352;69.4;43;412;4014;4;43
-452;ac lobortis vel dapibus at;353;65.12;41;442;4042;4;40
-453;convallis nulla neque libero;354;50.73;43;459;4014;4;42
-454;vestibulum rutrum rutrum neque aenean auctor;355;71.09;46;406;4015;4;43
-455;adipiscing molestie;356;86.64;47;442;4033;4;43
-456;vel enim sit;357;43.38;49;444;4029;4;40
-457;sapien placerat ante nulla justo;358;80.94;47;409;4020;4;43
-458;quisque arcu libero rutrum ac lobortis;359;94.83;41;449;4015;4;40
-459;maecenas leo odio condimentum;360;77.45;46;407;4005;4;42
-460;sapien dignissim vestibulum;361;59.69;40;417;4030;4;42
-461;semper interdum mauris ullamcorper purus sit;362;54.6;42;450;4020;4;42
-462;fermentum donec ut mauris eget massa;363;50.73;42;474;4031;4;44
-463;nulla pede ullamcorper augue a;364;80.37;46;481;4020;4;41
-464;donec pharetra magna vestibulum aliquet;365;31.56;43;435;4038;4;40
-465;pellentesque at nulla suspendisse;366;63.54;47;498;4004;4;40
-466;risus auctor sed tristique;367;38.49;43;418;4041;4;43
-467;sem mauris laoreet;368;41.54;45;430;4001;4;44
-468;posuere cubilia;369;96.33;42;414;4026;4;41
-469;donec semper sapien a libero nam;370;63.91;41;427;4036;4;43
-470;morbi a ipsum integer a nibh;371;35.53;45;430;4040;4;44
-471;sociis natoque penatibus et magnis dis;372;48.25;47;400;4022;4;44
-472;nulla eget eros;373;63.14;44;438;4009;4;42
-473;donec pharetra magna vestibulum;374;57.65;40;473;4014;4;44
-474;sociis natoque;375;20.18;45;468;4037;4;42
-475;vehicula condimentum curabitur;376;57.67;46;411;4027;4;40
-476;at turpis a pede posuere;377;59.84;48;436;4019;4;41
-477;morbi porttitor;378;96.38;48;479;4026;4;44
-478;risus auctor sed tristique in tempus;379;90.93;46;410;4014;4;44
-479;elementum pellentesque quisque porta volutpat erat;380;47.65;46;472;4037;4;40
-480;integer a nibh in;381;24.88;45;479;4010;4;40
-481;amet eros;382;35.38;42;495;4034;4;43
-482;rhoncus aliquet pulvinar sed nisl;383;50.73;41;464;4011;4;40
-483;justo in blandit;384;25.22;40;448;4020;4;41
-484;tincidunt in leo maecenas pulvinar;385;20.98;49;407;4029;4;41
-485;nisl aenean lectus;386;81.69;43;450;4017;4;44
-486;vitae ipsum;387;19.54;42;484;4005;4;43
-487;adipiscing lorem vitae;388;63.87;46;420;4020;4;43
-488;pretium quis lectus suspendisse potenti;389;44.56;42;475;4050;4;43
-489;velit donec diam;390;70.82;43;419;4018;4;44
-490;posuere cubilia curae nulla dapibus dolor;391;29.49;48;493;4002;4;42
-491;etiam faucibus cursus;392;85.78;48;440;4011;4;41
-492;id ornare;393;29.48;42;470;4006;4;42
-493;amet diam in magna bibendum;394;37.65;47;425;4026;4;41
-494;at velit vivamus vel nulla;395;45.95;40;433;4013;4;44
-495;est quam pharetra;396;50.73;43;473;4015;4;40
-496;mauris non;397;61.81;42;435;4020;4;44
-497;cubilia curae;398;70.11;47;412;4004;4;41
-498;id consequat in consequat;399;12.0;49;422;4037;4;41
-499;sit amet turpis elementum;400;58.09;45;488;4020;4;43
-500;augue vestibulum rutrum;401;71.66;54;589;5025;5;50
-501;cras pellentesque volutpat;402;39.14;58;506;5047;5;54
-502;vel est;403;45.5;58;544;5037;5;53
-503;mauris vulputate;404;36.84;52;526;5026;5;52
-504;urna pretium nisl ut;405;39.66;52;530;5020;5;51
-505;congue etiam;406;16.58;52;534;5027;5;51
-506;est risus auctor;407;86.55;54;562;5019;5;54
-507;pulvinar lobortis est phasellus sit amet;408;56.74;58;599;5044;5;53
-508;mattis egestas metus aenean fermentum donec;409;27.44;53;550;5014;5;50
-509;nec euismod scelerisque quam turpis adipiscing;410;67.99;53;544;5015;5;52
-510;nunc proin;411;65.5;59;500;5033;5;53
-511;viverra pede;412;97.77;56;516;5021;5;53
-512;et tempus semper est;413;19.49;51;558;5015;5;53
-513;pede malesuada in;414;16.48;55;579;5043;5;52
-514;amet eleifend pede;415;43.74;59;592;5050;5;53
-515;habitasse platea dictumst etiam;416;14.21;57;599;5036;5;53
-516;tortor duis;417;65.38;55;597;5030;5;50
-517;in felis eu sapien;418;59.83;58;542;5017;5;53
-518;ut volutpat sapien arcu sed augue;419;76.35;52;557;5011;5;53
-519;ut mauris eget;420;50.73;53;563;5018;5;51
-520;pede libero quis orci nullam;421;72.33;51;526;5010;5;53
-521;quis turpis eget elit sodales scelerisque;422;67.72;55;502;5010;5;51
-522;dolor vel;423;74.78;58;538;5033;5;52
-523;nulla facilisi cras non velit nec;424;95.02;53;524;5022;5;52
-524;in tempus sit amet;425;41.99;57;569;5045;5;54
-525;risus semper;426;76.59;59;506;5040;5;50
-526;duis at;427;92.21;51;540;5021;5;51
-527;nec dui;428;87.51;57;591;5040;5;54
-528;quam pharetra magna ac;429;71.88;58;526;5019;5;53
-529;placerat ante nulla justo aliquam;430;78.73;56;561;5028;5;52
-530;mattis nibh ligula;431;50.73;58;554;5023;5;51
-531;donec vitae nisi nam ultrices libero;432;68.37;55;565;5003;5;53
-532;luctus et ultrices posuere cubilia curae;433;51.24;50;518;5013;5;53
-533;eleifend donec ut dolor;434;90.03;52;526;5015;5;50
-534;quis orci;435;72.52;53;515;5005;5;51
-535;in faucibus orci luctus et ultrices;436;90.41;52;573;5038;5;53
-536;blandit ultrices;437;68.98;50;503;5039;5;51
-537;nibh in;438;39.6;51;597;5016;5;53
-538;ac leo pellentesque ultrices mattis;439;53.79;52;551;5023;5;54
-539;odio justo sollicitudin ut suscipit;440;53.98;55;534;5029;5;50
-540;ipsum primis in faucibus orci luctus;441;66.25;55;569;5034;5;54
-541;a ipsum integer;442;34.14;55;592;5028;5;51
-542;ligula sit amet eleifend;443;21.31;51;549;5008;5;53
-543;mauris viverra;444;68.02;56;519;5046;5;53
-544;consequat ut nulla sed accumsan;445;51.55;53;532;5021;5;50
-545;dui proin leo;446;89.87;58;536;5039;5;52
-546;cubilia curae;447;37.59;52;551;5020;5;52
-547;at feugiat non;448;45.6;58;526;5008;5;52
-548;ligula sit;449;21.96;56;599;5024;5;53
-549;proin at;450;92.7;55;571;5007;5;52
-550;neque duis bibendum morbi non;451;11.78;55;583;5003;5;50
-551;dui vel sem sed sagittis nam;452;47.64;58;542;5025;5;50
-552;orci mauris;453;83.09;55;540;5003;5;54
-553;justo sollicitudin ut;454;38.82;57;564;5047;5;53
-554;ultrices posuere;455;88.14;55;574;5035;5;53
-555;augue vestibulum;456;18.41;55;549;5029;5;53
-556;vestibulum sagittis sapien cum sociis;457;23.35;56;553;5020;5;52
-557;lorem vitae mattis;458;89.22;59;549;5006;5;54
-558;mattis nibh ligula;459;50.73;53;581;5021;5;51
-559;vitae mattis nibh ligula;460;33.84;56;511;5018;5;54
-560;primis in faucibus orci luctus et;461;14.47;54;553;5024;5;50
-561;magna ac consequat metus sapien ut;462;83.58;50;537;5050;5;54
-562;nulla integer pede;463;50.73;53;577;5011;5;51
-563;vestibulum ac est;464;98.45;59;521;5023;5;54
-564;sit amet nulla quisque arcu;465;33.81;55;540;5026;5;51
-565;vulputate nonummy maecenas tincidunt lacus;466;71.6;58;510;5029;5;52
-566;in eleifend;467;64.76;53;582;5012;5;51
-567;eget tincidunt eget tempus;468;42.75;59;597;5025;5;53
-568;cras pellentesque volutpat dui maecenas;469;38.66;56;507;5019;5;50
-569;in faucibus orci luctus;470;67.79;55;527;5032;5;51
-570;donec quis orci eget;471;37.75;53;527;5027;5;53
-571;cubilia curae duis faucibus accumsan odio;472;57.31;54;590;5007;5;53
-572;hac habitasse platea dictumst etiam;473;78.9;55;582;5013;5;54
-573;natoque penatibus et magnis dis parturient;474;56.62;55;546;5032;5;52
-574;sed nisl nunc rhoncus dui;475;47.88;54;585;5046;5;53
-575;ipsum integer a;476;42.65;57;546;5048;5;52
-576;vel enim;477;11.64;55;560;5016;5;54
-577;duis bibendum felis sed interdum venenatis;478;22.83;51;527;5034;5;53
-578;nec sem duis aliquam;479;85.99;50;574;5024;5;52
-579;semper porta volutpat;480;96.81;56;571;5047;5;54
-580;libero nam;481;29.63;54;567;5012;5;52
-581;dictumst maecenas ut;482;93.89;55;508;5024;5;53
-582;fusce lacus purus aliquet;483;99.97;54;571;5042;5;52
-583;convallis nulla neque;484;74.13;52;553;5036;5;52
-584;nisi at nibh in hac;485;36.9;57;525;5026;5;54
-585;orci luctus et;486;97.8;53;560;5008;5;52
-586;eu interdum eu;487;92.41;52;533;5048;5;50
-587;volutpat sapien arcu sed augue;488;31.28;58;534;5003;5;50
-588;hac habitasse platea dictumst;489;14.85;59;556;5024;5;54
-589;fusce posuere felis sed;490;27.68;59;530;5037;5;52
-590;aenean fermentum;491;84.86;56;573;5017;5;53
-591;dui maecenas tristique est;492;32.96;59;549;5023;5;53
-592;sed magna at nunc commodo;493;92.88;50;529;5035;5;54
-593;lorem vitae mattis nibh ligula nec;494;50.73;51;516;5004;5;52
-594;integer tincidunt ante vel;495;41.89;51;530;5038;5;53
-595;et ultrices posuere cubilia curae;496;33.52;50;505;5037;5;51
-596;odio consequat varius integer ac;497;14.64;55;501;5020;5;50
-597;aliquam lacus morbi;498;35.75;55;505;5001;5;54
-598;pellentesque quisque porta volutpat erat;499;76.43;50;596;5010;5;52
-599;quisque arcu libero rutrum ac;500;18.45;50;570;5020;5;52
-600;eleifend pede libero quis;501;42.74;65;610;6003;6;60
-601;lorem ipsum dolor;502;58.24;68;610;6003;6;61
-602;nibh quisque id justo sit;503;88.59;69;681;6044;6;63
-603;lectus in est risus auctor sed;504;86.14;67;621;6029;6;60
-604;fusce posuere felis;505;58.93;68;698;6029;6;64
-605;in hac habitasse;506;68.84;67;608;6003;6;62
-606;volutpat dui;507;68.05;67;668;6035;6;61
-607;nulla ac;508;70.77;63;619;6045;6;63
-608;lobortis vel;509;39.03;65;661;6002;6;60
-609;quam pede lobortis ligula;510;32.73;69;649;6028;6;60
-610;dignissim vestibulum vestibulum;511;53.73;61;697;6020;6;63
-611;lectus vestibulum quam sapien;512;41.11;60;601;6002;6;62
-612;quam pharetra magna ac;513;57.64;66;693;6020;6;61
-613;aenean lectus pellentesque eget;514;93.42;65;609;6043;6;62
-614;pharetra magna;515;17.46;69;658;6034;6;64
-615;eu magna vulputate luctus cum sociis;516;33.25;69;648;6010;6;61
-616;vulputate vitae nisl aenean;517;24.84;63;621;6021;6;60
-617;in faucibus orci luctus et;518;45.45;65;641;6014;6;63
-618;tellus in sagittis dui vel;519;58.22;65;637;6014;6;62
-619;orci luctus et ultrices;520;57.69;60;692;6034;6;63
-620;magna ac consequat metus sapien ut;521;22.17;67;604;6005;6;63
-621;proin interdum;522;87.83;63;626;6041;6;63
-622;nec dui luctus rutrum nulla;523;50.04;63;670;6047;6;63
-623;dis parturient montes nascetur ridiculus;524;94.55;69;650;6048;6;63
-624;placerat ante nulla justo aliquam;525;99.16;65;661;6039;6;63
-625;justo morbi ut odio cras;526;30.57;64;686;6016;6;61
-626;diam neque vestibulum eget vulputate ut;527;96.75;65;683;6037;6;62
-627;erat quisque erat eros;528;60.43;68;664;6028;6;62
-628;nec nisi vulputate nonummy maecenas;529;13.43;65;656;6025;6;64
-629;sapien quis libero;530;54.1;67;691;6034;6;62
-630;non velit donec diam;531;84.27;61;667;6044;6;61
-631;viverra diam vitae;532;50.01;64;613;6035;6;62
-632;justo lacinia eget tincidunt eget;533;10.59;63;605;6047;6;64
-633;eu felis fusce;534;46.95;66;685;6016;6;62
-634;diam in;535;75.41;61;616;6038;6;64
-635;suspendisse accumsan;536;34.44;68;677;6020;6;64
-636;semper sapien a libero nam;537;13.81;65;641;6035;6;63
-637;maecenas leo odio condimentum;538;74.59;66;600;6011;6;64
-638;consequat morbi a;539;10.87;61;687;6050;6;63
-639;congue etiam justo etiam pretium iaculis;540;56.47;67;617;6005;6;62
-640;tellus in;541;31.16;67;646;6038;6;61
-641;turpis donec posuere;542;42.96;67;677;6035;6;62
-642;nisl aenean lectus pellentesque;543;91.04;62;649;6015;6;60
-643;est lacinia nisi venenatis tristique;544;52.59;61;610;6031;6;64
-644;congue eget semper rutrum nulla;545;42.81;68;658;6022;6;62
-645;nonummy maecenas;546;44.24;60;699;6004;6;61
-646;ipsum praesent blandit lacinia erat;547;17.26;66;695;6019;6;62
-647;sapien varius ut;548;16.85;69;686;6045;6;63
-648;mauris lacinia sapien quis libero;549;95.06;68;684;6049;6;61
-649;lacus at velit vivamus vel;550;62.26;62;652;6046;6;60
-650;lacinia eget;551;38.71;63;683;6032;6;64
-651;volutpat eleifend donec ut dolor;552;90.42;60;620;6008;6;63
-652;gravida sem praesent id massa;553;62.95;65;625;6046;6;64
-653;aliquam augue quam;554;37.64;65;694;6041;6;64
-654;bibendum felis sed;555;47.18;64;689;6024;6;60
-655;cursus id turpis integer aliquet massa;556;38.44;63;656;6027;6;62
-656;eget nunc;557;68.47;64;688;6026;6;64
-657;sodales scelerisque;558;15.21;65;631;6027;6;63
-658;morbi ut odio;559;39.48;60;625;6045;6;61
-659;habitasse platea dictumst morbi vestibulum;560;53.97;66;639;6014;6;61
-660;mauris laoreet ut rhoncus aliquet pulvinar;561;56.62;60;647;6041;6;62
-661;orci luctus et ultrices;562;98.72;61;691;6044;6;62
-662;morbi sem mauris laoreet;563;55.02;63;631;6021;6;60
-663;molestie sed;564;45.95;69;624;6036;6;64
-664;proin leo odio;565;20.78;63;601;6039;6;64
-665;ut massa quis augue;566;19.65;65;611;6036;6;62
-666;donec dapibus duis;567;89.76;62;642;6016;6;61
-667;rhoncus sed vestibulum sit amet;568;35.63;66;607;6019;6;63
-668;pharetra magna vestibulum;569;21.66;69;603;6050;6;64
-669;tincidunt eget tempus vel pede;570;87.14;62;669;6018;6;61
-670;tellus in sagittis dui vel;571;66.21;67;653;6016;6;60
-671;donec semper sapien a libero;572;72.91;63;680;6011;6;60
-672;dapibus dolor;573;89.07;60;617;6021;6;64
-673;vel nulla eget eros elementum;574;57.47;67;624;6005;6;61
-674;ipsum ac tellus;575;18.39;60;627;6027;6;62
-675;et tempus semper est quam;576;56.03;68;664;6008;6;62
-676;rhoncus aliquam;577;28.39;68;680;6008;6;64
-677;sed accumsan;578;84.87;65;626;6017;6;61
-678;erat fermentum justo nec condimentum;579;37.57;65;645;6047;6;60
-679;nisl nunc rhoncus dui vel;580;27.37;68;692;6047;6;60
-680;orci luctus et ultrices posuere cubilia;581;91.07;60;655;6036;6;63
-681;convallis nunc proin at turpis;582;14.78;69;629;6033;6;61
-682;vivamus metus arcu;583;50.84;66;643;6045;6;60
-683;in eleifend;584;54.38;68;624;6036;6;60
-684;integer a nibh in quis;585;84.61;62;683;6036;6;61
-685;neque vestibulum eget vulputate;586;53.47;61;695;6037;6;64
-686;eu tincidunt in leo maecenas;587;83.06;62;655;6025;6;64
-687;id consequat in;588;96.31;65;649;6043;6;62
-688;justo aliquam quis turpis eget elit;589;76.03;66;696;6019;6;61
-689;platea dictumst;590;46.73;61;670;6044;6;63
-690;magna at nunc;591;43.38;60;606;6045;6;60
-691;diam cras pellentesque volutpat dui;592;59.63;66;693;6044;6;64
-692;nulla mollis molestie lorem quisque;593;82.56;66;663;6046;6;60
-693;pellentesque viverra pede;594;50.73;69;609;6036;6;61
-694;sit amet erat nulla tempus;595;50.73;65;609;6007;6;60
-695;eu interdum;596;83.62;68;668;6045;6;62
-696;morbi ut odio;597;33.29;68;662;6006;6;62
-697;ipsum integer;598;77.65;63;631;6020;6;63
-698;rhoncus aliquam lacus;599;47.45;64;691;6007;6;62
-699;morbi porttitor lorem id;600;66.9;61;673;6015;6;64
-700;morbi non lectus aliquam sit amet;601;37.26;71;791;7023;7;72
-701;suscipit a;602;66.55;73;781;7021;7;73
-702;eget congue;603;64.82;72;780;7032;7;71
-703;justo sollicitudin;604;44.96;73;787;7025;7;70
-704;posuere metus vitae;605;90.18;76;753;7047;7;72
-705;erat eros viverra eget congue eget;606;17.74;73;744;7001;7;71
-706;tellus nulla ut erat id;607;92.53;70;760;7033;7;71
-707;sapien arcu sed augue aliquam;608;33.5;70;702;7020;7;74
-708;a odio in hac;609;29.34;71;710;7028;7;70
-709;ac nulla sed vel;610;64.79;77;787;7024;7;72
-710;potenti cras in purus eu;611;79.25;71;764;7038;7;74
-711;mi integer ac;612;26.81;79;764;7019;7;70
-712;volutpat convallis morbi;613;29.22;78;757;7008;7;73
-713;justo in hac;614;84.3;78;717;7009;7;71
-714;mus vivamus vestibulum sagittis sapien;615;79.08;76;707;7028;7;72
-715;vestibulum quam;616;54.09;71;738;7005;7;70
-716;nulla suspendisse potenti cras in;617;62.08;79;794;7028;7;71
-717;luctus rutrum;618;42.19;79;759;7035;7;70
-718;rutrum nulla tellus;619;72.78;71;732;7012;7;74
-719;et ultrices posuere;620;84.46;74;791;7007;7;74
-720;ut rhoncus aliquet pulvinar sed;621;65.6;75;779;7016;7;73
-721;massa donec;622;78.5;76;758;7024;7;71
-722;praesent blandit lacinia erat;623;73.29;77;706;7028;7;73
-723;viverra eget congue;624;72.98;72;790;7027;7;71
-724;cursus id turpis integer;625;27.17;72;747;7007;7;73
-725;primis in faucibus orci luctus et;626;44.08;74;732;7028;7;72
-726;risus semper porta;627;77.84;76;728;7001;7;71
-727;id pretium;628;41.25;76;794;7015;7;73
-728;diam in magna;629;62.93;74;723;7015;7;73
-729;in felis eu sapien;630;83.7;71;789;7008;7;73
-730;quis odio consequat varius integer;631;35.03;73;735;7031;7;70
-731;iaculis congue vivamus;632;40.42;76;762;7025;7;70
-732;nullam molestie nibh in;633;38.99;70;764;7027;7;73
-733;semper rutrum nulla nunc purus phasellus;634;17.98;74;789;7037;7;72
-734;molestie sed justo pellentesque;635;84.6;77;736;7008;7;70
-735;dolor vel est donec;636;88.67;74;718;7019;7;74
-736;felis donec;637;39.96;77;750;7014;7;71
-737;sapien urna pretium nisl ut;638;71.46;79;758;7009;7;70
-738;ante ipsum primis in faucibus orci;639;99.45;74;734;7040;7;72
-739;semper rutrum;640;58.03;70;729;7028;7;70
-740;at turpis donec;641;91.88;76;739;7013;7;73
-741;sed interdum venenatis;642;63.83;75;758;7043;7;72
-742;mauris enim;643;98.69;72;735;7012;7;70
-743;rhoncus dui vel sem;644;30.23;76;761;7014;7;73
-744;nulla ultrices aliquet;645;74.51;77;765;7014;7;73
-745;faucibus orci luctus et ultrices;646;32.74;76;799;7005;7;70
-746;pellentesque ultrices phasellus id sapien in;647;70.46;70;726;7010;7;73
-747;quam sapien varius ut blandit;648;50.73;74;755;7031;7;71
-748;lacinia sapien quis libero nullam;649;34.62;75;741;7046;7;70
-749;nunc nisl duis;650;60.75;78;785;7020;7;70
-750;at velit;651;18.56;77;703;7045;7;72
-751;morbi porttitor;652;99.91;70;784;7005;7;71
-752;in sapien iaculis congue;653;91.25;70;791;7022;7;74
-753;duis faucibus accumsan odio curabitur convallis;654;38.85;74;705;7021;7;72
-754;magnis dis;655;77.78;74;778;7008;7;74
-755;pellentesque viverra pede ac diam cras;656;19.73;70;710;7025;7;73
-756;lacinia erat vestibulum sed;657;64.59;77;706;7006;7;74
-757;ac est lacinia;658;96.9;70;719;7015;7;70
-758;mauris eget massa tempor;659;68.2;78;782;7029;7;72
-759;potenti nullam porttitor lacus at;660;78.42;74;727;7014;7;72
-760;a ipsum integer;661;65.87;74;769;7042;7;70
-761;est lacinia nisi venenatis tristique;662;38.59;76;725;7012;7;74
-762;porttitor pede justo eu massa;663;56.69;76;784;7016;7;72
-763;dolor sit amet consectetuer adipiscing elit;664;72.89;72;785;7020;7;72
-764;non mattis pulvinar nulla pede;665;21.78;74;728;7016;7;74
-765;pede posuere nonummy integer non velit;666;21.82;74;732;7003;7;72
-766;diam cras;667;10.54;70;704;7045;7;70
-767;vel sem sed;668;78.12;72;745;7026;7;70
-768;et ultrices posuere cubilia curae donec;669;41.75;76;740;7043;7;72
-769;ante vel;670;83.37;76;731;7006;7;71
-770;proin leo;671;70.27;70;729;7012;7;70
-771;tellus nulla ut erat id;672;19.23;74;797;7050;7;71
-772;dolor vel;673;16.98;73;734;7026;7;72
-773;justo pellentesque;674;80.39;74;715;7016;7;72
-774;odio justo sollicitudin ut suscipit a;675;65.22;75;779;7029;7;70
-775;pede ullamcorper augue a suscipit nulla;676;29.94;74;705;7037;7;70
-776;ultrices posuere;677;61.72;75;746;7024;7;72
-777;donec vitae;678;50.73;71;726;7010;7;74
-778;curabitur gravida nisi;679;74.12;75;783;7049;7;73
-779;convallis eget eleifend;680;16.92;73;720;7050;7;74
-780;lacinia erat;681;99.6;77;709;7022;7;74
-781;enim lorem;682;43.55;74;764;7039;7;72
-782;at nulla;683;50.73;75;775;7020;7;74
-783;turpis adipiscing lorem vitae mattis nibh;684;71.81;74;769;7028;7;72
-784;adipiscing lorem;685;25.77;75;713;7009;7;72
-785;congue etiam justo etiam pretium iaculis;686;15.75;76;774;7047;7;73
-786;integer a nibh in quis justo;687;50.73;78;788;7019;7;70
-787;suspendisse potenti nullam;688;93.28;79;723;7013;7;72
-788;purus aliquet at feugiat non pretium;689;84.57;72;744;7038;7;74
-789;condimentum neque sapien placerat;690;45.54;75;707;7024;7;72
-790;nulla nunc purus phasellus in felis;691;50.73;79;743;7048;7;74
-791;convallis nunc proin at turpis a;692;50.38;72;701;7049;7;70
-792;sit amet sem fusce consequat;693;50.73;78;746;7039;7;72
-793;vehicula consequat morbi a ipsum integer;694;43.03;70;700;7010;7;71
-794;vulputate luctus cum;695;93.62;75;701;7047;7;74
-795;faucibus cursus urna;696;85.37;79;792;7050;7;70
-796;sapien in;697;94.26;77;787;7017;7;74
-797;nisi at nibh in hac;698;98.82;73;797;7015;7;74
-798;semper porta volutpat quam;699;41.21;72;790;7018;7;72
-799;placerat ante nulla;700;47.35;72;729;7047;7;70
-800;volutpat quam;701;66.15;83;865;8044;8;81
-801;et magnis dis parturient montes nascetur;702;53.19;86;860;8030;8;80
-802;viverra dapibus;703;57.84;89;865;8050;8;80
-803;vitae nisl aenean lectus pellentesque eget;704;73.07;85;800;8038;8;83
-804;vestibulum eget vulputate ut;705;20.64;89;815;8017;8;80
-805;quam pharetra magna ac consequat metus;706;94.44;80;873;8004;8;84
-806;sed vestibulum sit;707;41.98;89;814;8009;8;84
-807;et ultrices posuere cubilia;708;85.53;89;857;8025;8;82
-808;vel enim sit amet nunc;709;67.92;83;819;8036;8;83
-809;id nisl venenatis;710;75.5;86;878;8030;8;81
-810;dui luctus rutrum;711;34.0;83;805;8009;8;82
-811;penatibus et;712;26.94;89;881;8011;8;81
-812;tellus nisi eu orci mauris;713;44.5;89;807;8006;8;82
-813;lectus suspendisse potenti in eleifend quam;714;91.95;80;839;8034;8;84
-814;cum sociis natoque penatibus;715;24.69;88;835;8038;8;83
-815;integer pede justo lacinia eget;716;62.8;80;820;8002;8;81
-816;sapien placerat ante nulla justo aliquam;717;31.59;83;833;8045;8;84
-817;id consequat in consequat ut;718;41.19;89;863;8012;8;81
-818;donec vitae nisi nam ultrices libero;719;50.73;84;866;8030;8;81
-819;justo sollicitudin;720;61.73;84;882;8040;8;80
-820;aliquam quis turpis;721;15.48;89;863;8050;8;81
-821;sapien varius ut blandit;722;37.35;80;850;8028;8;83
-822;pede posuere nonummy integer non velit;723;69.74;87;885;8030;8;83
-823;eros elementum pellentesque quisque;724;66.61;89;817;8041;8;80
-824;blandit non interdum in;725;33.06;87;855;8050;8;82
-825;vel augue;726;30.85;84;824;8013;8;84
-826;habitasse platea dictumst maecenas;727;47.57;84;860;8022;8;84
-827;consequat metus sapien ut;728;70.49;88;853;8009;8;82
-828;vestibulum quam sapien;729;53.52;86;817;8035;8;83
-829;dapibus duis at velit;730;34.18;83;871;8022;8;82
-830;velit id pretium iaculis diam;731;39.4;82;870;8003;8;84
-831;massa id;732;91.38;88;853;8017;8;81
-832;tellus semper;733;48.05;87;890;8020;8;83
-833;tortor sollicitudin mi;734;62.46;87;835;8046;8;80
-834;donec pharetra magna vestibulum;735;92.74;86;852;8004;8;83
-835;ac est lacinia;736;73.39;89;894;8029;8;84
-836;cras non velit;737;66.94;84;846;8012;8;84
-837;venenatis lacinia aenean sit;738;77.93;85;833;8047;8;82
-838;in sapien;739;59.9;81;832;8016;8;82
-839;ligula pellentesque ultrices;740;51.42;84;821;8008;8;83
-840;pretium iaculis;741;57.04;85;839;8040;8;84
-841;erat fermentum justo;742;50.73;87;895;8019;8;83
-842;id turpis integer aliquet;743;65.12;88;867;8032;8;84
-843;curae duis faucibus accumsan odio;744;98.37;85;874;8047;8;82
-844;purus phasellus;745;35.01;88;881;8004;8;80
-845;posuere cubilia curae duis faucibus;746;17.71;82;839;8044;8;80
-846;mauris morbi non lectus;747;40.91;87;878;8045;8;83
-847;rhoncus aliquam;748;64.6;81;829;8028;8;80
-848;diam nam tristique tortor;749;37.36;81;853;8049;8;84
-849;ultrices posuere cubilia;750;94.77;84;827;8033;8;80
-850;lacus curabitur at ipsum ac tellus;751;29.38;84;808;8031;8;81
-851;rutrum neque aenean;752;48.5;80;869;8011;8;81
-852;imperdiet sapien urna pretium nisl ut;753;50.73;85;820;8015;8;83
-853;sed sagittis nam congue risus semper;754;91.45;81;873;8005;8;84
-854;pede ac;755;57.98;84;892;8032;8;81
-855;consequat ut nulla sed accumsan felis;756;58.87;85;875;8036;8;80
-856;suspendisse accumsan tortor quis;757;84.38;87;880;8047;8;80
-857;quam pede;758;34.74;83;898;8025;8;83
-858;odio odio elementum eu;759;64.97;84;852;8045;8;80
-859;ac lobortis vel dapibus at diam;760;14.34;80;842;8021;8;81
-860;imperdiet et commodo;761;67.21;89;859;8013;8;84
-861;aliquam lacus morbi quis tortor;762;26.44;83;806;8020;8;81
-862;proin interdum mauris;763;50.73;80;814;8007;8;83
-863;molestie hendrerit;764;98.63;83;853;8019;8;84
-864;ac lobortis vel dapibus;765;35.9;85;893;8001;8;84
-865;lectus suspendisse potenti in eleifend quam;766;88.56;85;827;8015;8;82
-866;sit amet eleifend;767;37.59;86;822;8012;8;84
-867;sapien sapien non mi;768;36.86;81;822;8046;8;83
-868;fringilla rhoncus mauris enim leo rhoncus;769;12.29;88;808;8009;8;81
-869;velit nec;770;35.9;88;803;8013;8;83
-870;nisl nunc;771;80.87;81;888;8022;8;83
-871;vestibulum sed magna at;772;69.09;82;814;8036;8;84
-872;pharetra magna vestibulum aliquet ultrices erat;773;77.54;83;841;8005;8;83
-873;eros suspendisse accumsan;774;65.86;84;814;8026;8;81
-874;in quis justo maecenas;775;61.79;82;818;8043;8;80
-875;viverra diam;776;24.38;86;868;8014;8;81
-876;convallis eget;777;52.15;83;852;8027;8;84
-877;fermentum justo;778;85.7;83;853;8021;8;81
-878;sit amet eros;779;29.36;87;801;8024;8;82
-879;mattis nibh ligula nec;780;30.85;84;851;8035;8;84
-880;ac est lacinia nisi venenatis;781;14.76;80;846;8016;8;80
-881;nascetur ridiculus;782;42.68;86;831;8043;8;83
-882;purus sit amet;783;34.5;88;875;8001;8;81
-883;dui vel sem sed;784;61.43;83;850;8039;8;82
-884;et ultrices posuere cubilia curae;785;50.45;80;839;8022;8;81
-885;morbi vestibulum velit id;786;43.95;89;870;8020;8;80
-886;eget tempus vel pede;787;46.96;83;851;8016;8;84
-887;ut dolor morbi;788;79.48;84;845;8001;8;83
-888;quis odio consequat;789;74.57;82;819;8011;8;81
-889;libero convallis eget;790;52.62;85;805;8020;8;83
-890;turpis sed ante vivamus tortor;791;50.73;87;863;8046;8;82
-891;ac leo pellentesque ultrices;792;86.68;87;825;8013;8;80
-892;dictumst etiam faucibus cursus;793;80.5;86;871;8001;8;82
-893;justo etiam pretium iaculis;794;76.93;80;854;8030;8;80
-894;eros elementum pellentesque quisque porta;795;86.46;89;810;8029;8;82
-895;elementum in hac habitasse platea dictumst;796;44.38;82;896;8050;8;80
-896;hac habitasse platea dictumst maecenas;797;20.72;84;840;8016;8;84
-897;a libero nam;798;93.47;80;875;8036;8;82
-898;ipsum aliquam non;799;59.06;87;826;8023;8;80
-899;donec vitae;800;50.73;84;851;8027;8;80
-900;erat volutpat in congue;801;96.38;91;956;9012;9;92
-901;rhoncus mauris enim;802;50.73;93;976;9049;9;93
-902;natoque penatibus et magnis dis parturient;803;62.55;91;909;9015;9;91
-903;pretium quis lectus suspendisse potenti in;804;82.51;92;952;9047;9;93
-904;curae nulla dapibus dolor;805;40.19;97;918;9029;9;93
-905;nunc donec quis orci;806;99.19;93;909;9043;9;94
-906;in tempus sit amet sem;807;43.51;96;936;9018;9;94
-907;sociis natoque penatibus et;808;79.48;99;990;9006;9;91
-908;ante nulla justo aliquam;809;27.83;99;969;9019;9;94
-909;velit donec diam neque vestibulum eget;810;50.46;98;906;9025;9;91
-910;aliquam sit amet diam in magna;811;67.36;98;964;9017;9;94
-911;cursus urna ut tellus nulla ut;812;53.91;93;980;9012;9;93
-912;feugiat et eros vestibulum;813;95.94;97;980;9005;9;94
-913;felis sed lacus morbi sem;814;55.24;90;906;9029;9;94
-914;in hac habitasse;815;97.34;95;907;9025;9;92
-915;nibh quisque id;816;26.39;98;986;9006;9;92
-916;dignissim vestibulum vestibulum ante ipsum primis;817;12.45;93;925;9047;9;91
-917;dapibus at diam nam tristique;818;56.88;93;920;9019;9;91
-918;odio in hac habitasse;819;27.79;90;948;9043;9;91
-919;curabitur gravida nisi;820;76.85;93;940;9009;9;92
-920;sit amet;821;11.21;90;974;9037;9;92
-921;dis parturient montes nascetur ridiculus mus;822;37.59;93;972;9041;9;93
-922;in hac habitasse platea dictumst;823;22.39;91;969;9011;9;93
-923;potenti cras in purus;824;19.83;96;945;9021;9;94
-924;orci eget orci vehicula;825;61.33;93;954;9010;9;90
-925;commodo placerat;826;75.21;92;931;9013;9;93
-926;aenean sit amet justo morbi;827;39.02;98;959;9011;9;91
-927;volutpat sapien arcu sed;828;79.22;94;937;9050;9;93
-928;mi in porttitor pede;829;56.57;97;965;9014;9;93
-929;risus semper porta volutpat quam;830;25.82;95;977;9032;9;93
-930;ac nulla;831;12.19;91;923;9018;9;91
-931;tristique in;832;37.32;91;980;9012;9;91
-932;luctus nec;833;64.27;93;939;9043;9;94
-933;sapien iaculis congue;834;44.35;97;938;9037;9;92
-934;aenean auctor gravida sem;835;38.69;99;996;9007;9;92
-935;nam nulla integer pede;836;61.35;97;957;9027;9;93
-936;rutrum neque aenean auctor gravida;837;63.89;99;912;9046;9;94
-937;nullam porttitor lacus at;838;26.42;97;961;9038;9;92
-938;maecenas tristique est et;839;54.39;95;920;9046;9;91
-939;vestibulum sit amet cursus;840;21.32;97;946;9017;9;90
-940;purus eu;841;40.92;96;953;9047;9;93
-941;imperdiet sapien;842;60.99;94;946;9005;9;91
-942;egestas metus aenean;843;30.45;90;977;9043;9;90
-943;amet eros suspendisse accumsan tortor quis;844;85.09;98;970;9016;9;94
-944;justo in;845;30.57;92;951;9002;9;94
-945;aenean lectus pellentesque eget;846;34.88;99;944;9014;9;94
-946;dapibus at diam nam;847;32.32;98;995;9006;9;93
-947;eget rutrum at;848;41.47;94;904;9016;9;91
-948;duis ac nibh fusce lacus purus;849;67.71;94;915;9047;9;92
-949;sit amet;850;90.25;99;977;9048;9;93
-950;accumsan tortor quis turpis sed;851;48.99;91;995;9025;9;93
-951;amet erat;852;51.19;97;914;9001;9;92
-952;amet cursus id turpis integer;853;19.33;99;926;9043;9;91
-953;lacinia eget tincidunt eget tempus vel;854;27.55;90;989;9017;9;91
-954;ac nulla sed vel enim;855;58.62;91;958;9020;9;91
-955;placerat praesent blandit;856;30.66;97;963;9007;9;91
-956;at feugiat non pretium quis;857;97.78;98;930;9041;9;90
-957;turpis a pede posuere nonummy integer;858;55.84;98;912;9010;9;93
-958;ipsum integer;859;72.26;96;906;9012;9;90
-959;amet sem fusce consequat nulla nisl;860;43.84;91;903;9005;9;93
-960;cras in purus eu magna;861;49.63;97;932;9025;9;93
-961;ante vel ipsum praesent blandit;862;71.4;90;978;9028;9;91
-962;mollis molestie lorem quisque;863;52.78;94;910;9007;9;90
-963;quam sollicitudin;864;13.21;93;906;9028;9;93
-964;in felis donec semper;865;71.4;92;938;9049;9;93
-965;blandit ultrices enim lorem;866;79.62;96;967;9036;9;93
-966;lobortis ligula sit amet eleifend pede;867;50.73;97;963;9042;9;91
-967;sapien cursus vestibulum proin eu mi;868;25.98;93;976;9016;9;93
-968;cras mi pede;869;84.0;92;990;9040;9;90
-969;cursus urna ut tellus;870;81.34;99;965;9017;9;94
-970;felis sed interdum venenatis turpis enim;871;51.11;92;982;9015;9;92
-971;phasellus in felis donec semper;872;59.81;98;921;9020;9;90
-972;consequat nulla nisl nunc nisl;873;80.61;95;966;9032;9;90
-973;elementum eu interdum eu;874;78.82;97;962;9041;9;90
-974;nec nisi volutpat eleifend;875;30.26;96;987;9007;9;93
-975;orci luctus et;876;94.64;99;923;9018;9;91
-976;justo eu massa donec dapibus;877;91.1;90;975;9025;9;91
-977;porttitor lacus;878;47.99;95;952;9024;9;91
-978;mauris sit amet eros suspendisse accumsan;879;33.36;92;952;9042;9;92
-979;lobortis convallis tortor;880;86.55;94;957;9041;9;91
-980;diam cras pellentesque;881;54.27;97;983;9018;9;93
-981;lacus at velit vivamus;882;86.75;94;917;9027;9;90
-982;a pede posuere nonummy integer;883;50.73;97;946;9027;9;94
-983;eros suspendisse accumsan tortor;884;69.57;93;942;9018;9;90
-984;tempus semper;885;68.74;99;998;9048;9;93
-985;cum sociis;886;41.08;95;992;9047;9;93
-986;sem mauris laoreet ut rhoncus aliquet;887;95.78;96;923;9009;9;94
-987;varius ut blandit non;888;42.57;97;983;9048;9;92
-988;ultrices posuere cubilia;889;38.58;97;955;9028;9;90
-989;congue elementum in hac habitasse platea;890;48.97;94;907;9038;9;94
-990;ut suscipit;891;87.22;93;915;9028;9;90
-991;ante ipsum primis in faucibus;892;21.19;95;938;9050;9;90
-992;blandit lacinia;893;10.77;91;967;9029;9;92
-993;venenatis turpis;894;71.46;99;957;9049;9;93
-994;et eros vestibulum ac;895;95.12;92;986;9039;9;90
-995;tristique in tempus sit amet;896;81.5;97;902;9024;9;92
-996;nec molestie sed justo;897;97.34;92;949;9050;9;94
-997;justo aliquam quis turpis eget;898;22.37;91;953;9018;9;91
-998;gravida sem praesent;899;50.73;94;978;9023;9;90
-999;at nunc;900;21.64;91;968;9016;9;91
+id;name;order;potential_value;stage_id;person_id;organization_id;app_account_id;owner_id;created_by
+100;amet justo morbi ut odio;1;74.07;10;118;1009;1;13;system
+101;id luctus nec molestie sed justo;2;11.25;10;127;1006;1;13;system
+102;in lacus curabitur;3;78.98;17;198;1005;1;12;system
+103;fermentum justo nec condimentum neque sapien;4;11.89;12;122;1049;1;12;system
+104;suspendisse potenti nullam porttitor lacus at;5;87.98;15;148;1001;1;11;system
+105;sollicitudin ut suscipit a;6;40.44;15;135;1050;1;12;system
+106;fusce congue diam id ornare;7;75.46;10;134;1004;1;11;system
+107;mi integer ac neque duis bibendum;8;79.14;17;149;1020;1;13;system
+108;habitasse platea;9;42.23;15;199;1016;1;11;system
+109;nec euismod scelerisque quam;10;62.39;14;167;1007;1;13;system
+110;hac habitasse platea dictumst aliquam augue;11;29.83;18;146;1033;1;14;system
+111;maecenas rhoncus aliquam lacus;12;95.44;18;163;1042;1;13;system
+112;eget congue eget;13;57.69;19;177;1047;1;10;system
+113;quisque porta volutpat erat;14;74.85;14;191;1009;1;13;system
+114;aliquam quis turpis eget;15;39.98;12;101;1017;1;14;system
+115;integer aliquet massa id;16;47.33;18;197;1049;1;11;system
+116;ut dolor;17;63.93;18;194;1001;1;13;system
+117;tristique est et;18;35.89;14;177;1046;1;14;system
+118;ipsum ac tellus semper interdum mauris;19;15.57;15;150;1003;1;11;system
+119;nunc nisl;20;69.28;14;182;1009;1;12;system
+120;in hac;21;25.57;18;186;1036;1;12;system
+121;nisi vulputate nonummy;22;98.83;12;124;1010;1;13;system
+122;lorem quisque ut erat curabitur gravida;23;94.96;17;108;1047;1;13;system
+123;sapien placerat;24;86.58;10;153;1012;1;11;system
+124;eleifend donec ut dolor;25;50.73;11;198;1043;1;10;system
+125;parturient montes;26;50.73;11;102;1020;1;14;system
+126;blandit nam nulla;27;77.64;16;120;1013;1;11;system
+127;vestibulum velit id pretium iaculis;28;13.51;19;199;1027;1;13;system
+128;nibh fusce lacus purus aliquet at;29;50.73;11;162;1026;1;12;system
+129;vestibulum rutrum rutrum neque aenean auctor;30;43.35;18;100;1011;1;13;system
+130;nulla nunc purus phasellus in felis;31;59.3;14;186;1026;1;10;system
+131;sapien quis libero nullam sit;32;53.26;18;190;1036;1;14;system
+132;donec ut;33;65.35;13;198;1038;1;14;system
+133;in libero ut massa volutpat;34;42.24;15;144;1024;1;10;system
+134;ipsum primis in faucibus;35;15.82;13;117;1019;1;10;system
+135;molestie sed justo pellentesque viverra;36;33.44;19;156;1004;1;14;system
+136;eget nunc donec quis orci;37;86.54;15;190;1030;1;12;system
+137;integer aliquet massa id lobortis convallis;38;15.82;15;124;1036;1;13;system
+138;massa volutpat convallis morbi odio odio;39;12.82;11;193;1026;1;13;system
+139;ligula in lacus curabitur at ipsum;40;50.73;18;157;1021;1;12;system
+140;nunc purus phasellus in felis;41;94.35;16;100;1010;1;10;system
+141;enim sit amet nunc viverra dapibus;42;38.93;18;183;1042;1;11;system
+142;sit amet diam in;43;39.24;10;119;1011;1;14;system
+143;dictumst morbi;44;65.6;17;108;1030;1;11;system
+144;sed nisl nunc rhoncus;45;50.73;18;168;1036;1;12;system
+145;faucibus orci luctus et;46;96.73;14;169;1006;1;12;system
+146;ipsum aliquam non mauris morbi;47;80.34;13;125;1050;1;11;system
+147;lorem integer tincidunt;48;52.1;13;153;1014;1;12;system
+148;dis parturient montes nascetur ridiculus mus;49;68.72;11;132;1032;1;14;system
+149;vulputate luctus cum sociis natoque penatibus;50;26.51;12;163;1022;1;12;system
+150;libero ut massa;51;54.13;10;137;1043;1;12;system
+151;metus arcu adipiscing;52;81.52;16;179;1007;1;11;system
+152;dictumst maecenas ut massa quis augue;53;67.91;11;136;1043;1;11;system
+153;curae mauris viverra diam;54;69.75;16;148;1017;1;13;system
+154;mauris vulputate;55;88.95;14;188;1004;1;10;system
+155;pede libero quis;56;37.19;12;121;1027;1;11;system
+156;justo sit amet sapien dignissim;57;84.74;11;111;1005;1;12;system
+157;fusce posuere felis sed lacus;58;59.89;14;172;1007;1;10;system
+158;eros elementum;59;71.0;13;147;1001;1;11;system
+159;curae donec pharetra magna vestibulum aliquet;60;63.48;17;199;1024;1;12;system
+160;sed vestibulum sit amet cursus id;61;73.1;16;183;1049;1;14;system
+161;magna vestibulum;62;70.68;14;103;1033;1;12;system
+162;diam nam tristique tortor eu pede;63;34.37;12;111;1037;1;13;system
+163;ligula vehicula consequat morbi a ipsum;64;63.15;13;183;1011;1;11;system
+164;at dolor quis odio consequat varius;65;94.25;17;198;1004;1;13;system
+165;mi nulla;66;52.93;15;138;1007;1;11;system
+166;erat vestibulum sed magna at;67;50.73;19;109;1014;1;14;system
+167;eu orci mauris lacinia sapien;68;66.14;16;128;1021;1;10;system
+168;volutpat in congue etiam justo etiam;69;83.35;15;145;1001;1;12;system
+169;luctus et;70;65.46;11;180;1009;1;11;system
+170;volutpat convallis morbi;71;93.22;11;144;1043;1;13;system
+171;in hac habitasse platea dictumst;72;83.28;11;111;1002;1;10;system
+172;varius nulla facilisi cras;73;83.12;17;169;1031;1;12;system
+173;neque vestibulum eget vulputate ut ultrices;74;34.75;15;108;1046;1;14;system
+174;leo odio porttitor id consequat in;75;81.62;19;107;1048;1;12;system
+175;vitae nisi nam ultrices;76;79.83;13;149;1050;1;12;system
+176;in faucibus orci;77;92.23;12;109;1021;1;14;system
+177;amet justo morbi ut;78;50.73;16;160;1023;1;13;system
+178;neque libero convallis eget;79;27.48;19;178;1021;1;13;system
+179;ligula sit amet eleifend;80;31.59;11;171;1021;1;12;system
+180;et commodo vulputate justo in;81;22.27;16;128;1044;1;10;system
+181;cras in purus;82;34.35;18;179;1011;1;13;system
+182;vel accumsan tellus nisi eu;83;17.68;11;158;1003;1;11;system
+183;ac neque duis bibendum morbi;84;87.89;10;103;1050;1;10;system
+184;natoque penatibus et magnis dis;85;84.44;18;128;1025;1;10;system
+185;ultrices enim lorem ipsum;86;57.97;17;122;1032;1;11;system
+186;lacus morbi sem mauris laoreet ut;87;21.99;10;178;1015;1;11;system
+187;accumsan odio;88;88.22;19;179;1005;1;12;system
+188;cras in;89;95.37;13;177;1013;1;11;system
+189;integer pede;90;87.82;15;122;1023;1;12;system
+190;proin eu;91;33.02;14;122;1011;1;12;system
+191;est lacinia;92;61.06;18;194;1030;1;12;system
+192;in quam;93;18.29;11;181;1005;1;11;system
+193;pede justo lacinia eget;94;26.55;18;133;1017;1;11;system
+194;donec odio justo sollicitudin ut;95;50.73;18;184;1012;1;14;system
+195;ullamcorper purus sit amet nulla quisque;96;78.08;16;176;1019;1;13;system
+196;dapibus dolor vel est;97;84.31;14;159;1020;1;12;system
+197;arcu adipiscing molestie hendrerit at vulputate;98;59.88;14;198;1044;1;12;system
+198;vel lectus in quam fringilla rhoncus;99;94.44;19;187;1027;1;10;system
+199;id turpis integer aliquet massa;100;97.93;15;189;1046;1;12;system
+200;tincidunt eget tempus;101;24.27;20;293;2050;2;23;system
+201;sit amet consectetuer;102;47.52;26;255;2027;2;22;system
+202;lobortis sapien;103;97.6;24;282;2039;2;24;system
+203;curabitur in libero ut massa volutpat;104;22.71;28;237;2048;2;22;system
+204;pretium iaculis justo in;105;60.73;25;272;2050;2;23;system
+205;ut ultrices vel augue vestibulum;106;23.78;22;262;2009;2;24;system
+206;non mattis pulvinar nulla pede;107;88.11;29;226;2006;2;23;system
+207;nibh fusce lacus purus aliquet at;108;73.04;20;286;2039;2;24;system
+208;interdum in;109;47.33;29;210;2019;2;22;system
+209;eu interdum eu tincidunt;110;63.13;23;255;2047;2;23;system
+210;metus aenean;111;23.0;27;299;2017;2;20;system
+211;lacinia eget tincidunt eget;112;72.81;22;290;2006;2;22;system
+212;viverra pede ac;113;90.04;28;261;2050;2;24;system
+213;lacinia eget tincidunt eget tempus vel;114;25.95;28;232;2033;2;20;system
+214;cubilia curae;115;45.72;24;261;2044;2;24;system
+215;non lectus aliquam sit;116;20.64;21;222;2049;2;20;system
+216;tellus in sagittis;117;88.03;20;279;2015;2;20;system
+217;nisi at nibh in hac;118;37.76;27;233;2010;2;24;system
+218;ut rhoncus aliquet;119;50.58;28;265;2032;2;23;system
+219;libero convallis eget eleifend;120;45.54;29;237;2027;2;22;system
+220;nullam varius nulla facilisi cras;121;58.96;22;237;2024;2;22;system
+221;curabitur convallis duis consequat dui nec;122;61.34;20;240;2035;2;21;system
+222;nullam molestie nibh in;123;53.68;25;246;2049;2;24;system
+223;etiam pretium iaculis justo;124;87.45;27;201;2019;2;24;system
+224;faucibus orci;125;83.29;23;213;2013;2;22;system
+225;cubilia curae donec pharetra magna;126;25.87;21;218;2016;2;23;system
+226;vitae mattis nibh ligula;127;76.07;23;264;2043;2;23;system
+227;justo nec condimentum;128;10.92;24;215;2021;2;21;system
+228;commodo vulputate;129;95.09;28;295;2027;2;21;system
+229;ac nibh;130;46.75;21;271;2031;2;23;system
+230;blandit mi;131;93.73;22;261;2036;2;21;system
+231;massa id;132;70.68;29;220;2026;2;23;system
+232;vitae nisi nam ultrices libero;133;65.93;24;240;2042;2;20;system
+233;cubilia curae donec pharetra;134;98.95;25;200;2040;2;24;system
+234;elit ac nulla;135;34.65;28;287;2036;2;23;system
+235;libero non;136;94.36;24;246;2021;2;24;system
+236;neque duis bibendum morbi;137;88.97;24;205;2010;2;24;system
+237;eget massa tempor convallis nulla;138;38.93;26;236;2027;2;23;system
+238;congue etiam justo etiam pretium;139;50.73;23;227;2045;2;22;system
+239;in faucibus orci luctus et;140;13.66;24;258;2042;2;21;system
+240;est phasellus sit amet erat;141;45.69;27;234;2004;2;22;system
+241;sollicitudin ut;142;61.8;24;239;2005;2;20;system
+242;maecenas pulvinar lobortis;143;47.96;27;280;2012;2;21;system
+243;lorem ipsum dolor sit;144;69.75;23;244;2044;2;21;system
+244;vestibulum ac est lacinia nisi venenatis;145;25.0;28;248;2014;2;24;system
+245;quis justo maecenas rhoncus;146;61.69;25;236;2006;2;21;system
+246;nulla integer pede justo lacinia;147;64.94;21;288;2043;2;21;system
+247;interdum in ante;148;34.3;25;257;2021;2;21;system
+248;et eros vestibulum;149;94.17;25;241;2043;2;21;system
+249;gravida nisi;150;51.28;24;246;2004;2;24;system
+250;sit amet cursus id turpis integer;151;53.08;23;289;2025;2;21;system
+251;eget eros;152;32.95;21;287;2029;2;24;system
+252;arcu sed augue;153;32.74;26;220;2016;2;21;system
+253;volutpat dui maecenas tristique est;154;98.92;28;222;2011;2;22;system
+254;condimentum neque sapien placerat;155;21.37;29;221;2031;2;23;system
+255;purus aliquet;156;50.73;29;236;2032;2;21;system
+256;id turpis integer aliquet massa;157;99.57;27;213;2023;2;20;system
+257;cubilia curae donec;158;50.73;23;256;2018;2;24;system
+258;enim lorem ipsum dolor sit amet;159;31.45;22;259;2049;2;23;system
+259;nulla facilisi;160;96.95;26;291;2024;2;22;system
+260;amet eros;161;94.86;21;227;2030;2;20;system
+261;ipsum aliquam non mauris morbi;162;60.17;23;293;2049;2;22;system
+262;nibh in hac;163;42.51;26;265;2046;2;23;system
+263;aliquet pulvinar sed nisl nunc rhoncus;164;51.81;27;228;2004;2;20;system
+264;curae duis faucibus;165;16.38;21;274;2040;2;24;system
+265;nisl ut volutpat sapien;166;88.93;28;212;2019;2;21;system
+266;justo pellentesque viverra pede ac diam;167;65.9;26;271;2006;2;24;system
+267;scelerisque quam turpis;168;74.61;24;298;2041;2;22;system
+268;nulla nisl nunc nisl duis;169;63.14;22;234;2034;2;24;system
+269;suscipit a feugiat et;170;26.43;24;224;2038;2;21;system
+270;morbi porttitor;171;25.39;20;236;2024;2;23;system
+271;in lacus curabitur;172;75.45;24;296;2035;2;20;system
+272;tempor convallis nulla neque libero convallis;173;87.31;24;245;2022;2;22;system
+273;luctus et;174;79.53;24;259;2017;2;22;system
+274;quam pharetra magna ac consequat;175;35.32;27;218;2046;2;24;system
+275;eget eros elementum pellentesque quisque porta;176;41.96;21;233;2047;2;20;system
+276;mi nulla ac enim;177;57.55;20;247;2045;2;20;system
+277;ac neque duis bibendum morbi;178;82.72;26;236;2025;2;21;system
+278;est risus auctor sed tristique;179;78.19;20;243;2046;2;21;system
+279;est donec odio;180;61.56;23;246;2015;2;20;system
+280;nec molestie sed justo pellentesque;181;99.06;28;275;2022;2;20;system
+281;vel augue vestibulum ante;182;13.93;21;254;2030;2;20;system
+282;volutpat in congue etiam justo;183;47.12;29;206;2047;2;20;system
+283;vel enim sit amet nunc;184;99.4;23;256;2003;2;23;system
+284;pretium quis;185;57.0;29;270;2008;2;20;system
+285;in porttitor;186;26.23;27;252;2049;2;21;system
+286;dui nec;187;39.61;25;278;2050;2;23;system
+287;tincidunt eget tempus vel;188;28.45;24;268;2001;2;22;system
+288;nibh ligula nec sem;189;57.86;24;274;2010;2;22;system
+289;ac consequat metus sapien ut;190;62.46;25;241;2048;2;21;system
+290;auctor sed tristique in tempus;191;38.84;23;271;2011;2;21;system
+291;vehicula condimentum curabitur in libero;192;72.24;20;260;2046;2;24;system
+292;mauris lacinia sapien quis;193;78.93;21;243;2033;2;23;system
+293;mi sit amet lobortis sapien sapien;194;14.58;25;294;2028;2;22;system
+294;porttitor lacus at turpis donec posuere;195;43.61;21;260;2010;2;24;system
+295;curabitur convallis duis consequat dui nec;196;10.39;28;250;2023;2;20;system
+296;leo rhoncus sed;197;83.89;25;253;2029;2;20;system
+297;pede morbi porttitor lorem id;198;25.29;21;225;2026;2;24;system
+298;varius integer;199;38.99;21;204;2028;2;20;system
+299;vel dapibus at diam nam;200;53.98;24;297;2010;2;20;system
+300;non quam;201;39.36;37;392;3020;3;34;system
+301;dictumst maecenas ut;202;38.48;39;316;3008;3;34;system
+302;metus sapien;203;65.59;36;346;3033;3;32;system
+303;lacus purus;204;62.53;35;350;3046;3;34;system
+304;diam in magna bibendum imperdiet;205;50.73;32;386;3020;3;33;system
+305;tristique fusce congue;206;58.4;38;317;3039;3;32;system
+306;nullam varius nulla facilisi cras non;207;14.67;31;387;3015;3;34;system
+307;eget elit sodales scelerisque;208;75.59;39;302;3015;3;33;system
+308;sollicitudin mi sit amet lobortis;209;72.73;38;373;3018;3;32;system
+309;mauris eget massa tempor;210;95.41;31;333;3027;3;30;system
+310;aliquam lacus morbi quis tortor;211;86.66;38;347;3002;3;34;system
+311;donec odio justo sollicitudin ut;212;91.43;37;333;3039;3;31;system
+312;ligula suspendisse ornare consequat lectus in;213;71.36;38;307;3004;3;31;system
+313;blandit nam nulla integer pede;214;20.88;39;394;3005;3;30;system
+314;vivamus vel nulla eget eros elementum;215;42.65;30;384;3041;3;31;system
+315;maecenas tristique est et;216;64.78;38;360;3008;3;30;system
+316;lorem ipsum dolor;217;97.28;37;339;3002;3;31;system
+317;erat nulla;218;55.76;34;348;3032;3;30;system
+318;orci vehicula;219;95.47;32;356;3043;3;34;system
+319;morbi non quam;220;29.32;35;317;3025;3;33;system
+320;felis sed interdum venenatis;221;85.61;38;316;3050;3;34;system
+321;massa quis augue luctus tincidunt nulla;222;63.16;36;382;3010;3;32;system
+322;morbi non lectus aliquam sit amet;223;17.69;37;348;3042;3;31;system
+323;vestibulum velit;224;51.2;39;394;3024;3;34;system
+324;ipsum primis in;225;21.76;30;320;3023;3;31;system
+325;orci eget orci;226;31.68;34;336;3023;3;31;system
+326;pede justo lacinia eget tincidunt eget;227;20.56;31;326;3003;3;34;system
+327;luctus rutrum nulla tellus in;228;16.56;34;393;3023;3;34;system
+328;blandit mi;229;75.01;36;333;3049;3;30;system
+329;ut massa quis augue luctus tincidunt;230;79.92;33;367;3050;3;31;system
+330;placerat praesent blandit nam nulla integer;231;54.33;30;382;3031;3;32;system
+331;mattis egestas;232;83.83;39;383;3045;3;34;system
+332;dui nec nisi volutpat eleifend donec;233;40.89;32;358;3004;3;30;system
+333;vulputate ut ultrices;234;37.63;36;391;3028;3;33;system
+334;justo sit amet sapien;235;10.51;31;329;3011;3;30;system
+335;convallis nulla;236;96.47;33;363;3043;3;33;system
+336;luctus nec molestie sed justo;237;63.36;35;340;3006;3;30;system
+337;morbi ut;238;91.82;33;395;3036;3;31;system
+338;ligula in;239;77.48;36;332;3001;3;33;system
+339;congue vivamus metus arcu;240;24.35;31;360;3038;3;34;system
+340;pellentesque ultrices;241;15.24;35;323;3026;3;33;system
+341;a ipsum integer a;242;17.62;37;377;3025;3;34;system
+342;lobortis ligula sit amet eleifend pede;243;47.21;32;343;3001;3;33;system
+343;ut erat curabitur;244;25.72;34;351;3024;3;34;system
+344;justo etiam pretium iaculis justo;245;96.47;34;313;3046;3;33;system
+345;in faucibus orci luctus;246;25.46;37;314;3049;3;32;system
+346;tellus nisi eu orci mauris lacinia;247;39.09;38;396;3050;3;30;system
+347;ipsum aliquam non mauris morbi non;248;80.23;37;303;3012;3;34;system
+348;tortor risus dapibus augue vel accumsan;249;61.62;30;376;3010;3;34;system
+349;felis donec;250;90.78;34;332;3022;3;31;system
+350;nibh in hac habitasse;251;73.83;37;343;3022;3;31;system
+351;consequat lectus in est;252;19.57;34;353;3008;3;34;system
+352;rutrum ac lobortis;253;67.03;35;369;3039;3;33;system
+353;at nulla suspendisse potenti;254;65.25;31;387;3026;3;32;system
+354;in magna bibendum imperdiet nullam;255;59.0;36;300;3045;3;31;system
+355;lectus pellentesque;256;63.21;32;334;3010;3;34;system
+356;eros viverra eget;257;33.92;36;375;3021;3;31;system
+357;ut erat id mauris;258;53.93;38;352;3038;3;34;system
+358;vivamus vel nulla eget;259;94.18;33;300;3011;3;33;system
+359;bibendum imperdiet nullam orci pede venenatis;260;55.99;31;375;3046;3;34;system
+360;eget eleifend;261;93.74;30;324;3017;3;34;system
+361;amet nulla quisque arcu libero;262;27.62;37;335;3007;3;33;system
+362;tristique est et tempus;263;55.23;34;304;3049;3;31;system
+363;suspendisse ornare consequat;264;76.94;30;304;3020;3;31;system
+364;in felis donec semper sapien;265;52.73;37;352;3044;3;32;system
+365;luctus et ultrices posuere cubilia curae;266;18.59;37;369;3023;3;34;system
+366;eget vulputate ut ultrices vel augue;267;97.54;34;360;3013;3;30;system
+367;pellentesque viverra pede ac diam cras;268;46.57;30;324;3038;3;31;system
+368;aenean fermentum donec ut;269;22.73;36;351;3048;3;32;system
+369;ante ipsum primis;270;16.54;38;374;3014;3;31;system
+370;porttitor lorem id;271;32.67;32;385;3028;3;32;system
+371;erat eros viverra eget congue eget;272;94.59;33;310;3004;3;30;system
+372;habitasse platea dictumst morbi vestibulum;273;12.35;37;347;3021;3;30;system
+373;amet lobortis sapien;274;50.73;39;384;3012;3;34;system
+374;hendrerit at vulputate vitae;275;74.09;31;374;3039;3;33;system
+375;dui proin;276;19.41;38;313;3011;3;31;system
+376;eget elit;277;21.56;35;386;3004;3;30;system
+377;dapibus nulla suscipit ligula in;278;97.32;34;342;3023;3;30;system
+378;lacinia nisi venenatis tristique fusce congue;279;41.63;32;309;3043;3;30;system
+379;lectus in est risus;280;23.49;33;321;3031;3;32;system
+380;convallis morbi odio;281;13.57;36;330;3050;3;31;system
+381;potenti cras in;282;67.58;36;392;3050;3;31;system
+382;congue diam id ornare imperdiet sapien;283;93.87;34;351;3036;3;30;system
+383;montes nascetur ridiculus mus;284;27.74;36;346;3023;3;30;system
+384;sapien ut;285;10.26;38;339;3033;3;32;system
+385;felis eu sapien;286;65.98;39;300;3035;3;30;system
+386;in hac habitasse platea dictumst etiam;287;27.17;35;339;3049;3;31;system
+387;varius integer ac leo;288;77.32;33;371;3037;3;30;system
+388;fusce consequat nulla nisl nunc;289;85.8;38;358;3014;3;34;system
+389;nam ultrices libero non mattis pulvinar;290;45.75;39;375;3027;3;34;system
+390;platea dictumst maecenas ut massa quis;291;17.18;34;389;3007;3;31;system
+391;erat tortor sollicitudin mi;292;26.53;39;329;3038;3;33;system
+392;blandit lacinia erat vestibulum sed;293;74.3;33;390;3023;3;31;system
+393;sit amet nunc;294;23.89;38;366;3044;3;32;system
+394;at lorem integer;295;75.48;34;322;3034;3;30;system
+395;scelerisque mauris sit;296;56.48;38;337;3037;3;32;system
+396;sapien arcu sed augue;297;25.21;39;378;3048;3;30;system
+397;sit amet consectetuer adipiscing elit;298;42.78;36;338;3009;3;34;system
+398;duis consequat dui nec nisi volutpat;299;17.38;36;355;3041;3;32;system
+399;dui nec nisi;300;91.25;33;301;3042;3;31;system
+400;duis ac nibh fusce lacus;301;86.82;43;468;4015;4;41;system
+401;ultrices posuere cubilia curae;302;37.9;41;400;4029;4;41;system
+402;mattis odio donec vitae;303;22.31;43;414;4013;4;44;system
+403;varius nulla;304;13.19;47;407;4037;4;43;system
+404;in est risus;305;14.79;45;429;4010;4;42;system
+405;interdum mauris non ligula;306;47.63;49;471;4003;4;41;system
+406;erat eros viverra eget;307;56.97;49;417;4044;4;44;system
+407;nunc proin at turpis;308;42.04;44;420;4026;4;41;system
+408;accumsan odio;309;13.47;40;446;4011;4;41;system
+409;risus semper porta volutpat;310;55.45;48;407;4044;4;41;system
+410;morbi ut odio cras mi;311;88.17;48;408;4022;4;43;system
+411;libero nam dui;312;24.75;47;496;4034;4;41;system
+412;sed accumsan felis;313;64.8;44;449;4018;4;44;system
+413;maecenas pulvinar lobortis;314;92.72;47;442;4049;4;43;system
+414;vel augue vestibulum ante ipsum primis;315;95.18;43;435;4006;4;41;system
+415;arcu sed augue aliquam erat;316;19.57;48;491;4024;4;43;system
+416;nunc purus phasellus;317;68.71;40;448;4003;4;42;system
+417;eget rutrum;318;79.33;49;472;4035;4;43;system
+418;sit amet consectetuer adipiscing elit proin;319;29.71;48;415;4023;4;41;system
+419;nec sem duis aliquam convallis;320;49.47;41;434;4037;4;43;system
+420;erat nulla tempus vivamus;321;30.47;42;413;4024;4;42;system
+421;rhoncus mauris enim leo;322;19.23;49;422;4039;4;40;system
+422;cursus urna ut tellus;323;68.61;48;444;4042;4;44;system
+423;adipiscing elit proin;324;50.73;41;408;4004;4;43;system
+424;vestibulum ac est;325;91.68;40;413;4023;4;42;system
+425;nulla integer pede justo;326;91.21;47;403;4028;4;41;system
+426;felis donec semper sapien a libero;327;32.92;44;471;4034;4;42;system
+427;sed interdum venenatis turpis enim blandit;328;36.31;40;482;4011;4;41;system
+428;quam a;329;86.95;41;475;4032;4;43;system
+429;vestibulum rutrum rutrum neque;330;62.88;40;445;4042;4;42;system
+430;mi pede malesuada in imperdiet et;331;76.74;48;415;4004;4;42;system
+431;aenean sit amet justo;332;97.18;49;488;4024;4;43;system
+432;posuere metus vitae ipsum;333;34.63;44;427;4017;4;40;system
+433;porttitor pede justo;334;75.72;48;492;4006;4;40;system
+434;non mauris morbi non lectus;335;56.74;44;414;4005;4;43;system
+435;ante ipsum primis in faucibus orci;336;33.64;44;418;4039;4;41;system
+436;nisi venenatis tristique fusce;337;50.36;48;448;4044;4;43;system
+437;parturient montes;338;36.05;43;417;4026;4;40;system
+438;aenean sit;339;51.97;42;424;4035;4;44;system
+439;ut odio cras mi pede malesuada;340;28.89;41;444;4039;4;44;system
+440;varius integer ac leo;341;37.44;45;418;4018;4;43;system
+441;turpis integer aliquet massa id;342;94.3;47;433;4041;4;43;system
+442;ante ipsum primis;343;94.5;42;435;4042;4;42;system
+443;sed nisl nunc rhoncus dui;344;70.88;41;489;4033;4;44;system
+444;rhoncus sed;345;29.54;46;434;4031;4;43;system
+445;hac habitasse;346;42.98;44;495;4044;4;40;system
+446;justo pellentesque viverra pede ac;347;41.39;40;424;4037;4;41;system
+447;non lectus aliquam sit;348;86.39;44;474;4030;4;40;system
+448;nisi nam ultrices;349;14.75;44;472;4026;4;43;system
+449;proin interdum mauris non;350;45.42;42;461;4043;4;40;system
+450;cursus urna ut tellus nulla;351;36.88;45;492;4050;4;44;system
+451;cubilia curae nulla dapibus dolor;352;69.4;43;412;4014;4;43;system
+452;ac lobortis vel dapibus at;353;65.12;41;442;4042;4;40;system
+453;convallis nulla neque libero;354;50.73;43;459;4014;4;42;system
+454;vestibulum rutrum rutrum neque aenean auctor;355;71.09;46;406;4015;4;43;system
+455;adipiscing molestie;356;86.64;47;442;4033;4;43;system
+456;vel enim sit;357;43.38;49;444;4029;4;40;system
+457;sapien placerat ante nulla justo;358;80.94;47;409;4020;4;43;system
+458;quisque arcu libero rutrum ac lobortis;359;94.83;41;449;4015;4;40;system
+459;maecenas leo odio condimentum;360;77.45;46;407;4005;4;42;system
+460;sapien dignissim vestibulum;361;59.69;40;417;4030;4;42;system
+461;semper interdum mauris ullamcorper purus sit;362;54.6;42;450;4020;4;42;system
+462;fermentum donec ut mauris eget massa;363;50.73;42;474;4031;4;44;system
+463;nulla pede ullamcorper augue a;364;80.37;46;481;4020;4;41;system
+464;donec pharetra magna vestibulum aliquet;365;31.56;43;435;4038;4;40;system
+465;pellentesque at nulla suspendisse;366;63.54;47;498;4004;4;40;system
+466;risus auctor sed tristique;367;38.49;43;418;4041;4;43;system
+467;sem mauris laoreet;368;41.54;45;430;4001;4;44;system
+468;posuere cubilia;369;96.33;42;414;4026;4;41;system
+469;donec semper sapien a libero nam;370;63.91;41;427;4036;4;43;system
+470;morbi a ipsum integer a nibh;371;35.53;45;430;4040;4;44;system
+471;sociis natoque penatibus et magnis dis;372;48.25;47;400;4022;4;44;system
+472;nulla eget eros;373;63.14;44;438;4009;4;42;system
+473;donec pharetra magna vestibulum;374;57.65;40;473;4014;4;44;system
+474;sociis natoque;375;20.18;45;468;4037;4;42;system
+475;vehicula condimentum curabitur;376;57.67;46;411;4027;4;40;system
+476;at turpis a pede posuere;377;59.84;48;436;4019;4;41;system
+477;morbi porttitor;378;96.38;48;479;4026;4;44;system
+478;risus auctor sed tristique in tempus;379;90.93;46;410;4014;4;44;system
+479;elementum pellentesque quisque porta volutpat erat;380;47.65;46;472;4037;4;40;system
+480;integer a nibh in;381;24.88;45;479;4010;4;40;system
+481;amet eros;382;35.38;42;495;4034;4;43;system
+482;rhoncus aliquet pulvinar sed nisl;383;50.73;41;464;4011;4;40;system
+483;justo in blandit;384;25.22;40;448;4020;4;41;system
+484;tincidunt in leo maecenas pulvinar;385;20.98;49;407;4029;4;41;system
+485;nisl aenean lectus;386;81.69;43;450;4017;4;44;system
+486;vitae ipsum;387;19.54;42;484;4005;4;43;system
+487;adipiscing lorem vitae;388;63.87;46;420;4020;4;43;system
+488;pretium quis lectus suspendisse potenti;389;44.56;42;475;4050;4;43;system
+489;velit donec diam;390;70.82;43;419;4018;4;44;system
+490;posuere cubilia curae nulla dapibus dolor;391;29.49;48;493;4002;4;42;system
+491;etiam faucibus cursus;392;85.78;48;440;4011;4;41;system
+492;id ornare;393;29.48;42;470;4006;4;42;system
+493;amet diam in magna bibendum;394;37.65;47;425;4026;4;41;system
+494;at velit vivamus vel nulla;395;45.95;40;433;4013;4;44;system
+495;est quam pharetra;396;50.73;43;473;4015;4;40;system
+496;mauris non;397;61.81;42;435;4020;4;44;system
+497;cubilia curae;398;70.11;47;412;4004;4;41;system
+498;id consequat in consequat;399;12.0;49;422;4037;4;41;system
+499;sit amet turpis elementum;400;58.09;45;488;4020;4;43;system
+500;augue vestibulum rutrum;401;71.66;54;589;5025;5;50;system
+501;cras pellentesque volutpat;402;39.14;58;506;5047;5;54;system
+502;vel est;403;45.5;58;544;5037;5;53;system
+503;mauris vulputate;404;36.84;52;526;5026;5;52;system
+504;urna pretium nisl ut;405;39.66;52;530;5020;5;51;system
+505;congue etiam;406;16.58;52;534;5027;5;51;system
+506;est risus auctor;407;86.55;54;562;5019;5;54;system
+507;pulvinar lobortis est phasellus sit amet;408;56.74;58;599;5044;5;53;system
+508;mattis egestas metus aenean fermentum donec;409;27.44;53;550;5014;5;50;system
+509;nec euismod scelerisque quam turpis adipiscing;410;67.99;53;544;5015;5;52;system
+510;nunc proin;411;65.5;59;500;5033;5;53;system
+511;viverra pede;412;97.77;56;516;5021;5;53;system
+512;et tempus semper est;413;19.49;51;558;5015;5;53;system
+513;pede malesuada in;414;16.48;55;579;5043;5;52;system
+514;amet eleifend pede;415;43.74;59;592;5050;5;53;system
+515;habitasse platea dictumst etiam;416;14.21;57;599;5036;5;53;system
+516;tortor duis;417;65.38;55;597;5030;5;50;system
+517;in felis eu sapien;418;59.83;58;542;5017;5;53;system
+518;ut volutpat sapien arcu sed augue;419;76.35;52;557;5011;5;53;system
+519;ut mauris eget;420;50.73;53;563;5018;5;51;system
+520;pede libero quis orci nullam;421;72.33;51;526;5010;5;53;system
+521;quis turpis eget elit sodales scelerisque;422;67.72;55;502;5010;5;51;system
+522;dolor vel;423;74.78;58;538;5033;5;52;system
+523;nulla facilisi cras non velit nec;424;95.02;53;524;5022;5;52;system
+524;in tempus sit amet;425;41.99;57;569;5045;5;54;system
+525;risus semper;426;76.59;59;506;5040;5;50;system
+526;duis at;427;92.21;51;540;5021;5;51;system
+527;nec dui;428;87.51;57;591;5040;5;54;system
+528;quam pharetra magna ac;429;71.88;58;526;5019;5;53;system
+529;placerat ante nulla justo aliquam;430;78.73;56;561;5028;5;52;system
+530;mattis nibh ligula;431;50.73;58;554;5023;5;51;system
+531;donec vitae nisi nam ultrices libero;432;68.37;55;565;5003;5;53;system
+532;luctus et ultrices posuere cubilia curae;433;51.24;50;518;5013;5;53;system
+533;eleifend donec ut dolor;434;90.03;52;526;5015;5;50;system
+534;quis orci;435;72.52;53;515;5005;5;51;system
+535;in faucibus orci luctus et ultrices;436;90.41;52;573;5038;5;53;system
+536;blandit ultrices;437;68.98;50;503;5039;5;51;system
+537;nibh in;438;39.6;51;597;5016;5;53;system
+538;ac leo pellentesque ultrices mattis;439;53.79;52;551;5023;5;54;system
+539;odio justo sollicitudin ut suscipit;440;53.98;55;534;5029;5;50;system
+540;ipsum primis in faucibus orci luctus;441;66.25;55;569;5034;5;54;system
+541;a ipsum integer;442;34.14;55;592;5028;5;51;system
+542;ligula sit amet eleifend;443;21.31;51;549;5008;5;53;system
+543;mauris viverra;444;68.02;56;519;5046;5;53;system
+544;consequat ut nulla sed accumsan;445;51.55;53;532;5021;5;50;system
+545;dui proin leo;446;89.87;58;536;5039;5;52;system
+546;cubilia curae;447;37.59;52;551;5020;5;52;system
+547;at feugiat non;448;45.6;58;526;5008;5;52;system
+548;ligula sit;449;21.96;56;599;5024;5;53;system
+549;proin at;450;92.7;55;571;5007;5;52;system
+550;neque duis bibendum morbi non;451;11.78;55;583;5003;5;50;system
+551;dui vel sem sed sagittis nam;452;47.64;58;542;5025;5;50;system
+552;orci mauris;453;83.09;55;540;5003;5;54;system
+553;justo sollicitudin ut;454;38.82;57;564;5047;5;53;system
+554;ultrices posuere;455;88.14;55;574;5035;5;53;system
+555;augue vestibulum;456;18.41;55;549;5029;5;53;system
+556;vestibulum sagittis sapien cum sociis;457;23.35;56;553;5020;5;52;system
+557;lorem vitae mattis;458;89.22;59;549;5006;5;54;system
+558;mattis nibh ligula;459;50.73;53;581;5021;5;51;system
+559;vitae mattis nibh ligula;460;33.84;56;511;5018;5;54;system
+560;primis in faucibus orci luctus et;461;14.47;54;553;5024;5;50;system
+561;magna ac consequat metus sapien ut;462;83.58;50;537;5050;5;54;system
+562;nulla integer pede;463;50.73;53;577;5011;5;51;system
+563;vestibulum ac est;464;98.45;59;521;5023;5;54;system
+564;sit amet nulla quisque arcu;465;33.81;55;540;5026;5;51;system
+565;vulputate nonummy maecenas tincidunt lacus;466;71.6;58;510;5029;5;52;system
+566;in eleifend;467;64.76;53;582;5012;5;51;system
+567;eget tincidunt eget tempus;468;42.75;59;597;5025;5;53;system
+568;cras pellentesque volutpat dui maecenas;469;38.66;56;507;5019;5;50;system
+569;in faucibus orci luctus;470;67.79;55;527;5032;5;51;system
+570;donec quis orci eget;471;37.75;53;527;5027;5;53;system
+571;cubilia curae duis faucibus accumsan odio;472;57.31;54;590;5007;5;53;system
+572;hac habitasse platea dictumst etiam;473;78.9;55;582;5013;5;54;system
+573;natoque penatibus et magnis dis parturient;474;56.62;55;546;5032;5;52;system
+574;sed nisl nunc rhoncus dui;475;47.88;54;585;5046;5;53;system
+575;ipsum integer a;476;42.65;57;546;5048;5;52;system
+576;vel enim;477;11.64;55;560;5016;5;54;system
+577;duis bibendum felis sed interdum venenatis;478;22.83;51;527;5034;5;53;system
+578;nec sem duis aliquam;479;85.99;50;574;5024;5;52;system
+579;semper porta volutpat;480;96.81;56;571;5047;5;54;system
+580;libero nam;481;29.63;54;567;5012;5;52;system
+581;dictumst maecenas ut;482;93.89;55;508;5024;5;53;system
+582;fusce lacus purus aliquet;483;99.97;54;571;5042;5;52;system
+583;convallis nulla neque;484;74.13;52;553;5036;5;52;system
+584;nisi at nibh in hac;485;36.9;57;525;5026;5;54;system
+585;orci luctus et;486;97.8;53;560;5008;5;52;system
+586;eu interdum eu;487;92.41;52;533;5048;5;50;system
+587;volutpat sapien arcu sed augue;488;31.28;58;534;5003;5;50;system
+588;hac habitasse platea dictumst;489;14.85;59;556;5024;5;54;system
+589;fusce posuere felis sed;490;27.68;59;530;5037;5;52;system
+590;aenean fermentum;491;84.86;56;573;5017;5;53;system
+591;dui maecenas tristique est;492;32.96;59;549;5023;5;53;system
+592;sed magna at nunc commodo;493;92.88;50;529;5035;5;54;system
+593;lorem vitae mattis nibh ligula nec;494;50.73;51;516;5004;5;52;system
+594;integer tincidunt ante vel;495;41.89;51;530;5038;5;53;system
+595;et ultrices posuere cubilia curae;496;33.52;50;505;5037;5;51;system
+596;odio consequat varius integer ac;497;14.64;55;501;5020;5;50;system
+597;aliquam lacus morbi;498;35.75;55;505;5001;5;54;system
+598;pellentesque quisque porta volutpat erat;499;76.43;50;596;5010;5;52;system
+599;quisque arcu libero rutrum ac;500;18.45;50;570;5020;5;52;system
+600;eleifend pede libero quis;501;42.74;65;610;6003;6;60;system
+601;lorem ipsum dolor;502;58.24;68;610;6003;6;61;system
+602;nibh quisque id justo sit;503;88.59;69;681;6044;6;63;system
+603;lectus in est risus auctor sed;504;86.14;67;621;6029;6;60;system
+604;fusce posuere felis;505;58.93;68;698;6029;6;64;system
+605;in hac habitasse;506;68.84;67;608;6003;6;62;system
+606;volutpat dui;507;68.05;67;668;6035;6;61;system
+607;nulla ac;508;70.77;63;619;6045;6;63;system
+608;lobortis vel;509;39.03;65;661;6002;6;60;system
+609;quam pede lobortis ligula;510;32.73;69;649;6028;6;60;system
+610;dignissim vestibulum vestibulum;511;53.73;61;697;6020;6;63;system
+611;lectus vestibulum quam sapien;512;41.11;60;601;6002;6;62;system
+612;quam pharetra magna ac;513;57.64;66;693;6020;6;61;system
+613;aenean lectus pellentesque eget;514;93.42;65;609;6043;6;62;system
+614;pharetra magna;515;17.46;69;658;6034;6;64;system
+615;eu magna vulputate luctus cum sociis;516;33.25;69;648;6010;6;61;system
+616;vulputate vitae nisl aenean;517;24.84;63;621;6021;6;60;system
+617;in faucibus orci luctus et;518;45.45;65;641;6014;6;63;system
+618;tellus in sagittis dui vel;519;58.22;65;637;6014;6;62;system
+619;orci luctus et ultrices;520;57.69;60;692;6034;6;63;system
+620;magna ac consequat metus sapien ut;521;22.17;67;604;6005;6;63;system
+621;proin interdum;522;87.83;63;626;6041;6;63;system
+622;nec dui luctus rutrum nulla;523;50.04;63;670;6047;6;63;system
+623;dis parturient montes nascetur ridiculus;524;94.55;69;650;6048;6;63;system
+624;placerat ante nulla justo aliquam;525;99.16;65;661;6039;6;63;system
+625;justo morbi ut odio cras;526;30.57;64;686;6016;6;61;system
+626;diam neque vestibulum eget vulputate ut;527;96.75;65;683;6037;6;62;system
+627;erat quisque erat eros;528;60.43;68;664;6028;6;62;system
+628;nec nisi vulputate nonummy maecenas;529;13.43;65;656;6025;6;64;system
+629;sapien quis libero;530;54.1;67;691;6034;6;62;system
+630;non velit donec diam;531;84.27;61;667;6044;6;61;system
+631;viverra diam vitae;532;50.01;64;613;6035;6;62;system
+632;justo lacinia eget tincidunt eget;533;10.59;63;605;6047;6;64;system
+633;eu felis fusce;534;46.95;66;685;6016;6;62;system
+634;diam in;535;75.41;61;616;6038;6;64;system
+635;suspendisse accumsan;536;34.44;68;677;6020;6;64;system
+636;semper sapien a libero nam;537;13.81;65;641;6035;6;63;system
+637;maecenas leo odio condimentum;538;74.59;66;600;6011;6;64;system
+638;consequat morbi a;539;10.87;61;687;6050;6;63;system
+639;congue etiam justo etiam pretium iaculis;540;56.47;67;617;6005;6;62;system
+640;tellus in;541;31.16;67;646;6038;6;61;system
+641;turpis donec posuere;542;42.96;67;677;6035;6;62;system
+642;nisl aenean lectus pellentesque;543;91.04;62;649;6015;6;60;system
+643;est lacinia nisi venenatis tristique;544;52.59;61;610;6031;6;64;system
+644;congue eget semper rutrum nulla;545;42.81;68;658;6022;6;62;system
+645;nonummy maecenas;546;44.24;60;699;6004;6;61;system
+646;ipsum praesent blandit lacinia erat;547;17.26;66;695;6019;6;62;system
+647;sapien varius ut;548;16.85;69;686;6045;6;63;system
+648;mauris lacinia sapien quis libero;549;95.06;68;684;6049;6;61;system
+649;lacus at velit vivamus vel;550;62.26;62;652;6046;6;60;system
+650;lacinia eget;551;38.71;63;683;6032;6;64;system
+651;volutpat eleifend donec ut dolor;552;90.42;60;620;6008;6;63;system
+652;gravida sem praesent id massa;553;62.95;65;625;6046;6;64;system
+653;aliquam augue quam;554;37.64;65;694;6041;6;64;system
+654;bibendum felis sed;555;47.18;64;689;6024;6;60;system
+655;cursus id turpis integer aliquet massa;556;38.44;63;656;6027;6;62;system
+656;eget nunc;557;68.47;64;688;6026;6;64;system
+657;sodales scelerisque;558;15.21;65;631;6027;6;63;system
+658;morbi ut odio;559;39.48;60;625;6045;6;61;system
+659;habitasse platea dictumst morbi vestibulum;560;53.97;66;639;6014;6;61;system
+660;mauris laoreet ut rhoncus aliquet pulvinar;561;56.62;60;647;6041;6;62;system
+661;orci luctus et ultrices;562;98.72;61;691;6044;6;62;system
+662;morbi sem mauris laoreet;563;55.02;63;631;6021;6;60;system
+663;molestie sed;564;45.95;69;624;6036;6;64;system
+664;proin leo odio;565;20.78;63;601;6039;6;64;system
+665;ut massa quis augue;566;19.65;65;611;6036;6;62;system
+666;donec dapibus duis;567;89.76;62;642;6016;6;61;system
+667;rhoncus sed vestibulum sit amet;568;35.63;66;607;6019;6;63;system
+668;pharetra magna vestibulum;569;21.66;69;603;6050;6;64;system
+669;tincidunt eget tempus vel pede;570;87.14;62;669;6018;6;61;system
+670;tellus in sagittis dui vel;571;66.21;67;653;6016;6;60;system
+671;donec semper sapien a libero;572;72.91;63;680;6011;6;60;system
+672;dapibus dolor;573;89.07;60;617;6021;6;64;system
+673;vel nulla eget eros elementum;574;57.47;67;624;6005;6;61;system
+674;ipsum ac tellus;575;18.39;60;627;6027;6;62;system
+675;et tempus semper est quam;576;56.03;68;664;6008;6;62;system
+676;rhoncus aliquam;577;28.39;68;680;6008;6;64;system
+677;sed accumsan;578;84.87;65;626;6017;6;61;system
+678;erat fermentum justo nec condimentum;579;37.57;65;645;6047;6;60;system
+679;nisl nunc rhoncus dui vel;580;27.37;68;692;6047;6;60;system
+680;orci luctus et ultrices posuere cubilia;581;91.07;60;655;6036;6;63;system
+681;convallis nunc proin at turpis;582;14.78;69;629;6033;6;61;system
+682;vivamus metus arcu;583;50.84;66;643;6045;6;60;system
+683;in eleifend;584;54.38;68;624;6036;6;60;system
+684;integer a nibh in quis;585;84.61;62;683;6036;6;61;system
+685;neque vestibulum eget vulputate;586;53.47;61;695;6037;6;64;system
+686;eu tincidunt in leo maecenas;587;83.06;62;655;6025;6;64;system
+687;id consequat in;588;96.31;65;649;6043;6;62;system
+688;justo aliquam quis turpis eget elit;589;76.03;66;696;6019;6;61;system
+689;platea dictumst;590;46.73;61;670;6044;6;63;system
+690;magna at nunc;591;43.38;60;606;6045;6;60;system
+691;diam cras pellentesque volutpat dui;592;59.63;66;693;6044;6;64;system
+692;nulla mollis molestie lorem quisque;593;82.56;66;663;6046;6;60;system
+693;pellentesque viverra pede;594;50.73;69;609;6036;6;61;system
+694;sit amet erat nulla tempus;595;50.73;65;609;6007;6;60;system
+695;eu interdum;596;83.62;68;668;6045;6;62;system
+696;morbi ut odio;597;33.29;68;662;6006;6;62;system
+697;ipsum integer;598;77.65;63;631;6020;6;63;system
+698;rhoncus aliquam lacus;599;47.45;64;691;6007;6;62;system
+699;morbi porttitor lorem id;600;66.9;61;673;6015;6;64;system
+700;morbi non lectus aliquam sit amet;601;37.26;71;791;7023;7;72;system
+701;suscipit a;602;66.55;73;781;7021;7;73;system
+702;eget congue;603;64.82;72;780;7032;7;71;system
+703;justo sollicitudin;604;44.96;73;787;7025;7;70;system
+704;posuere metus vitae;605;90.18;76;753;7047;7;72;system
+705;erat eros viverra eget congue eget;606;17.74;73;744;7001;7;71;system
+706;tellus nulla ut erat id;607;92.53;70;760;7033;7;71;system
+707;sapien arcu sed augue aliquam;608;33.5;70;702;7020;7;74;system
+708;a odio in hac;609;29.34;71;710;7028;7;70;system
+709;ac nulla sed vel;610;64.79;77;787;7024;7;72;system
+710;potenti cras in purus eu;611;79.25;71;764;7038;7;74;system
+711;mi integer ac;612;26.81;79;764;7019;7;70;system
+712;volutpat convallis morbi;613;29.22;78;757;7008;7;73;system
+713;justo in hac;614;84.3;78;717;7009;7;71;system
+714;mus vivamus vestibulum sagittis sapien;615;79.08;76;707;7028;7;72;system
+715;vestibulum quam;616;54.09;71;738;7005;7;70;system
+716;nulla suspendisse potenti cras in;617;62.08;79;794;7028;7;71;system
+717;luctus rutrum;618;42.19;79;759;7035;7;70;system
+718;rutrum nulla tellus;619;72.78;71;732;7012;7;74;system
+719;et ultrices posuere;620;84.46;74;791;7007;7;74;system
+720;ut rhoncus aliquet pulvinar sed;621;65.6;75;779;7016;7;73;system
+721;massa donec;622;78.5;76;758;7024;7;71;system
+722;praesent blandit lacinia erat;623;73.29;77;706;7028;7;73;system
+723;viverra eget congue;624;72.98;72;790;7027;7;71;system
+724;cursus id turpis integer;625;27.17;72;747;7007;7;73;system
+725;primis in faucibus orci luctus et;626;44.08;74;732;7028;7;72;system
+726;risus semper porta;627;77.84;76;728;7001;7;71;system
+727;id pretium;628;41.25;76;794;7015;7;73;system
+728;diam in magna;629;62.93;74;723;7015;7;73;system
+729;in felis eu sapien;630;83.7;71;789;7008;7;73;system
+730;quis odio consequat varius integer;631;35.03;73;735;7031;7;70;system
+731;iaculis congue vivamus;632;40.42;76;762;7025;7;70;system
+732;nullam molestie nibh in;633;38.99;70;764;7027;7;73;system
+733;semper rutrum nulla nunc purus phasellus;634;17.98;74;789;7037;7;72;system
+734;molestie sed justo pellentesque;635;84.6;77;736;7008;7;70;system
+735;dolor vel est donec;636;88.67;74;718;7019;7;74;system
+736;felis donec;637;39.96;77;750;7014;7;71;system
+737;sapien urna pretium nisl ut;638;71.46;79;758;7009;7;70;system
+738;ante ipsum primis in faucibus orci;639;99.45;74;734;7040;7;72;system
+739;semper rutrum;640;58.03;70;729;7028;7;70;system
+740;at turpis donec;641;91.88;76;739;7013;7;73;system
+741;sed interdum venenatis;642;63.83;75;758;7043;7;72;system
+742;mauris enim;643;98.69;72;735;7012;7;70;system
+743;rhoncus dui vel sem;644;30.23;76;761;7014;7;73;system
+744;nulla ultrices aliquet;645;74.51;77;765;7014;7;73;system
+745;faucibus orci luctus et ultrices;646;32.74;76;799;7005;7;70;system
+746;pellentesque ultrices phasellus id sapien in;647;70.46;70;726;7010;7;73;system
+747;quam sapien varius ut blandit;648;50.73;74;755;7031;7;71;system
+748;lacinia sapien quis libero nullam;649;34.62;75;741;7046;7;70;system
+749;nunc nisl duis;650;60.75;78;785;7020;7;70;system
+750;at velit;651;18.56;77;703;7045;7;72;system
+751;morbi porttitor;652;99.91;70;784;7005;7;71;system
+752;in sapien iaculis congue;653;91.25;70;791;7022;7;74;system
+753;duis faucibus accumsan odio curabitur convallis;654;38.85;74;705;7021;7;72;system
+754;magnis dis;655;77.78;74;778;7008;7;74;system
+755;pellentesque viverra pede ac diam cras;656;19.73;70;710;7025;7;73;system
+756;lacinia erat vestibulum sed;657;64.59;77;706;7006;7;74;system
+757;ac est lacinia;658;96.9;70;719;7015;7;70;system
+758;mauris eget massa tempor;659;68.2;78;782;7029;7;72;system
+759;potenti nullam porttitor lacus at;660;78.42;74;727;7014;7;72;system
+760;a ipsum integer;661;65.87;74;769;7042;7;70;system
+761;est lacinia nisi venenatis tristique;662;38.59;76;725;7012;7;74;system
+762;porttitor pede justo eu massa;663;56.69;76;784;7016;7;72;system
+763;dolor sit amet consectetuer adipiscing elit;664;72.89;72;785;7020;7;72;system
+764;non mattis pulvinar nulla pede;665;21.78;74;728;7016;7;74;system
+765;pede posuere nonummy integer non velit;666;21.82;74;732;7003;7;72;system
+766;diam cras;667;10.54;70;704;7045;7;70;system
+767;vel sem sed;668;78.12;72;745;7026;7;70;system
+768;et ultrices posuere cubilia curae donec;669;41.75;76;740;7043;7;72;system
+769;ante vel;670;83.37;76;731;7006;7;71;system
+770;proin leo;671;70.27;70;729;7012;7;70;system
+771;tellus nulla ut erat id;672;19.23;74;797;7050;7;71;system
+772;dolor vel;673;16.98;73;734;7026;7;72;system
+773;justo pellentesque;674;80.39;74;715;7016;7;72;system
+774;odio justo sollicitudin ut suscipit a;675;65.22;75;779;7029;7;70;system
+775;pede ullamcorper augue a suscipit nulla;676;29.94;74;705;7037;7;70;system
+776;ultrices posuere;677;61.72;75;746;7024;7;72;system
+777;donec vitae;678;50.73;71;726;7010;7;74;system
+778;curabitur gravida nisi;679;74.12;75;783;7049;7;73;system
+779;convallis eget eleifend;680;16.92;73;720;7050;7;74;system
+780;lacinia erat;681;99.6;77;709;7022;7;74;system
+781;enim lorem;682;43.55;74;764;7039;7;72;system
+782;at nulla;683;50.73;75;775;7020;7;74;system
+783;turpis adipiscing lorem vitae mattis nibh;684;71.81;74;769;7028;7;72;system
+784;adipiscing lorem;685;25.77;75;713;7009;7;72;system
+785;congue etiam justo etiam pretium iaculis;686;15.75;76;774;7047;7;73;system
+786;integer a nibh in quis justo;687;50.73;78;788;7019;7;70;system
+787;suspendisse potenti nullam;688;93.28;79;723;7013;7;72;system
+788;purus aliquet at feugiat non pretium;689;84.57;72;744;7038;7;74;system
+789;condimentum neque sapien placerat;690;45.54;75;707;7024;7;72;system
+790;nulla nunc purus phasellus in felis;691;50.73;79;743;7048;7;74;system
+791;convallis nunc proin at turpis a;692;50.38;72;701;7049;7;70;system
+792;sit amet sem fusce consequat;693;50.73;78;746;7039;7;72;system
+793;vehicula consequat morbi a ipsum integer;694;43.03;70;700;7010;7;71;system
+794;vulputate luctus cum;695;93.62;75;701;7047;7;74;system
+795;faucibus cursus urna;696;85.37;79;792;7050;7;70;system
+796;sapien in;697;94.26;77;787;7017;7;74;system
+797;nisi at nibh in hac;698;98.82;73;797;7015;7;74;system
+798;semper porta volutpat quam;699;41.21;72;790;7018;7;72;system
+799;placerat ante nulla;700;47.35;72;729;7047;7;70;system
+800;volutpat quam;701;66.15;83;865;8044;8;81;system
+801;et magnis dis parturient montes nascetur;702;53.19;86;860;8030;8;80;system
+802;viverra dapibus;703;57.84;89;865;8050;8;80;system
+803;vitae nisl aenean lectus pellentesque eget;704;73.07;85;800;8038;8;83;system
+804;vestibulum eget vulputate ut;705;20.64;89;815;8017;8;80;system
+805;quam pharetra magna ac consequat metus;706;94.44;80;873;8004;8;84;system
+806;sed vestibulum sit;707;41.98;89;814;8009;8;84;system
+807;et ultrices posuere cubilia;708;85.53;89;857;8025;8;82;system
+808;vel enim sit amet nunc;709;67.92;83;819;8036;8;83;system
+809;id nisl venenatis;710;75.5;86;878;8030;8;81;system
+810;dui luctus rutrum;711;34.0;83;805;8009;8;82;system
+811;penatibus et;712;26.94;89;881;8011;8;81;system
+812;tellus nisi eu orci mauris;713;44.5;89;807;8006;8;82;system
+813;lectus suspendisse potenti in eleifend quam;714;91.95;80;839;8034;8;84;system
+814;cum sociis natoque penatibus;715;24.69;88;835;8038;8;83;system
+815;integer pede justo lacinia eget;716;62.8;80;820;8002;8;81;system
+816;sapien placerat ante nulla justo aliquam;717;31.59;83;833;8045;8;84;system
+817;id consequat in consequat ut;718;41.19;89;863;8012;8;81;system
+818;donec vitae nisi nam ultrices libero;719;50.73;84;866;8030;8;81;system
+819;justo sollicitudin;720;61.73;84;882;8040;8;80;system
+820;aliquam quis turpis;721;15.48;89;863;8050;8;81;system
+821;sapien varius ut blandit;722;37.35;80;850;8028;8;83;system
+822;pede posuere nonummy integer non velit;723;69.74;87;885;8030;8;83;system
+823;eros elementum pellentesque quisque;724;66.61;89;817;8041;8;80;system
+824;blandit non interdum in;725;33.06;87;855;8050;8;82;system
+825;vel augue;726;30.85;84;824;8013;8;84;system
+826;habitasse platea dictumst maecenas;727;47.57;84;860;8022;8;84;system
+827;consequat metus sapien ut;728;70.49;88;853;8009;8;82;system
+828;vestibulum quam sapien;729;53.52;86;817;8035;8;83;system
+829;dapibus duis at velit;730;34.18;83;871;8022;8;82;system
+830;velit id pretium iaculis diam;731;39.4;82;870;8003;8;84;system
+831;massa id;732;91.38;88;853;8017;8;81;system
+832;tellus semper;733;48.05;87;890;8020;8;83;system
+833;tortor sollicitudin mi;734;62.46;87;835;8046;8;80;system
+834;donec pharetra magna vestibulum;735;92.74;86;852;8004;8;83;system
+835;ac est lacinia;736;73.39;89;894;8029;8;84;system
+836;cras non velit;737;66.94;84;846;8012;8;84;system
+837;venenatis lacinia aenean sit;738;77.93;85;833;8047;8;82;system
+838;in sapien;739;59.9;81;832;8016;8;82;system
+839;ligula pellentesque ultrices;740;51.42;84;821;8008;8;83;system
+840;pretium iaculis;741;57.04;85;839;8040;8;84;system
+841;erat fermentum justo;742;50.73;87;895;8019;8;83;system
+842;id turpis integer aliquet;743;65.12;88;867;8032;8;84;system
+843;curae duis faucibus accumsan odio;744;98.37;85;874;8047;8;82;system
+844;purus phasellus;745;35.01;88;881;8004;8;80;system
+845;posuere cubilia curae duis faucibus;746;17.71;82;839;8044;8;80;system
+846;mauris morbi non lectus;747;40.91;87;878;8045;8;83;system
+847;rhoncus aliquam;748;64.6;81;829;8028;8;80;system
+848;diam nam tristique tortor;749;37.36;81;853;8049;8;84;system
+849;ultrices posuere cubilia;750;94.77;84;827;8033;8;80;system
+850;lacus curabitur at ipsum ac tellus;751;29.38;84;808;8031;8;81;system
+851;rutrum neque aenean;752;48.5;80;869;8011;8;81;system
+852;imperdiet sapien urna pretium nisl ut;753;50.73;85;820;8015;8;83;system
+853;sed sagittis nam congue risus semper;754;91.45;81;873;8005;8;84;system
+854;pede ac;755;57.98;84;892;8032;8;81;system
+855;consequat ut nulla sed accumsan felis;756;58.87;85;875;8036;8;80;system
+856;suspendisse accumsan tortor quis;757;84.38;87;880;8047;8;80;system
+857;quam pede;758;34.74;83;898;8025;8;83;system
+858;odio odio elementum eu;759;64.97;84;852;8045;8;80;system
+859;ac lobortis vel dapibus at diam;760;14.34;80;842;8021;8;81;system
+860;imperdiet et commodo;761;67.21;89;859;8013;8;84;system
+861;aliquam lacus morbi quis tortor;762;26.44;83;806;8020;8;81;system
+862;proin interdum mauris;763;50.73;80;814;8007;8;83;system
+863;molestie hendrerit;764;98.63;83;853;8019;8;84;system
+864;ac lobortis vel dapibus;765;35.9;85;893;8001;8;84;system
+865;lectus suspendisse potenti in eleifend quam;766;88.56;85;827;8015;8;82;system
+866;sit amet eleifend;767;37.59;86;822;8012;8;84;system
+867;sapien sapien non mi;768;36.86;81;822;8046;8;83;system
+868;fringilla rhoncus mauris enim leo rhoncus;769;12.29;88;808;8009;8;81;system
+869;velit nec;770;35.9;88;803;8013;8;83;system
+870;nisl nunc;771;80.87;81;888;8022;8;83;system
+871;vestibulum sed magna at;772;69.09;82;814;8036;8;84;system
+872;pharetra magna vestibulum aliquet ultrices erat;773;77.54;83;841;8005;8;83;system
+873;eros suspendisse accumsan;774;65.86;84;814;8026;8;81;system
+874;in quis justo maecenas;775;61.79;82;818;8043;8;80;system
+875;viverra diam;776;24.38;86;868;8014;8;81;system
+876;convallis eget;777;52.15;83;852;8027;8;84;system
+877;fermentum justo;778;85.7;83;853;8021;8;81;system
+878;sit amet eros;779;29.36;87;801;8024;8;82;system
+879;mattis nibh ligula nec;780;30.85;84;851;8035;8;84;system
+880;ac est lacinia nisi venenatis;781;14.76;80;846;8016;8;80;system
+881;nascetur ridiculus;782;42.68;86;831;8043;8;83;system
+882;purus sit amet;783;34.5;88;875;8001;8;81;system
+883;dui vel sem sed;784;61.43;83;850;8039;8;82;system
+884;et ultrices posuere cubilia curae;785;50.45;80;839;8022;8;81;system
+885;morbi vestibulum velit id;786;43.95;89;870;8020;8;80;system
+886;eget tempus vel pede;787;46.96;83;851;8016;8;84;system
+887;ut dolor morbi;788;79.48;84;845;8001;8;83;system
+888;quis odio consequat;789;74.57;82;819;8011;8;81;system
+889;libero convallis eget;790;52.62;85;805;8020;8;83;system
+890;turpis sed ante vivamus tortor;791;50.73;87;863;8046;8;82;system
+891;ac leo pellentesque ultrices;792;86.68;87;825;8013;8;80;system
+892;dictumst etiam faucibus cursus;793;80.5;86;871;8001;8;82;system
+893;justo etiam pretium iaculis;794;76.93;80;854;8030;8;80;system
+894;eros elementum pellentesque quisque porta;795;86.46;89;810;8029;8;82;system
+895;elementum in hac habitasse platea dictumst;796;44.38;82;896;8050;8;80;system
+896;hac habitasse platea dictumst maecenas;797;20.72;84;840;8016;8;84;system
+897;a libero nam;798;93.47;80;875;8036;8;82;system
+898;ipsum aliquam non;799;59.06;87;826;8023;8;80;system
+899;donec vitae;800;50.73;84;851;8027;8;80;system
+900;erat volutpat in congue;801;96.38;91;956;9012;9;92;system
+901;rhoncus mauris enim;802;50.73;93;976;9049;9;93;system
+902;natoque penatibus et magnis dis parturient;803;62.55;91;909;9015;9;91;system
+903;pretium quis lectus suspendisse potenti in;804;82.51;92;952;9047;9;93;system
+904;curae nulla dapibus dolor;805;40.19;97;918;9029;9;93;system
+905;nunc donec quis orci;806;99.19;93;909;9043;9;94;system
+906;in tempus sit amet sem;807;43.51;96;936;9018;9;94;system
+907;sociis natoque penatibus et;808;79.48;99;990;9006;9;91;system
+908;ante nulla justo aliquam;809;27.83;99;969;9019;9;94;system
+909;velit donec diam neque vestibulum eget;810;50.46;98;906;9025;9;91;system
+910;aliquam sit amet diam in magna;811;67.36;98;964;9017;9;94;system
+911;cursus urna ut tellus nulla ut;812;53.91;93;980;9012;9;93;system
+912;feugiat et eros vestibulum;813;95.94;97;980;9005;9;94;system
+913;felis sed lacus morbi sem;814;55.24;90;906;9029;9;94;system
+914;in hac habitasse;815;97.34;95;907;9025;9;92;system
+915;nibh quisque id;816;26.39;98;986;9006;9;92;system
+916;dignissim vestibulum vestibulum ante ipsum primis;817;12.45;93;925;9047;9;91;system
+917;dapibus at diam nam tristique;818;56.88;93;920;9019;9;91;system
+918;odio in hac habitasse;819;27.79;90;948;9043;9;91;system
+919;curabitur gravida nisi;820;76.85;93;940;9009;9;92;system
+920;sit amet;821;11.21;90;974;9037;9;92;system
+921;dis parturient montes nascetur ridiculus mus;822;37.59;93;972;9041;9;93;system
+922;in hac habitasse platea dictumst;823;22.39;91;969;9011;9;93;system
+923;potenti cras in purus;824;19.83;96;945;9021;9;94;system
+924;orci eget orci vehicula;825;61.33;93;954;9010;9;90;system
+925;commodo placerat;826;75.21;92;931;9013;9;93;system
+926;aenean sit amet justo morbi;827;39.02;98;959;9011;9;91;system
+927;volutpat sapien arcu sed;828;79.22;94;937;9050;9;93;system
+928;mi in porttitor pede;829;56.57;97;965;9014;9;93;system
+929;risus semper porta volutpat quam;830;25.82;95;977;9032;9;93;system
+930;ac nulla;831;12.19;91;923;9018;9;91;system
+931;tristique in;832;37.32;91;980;9012;9;91;system
+932;luctus nec;833;64.27;93;939;9043;9;94;system
+933;sapien iaculis congue;834;44.35;97;938;9037;9;92;system
+934;aenean auctor gravida sem;835;38.69;99;996;9007;9;92;system
+935;nam nulla integer pede;836;61.35;97;957;9027;9;93;system
+936;rutrum neque aenean auctor gravida;837;63.89;99;912;9046;9;94;system
+937;nullam porttitor lacus at;838;26.42;97;961;9038;9;92;system
+938;maecenas tristique est et;839;54.39;95;920;9046;9;91;system
+939;vestibulum sit amet cursus;840;21.32;97;946;9017;9;90;system
+940;purus eu;841;40.92;96;953;9047;9;93;system
+941;imperdiet sapien;842;60.99;94;946;9005;9;91;system
+942;egestas metus aenean;843;30.45;90;977;9043;9;90;system
+943;amet eros suspendisse accumsan tortor quis;844;85.09;98;970;9016;9;94;system
+944;justo in;845;30.57;92;951;9002;9;94;system
+945;aenean lectus pellentesque eget;846;34.88;99;944;9014;9;94;system
+946;dapibus at diam nam;847;32.32;98;995;9006;9;93;system
+947;eget rutrum at;848;41.47;94;904;9016;9;91;system
+948;duis ac nibh fusce lacus purus;849;67.71;94;915;9047;9;92;system
+949;sit amet;850;90.25;99;977;9048;9;93;system
+950;accumsan tortor quis turpis sed;851;48.99;91;995;9025;9;93;system
+951;amet erat;852;51.19;97;914;9001;9;92;system
+952;amet cursus id turpis integer;853;19.33;99;926;9043;9;91;system
+953;lacinia eget tincidunt eget tempus vel;854;27.55;90;989;9017;9;91;system
+954;ac nulla sed vel enim;855;58.62;91;958;9020;9;91;system
+955;placerat praesent blandit;856;30.66;97;963;9007;9;91;system
+956;at feugiat non pretium quis;857;97.78;98;930;9041;9;90;system
+957;turpis a pede posuere nonummy integer;858;55.84;98;912;9010;9;93;system
+958;ipsum integer;859;72.26;96;906;9012;9;90;system
+959;amet sem fusce consequat nulla nisl;860;43.84;91;903;9005;9;93;system
+960;cras in purus eu magna;861;49.63;97;932;9025;9;93;system
+961;ante vel ipsum praesent blandit;862;71.4;90;978;9028;9;91;system
+962;mollis molestie lorem quisque;863;52.78;94;910;9007;9;90;system
+963;quam sollicitudin;864;13.21;93;906;9028;9;93;system
+964;in felis donec semper;865;71.4;92;938;9049;9;93;system
+965;blandit ultrices enim lorem;866;79.62;96;967;9036;9;93;system
+966;lobortis ligula sit amet eleifend pede;867;50.73;97;963;9042;9;91;system
+967;sapien cursus vestibulum proin eu mi;868;25.98;93;976;9016;9;93;system
+968;cras mi pede;869;84.0;92;990;9040;9;90;system
+969;cursus urna ut tellus;870;81.34;99;965;9017;9;94;system
+970;felis sed interdum venenatis turpis enim;871;51.11;92;982;9015;9;92;system
+971;phasellus in felis donec semper;872;59.81;98;921;9020;9;90;system
+972;consequat nulla nisl nunc nisl;873;80.61;95;966;9032;9;90;system
+973;elementum eu interdum eu;874;78.82;97;962;9041;9;90;system
+974;nec nisi volutpat eleifend;875;30.26;96;987;9007;9;93;system
+975;orci luctus et;876;94.64;99;923;9018;9;91;system
+976;justo eu massa donec dapibus;877;91.1;90;975;9025;9;91;system
+977;porttitor lacus;878;47.99;95;952;9024;9;91;system
+978;mauris sit amet eros suspendisse accumsan;879;33.36;92;952;9042;9;92;system
+979;lobortis convallis tortor;880;86.55;94;957;9041;9;91;system
+980;diam cras pellentesque;881;54.27;97;983;9018;9;93;system
+981;lacus at velit vivamus;882;86.75;94;917;9027;9;90;system
+982;a pede posuere nonummy integer;883;50.73;97;946;9027;9;94;system
+983;eros suspendisse accumsan tortor;884;69.57;93;942;9018;9;90;system
+984;tempus semper;885;68.74;99;998;9048;9;93;system
+985;cum sociis;886;41.08;95;992;9047;9;93;system
+986;sem mauris laoreet ut rhoncus aliquet;887;95.78;96;923;9009;9;94;system
+987;varius ut blandit non;888;42.57;97;983;9048;9;92;system
+988;ultrices posuere cubilia;889;38.58;97;955;9028;9;90;system
+989;congue elementum in hac habitasse platea;890;48.97;94;907;9038;9;94;system
+990;ut suscipit;891;87.22;93;915;9028;9;90;system
+991;ante ipsum primis in faucibus;892;21.19;95;938;9050;9;90;system
+992;blandit lacinia;893;10.77;91;967;9029;9;92;system
+993;venenatis turpis;894;71.46;99;957;9049;9;93;system
+994;et eros vestibulum ac;895;95.12;92;986;9039;9;90;system
+995;tristique in tempus sit amet;896;81.5;97;902;9024;9;92;system
+996;nec molestie sed justo;897;97.34;92;949;9050;9;94;system
+997;justo aliquam quis turpis eget;898;22.37;91;953;9018;9;91;system
+998;gravida sem praesent;899;50.73;94;978;9023;9;90;system
+999;at nunc;900;21.64;91;968;9016;9;91;system

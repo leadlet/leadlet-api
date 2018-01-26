@@ -22,7 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name = "deal")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Deal extends AbstractAccountSpecificEntity implements Serializable {
+public class Deal extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

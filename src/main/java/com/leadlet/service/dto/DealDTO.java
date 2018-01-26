@@ -2,6 +2,7 @@ package com.leadlet.service.dto;
 
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -29,6 +30,8 @@ public class DealDTO implements Serializable {
     private String currency;
 
     private ZonedDateTime possibleCloseDate;
+
+    private Instant createdDate;
 
     public Long getId() {
         return id;
@@ -110,6 +113,15 @@ public class DealDTO implements Serializable {
     public DealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
         this.possibleCloseDate = possibleCloseDate;
         return this;
+    }
+
+    public DealDTO setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
     @Override
