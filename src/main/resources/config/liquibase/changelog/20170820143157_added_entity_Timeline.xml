@@ -37,6 +37,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="deal_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -66,6 +70,7 @@
             <column name="created_date" type="DATETIME" />
             <column name="person_id" type="NUMERIC" />
             <column name="organization_id" type="NUMERIC" />
+            <column name="deal_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
             <column name="user_id" type="NUMERIC" />
         </loadData>

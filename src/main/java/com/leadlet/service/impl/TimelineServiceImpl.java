@@ -85,7 +85,7 @@ public class TimelineServiceImpl implements TimelineService {
 
     @Override
     public Page<TimelineDTO> findByPersonId(Long personId, Pageable pageable) {
-        return timelineRepository.findByPerson_IdAndAppAccount_Id(personId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+        return timelineRepository.findByPerson_IdAndAppAccount_Id(personId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(timelineMapper::toDto)
             .map(timelineDTO -> {
                 if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
@@ -116,6 +116,25 @@ public class TimelineServiceImpl implements TimelineService {
                 return timelineDTO;
             });
     }
+
+    @Override
+    public Page<TimelineDTO> findByDealId(Long dealId, Pageable pageable) {
+
+        return timelineRepository.findByDeal_IdAndAppAccount_Id(dealId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+            .map(timelineMapper::toDto)
+            .map(timelineDTO -> {
+                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
+                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(noteMapper.toDto(note));
+                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
+                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(activityMapper.toDto(activity));
+                }
+
+                return timelineDTO;
+            });
+    }
+
     @Override
     public Page<Timeline> findByUserId(Long userId, Pageable pageable) {
         log.warn("findByUserId");
@@ -135,7 +154,9 @@ public class TimelineServiceImpl implements TimelineService {
         if(note.getOrganization() != null){
             timelineItem.setOrganization(note.getOrganization());
         }
-
+        if(note.getDeal() != null){
+            timelineItem.setDeal(note.getDeal());
+        }
         if (note.getAppAccount() != null) {
             timelineItem.setAppAccount(note.getAppAccount());
         }

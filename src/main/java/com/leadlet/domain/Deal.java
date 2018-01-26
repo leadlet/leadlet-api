@@ -1,18 +1,12 @@
 package com.leadlet.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.leadlet.domain.enumeration.ActivityType;
 import com.leadlet.domain.enumeration.CurrencyType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Currency;
 import java.util.Objects;
 import java.util.Set;
 
@@ -60,6 +54,12 @@ public class Deal extends AbstractAccountSpecificEntity implements Serializable 
 
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Activity> activities;
+
+    @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Timeline> timelines;
+
+    @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Note> notes;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

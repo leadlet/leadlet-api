@@ -31,6 +31,9 @@
             <column name="organization_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="deal_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -44,6 +47,7 @@
             <column name="id" type="NUMERIC"/>
             <column name="person_id" type="NUMERIC" />
             <column name="organization_id" type="NUMERIC" />
+            <column name="deal_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
         </loadData>
 
