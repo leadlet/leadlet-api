@@ -23,6 +23,8 @@ public class DealDTO implements Serializable {
 
     private String stageName;
 
+    private Long pipelineId;
+
     private Long personId;
 
     private Long organizationId;
@@ -152,6 +154,15 @@ public class DealDTO implements Serializable {
 
     public void setStageName(String stageName) {
         this.stageName = stageName;
+    }
+
+    public DealDTO setPipelineId(Long pipelineId) {
+        this.pipelineId = pipelineId;
+        return this;
+    }
+
+    public Long getPipelineId() {
+        return pipelineId;
     }
 
     @Override

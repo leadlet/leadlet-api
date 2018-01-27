@@ -5,6 +5,8 @@ import com.leadlet.service.dto.DealMoveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing Deal.
  */
@@ -56,4 +58,6 @@ public interface DealService {
      * @return the persisted entity
      */
     void move(DealMoveDTO dealMoveDTO);
+
+    List<DealDTO> findByStageId(Long pipelineId);
 }

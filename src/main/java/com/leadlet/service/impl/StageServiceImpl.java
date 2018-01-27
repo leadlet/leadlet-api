@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -101,6 +103,14 @@ public class StageServiceImpl implements StageService {
         log.debug("Request to get Stage : {}", id);
         Stage stage = stageRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return stageMapper.toDto(stage);
+    }
+
+    @Override
+    public List<StageDTO> findAllByPipelineId(Long pipelineId) {
+
+        List<Stage> stageList = stageRepository.findAllByAppAccount_IdAndPipeline_Id(SecurityUtils.getCurrentUserAppAccountId(),pipelineId);
+
+        return stageList.stream().map(stageMapper::toDto).collect(Collectors.toList());
     }
 
     /**

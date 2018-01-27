@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -118,13 +122,12 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void move(DealMoveDTO dealMoveDTO) {
-        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(dealMoveDTO.getId(), SecurityUtils.getCurrentUserAppAccountId());
+    }
 
-        if (dealFromDb == null) {
-            throw new EntityNotFoundException();
-        }
+    @Override
+    public List<DealDTO> findByStageId(Long stageId) {
+        List<Deal> dealList = dealRepository.findAllByAppAccount_IdAndStage_Id(SecurityUtils.getCurrentUserAppAccountId(), stageId);
 
-        dealRepository.shiftDealsUp(SecurityUtils.getCurrentUserAppAccountId(),dealMoveDTO.getNewStageId(),dealMoveDTO.getNewOrder());
-        dealRepository.setStageAndOrder(dealFromDb.getId(),dealMoveDTO.getNewStageId(),dealMoveDTO.getNewOrder());
+        return dealList.stream().map(dealMapper::toDto).collect(Collectors.toList());
     }
 }

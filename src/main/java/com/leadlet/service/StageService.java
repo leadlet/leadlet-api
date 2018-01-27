@@ -4,6 +4,8 @@ import com.leadlet.service.dto.StageDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing Stage.
  */
@@ -40,6 +42,8 @@ public interface StageService {
      *  @return the entity
      */
     StageDTO findOne(Long id);
+
+    List<StageDTO> findAllByPipelineId(Long pipelineId);
 
     /**
      *  Delete the "id" stage.

@@ -30,5 +30,5 @@ public interface DealRepository extends JpaRepository<Deal,Long> {
     @Query("update #{#entityName} deal set deal.stage.id = ?2, deal.order=?3 where deal.id = ?1")
     void setStageAndOrder(Long id, Long stageId, Integer order);
 
-
+    List<Deal> findAllByAppAccount_IdAndStage_Id(Long appAccountId, Long stageId);
 }
