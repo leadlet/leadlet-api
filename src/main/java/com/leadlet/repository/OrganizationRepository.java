@@ -18,6 +18,7 @@ import java.util.List;
 public interface OrganizationRepository extends JpaRepository<Organization,Long> ,  JpaSpecificationExecutor<Organization> {
     Page<Organization> findByAppAccount_Id(Long appAccountId, Pageable page);
     Organization findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdInAndAppAccount_Id(List<Long> idList, Long appAccountId);
 

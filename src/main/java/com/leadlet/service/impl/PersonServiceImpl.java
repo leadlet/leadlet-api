@@ -135,6 +135,12 @@ public class PersonServiceImpl implements PersonService {
 
     }
 
+    @Override
+    public Page<PersonDTO> findAllByOrganization(Long organizationId, Pageable page) {
+        return personRepository.findAllByAppAccount_IdAndOrganization_Id(
+            SecurityUtils.getCurrentUserAppAccountReference().getId(), organizationId, page).map(personMapper::toDto);
+    }
+
     /**
      * Get one person by id.
      *

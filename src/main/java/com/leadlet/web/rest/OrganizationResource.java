@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,6 +108,20 @@ public class OrganizationResource {
         log.debug("REST request to get Organization : {}", id);
         OrganizationDTO organizationDTO = organizationService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(organizationDTO));
+    }
+
+    /**
+     * GET  /organizations/:id : get the "id" organization.
+     *
+     * @param personId the id of the organizationDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the organizationDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/organizations/person/{personId}")
+    @Timed
+    public ResponseEntity<List<OrganizationDTO>> getOrganizationByPersonId(@PathVariable Long personId) {
+        log.debug("REST request to get Organization : {}", personId);
+        OrganizationDTO organizationDTO = organizationService.findOneByPersonId(personId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(Arrays.asList(organizationDTO)));
     }
 
     /**
