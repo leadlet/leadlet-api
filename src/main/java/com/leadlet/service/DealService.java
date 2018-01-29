@@ -59,5 +59,5 @@ public interface DealService {
      */
     void move(DealMoveDTO dealMoveDTO);
 
-    List<DealDTO> findByStageId(Long pipelineId);
+    List<DealDTO> findByStageId(Long pipelineId, Pageable page);
 }

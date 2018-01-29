@@ -1,6 +1,7 @@
 package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.leadlet.service.BoardService;
 import com.leadlet.service.DealService;
 import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.DealMoveDTO;
@@ -42,10 +43,10 @@ public class BoardResource {
 
     @GetMapping("/boards/{pipelineId}")
     @Timed
-    public ResponseEntity<BoardVM> getDeal(@PathVariable Long pipelineId) {
-        log.debug("REST request to get Deal : {}", id);
-        DealDTO dealDTO = dealService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(dealDTO));
+    public ResponseEntity<BoardVM> getBoard(@PathVariable Long pipelineId, @ApiParam Pageable pageable) {
+        log.debug("REST request to get Deal : {}", pipelineId);
+        BoardVM boardVM = boardService.get(pipelineId,pageable);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(boardVM));
     }
 
 }

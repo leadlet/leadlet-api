@@ -12,6 +12,6 @@ import org.springframework.data.domain.Pageable;
 public interface BoardService {
 
 
-    BoardVM get(Long pipelineId);
+    BoardVM get(Long pipelineId, Pageable page);
 
 }

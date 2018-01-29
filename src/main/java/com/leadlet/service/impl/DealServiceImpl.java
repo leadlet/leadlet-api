@@ -125,9 +125,9 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public List<DealDTO> findByStageId(Long stageId) {
-        List<Deal> dealList = dealRepository.findAllByAppAccount_IdAndStage_Id(SecurityUtils.getCurrentUserAppAccountId(), stageId);
+    public List<DealDTO> findByStageId(Long stageId, Pageable page) {
+        Page<Deal> dealList = dealRepository.findAllByAppAccount_IdAndStage_Id(SecurityUtils.getCurrentUserAppAccountId(), stageId, page);
 
-        return dealList.stream().map(dealMapper::toDto).collect(Collectors.toList());
+        return dealList.getContent().stream().map(dealMapper::toDto).collect(Collectors.toList());
     }
 }

@@ -20,6 +20,13 @@ public class StageWithDealDTO implements Serializable {
 
     private List<DealDTO> dealList;
 
+    public StageWithDealDTO(StageDTO stageDTO) {
+        this.setColor(stageDTO.getColor());
+        this.setId(stageDTO.getId());
+        this.setName(stageDTO.getName());
+        this.setPipelineId(stageDTO.getPipelineId());
+    }
+
     public Long getId() {
         return id;
     }

@@ -9,10 +9,7 @@ import com.leadlet.service.BoardService;
 import com.leadlet.service.DealService;
 import com.leadlet.service.PipelineService;
 import com.leadlet.service.StageService;
-import com.leadlet.service.dto.DealDTO;
-import com.leadlet.service.dto.DealMoveDTO;
-import com.leadlet.service.dto.PipelineDTO;
-import com.leadlet.service.dto.StageDTO;
+import com.leadlet.service.dto.*;
 import com.leadlet.service.mapper.DealMapper;
 import com.leadlet.web.rest.vm.BoardVM;
 import org.slf4j.Logger;
@@ -23,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardVM get(Long pipelineId) {
+    public BoardVM get(Long pipelineId, Pageable page) {
 
         BoardVM boardVM = new BoardVM();
 
@@ -58,12 +56,19 @@ public class BoardServiceImpl implements BoardService {
 
         List<StageDTO> stageList = stageService.findAllByPipelineId(pipelineId);
 
+        List<StageWithDealDTO> stageWithDealList = new ArrayList<>();
+
         for (StageDTO stageDto: stageList) {
-            List<DealDTO> stageDealList = dealService.findByStageId(stageDto.getId());
+            StageWithDealDTO stageWithDeal = new StageWithDealDTO(stageDto);
 
+            stageWithDeal.setDealList(dealService.findByStageId(stageDto.getId(),page));
+
+            stageWithDealList.add(stageWithDeal);
         }
-        List<DealDTO> dealList = dealService.findAllByPipelineId(pipelineId);
 
-        return null;
+        boardVM.setPipeline(pipelineDTO);
+        boardVM.setStages(stageWithDealList);
+
+        return boardVM;
     }
 }

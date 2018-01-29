@@ -1,40 +1,32 @@
 package com.leadlet.web.rest.vm;
 
 import com.leadlet.service.dto.DealDTO;
+import com.leadlet.service.dto.PipelineDTO;
 import com.leadlet.service.dto.StageDTO;
+import com.leadlet.service.dto.StageWithDealDTO;
 
 import java.util.List;
 
 public class BoardVM {
 
-    private Long pipelineId;
-    private List<StageDTO> stages;
-    private List<DealDTO> deals;
+    private PipelineDTO pipeline;
+    private List<StageWithDealDTO> stages;
 
-    public Long getPipelineId() {
-        return pipelineId;
+    public PipelineDTO getPipeline() {
+        return pipeline;
     }
 
-    public BoardVM setPipelineId(Long pipelineId) {
-        this.pipelineId = pipelineId;
+    public BoardVM setPipeline(PipelineDTO pipeline) {
+        this.pipeline = pipeline;
         return this;
     }
 
-    public List<StageDTO> getStages() {
+    public List<StageWithDealDTO> getStages() {
         return stages;
     }
 
-    public BoardVM setStages(List<StageDTO> stages) {
+    public BoardVM setStages(List<StageWithDealDTO> stages) {
         this.stages = stages;
-        return this;
-    }
-
-    public List<DealDTO> getDeals() {
-        return deals;
-    }
-
-    public BoardVM setDeals(List<DealDTO> deals) {
-        this.deals = deals;
         return this;
     }
 }
