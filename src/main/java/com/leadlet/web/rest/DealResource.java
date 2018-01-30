@@ -2,7 +2,6 @@ package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.DealService;
-import com.leadlet.service.dto.ActivityDTO;
 import com.leadlet.service.dto.DealMoveDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
@@ -73,8 +72,7 @@ public class DealResource {
     public ResponseEntity<DealDTO> moveDeal(@RequestBody DealMoveDTO dealMoveDTO) throws URISyntaxException {
         log.debug("REST request to move Deal : {}", dealMoveDTO);
 
-        dealService.move(dealMoveDTO);
-        DealDTO result = dealService.findOne(dealMoveDTO.getId());
+        DealDTO result = dealService.move(dealMoveDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealMoveDTO.getId().toString()))
             .body(result);
@@ -98,6 +96,21 @@ public class DealResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealDTO.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * GET  /deals : get all the deals.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of deals in body
+     */
+    @GetMapping("/deals/stage/{stageId}")
+    @Timed
+    public ResponseEntity<List<DealDTO>> getDealsByStage(@PathVariable Long stageId, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Deals");
+        Page<DealDTO> page = dealService.findAllByStageId(stageId,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/stage");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**

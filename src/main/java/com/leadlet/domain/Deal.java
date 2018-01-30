@@ -27,8 +27,8 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "order")
-    private Integer order;
+    @Column(name = "priority")
+    private Integer priority;
 
     @Column(name = "potential_value")
     private Double potentialValue;
@@ -37,16 +37,16 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @Column(name = "currency")
     private CurrencyType currency;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Stage stage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Person person;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Organization organization;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
 
     @Column(name = "possible_close_date")
@@ -81,12 +81,13 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         this.name = name;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getPriority() {
+        return priority;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public Deal setPriority(Integer priority) {
+        this.priority = priority;
+        return this;
     }
 
     public Double getPotentialValue() {
@@ -154,7 +155,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         Deal deal = (Deal) o;
         return Objects.equals(id, deal.id) &&
             Objects.equals(name, deal.name) &&
-            Objects.equals(order, deal.order) &&
+            Objects.equals(priority, deal.priority) &&
             Objects.equals(potentialValue, deal.potentialValue) &&
             Objects.equals(stage, deal.stage) &&
             Objects.equals(person, deal.person) &&
@@ -165,7 +166,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, order, potentialValue, stage, person, organization, owner);
+        return Objects.hash(id, name, priority, potentialValue, stage, person, organization, owner);
     }
 
     @Override
@@ -173,7 +174,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         return "Deal{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", order=" + order +
+            ", priority=" + priority +
             ", potentialValue=" + potentialValue +
             ", stage=" + stage +
             ", person=" + person +

@@ -23,12 +23,12 @@ public interface DealRepository extends JpaRepository<Deal,Long> {
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 
     @Modifying
-    @Query("update #{#entityName} deal set deal.order = deal.order + 1 where deal.appAccount.id = ?1 and deal.stage.id = ?2 and deal.order >= ?3")
-    void shiftDealsUp(Long id, Long stageId, Integer order);
+    @Query("update #{#entityName} deal set deal.priority = (deal.priority + 1) where deal.appAccount.id = ?1 and deal.stage.id = ?2 and deal.priority >= ?3")
+    void shiftDealsUp(Long appAccountId, Long stageId, Integer priority);
 
-    @Modifying
-    @Query("update #{#entityName} deal set deal.stage.id = ?2, deal.order=?3 where deal.id = ?1")
-    void setStageAndOrder(Long id, Long stageId, Integer order);
+    Page<Deal> findAllByAppAccount_IdAndStage_IdOrderByPriorityAsc(Long appAccountId, Long stageId, Pageable page);
 
-    Page<Deal> findAllByAppAccount_IdAndStage_Id(Long appAccountId, Long stageId, Pageable page);
+    @Query("select sum(deal.potentialValue) from #{#entityName} deal where deal.appAccount.id = ?1 and deal.stage.id = ?2")
+    Double calculateDealTotalByStageId(Long id, Long stageId);
+
 }

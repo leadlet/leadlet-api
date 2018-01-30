@@ -57,7 +57,9 @@ public interface DealService {
      * @param dealMoveDTO the entity to save
      * @return the persisted entity
      */
-    void move(DealMoveDTO dealMoveDTO);
+    DealDTO move(DealMoveDTO dealMoveDTO);
 
-    List<DealDTO> findByStageId(Long pipelineId, Pageable page);
+    Page<DealDTO> findAllByStageId(Long stageId, Pageable pageable);
+
+    Double getDealTotalByStage(Long stageId);
 }

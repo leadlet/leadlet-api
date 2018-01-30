@@ -11,54 +11,49 @@ public class DealMoveDTO implements Serializable {
 
     private Long id;
 
-    private Integer newOrder;
+    private Long prevDealId;
 
-    private Long newStageId;
-
-    public DealMoveDTO() {
-    }
+    private Long nextDealId;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public DealMoveDTO setId(Long id) {
         this.id = id;
+        return this;
     }
 
-    public Integer getNewOrder() {
-        return newOrder;
+    public Long getPrevDealId() {
+        return prevDealId;
     }
 
-    public void setNewOrder(Integer newOrder) {
-        this.newOrder = newOrder;
+    public DealMoveDTO setPrevDealId(Long prevDealId) {
+        this.prevDealId = prevDealId;
+        return this;
     }
 
-    public Long getNewStageId() {
-        return newStageId;
+    public Long getNextDealId() {
+        return nextDealId;
     }
 
-    public void setNewStageId(Long newStageId) {
-        this.newStageId = newStageId;
+    public DealMoveDTO setNextDealId(Long nextDealId) {
+        this.nextDealId = nextDealId;
+        return this;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof DealMoveDTO)) return false;
         DealMoveDTO that = (DealMoveDTO) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (newOrder != null ? !newOrder.equals(that.newOrder) : that.newOrder != null) return false;
-        return newStageId != null ? newStageId.equals(that.newStageId) : that.newStageId == null;
+        return Objects.equals(id, that.id) &&
+            Objects.equals(prevDealId, that.prevDealId) &&
+            Objects.equals(nextDealId, that.nextDealId);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (newOrder != null ? newOrder.hashCode() : 0);
-        result = 31 * result + (newStageId != null ? newStageId.hashCode() : 0);
-        return result;
+        return Objects.hash(id, prevDealId, nextDealId);
     }
 }

@@ -20,6 +20,12 @@ public class StageWithDealDTO implements Serializable {
 
     private List<DealDTO> dealList;
 
+    long dealTotalCount;
+
+    int dealPageCount;
+
+    Double dealTotalPotential;
+
     public StageWithDealDTO(StageDTO stageDTO) {
         this.setColor(stageDTO.getColor());
         this.setId(stageDTO.getId());
@@ -68,6 +74,14 @@ public class StageWithDealDTO implements Serializable {
         return dealList;
     }
 
+    public long getDealTotalCount() {
+        return dealTotalCount;
+    }
+
+    public int getDealPageCount() {
+        return dealPageCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,11 +105,30 @@ public class StageWithDealDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "StageDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", color='" + getColor() + "'" +
-            ", pipelineId='" + getPipelineId() + "'" +
-            "}";
+        return "StageWithDealDTO{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", pipelineId=" + pipelineId +
+            ", color='" + color + '\'' +
+            ", dealList=" + dealList +
+            ", dealTotalCount=" + dealTotalCount +
+            ", dealPageCount=" + dealPageCount +
+            '}';
+    }
+
+    public void setDealTotalCount(long dealTotalCount) {
+        this.dealTotalCount = dealTotalCount;
+    }
+
+    public void setDealPageCount(int dealPageCount) {
+        this.dealPageCount = dealPageCount;
+    }
+
+    public void setDealTotalPotential(Double dealTotalPotential) {
+        this.dealTotalPotential = dealTotalPotential;
+    }
+
+    public Double getDealTotalPotential() {
+        return dealTotalPotential;
     }
 }

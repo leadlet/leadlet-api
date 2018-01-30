@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.Stage;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DealService;
 import com.leadlet.domain.Deal;
@@ -121,13 +122,56 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public void move(DealMoveDTO dealMoveDTO) {
+    public DealDTO move(DealMoveDTO dealMoveDTO) {
+        Deal prevDeal = null;
+        Deal nextDeal = null;
+
+        if (dealMoveDTO.getPrevDealId() != null) {
+            prevDeal = dealRepository.getOne(dealMoveDTO.getPrevDealId());
+        }
+
+        if (dealMoveDTO.getNextDealId() != null) {
+            nextDeal = dealRepository.getOne(dealMoveDTO.getNextDealId());
+        }
+        Integer newPriority = -1;
+        Stage newStage = null;
+
+        if (prevDeal == null) {
+            newPriority = nextDeal.getPriority() - 1;
+            newStage = nextDeal.getStage();
+        } else if (prevDeal != null && nextDeal != null) {
+            newStage = nextDeal.getStage();
+            if ((nextDeal.getPriority() - prevDeal.getPriority()) > 2) {
+                // we have room for new deal
+                newPriority = nextDeal.getPriority() - 1;
+            } else {
+                newPriority = nextDeal.getPriority();
+                dealRepository.shiftDealsUp(SecurityUtils.getCurrentUserAppAccountId(), nextDeal.getStage().getId(), newPriority);
+            }
+        } else if (nextDeal == null) {
+            newPriority = prevDeal.getPriority() + 1;
+            newStage = prevDeal.getStage();
+        }
+
+        Deal movingDeal = dealRepository.getOne(dealMoveDTO.getId());
+        movingDeal.setPriority(newPriority);
+        movingDeal.setStage(newStage);
+
+        movingDeal = dealRepository.save(movingDeal);
+        return dealMapper.toDto(movingDeal);
     }
 
     @Override
-    public List<DealDTO> findByStageId(Long stageId, Pageable page) {
-        Page<Deal> dealList = dealRepository.findAllByAppAccount_IdAndStage_Id(SecurityUtils.getCurrentUserAppAccountId(), stageId, page);
+    public Page<DealDTO> findAllByStageId(Long stageId, Pageable page) {
+        Page<DealDTO> dealList = dealRepository.findAllByAppAccount_IdAndStage_IdOrderByPriorityAsc(SecurityUtils.getCurrentUserAppAccountId(), stageId, page).map(dealMapper::toDto);
 
-        return dealList.getContent().stream().map(dealMapper::toDto).collect(Collectors.toList());
+        return dealList;
     }
+
+    @Override
+    public Double getDealTotalByStage(Long stageId) {
+        return dealRepository.calculateDealTotalByStageId(SecurityUtils.getCurrentUserAppAccountId(),stageId);
+    }
+
+
 }

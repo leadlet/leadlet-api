@@ -1,16 +1,13 @@
 package com.leadlet.service.impl;
 
-import com.leadlet.domain.Deal;
-import com.leadlet.domain.Pipeline;
-import com.leadlet.repository.DealRepository;
-import com.leadlet.repository.PipelineRepository;
-import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.BoardService;
 import com.leadlet.service.DealService;
 import com.leadlet.service.PipelineService;
 import com.leadlet.service.StageService;
-import com.leadlet.service.dto.*;
-import com.leadlet.service.mapper.DealMapper;
+import com.leadlet.service.dto.DealDTO;
+import com.leadlet.service.dto.PipelineDTO;
+import com.leadlet.service.dto.StageDTO;
+import com.leadlet.service.dto.StageWithDealDTO;
 import com.leadlet.web.rest.vm.BoardVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -61,7 +55,12 @@ public class BoardServiceImpl implements BoardService {
         for (StageDTO stageDto: stageList) {
             StageWithDealDTO stageWithDeal = new StageWithDealDTO(stageDto);
 
-            stageWithDeal.setDealList(dealService.findByStageId(stageDto.getId(),page));
+            Page<DealDTO> dealList = dealService.findAllByStageId(stageDto.getId(),page);
+
+            stageWithDeal.setDealList(dealList.getContent());
+            stageWithDeal.setDealTotalCount(dealList.getTotalElements());
+            stageWithDeal.setDealPageCount(dealList.getTotalPages());
+            stageWithDeal.setDealTotalPotential(dealService.getDealTotalByStage(stageDto.getId()));
 
             stageWithDealList.add(stageWithDeal);
         }

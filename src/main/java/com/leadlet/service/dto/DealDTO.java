@@ -15,7 +15,7 @@ public class DealDTO implements Serializable {
 
     private String name;
 
-    private Integer order;
+    private Integer priority;
 
     private Double potentialValue;
 
@@ -57,12 +57,13 @@ public class DealDTO implements Serializable {
         this.name = name;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getPriority() {
+        return priority;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public DealDTO setPriority(Integer priority) {
+        this.priority = priority;
+        return this;
     }
 
     public Double getPotentialValue() {
@@ -191,7 +192,7 @@ public class DealDTO implements Serializable {
         return "DealDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", order='" + getOrder() + "'" +
+            ", priority='" + getPriority() + "'" +
             ", potentialValue='" + getPotentialValue() + "'" +
             "}";
     }
