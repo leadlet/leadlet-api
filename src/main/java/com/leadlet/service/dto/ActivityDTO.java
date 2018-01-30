@@ -32,6 +32,8 @@ public class ActivityDTO implements Serializable {
 
     private Long userId;
 
+    private LocationDTO location;
+
     public Long getId() {
         return id;
     }
@@ -110,6 +112,14 @@ public class ActivityDTO implements Serializable {
 
     public void setUserId(Long appUserId) {
         this.userId = appUserId;
+    }
+
+    public LocationDTO getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationDTO location) {
+        this.location = location;
     }
 
     @Override

@@ -59,6 +59,8 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     @ManyToOne
     private User user;
 
+    private Location location;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -143,6 +145,14 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         this.user = user;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
     @Override
     public String toString() {
         return "Activity{" +
@@ -156,6 +166,7 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
             ", person=" + person +
             ", organization=" + organization +
             ", user=" + user +
+            ", location=" + location +
             '}';
     }
 
@@ -173,13 +184,13 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
             Objects.equals(deal, activity.deal) &&
             Objects.equals(person, activity.person) &&
             Objects.equals(organization, activity.organization) &&
-            Objects.equals(user, activity.user);
+            Objects.equals(user, activity.user) &&
+            Objects.equals(location, activity.location);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, title, memo, start, end, type, deal, person, organization, user);
+        return Objects.hash(id, title, memo, start, end, type, deal, person, organization, user, location);
     }
-
 }
