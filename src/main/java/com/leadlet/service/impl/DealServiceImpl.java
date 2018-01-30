@@ -1,10 +1,12 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.Stage;
+import com.leadlet.repository.StageRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DealService;
 import com.leadlet.domain.Deal;
 import com.leadlet.repository.DealRepository;
+import com.leadlet.service.StageService;
 import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.DealMoveDTO;
 import com.leadlet.service.mapper.DealMapper;
@@ -33,11 +35,14 @@ public class DealServiceImpl implements DealService {
 
     private final DealRepository dealRepository;
 
+    private final StageRepository stageRepository;
+
     private final DealMapper dealMapper;
 
-    public DealServiceImpl(DealRepository dealRepository, DealMapper dealMapper) {
+    public DealServiceImpl(DealRepository dealRepository, DealMapper dealMapper, StageRepository stageRepository) {
         this.dealRepository = dealRepository;
         this.dealMapper = dealMapper;
+        this.stageRepository = stageRepository;
     }
 
     /**
@@ -134,13 +139,10 @@ public class DealServiceImpl implements DealService {
             nextDeal = dealRepository.getOne(dealMoveDTO.getNextDealId());
         }
         Integer newPriority = -1;
-        Stage newStage = null;
 
-        if (prevDeal == null) {
+        if (prevDeal == null && nextDeal != null) {
             newPriority = nextDeal.getPriority() - 1;
-            newStage = nextDeal.getStage();
         } else if (prevDeal != null && nextDeal != null) {
-            newStage = nextDeal.getStage();
             if ((nextDeal.getPriority() - prevDeal.getPriority()) > 2) {
                 // we have room for new deal
                 newPriority = nextDeal.getPriority() - 1;
@@ -148,13 +150,17 @@ public class DealServiceImpl implements DealService {
                 newPriority = nextDeal.getPriority();
                 dealRepository.shiftDealsUp(SecurityUtils.getCurrentUserAppAccountId(), nextDeal.getStage().getId(), newPriority);
             }
-        } else if (nextDeal == null) {
+        } else if (nextDeal == null && prevDeal != null) {
             newPriority = prevDeal.getPriority() + 1;
-            newStage = prevDeal.getStage();
+        } else {
+            newPriority = 0;
         }
 
         Deal movingDeal = dealRepository.getOne(dealMoveDTO.getId());
         movingDeal.setPriority(newPriority);
+
+        Stage newStage = stageRepository.findOne(dealMoveDTO.getNewStageId());
+
         movingDeal.setStage(newStage);
 
         movingDeal = dealRepository.save(movingDeal);

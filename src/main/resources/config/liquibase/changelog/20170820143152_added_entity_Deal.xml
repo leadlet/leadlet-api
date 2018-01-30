@@ -35,7 +35,7 @@
             </column>
 
             <column name="stage_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="person_id" type="bigint">

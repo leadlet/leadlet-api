@@ -37,7 +37,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @Column(name = "currency")
     private CurrencyType currency;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Stage stage;
 
     @ManyToOne(fetch = FetchType.LAZY)

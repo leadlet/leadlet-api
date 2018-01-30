@@ -11,6 +11,8 @@ public class DealMoveDTO implements Serializable {
 
     private Long id;
 
+    private Long newStageId;
+
     private Long prevDealId;
 
     private Long nextDealId;
@@ -21,6 +23,15 @@ public class DealMoveDTO implements Serializable {
 
     public DealMoveDTO setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getNewStageId() {
+        return newStageId;
+    }
+
+    public DealMoveDTO setNewStageId(Long newStageId) {
+        this.newStageId = newStageId;
         return this;
     }
 
