@@ -96,6 +96,22 @@ public class PersonResource {
     }
 
     /**
+     * GET  /persons : get all the persons.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of persons in body
+     */
+    @GetMapping("/persons/organization/{organizationId}")
+    @Timed
+    public ResponseEntity<List<PersonDTO>> getAllPersonsByOrganization(@PathVariable Long organizationId, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Persons");
+
+        Page<PersonDTO> page = personService.findAllByOrganization(organizationId,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/persons/organization/");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
      * GET  /persons/:id : get the "id" person.
      *
      * @param id the id of the personDTO to retrieve

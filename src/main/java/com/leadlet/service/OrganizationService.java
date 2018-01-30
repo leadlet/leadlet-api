@@ -53,4 +53,6 @@ public interface OrganizationService {
     void delete(List<Long> idList);
 
     Page<OrganizationDTO> search(String filter, Pageable pageable);
+
+    OrganizationDTO findOneByPersonId(Long personId);
 }

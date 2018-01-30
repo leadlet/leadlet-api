@@ -3,14 +3,17 @@ package com.leadlet.service.impl;
 import com.leadlet.domain.ContactPhone;
 import com.leadlet.domain.Organization;
 import com.leadlet.domain.OrganizationPhone;
+import com.leadlet.domain.Person;
 import com.leadlet.repository.OrganizationRepository;
 import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ContactPhoneService;
 import com.leadlet.service.OrganizationService;
+import com.leadlet.service.PersonService;
 import com.leadlet.service.dto.ContactPhoneDTO;
 import com.leadlet.service.dto.OrganizationDTO;
+import com.leadlet.service.dto.PersonDTO;
 import com.leadlet.service.mapper.OrganizationMapper;
 import com.leadlet.web.rest.util.ParameterUtil;
 import io.swagger.models.Contact;
@@ -45,12 +48,16 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private final ContactPhoneService contactPhoneService;
 
+    private final PersonService personService;
+
     public OrganizationServiceImpl(OrganizationRepository organizationRepository,
                                    OrganizationMapper organizationMapper,
-                                   ContactPhoneService contactPhoneService) {
+                                   ContactPhoneService contactPhoneService,
+                                   PersonService personService) {
         this.organizationRepository = organizationRepository;
         this.organizationMapper = organizationMapper;
         this.contactPhoneService = contactPhoneService;
+        this.personService = personService;
     }
 
     /**
@@ -142,6 +149,15 @@ public class OrganizationServiceImpl implements OrganizationService {
         return organizationRepository.findAll(spec, pageable)
             .map(organizationMapper::toDto);
 
+    }
+
+    @Override
+    public OrganizationDTO findOneByPersonId(Long personId) {
+
+        PersonDTO personDTO = personService.findOne(personId);
+
+        return organizationMapper.toDto(
+            organizationRepository.findOneByIdAndAppAccount_Id(personDTO.getOrganizationId(), SecurityUtils.getCurrentUserAppAccountReference().getId()));
     }
 
     /**
