@@ -1,6 +1,5 @@
 package com.leadlet.domain;
 
-import com.leadlet.domain.enumeration.CurrencyType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -24,18 +23,13 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "priority")
     private Integer priority;
 
-    @Column(name = "potential_value")
-    private Double potentialValue;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "currency")
-    private CurrencyType currency;
+    DealValue dealValue;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Stage stage;
@@ -73,12 +67,13 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Deal setTitle(String title) {
+        this.title = title;
+        return this;
     }
 
     public Integer getPriority() {
@@ -88,14 +83,6 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     public Deal setPriority(Integer priority) {
         this.priority = priority;
         return this;
-    }
-
-    public Double getPotentialValue() {
-        return potentialValue;
-    }
-
-    public void setPotentialValue(Double potentialValue) {
-        this.potentialValue = potentialValue;
     }
 
     public Stage getStage() {
@@ -139,13 +126,40 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         return possibleCloseDate;
     }
 
-    public Deal setCurrency(CurrencyType currency) {
-        this.currency = currency;
+    public DealValue getDealValue() {
+        return dealValue;
+    }
+
+    public Deal setDealValue(DealValue dealValue) {
+        this.dealValue = dealValue;
         return this;
     }
 
-    public CurrencyType getCurrency() {
-        return currency;
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public Deal setActivities(Set<Activity> activities) {
+        this.activities = activities;
+        return this;
+    }
+
+    public Set<Timeline> getTimelines() {
+        return timelines;
+    }
+
+    public Deal setTimelines(Set<Timeline> timelines) {
+        this.timelines = timelines;
+        return this;
+    }
+
+    public Set<Note> getNotes() {
+        return notes;
+    }
+
+    public Deal setNotes(Set<Note> notes) {
+        this.notes = notes;
+        return this;
     }
 
     @Override
@@ -154,32 +168,39 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         if (!(o instanceof Deal)) return false;
         Deal deal = (Deal) o;
         return Objects.equals(id, deal.id) &&
-            Objects.equals(name, deal.name) &&
+            Objects.equals(title, deal.title) &&
             Objects.equals(priority, deal.priority) &&
-            Objects.equals(potentialValue, deal.potentialValue) &&
+            Objects.equals(dealValue, deal.dealValue) &&
             Objects.equals(stage, deal.stage) &&
             Objects.equals(person, deal.person) &&
             Objects.equals(organization, deal.organization) &&
-            Objects.equals(owner, deal.owner);
+            Objects.equals(owner, deal.owner) &&
+            Objects.equals(possibleCloseDate, deal.possibleCloseDate) &&
+            Objects.equals(activities, deal.activities) &&
+            Objects.equals(timelines, deal.timelines) &&
+            Objects.equals(notes, deal.notes);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, name, priority, potentialValue, stage, person, organization, owner);
+        return Objects.hash(id, title, priority, dealValue, stage, person, organization, owner, possibleCloseDate, activities, timelines, notes);
     }
 
     @Override
     public String toString() {
         return "Deal{" +
             "id=" + id +
-            ", name='" + name + '\'' +
+            ", title='" + title + '\'' +
             ", priority=" + priority +
-            ", potentialValue=" + potentialValue +
+            ", dealValue=" + dealValue +
             ", stage=" + stage +
             ", person=" + person +
             ", organization=" + organization +
             ", owner=" + owner +
+            ", possibleCloseDate=" + possibleCloseDate +
+            ", activities=" + activities +
+            ", timelines=" + timelines +
+            ", notes=" + notes +
             '}';
     }
 }

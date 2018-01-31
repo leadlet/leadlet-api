@@ -13,11 +13,9 @@ public class DealDTO implements Serializable {
 
     private Long id;
 
-    private String name;
+    private String title;
 
     private Integer priority;
-
-    private Double potentialValue;
 
     private Long stageId;
 
@@ -35,11 +33,13 @@ public class DealDTO implements Serializable {
 
     private String ownerLastName;
 
-    private String currency;
-
     private ZonedDateTime possibleCloseDate;
 
     private Instant createdDate;
+
+    private Instant lastModifiedDate;
+
+    private DealValueDTO dealValue;
 
     public Long getId() {
         return id;
@@ -49,12 +49,13 @@ public class DealDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public DealDTO setTitle(String title) {
+        this.title = title;
+        return this;
     }
 
     public Integer getPriority() {
@@ -64,14 +65,6 @@ public class DealDTO implements Serializable {
     public DealDTO setPriority(Integer priority) {
         this.priority = priority;
         return this;
-    }
-
-    public Double getPotentialValue() {
-        return potentialValue;
-    }
-
-    public void setPotentialValue(Double potentialValue) {
-        this.potentialValue = potentialValue;
     }
 
     public Long getStageId() {
@@ -106,14 +99,6 @@ public class DealDTO implements Serializable {
         this.ownerId = appUserId;
     }
 
-    public String getCurrency() {
-        return currency;
-    }
-
-    public DealDTO setCurrency(String currency) {
-        this.currency = currency;
-        return this;
-    }
 
     public ZonedDateTime getPossibleCloseDate() {
         return possibleCloseDate;
@@ -166,6 +151,25 @@ public class DealDTO implements Serializable {
         return pipelineId;
     }
 
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public DealDTO setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
+
+
+    public DealValueDTO getDealValue() {
+        return dealValue;
+    }
+
+    public DealDTO setDealValue(DealValueDTO dealValue) {
+        this.dealValue = dealValue;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -190,10 +194,21 @@ public class DealDTO implements Serializable {
     @Override
     public String toString() {
         return "DealDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", priority='" + getPriority() + "'" +
-            ", potentialValue='" + getPotentialValue() + "'" +
-            "}";
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", priority=" + priority +
+            ", stageId=" + stageId +
+            ", stageName='" + stageName + '\'' +
+            ", pipelineId=" + pipelineId +
+            ", personId=" + personId +
+            ", organizationId=" + organizationId +
+            ", ownerId=" + ownerId +
+            ", ownerFirstName='" + ownerFirstName + '\'' +
+            ", ownerLastName='" + ownerLastName + '\'' +
+            ", possibleCloseDate=" + possibleCloseDate +
+            ", createdDate=" + createdDate +
+            ", lastModifiedDate=" + lastModifiedDate +
+            ", dealValue=" + dealValue +
+            '}';
     }
 }

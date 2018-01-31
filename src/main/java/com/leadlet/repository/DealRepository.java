@@ -28,7 +28,7 @@ public interface DealRepository extends JpaRepository<Deal,Long> {
 
     Page<Deal> findAllByAppAccount_IdAndStage_IdOrderByPriorityAsc(Long appAccountId, Long stageId, Pageable page);
 
-    @Query("select sum(deal.potentialValue) from #{#entityName} deal where deal.appAccount.id = ?1 and deal.stage.id = ?2")
+    @Query("select sum(deal.dealValue.potentialValue) from #{#entityName} deal where deal.appAccount.id = ?1 and deal.stage.id = ?2")
     Double calculateDealTotalByStageId(Long id, Long stageId);
 
 }

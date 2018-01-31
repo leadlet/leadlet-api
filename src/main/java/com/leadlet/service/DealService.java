@@ -1,6 +1,7 @@
 package com.leadlet.service;
 
 import com.leadlet.service.dto.DealDTO;
+import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.DealMoveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +43,7 @@ public interface DealService {
      * @param id the id of the entity
      * @return the entity
      */
-    DealDTO findOne(Long id);
+    DealDetailDTO findOne(Long id);
 
     /**
      * Delete the "id" deal.

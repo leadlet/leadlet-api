@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Deal and its DTO DealDTO.
  */
-@Mapper(componentModel = "spring", uses = {PersonMapper.class, OrganizationMapper.class, UserMapper.class, StageMapper.class})
+@Mapper(componentModel = "spring", uses = {PersonMapper.class, OrganizationMapper.class, UserMapper.class, StageMapper.class, DealValueMapper.class})
 public interface DealMapper extends EntityMapper<DealDTO, Deal> {
 
     @Mapping(source = "stage.id", target = "stageId")
@@ -18,6 +18,7 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
     @Mapping(source = "owner.id", target = "ownerId")
     @Mapping(source = "owner.firstName", target = "ownerFirstName")
     @Mapping(source = "owner.lastName", target = "ownerLastName")
+    @Mapping(source = "stage.pipeline.id", target = "pipelineId")
     DealDTO toDto(Deal deal);
 
     @Mapping(source = "stageId", target = "stage")

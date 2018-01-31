@@ -8,7 +8,9 @@ import com.leadlet.domain.Deal;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.service.StageService;
 import com.leadlet.service.dto.DealDTO;
+import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.DealMoveDTO;
+import com.leadlet.service.mapper.DealDetailMapper;
 import com.leadlet.service.mapper.DealMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +41,14 @@ public class DealServiceImpl implements DealService {
 
     private final DealMapper dealMapper;
 
-    public DealServiceImpl(DealRepository dealRepository, DealMapper dealMapper, StageRepository stageRepository) {
+    private final DealDetailMapper dealDetailMapper;
+
+    public DealServiceImpl(DealRepository dealRepository, DealMapper dealMapper, StageRepository stageRepository,
+                           DealDetailMapper dealDetailMapper) {
         this.dealRepository = dealRepository;
         this.dealMapper = dealMapper;
         this.stageRepository = stageRepository;
+        this.dealDetailMapper = dealDetailMapper;
     }
 
     /**
@@ -104,10 +110,10 @@ public class DealServiceImpl implements DealService {
      */
     @Override
     @Transactional(readOnly = true)
-    public DealDTO findOne(Long id) {
+    public DealDetailDTO findOne(Long id) {
         log.debug("Request to get Deal : {}", id);
         Deal deal = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
-        return dealMapper.toDto(deal);
+        return dealDetailMapper.toDto(deal);
     }
 
     /**

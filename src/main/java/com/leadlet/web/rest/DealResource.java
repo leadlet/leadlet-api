@@ -2,6 +2,7 @@ package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.DealService;
+import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.DealMoveDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
@@ -136,9 +137,9 @@ public class DealResource {
      */
     @GetMapping("/deals/{id}")
     @Timed
-    public ResponseEntity<DealDTO> getDeal(@PathVariable Long id) {
+    public ResponseEntity<DealDetailDTO> getDeal(@PathVariable Long id) {
         log.debug("REST request to get Deal : {}", id);
-        DealDTO dealDTO = dealService.findOne(id);
+        DealDetailDTO dealDTO = dealService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(dealDTO));
     }
 
