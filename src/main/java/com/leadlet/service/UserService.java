@@ -3,22 +3,29 @@ package com.leadlet.service;
 import com.leadlet.config.Constants;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
+import com.leadlet.domain.Person;
 import com.leadlet.domain.User;
 import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
 import com.leadlet.repository.UserRepository;
+import com.leadlet.repository.util.SearchCriteria;
+import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
+import com.leadlet.service.dto.PersonDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.util.RandomUtil;
+import com.leadlet.web.rest.util.ParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -250,5 +257,26 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public Page<UserDTO> search(String filter, Pageable pageable) {
+        log.debug("Request to get all Users");
+        SpecificationsBuilder builder = new SpecificationsBuilder();
+
+        if (!StringUtils.isEmpty(filter)) {
+            List<SearchCriteria> criteriaList = ParameterUtil.createCriterias(filter);
+
+            for (SearchCriteria criteria : criteriaList) {
+                builder.with(criteria);
+            }
+        }
+
+        // TODO add account criteria
+        builder.with("appAccount", ":", SecurityUtils.getCurrentUserAppAccountReference());
+
+        Specification<User> spec = builder.build();
+
+        return userRepository.findAll(spec, pageable)
+            .map(UserDTO::new);
     }
 }

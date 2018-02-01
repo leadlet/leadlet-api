@@ -30,7 +30,7 @@ public class ContactPhone implements Serializable {
     @Column(name = "jhi_type")
     private PhoneType type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Person person;
 
     public static long getSerialVersionUID() {

@@ -10,6 +10,7 @@ import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.MailService;
 import com.leadlet.service.UserService;
+import com.leadlet.service.dto.PersonDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.web.rest.vm.ManagedUserVM;
 import com.leadlet.web.rest.util.HeaderUtil;
@@ -144,16 +145,18 @@ public class UserResource {
     }
 
     /**
-     * GET  /users : get all users.
+     * GET  /persons : get all the persons.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and with body all users
+     * @return the ResponseEntity with status 200 (OK) and the list of persons in body
      */
     @GetMapping("/users")
     @Timed
-    public ResponseEntity<List<UserDTO>> getAllUsers(@ApiParam Pageable pageable) {
-        final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
+    public ResponseEntity<List<UserDTO>> getAllUsers(@ApiParam String filter, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Persons");
+
+        Page<UserDTO> page = userService.search(filter, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/persons");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

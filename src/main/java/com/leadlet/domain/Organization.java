@@ -33,7 +33,7 @@ public class Organization implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<OrganizationPhone> phones = new HashSet<>();
@@ -42,7 +42,7 @@ public class Organization implements Serializable {
     @Email
     private String email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private AppAccount appAccount;
 
     @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

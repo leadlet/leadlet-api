@@ -70,10 +70,10 @@ public class DealResource {
      */
     @PutMapping("/deals/move")
     @Timed
-    public ResponseEntity<DealDTO> moveDeal(@RequestBody DealMoveDTO dealMoveDTO) throws URISyntaxException {
+    public ResponseEntity<DealDetailDTO> moveDeal(@RequestBody DealMoveDTO dealMoveDTO) throws URISyntaxException {
         log.debug("REST request to move Deal : {}", dealMoveDTO);
 
-        DealDTO result = dealService.move(dealMoveDTO);
+        DealDetailDTO result = dealService.move(dealMoveDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealMoveDTO.getId().toString()))
             .body(result);
@@ -90,10 +90,10 @@ public class DealResource {
      */
     @PutMapping("/deals")
     @Timed
-    public ResponseEntity<DealDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException {
+    public ResponseEntity<DealDetailDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException {
         log.debug("REST request to update Deal : {}", dealDTO);
 
-        DealDTO result = dealService.update(dealDTO);
+        DealDetailDTO result = dealService.update(dealDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealDTO.getId().toString()))
             .body(result);

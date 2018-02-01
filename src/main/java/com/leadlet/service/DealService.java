@@ -27,7 +27,7 @@ public interface DealService {
      * @param dealDTO the entity to update
      * @return the persisted entity
      */
-    DealDTO update(DealDTO dealDTO);
+    DealDetailDTO update(DealDTO dealDTO);
 
     /**
      * Get all the deals.
@@ -58,7 +58,7 @@ public interface DealService {
      * @param dealMoveDTO the entity to save
      * @return the persisted entity
      */
-    DealDTO move(DealMoveDTO dealMoveDTO);
+    DealDetailDTO move(DealMoveDTO dealMoveDTO);
 
     Page<DealDTO> findAllByStageId(Long stageId, Pageable pageable);
 

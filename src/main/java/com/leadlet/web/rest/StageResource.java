@@ -95,6 +95,20 @@ public class StageResource {
     }
 
     /**
+     * GET  /stages : get all the stages.
+     *
+     * @param pipelineId the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of stages in body
+     */
+    @GetMapping("/stages/pipeline/{pipelineId}")
+    @Timed
+    public ResponseEntity<List<StageDTO>> getAllStages(@PathVariable Long pipelineId) {
+        log.debug("REST request to get a page of Stages {}", pipelineId);
+        List<StageDTO> stageDTOS = stageService.findAllByPipelineId(pipelineId);
+        return new ResponseEntity<>(stageDTOS, HttpStatus.OK);
+    }
+
+    /**
      * GET  /stages/:id : get the "id" stage.
      *
      * @param id the id of the stageDTO to retrieve

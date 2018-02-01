@@ -167,23 +167,12 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Deal)) return false;
         Deal deal = (Deal) o;
-        return Objects.equals(id, deal.id) &&
-            Objects.equals(title, deal.title) &&
-            Objects.equals(priority, deal.priority) &&
-            Objects.equals(dealValue, deal.dealValue) &&
-            Objects.equals(stage, deal.stage) &&
-            Objects.equals(person, deal.person) &&
-            Objects.equals(organization, deal.organization) &&
-            Objects.equals(owner, deal.owner) &&
-            Objects.equals(possibleCloseDate, deal.possibleCloseDate) &&
-            Objects.equals(activities, deal.activities) &&
-            Objects.equals(timelines, deal.timelines) &&
-            Objects.equals(notes, deal.notes);
+        return Objects.equals(id, deal.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, priority, dealValue, stage, person, organization, owner, possibleCloseDate, activities, timelines, notes);
+        return Objects.hash(id);
     }
 
     @Override
@@ -193,14 +182,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             ", title='" + title + '\'' +
             ", priority=" + priority +
             ", dealValue=" + dealValue +
-            ", stage=" + stage +
-            ", person=" + person +
-            ", organization=" + organization +
-            ", owner=" + owner +
             ", possibleCloseDate=" + possibleCloseDate +
-            ", activities=" + activities +
-            ", timelines=" + timelines +
-            ", notes=" + notes +
             '}';
     }
 }

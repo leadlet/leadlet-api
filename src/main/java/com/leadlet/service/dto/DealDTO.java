@@ -19,8 +19,6 @@ public class DealDTO implements Serializable {
 
     private Long stageId;
 
-    private String stageName;
-
     private Long pipelineId;
 
     private Long personId;
@@ -28,12 +26,6 @@ public class DealDTO implements Serializable {
     private Long organizationId;
 
     private Long ownerId;
-
-    private String ownerFirstName;
-
-    private String ownerLastName;
-
-    private ZonedDateTime possibleCloseDate;
 
     private Instant createdDate;
 
@@ -45,8 +37,9 @@ public class DealDTO implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public DealDTO setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
@@ -71,75 +64,13 @@ public class DealDTO implements Serializable {
         return stageId;
     }
 
-    public void setStageId(Long stageId) {
+    public DealDTO setStageId(Long stageId) {
         this.stageId = stageId;
-    }
-
-    public Long getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(Long contactId) {
-        this.personId = contactId;
-    }
-
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(Long contactId) {
-        this.organizationId = contactId;
-    }
-
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long appUserId) {
-        this.ownerId = appUserId;
-    }
-
-
-    public ZonedDateTime getPossibleCloseDate() {
-        return possibleCloseDate;
-    }
-
-    public DealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
-        this.possibleCloseDate = possibleCloseDate;
         return this;
     }
 
-    public DealDTO setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-        return this;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public String getOwnerFirstName() {
-        return ownerFirstName;
-    }
-
-    public void setOwnerFirstName(String ownerFirstName) {
-        this.ownerFirstName = ownerFirstName;
-    }
-
-    public String getOwnerLastName() {
-        return ownerLastName;
-    }
-
-    public void setOwnerLastName(String ownerLastName) {
-        this.ownerLastName = ownerLastName;
-    }
-
-    public String getStageName() {
-        return stageName;
-    }
-
-    public void setStageName(String stageName) {
-        this.stageName = stageName;
+    public Long getPipelineId() {
+        return pipelineId;
     }
 
     public DealDTO setPipelineId(Long pipelineId) {
@@ -147,8 +78,13 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public Long getPipelineId() {
-        return pipelineId;
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public DealDTO setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+        return this;
     }
 
     public Instant getLastModifiedDate() {
@@ -160,7 +96,6 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-
     public DealValueDTO getDealValue() {
         return dealValue;
     }
@@ -170,45 +105,43 @@ public class DealDTO implements Serializable {
         return this;
     }
 
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public DealDTO setPersonId(Long personId) {
+        this.personId = personId;
+        return this;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public DealDTO setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+        return this;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public DealDTO setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
+        if (this == o) return true;
+        if (!(o instanceof DealDTO)) return false;
         DealDTO dealDTO = (DealDTO) o;
-        if (dealDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), dealDTO.getId());
+        return Objects.equals(id, dealDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "DealDTO{" +
-            "id=" + id +
-            ", title='" + title + '\'' +
-            ", priority=" + priority +
-            ", stageId=" + stageId +
-            ", stageName='" + stageName + '\'' +
-            ", pipelineId=" + pipelineId +
-            ", personId=" + personId +
-            ", organizationId=" + organizationId +
-            ", ownerId=" + ownerId +
-            ", ownerFirstName='" + ownerFirstName + '\'' +
-            ", ownerLastName='" + ownerLastName + '\'' +
-            ", possibleCloseDate=" + possibleCloseDate +
-            ", createdDate=" + createdDate +
-            ", lastModifiedDate=" + lastModifiedDate +
-            ", dealValue=" + dealValue +
-            '}';
+        return Objects.hash(id);
     }
 }

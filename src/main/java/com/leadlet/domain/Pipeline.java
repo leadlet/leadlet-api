@@ -30,7 +30,7 @@ public class Pipeline extends AbstractAccountSpecificEntity implements Serializa
     @Column(name = "jhi_order")
     private Integer order;
 
-    @OneToMany(mappedBy = "pipeline")
+    @OneToMany(mappedBy = "pipeline", fetch = FetchType.LAZY)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Stage> stages = new HashSet<>();

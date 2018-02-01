@@ -73,7 +73,7 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDTO update(DealDTO dealDTO) {
+    public DealDetailDTO update(DealDTO dealDTO) {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
@@ -82,7 +82,7 @@ public class DealServiceImpl implements DealService {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             deal = dealRepository.save(deal);
-            return dealMapper.toDto(deal);
+            return dealDetailMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
         }
@@ -133,7 +133,7 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public DealDTO move(DealMoveDTO dealMoveDTO) {
+    public DealDetailDTO move(DealMoveDTO dealMoveDTO) {
         Deal prevDeal = null;
         Deal nextDeal = null;
 
@@ -149,7 +149,7 @@ public class DealServiceImpl implements DealService {
         if (prevDeal == null && nextDeal != null) {
             newPriority = nextDeal.getPriority() - 1;
         } else if (prevDeal != null && nextDeal != null) {
-            if ((nextDeal.getPriority() - prevDeal.getPriority()) > 2) {
+            if ((nextDeal.getPriority() - prevDeal.getPriority()) >= 2) {
                 // we have room for new deal
                 newPriority = nextDeal.getPriority() - 1;
             } else {
@@ -170,7 +170,7 @@ public class DealServiceImpl implements DealService {
         movingDeal.setStage(newStage);
 
         movingDeal = dealRepository.save(movingDeal);
-        return dealMapper.toDto(movingDeal);
+        return dealDetailMapper.toDto(movingDeal);
     }
 
     @Override

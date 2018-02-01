@@ -11,10 +11,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
@@ -33,7 +30,7 @@ public abstract class AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     private AppAccount appAccount;
 

@@ -29,7 +29,7 @@ public class OrganizationPhone implements Serializable {
     @Column(name = "jhi_type")
     private PhoneType type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Organization organization;
 
     public static long getSerialVersionUID() {

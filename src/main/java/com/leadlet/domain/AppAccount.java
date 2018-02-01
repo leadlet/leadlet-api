@@ -32,12 +32,12 @@ public class AppAccount implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "appAccount")
+    @OneToMany(mappedBy = "appAccount", fetch = FetchType.LAZY)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CompanySubscriptionPlan> subscriptionPlans = new HashSet<>();
 
-    @OneToMany(mappedBy = "appAccount")
+    @OneToMany(mappedBy = "appAccount", fetch = FetchType.LAZY)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<User> users = new HashSet<>();
