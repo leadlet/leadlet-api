@@ -12,6 +12,7 @@ import com.leadlet.service.MailService;
 import com.leadlet.service.UserService;
 import com.leadlet.service.dto.PersonDTO;
 import com.leadlet.service.dto.UserDTO;
+import com.leadlet.service.dto.UserUpdateDTO;
 import com.leadlet.web.rest.vm.ManagedUserVM;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
@@ -123,25 +124,24 @@ public class UserResource {
     /**
      * PUT  /users : Updates an existing User.
      *
-     * @param managedUserVM the user to update
+     * @param userUpdateDTO the user to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated user,
      * or with status 400 (Bad Request) if the login or email is already in use,
      * or with status 500 (Internal Server Error) if the user couldn't be updated
      */
     @PutMapping("/users")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody ManagedUserVM managedUserVM) {
-        log.debug("REST request to update User : {}", managedUserVM);
-
-        Optional<User> existingUser = userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase());
+    public ResponseEntity<UserUpdateDTO> updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+        log.debug("REST request to update User : {}", userUpdateDTO);
+        /*
+        User existingUser = userRepository.findOne(userUpdateDTO.getId());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(null);
         }
-        Optional<UserDTO> updatedUser = userService.updateUser(managedUserVM);
+        */
+        Optional<UserUpdateDTO> updatedUser = userService.updateUser(userUpdateDTO);
 
-        return ResponseUtil.wrapOrNotFound(updatedUser,
-            HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));
+        return ResponseUtil.wrapOrNotFound(updatedUser);
     }
 
     /**
@@ -182,6 +182,20 @@ public class UserResource {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLoginAndAppAccount(login)
+                .map(UserDTO::new));
+    }
+
+    /**
+     * GET  /users/:login : get the "login" user.
+     *
+     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
+     */
+    @GetMapping("/users/current")
+    @Timed
+    public ResponseEntity<UserDTO> getCurrentUser() {
+        log.debug("REST request to get current user");
+        return ResponseUtil.wrapOrNotFound(
+            userService.getCurrentUser()
                 .map(UserDTO::new));
     }
 

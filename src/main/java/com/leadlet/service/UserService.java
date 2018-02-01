@@ -3,7 +3,6 @@ package com.leadlet.service;
 import com.leadlet.config.Constants;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
-import com.leadlet.domain.Person;
 import com.leadlet.domain.User;
 import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
@@ -12,8 +11,8 @@ import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
-import com.leadlet.service.dto.PersonDTO;
 import com.leadlet.service.dto.UserDTO;
+import com.leadlet.service.dto.UserUpdateDTO;
 import com.leadlet.service.util.RandomUtil;
 import com.leadlet.web.rest.util.ParameterUtil;
 import org.slf4j.Logger;
@@ -201,6 +200,23 @@ public class UserService {
             .map(UserDTO::new);
     }
 
+    public Optional<UserUpdateDTO> updateUser(UserUpdateDTO userUpdateDTO) {
+        return Optional.of(userRepository
+            .findOneByIdAndAppAccount_Id(userUpdateDTO.getId(), SecurityUtils.getCurrentUserAppAccountId()))
+            .map(user -> {
+                user.setFirstName(userUpdateDTO.getFirstName());
+                user.setLastName(userUpdateDTO.getLastName());
+                if(userUpdateDTO.getPassword() != null){
+                    user.setPassword( passwordEncoder.encode(userUpdateDTO.getPassword()));
+                }else{
+                    user.setPassword(user.getPassword());
+                }
+
+                return user;
+            })
+            .map(UserUpdateDTO::new);
+    }
+
     public void deleteUser(String login) {
         userRepository.findOneByLoginAndAppAccount_Id(login,SecurityUtils.getCurrentUserAppAccountId()).ifPresent(user -> {
             userRepository.delete(user);
@@ -278,5 +294,16 @@ public class UserService {
 
         return userRepository.findAll(spec, pageable)
             .map(UserDTO::new);
+    }
+
+    public Optional<User> getCurrentUser() {
+
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        Optional<User> user = userRepository.findOneByLogin(login);
+
+        user.get().getAuthorities().size();
+
+        return user;
     }
 }
