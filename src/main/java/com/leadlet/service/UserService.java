@@ -10,6 +10,7 @@ import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.dto.UserDTO;
+import com.leadlet.service.dto.UserUpdateDTO;
 import com.leadlet.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -194,6 +195,23 @@ public class UserService {
             .map(UserDTO::new);
     }
 
+    public Optional<UserUpdateDTO> updateUser(UserUpdateDTO userUpdateDTO) {
+        return Optional.of(userRepository
+            .findOneByIdAndAppAccount_Id(userUpdateDTO.getId(), SecurityUtils.getCurrentUserAppAccountId()))
+            .map(user -> {
+                user.setFirstName(userUpdateDTO.getFirstName());
+                user.setLastName(userUpdateDTO.getLastName());
+                if(userUpdateDTO.getPassword() != null){
+                    user.setPassword( passwordEncoder.encode(userUpdateDTO.getPassword()));
+                }else{
+                    user.setPassword(user.getPassword());
+                }
+
+                return user;
+            })
+            .map(UserUpdateDTO::new);
+    }
+
     public void deleteUser(String login) {
         userRepository.findOneByLoginAndAppAccount_Id(login,SecurityUtils.getCurrentUserAppAccountId()).ifPresent(user -> {
             userRepository.delete(user);
@@ -250,5 +268,16 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public Optional<User> getCurrentUser() {
+
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        Optional<User> user = userRepository.findOneByLogin(login);
+
+        user.get().getAuthorities().size();
+
+        return user;
     }
 }
