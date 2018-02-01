@@ -1,10 +1,7 @@
 package com.leadlet.web.rest;
 
-import com.leadlet.domain.User;
 import com.leadlet.security.jwt.JWTConfigurer;
 import com.leadlet.security.jwt.TokenProvider;
-import com.leadlet.service.UserService;
-import com.leadlet.service.dto.LoginResponseUserDTO;
 import com.leadlet.web.rest.vm.LoginVM;
 
 import com.codahale.metrics.annotation.Timed;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Collections;
-import java.util.Optional;
 
 /**
  * Controller to authenticate users.
@@ -39,12 +35,9 @@ public class UserJWTController {
 
     private final AuthenticationManager authenticationManager;
 
-    private final UserService userService;
-
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService) {
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
     }
 
     @PostMapping("/authenticate")
@@ -60,12 +53,7 @@ public class UserJWTController {
             boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
             String jwt = tokenProvider.createToken(authentication, rememberMe);
             response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-            // TODO degistirelim
-            Optional<User> user = userService.getUserWithAuthoritiesByLoginAndAppAccount(loginVM.getUsername());
-
-            LoginResponseUserDTO responseUserDTO = new LoginResponseUserDTO(user.get(), jwt);
-            return ResponseEntity.ok(responseUserDTO);
+            return ResponseEntity.ok(new JWTToken(jwt));
         } catch (AuthenticationException ae) {
             log.trace("Authentication exception trace: {}", ae);
             return new ResponseEntity<>(Collections.singletonMap("AuthenticationException",
