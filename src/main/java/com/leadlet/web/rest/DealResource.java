@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.DealService;
 import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.DealMoveDTO;
+import com.leadlet.service.dto.OrganizationDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
 import com.leadlet.service.dto.DealDTO;
@@ -50,12 +51,14 @@ public class DealResource {
      */
     @PostMapping("/deals")
     @Timed
-    public ResponseEntity<DealDTO> createDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException {
+    public ResponseEntity<DealDetailDTO> createDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException {
         log.debug("REST request to save Deal : {}", dealDTO);
         if (dealDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new deal cannot already have an ID")).body(null);
         }
-        DealDTO result = dealService.save(dealDTO);
+        DealDetailDTO result = dealService.save(dealDTO);
+        // TODO lazy load workaround. above save method does not return stage.pipeline
+        result = dealService.findOne(result.getId());
         return ResponseEntity.created(new URI("/api/deals/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -114,18 +117,13 @@ public class DealResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    /**
-     * GET  /deals : get all the deals.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of deals in body
-     */
     @GetMapping("/deals")
     @Timed
-    public ResponseEntity<List<DealDTO>> getAllDeals(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Deals");
-        Page<DealDTO> page = dealService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals");
+    public ResponseEntity<List<DealDTO>> getAllDealsByFilter(@ApiParam String filter, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Organizations");
+
+        Page<DealDTO> page = dealService.search(filter, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/organizations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

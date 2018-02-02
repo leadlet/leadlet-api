@@ -1,76 +1,28 @@
 package com.leadlet.service.mapper;
 
-import com.leadlet.domain.Authority;
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.User;
+import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.UserDTO;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.stream.Collectors;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
- * Mapper for the entity User and its DTO called UserDTO.
- *
- * Normal mappers are generated using MapStruct, this one is hand-coded as MapStruct
- * support is still in beta, and requires a manual step with an IDE.
+ * Mapper for the entity Deal and its DTO DealDTO.
  */
-@Service
-public class UserMapper {
+@Mapper(componentModel = "spring", uses = {AuthorityMapper.class})
+public interface UserMapper extends EntityMapper<UserDTO, User> {
 
-    public UserDTO userToUserDTO(User user) {
-        return new UserDTO(user);
-    }
+    UserDTO toDto(User user);
 
-    public List<UserDTO> usersToUserDTOs(List<User> users) {
-        return users.stream()
-            .filter(Objects::nonNull)
-            .map(this::userToUserDTO)
-            .collect(Collectors.toList());
-    }
+    User toEntity(UserDTO userDTO);
 
-    public User userDTOToUser(UserDTO userDTO) {
-        if (userDTO == null) {
-            return null;
-        } else {
-            User user = new User();
-            user.setId(userDTO.getId());
-            user.setLogin(userDTO.getLogin());
-            user.setFirstName(userDTO.getFirstName());
-            user.setLastName(userDTO.getLastName());
-            user.setImageUrl(userDTO.getImageUrl());
-            user.setActivated(userDTO.isActivated());
-            user.setLangKey(userDTO.getLangKey());
-            Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
-            if(authorities != null) {
-                user.setAuthorities(authorities);
-            }
-            return user;
-        }
-    }
-
-    public List<User> userDTOsToUsers(List<UserDTO> userDTOs) {
-        return userDTOs.stream()
-            .filter(Objects::nonNull)
-            .map(this::userDTOToUser)
-            .collect(Collectors.toList());
-    }
-
-    public User userFromId(Long id) {
+    default User fromId(Long id) {
         if (id == null) {
             return null;
         }
         User user = new User();
         user.setId(id);
         return user;
-    }
-
-    public Set<Authority> authoritiesFromStrings(Set<String> strings) {
-        return strings.stream().map(string -> {
-            Authority auth = new Authority();
-            auth.setName(string);
-            return auth;
-        }).collect(Collectors.toSet());
     }
 }

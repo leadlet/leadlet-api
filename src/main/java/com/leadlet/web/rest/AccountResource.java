@@ -82,7 +82,7 @@ public class AccountResource {
 
                 mailService.sendActivationEmail(user);
 
-                UserDTO result = userMapper.userToUserDTO(user);
+                UserDTO result = userMapper.toDto(user);
                 return ResponseEntity.ok().headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
             });
     }
@@ -123,7 +123,7 @@ public class AccountResource {
     @Timed
     public ResponseEntity<UserDTO> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
-            .map(user -> new ResponseEntity<>(new UserDTO(user), HttpStatus.OK))
+            .map(user -> new ResponseEntity<>(userMapper.toDto(user), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 

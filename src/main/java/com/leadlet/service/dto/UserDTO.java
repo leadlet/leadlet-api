@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * A DTO representing a user, with his authorities.
  */
-public class UserDTO {
+public class UserDTO  implements Serializable {
 
     private Long id;
 
@@ -45,24 +46,16 @@ public class UserDTO {
 
     private Instant lastModifiedDate;
 
-    private Set<String> authorities;
+    private Set<AuthorityDTO> authorities;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
 
-    public UserDTO(User user) {
-        this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(),
-            user.getActivated(), user.getImageUrl(), user.getLangKey(),
-            user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
-            user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()));
-    }
-
     public UserDTO(Long id, String login, String firstName, String lastName,
         boolean activated, String imageUrl, String langKey,
         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-        Set<String> authorities) {
+        Set<AuthorityDTO> authorities) {
 
         this.id = id;
         this.login = login;
@@ -134,7 +127,7 @@ public class UserDTO {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public Set<String> getAuthorities() {
+    public Set<AuthorityDTO> getAuthorities() {
         return authorities;
     }
 
@@ -158,7 +151,7 @@ public class UserDTO {
         this.langKey = langKey;
     }
 
-    public void setAuthorities(Set<String> authorities) {
+    public void setAuthorities(Set<AuthorityDTO> authorities) {
         this.authorities = authorities;
     }
 

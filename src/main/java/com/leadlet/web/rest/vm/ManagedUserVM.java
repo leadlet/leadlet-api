@@ -1,11 +1,13 @@
 package com.leadlet.web.rest.vm;
 
+import com.leadlet.service.dto.AuthorityDTO;
 import com.leadlet.service.dto.UserDTO;
 
 import javax.validation.constraints.Size;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * View Model extending the UserDTO, which is meant to be used in the user management UI.
@@ -29,7 +31,7 @@ public class ManagedUserVM extends UserDTO {
                          Set<String> authorities) {
 
         super(id, login, firstName, lastName, activated, imageUrl, langKey,
-            createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities);
+            createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities.stream().map(authority -> (new AuthorityDTO(authority))).collect(Collectors.toSet()));
 
         this.password = password;
     }

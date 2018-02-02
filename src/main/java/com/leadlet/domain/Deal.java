@@ -24,7 +24,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false, length = 64)
     private String title;
 
     @Column(name = "priority")

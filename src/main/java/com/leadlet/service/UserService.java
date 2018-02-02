@@ -13,6 +13,7 @@ import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.dto.UserUpdateDTO;
+import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.service.util.RandomUtil;
 import com.leadlet.web.rest.util.ParameterUtil;
 import org.slf4j.Logger;
@@ -51,12 +52,15 @@ public class UserService {
 
     private final AppAccountRepository appAccountRepository;
 
+    private final UserMapper userMapper;
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
-                       AppAccountRepository appAccountRepository) {
+                       AppAccountRepository appAccountRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.appAccountRepository = appAccountRepository;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -140,7 +144,7 @@ public class UserService {
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = new HashSet<>();
             userDTO.getAuthorities().forEach(
-                authority -> authorities.add(authorityRepository.findOne(authority))
+                authority -> authorities.add(authorityRepository.findOne(authority.getName()))
             );
             user.setAuthorities(authorities);
         }
@@ -191,13 +195,13 @@ public class UserService {
                 user.setLangKey(userDTO.getLangKey());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
-                userDTO.getAuthorities().stream()
-                    .map(authorityRepository::findOne)
-                    .forEach(managedAuthorities::add);
+                userDTO.getAuthorities().forEach(
+                    authority -> managedAuthorities.add(authorityRepository.findOne(authority.getName()))
+                );
                 log.debug("Changed Information for User: {}", user);
                 return user;
             })
-            .map(UserDTO::new);
+            .map(userMapper::toDto);
     }
 
     public Optional<UserUpdateDTO> updateUser(UserUpdateDTO userUpdateDTO) {
@@ -235,7 +239,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAllByLoginNotAndAppAccount_Id(pageable, Constants.ANONYMOUS_USER,
-            SecurityUtils.getCurrentUserAppAccountId()).map(UserDTO::new);
+            SecurityUtils.getCurrentUserAppAccountId()).map(userMapper::toDto);
     }
 
     @Transactional(readOnly = true)
@@ -293,7 +297,7 @@ public class UserService {
         Specification<User> spec = builder.build();
 
         return userRepository.findAll(spec, pageable)
-            .map(UserDTO::new);
+            .map(userMapper::toDto);
     }
 
     public Optional<User> getCurrentUser() {

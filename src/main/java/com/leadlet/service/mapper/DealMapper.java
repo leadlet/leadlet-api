@@ -20,6 +20,8 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
     @Mapping(source = "personId", target = "person")
     @Mapping(source = "organizationId", target = "organization")
     @Mapping(source = "ownerId", target = "owner")
+    @Mapping(source = "priority", target = "priority", defaultValue = "0")
+
     Deal toEntity(DealDTO dealDTO);
 
     default Deal fromId(Long id) {

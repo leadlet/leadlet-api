@@ -1,7 +1,10 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.Organization;
 import com.leadlet.domain.Stage;
 import com.leadlet.repository.StageRepository;
+import com.leadlet.repository.util.SearchCriteria;
+import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DealService;
 import com.leadlet.domain.Deal;
@@ -12,12 +15,15 @@ import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.DealMoveDTO;
 import com.leadlet.service.mapper.DealDetailMapper;
 import com.leadlet.service.mapper.DealMapper;
+import com.leadlet.web.rest.util.ParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
@@ -58,12 +64,12 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDTO save(DealDTO dealDTO) {
+    public DealDetailDTO save(DealDTO dealDTO) {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         deal = dealRepository.save(deal);
-        return dealMapper.toDto(deal);
+        return dealDetailMapper.toDto(deal);
     }
 
     /**
@@ -183,6 +189,28 @@ public class DealServiceImpl implements DealService {
     @Override
     public Double getDealTotalByStage(Long stageId) {
         return dealRepository.calculateDealTotalByStageId(SecurityUtils.getCurrentUserAppAccountId(),stageId);
+    }
+
+    @Override
+    public Page<DealDTO> search(String filter, Pageable pageable) {
+        log.debug("Request to get all Deals");
+        SpecificationsBuilder builder = new SpecificationsBuilder();
+
+        if (!StringUtils.isEmpty(filter)) {
+            List<SearchCriteria> criteriaList = ParameterUtil.createCriterias(filter);
+
+            for (SearchCriteria criteria : criteriaList) {
+                builder.with(criteria);
+            }
+
+        }
+
+        builder.with("appAccount", ":", SecurityUtils.getCurrentUserAppAccountReference());
+
+        Specification<Deal> spec = builder.build();
+
+        return dealRepository.findAll(spec, pageable)
+            .map(dealMapper::toDto);
     }
 
 

@@ -1,24 +1,20 @@
 package com.leadlet.web.rest;
 
-import com.leadlet.config.Constants;
 import com.codahale.metrics.annotation.Timed;
-import com.leadlet.domain.AppAccount;
+import com.leadlet.config.Constants;
 import com.leadlet.domain.User;
 import com.leadlet.repository.UserRepository;
-import com.leadlet.security.AppUserDetail;
 import com.leadlet.security.AuthoritiesConstants;
-import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.MailService;
 import com.leadlet.service.UserService;
-import com.leadlet.service.dto.PersonDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.dto.UserUpdateDTO;
-import com.leadlet.web.rest.vm.ManagedUserVM;
+import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
+import com.leadlet.web.rest.vm.ManagedUserVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,18 +23,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.Principal;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing users.
@@ -78,12 +69,15 @@ public class UserResource {
 
     private final UserService userService;
 
+    private final UserMapper userMapper;
+
     public UserResource(UserRepository userRepository, MailService mailService,
-            UserService userService) {
+            UserService userService, UserMapper userMapper ){
 
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -182,7 +176,7 @@ public class UserResource {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLoginAndAppAccount(login)
-                .map(UserDTO::new));
+                .map(userMapper::toDto));
     }
 
     /**
@@ -196,7 +190,7 @@ public class UserResource {
         log.debug("REST request to get current user");
         return ResponseUtil.wrapOrNotFound(
             userService.getCurrentUser()
-                .map(UserDTO::new));
+                .map(userMapper::toDto));
     }
 
     /**
