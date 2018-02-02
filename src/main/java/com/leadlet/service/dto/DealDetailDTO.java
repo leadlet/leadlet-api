@@ -18,8 +18,6 @@ public class DealDetailDTO extends  DealDTO {
 
     private UserDTO owner;
 
-    private Instant createdDate;
-
     private Instant lastModifiedDate;
 
     public PersonDTO getPerson() {
@@ -46,17 +44,6 @@ public class DealDetailDTO extends  DealDTO {
 
     public DealDetailDTO setOwner(UserDTO owner) {
         this.owner = owner;
-        return this;
-    }
-
-    @Override
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    @Override
-    public DealDetailDTO setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
         return this;
     }
 
@@ -89,12 +76,11 @@ public class DealDetailDTO extends  DealDTO {
         return Objects.equals(person, that.person) &&
             Objects.equals(organization, that.organization) &&
             Objects.equals(owner, that.owner) &&
-            Objects.equals(createdDate, that.createdDate) &&
             Objects.equals(lastModifiedDate, that.lastModifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), person, organization, owner, createdDate, lastModifiedDate);
+        return Objects.hash(super.hashCode(), person, organization, owner, lastModifiedDate);
     }
 }

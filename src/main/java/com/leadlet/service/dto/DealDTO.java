@@ -31,6 +31,8 @@ public class DealDTO implements Serializable {
 
     private Instant lastModifiedDate;
 
+    private ZonedDateTime possibleCloseDate;
+
     private DealValueDTO dealValue;
 
     public Long getId() {
@@ -129,6 +131,15 @@ public class DealDTO implements Serializable {
 
     public DealDTO setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+        return this;
+    }
+
+    public ZonedDateTime getPossibleCloseDate() {
+        return possibleCloseDate;
+    }
+
+    public DealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
+        this.possibleCloseDate = possibleCloseDate;
         return this;
     }
 
