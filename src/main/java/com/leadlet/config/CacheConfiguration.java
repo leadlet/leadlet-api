@@ -62,6 +62,7 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.Activity.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Note.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.OrganizationPhone.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Team.class.getName(), jcacheConfiguration);
 
             cm.createCache(com.leadlet.domain.Timeline.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
