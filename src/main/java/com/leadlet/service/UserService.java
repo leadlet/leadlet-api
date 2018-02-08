@@ -105,7 +105,7 @@ public class UserService {
         newAppAccount = appAccountRepository.save(newAppAccount);
 
         User newUser = new User();
-        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Authority authority = authorityRepository.findOne(AuthoritiesConstants.MANAGER);
         Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
