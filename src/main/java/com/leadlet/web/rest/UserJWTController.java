@@ -1,7 +1,13 @@
 package com.leadlet.web.rest;
 
+import com.leadlet.domain.User;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.security.jwt.JWTConfigurer;
 import com.leadlet.security.jwt.TokenProvider;
+import com.leadlet.service.UserService;
+import com.leadlet.service.dto.UserLoginDTO;
+import com.leadlet.service.mapper.UserLoginMapper;
+import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.web.rest.vm.LoginVM;
 
 import com.codahale.metrics.annotation.Timed;
@@ -35,9 +41,16 @@ public class UserJWTController {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    private final UserLoginMapper userLoginMapper;
+
+    private final UserService userService;
+
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,
+                             UserLoginMapper userLoginMapper, UserService userService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.userLoginMapper = userLoginMapper;
+        this.userService = userService;
     }
 
     @PostMapping("/authenticate")
@@ -53,7 +66,11 @@ public class UserJWTController {
             boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
             String jwt = tokenProvider.createToken(authentication, rememberMe);
             response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
-            return ResponseEntity.ok(new JWTToken(jwt));
+            User user = userService.getUserWithAuthorities();
+            UserLoginDTO userLoginDTO = userLoginMapper.toDto(user);
+            userLoginDTO.setJwt(jwt);
+
+            return ResponseEntity.ok(userLoginDTO);
         } catch (AuthenticationException ae) {
             log.trace("Authentication exception trace: {}", ae);
             return new ResponseEntity<>(Collections.singletonMap("AuthenticationException",

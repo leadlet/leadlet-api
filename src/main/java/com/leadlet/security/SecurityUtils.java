@@ -1,6 +1,10 @@
 package com.leadlet.security;
 
 import com.leadlet.domain.AppAccount;
+import com.leadlet.domain.User;
+import com.leadlet.repository.UserRepository;
+import com.leadlet.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,8 +21,11 @@ public final class SecurityUtils {
 
     private static EntityManager entityManager;
 
-    private SecurityUtils(EntityManager entityManager) {
+    private static UserService userService;
+
+    private SecurityUtils(EntityManager entityManager, UserService userService) {
         this.entityManager = entityManager;
+        this.userService = userService;
     }
 
     /**
