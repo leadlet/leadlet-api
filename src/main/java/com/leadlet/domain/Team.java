@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "team")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Team extends AbstractAuditingEntity implements Serializable {
+public class Team implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,6 +25,9 @@ public class Team extends AbstractAuditingEntity implements Serializable {
     @Size(max = 50)
     @Column(name = "name", length = 50)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AppAccount appAccount;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -46,19 +49,28 @@ public class Team extends AbstractAuditingEntity implements Serializable {
         this.name = name;
     }
 
+    public AppAccount getAppAccount() {
+        return appAccount;
+    }
+
+    public void setAppAccount(AppAccount appAccount) {
+        this.appAccount = appAccount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Team)) return false;
         Team team = (Team) o;
         return Objects.equals(id, team.id) &&
-            Objects.equals(name, team.name);
+            Objects.equals(name, team.name) &&
+            Objects.equals(appAccount, team.appAccount);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, appAccount);
     }
 
     @Override
@@ -66,6 +78,7 @@ public class Team extends AbstractAuditingEntity implements Serializable {
         return "Team{" +
             "id=" + id +
             ", name='" + name + '\'' +
+            ", appAccount=" + appAccount +
             '}';
     }
 }
