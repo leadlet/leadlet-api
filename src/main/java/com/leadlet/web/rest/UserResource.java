@@ -139,18 +139,18 @@ public class UserResource {
     }
 
     /**
-     * GET  /persons : get all the persons.
+     * GET  /users : get all the users.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of persons in body
+     * @return the ResponseEntity with status 200 (OK) and the list of users in body
      */
     @GetMapping("/users")
     @Timed
     public ResponseEntity<List<UserDTO>> getAllUsers(@ApiParam String filter, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Persons");
+        log.debug("REST request to get a page of Users");
 
         Page<UserDTO> page = userService.search(filter, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/persons");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
