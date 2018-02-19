@@ -221,12 +221,17 @@ public class UserService {
             .map(UserUpdateDTO::new);
     }
 
-    public void deleteUser(String login) {
-        userRepository.findOneByLoginAndAppAccount_Id(login,SecurityUtils.getCurrentUserAppAccountId()).ifPresent(user -> {
-            userRepository.delete(user);
+    public void deleteUser(Long id) {
+        User user =
+        userRepository.findOneByIdAndAppAccount_Id(id,SecurityUtils.getCurrentUserAppAccountId());
+
+        if(user != null){
+            userRepository.delete(id);
             log.debug("Deleted User: {}", user);
-        });
+        }
     }
+
+
 
     public void changePassword(String password) {
         userRepository.findOneByLoginAndAppAccount_Id(SecurityUtils.getCurrentUserLogin(),SecurityUtils.getCurrentUserAppAccountId()).ifPresent(user -> {
