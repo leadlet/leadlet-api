@@ -7,7 +7,6 @@ import com.leadlet.repository.UserRepository;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.service.MailService;
 import com.leadlet.service.UserService;
-import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.dto.UserUpdateDTO;
 import com.leadlet.service.mapper.UserMapper;
@@ -73,7 +72,7 @@ public class UserResource {
     private final UserMapper userMapper;
 
     public UserResource(UserRepository userRepository, MailService mailService,
-            UserService userService, UserMapper userMapper ){
+                        UserService userService, UserMapper userMapper) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;
@@ -95,14 +94,14 @@ public class UserResource {
     @PostMapping("/users")
     @Timed
     //@Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity createUser(@Valid @RequestBody ManagedUserVM managedUserVM ) throws URISyntaxException {
+    public ResponseEntity createUser(@Valid @RequestBody ManagedUserVM managedUserVM) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
 
         if (managedUserVM.getId() != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID"))
                 .body(null);
-        // Lowercase the user login before comparing with database
+            // Lowercase the user login before comparing with database
         } else if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
@@ -111,7 +110,7 @@ public class UserResource {
             User newUser = userService.createUser(managedUserVM);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
+                .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
                 .body(newUser);
         }
     }
@@ -192,6 +191,20 @@ public class UserResource {
         return ResponseUtil.wrapOrNotFound(
             userService.getCurrentUser()
                 .map(userMapper::toDto));
+    }
+
+    /**
+     * GET  /users/:id : get the "id" user.
+     *
+     * @param id the id of the userDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the userDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/users/{id}")
+    @Timed
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
+        log.debug("REST request to get User : {}", id);
+        UserDTO userDTO = userService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userDTO));
     }
 
     /**

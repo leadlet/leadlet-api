@@ -3,6 +3,7 @@ package com.leadlet.service;
 import com.leadlet.config.Constants;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.Authority;
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.User;
 import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.AuthorityRepository;
@@ -11,6 +12,7 @@ import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.AuthoritiesConstants;
 import com.leadlet.security.SecurityUtils;
+import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.dto.UserUpdateDTO;
 import com.leadlet.service.mapper.UserMapper;
@@ -314,5 +316,18 @@ public class UserService {
         user.get().getAuthorities().size();
 
         return user;
+    }
+
+    /**
+     * Get one user by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public UserDTO findOne(Long id) {
+        log.debug("Request to get User : {}", id);
+        User user = userRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
+        return userMapper.toDto(user);
     }
 }
