@@ -21,7 +21,7 @@
         <awaitility.version>2.0.0</awaitility.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-lang.version>3.5</commons-lang.version>
-        <docker-maven-plugin.version>0.4.13</docker-maven-plugin.version>
+        <docker-maven-plugin.version>1.0.0</docker-maven-plugin.version>
         <!-- Overridden to get metrics-jcache -->
         <dropwizard-metrics.version>3.2.2</dropwizard-metrics.version>
         <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
@@ -440,6 +440,8 @@
                                     <includes>
                                         <include>**/*.xml</include>
                                         <include>**/*.yml</include>
+                                        <exclude>**/*.woff</exclude>
+                                        <exclude>**/*.ttf</exclude>
                                     </includes>
                                 </resource>
                                 <resource>
@@ -448,6 +450,8 @@
                                     <excludes>
                                         <exclude>**/*.xml</exclude>
                                         <exclude>**/*.yml</exclude>
+                                        <exclude>**/*.woff</exclude>
+                                        <exclude>**/*.ttf</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
@@ -726,8 +730,8 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <nodeVersion>v6.11.0</nodeVersion>
-                            <yarnVersion>v0.27.5</yarnVersion>
+                            <nodeVersion>v8.9.0</nodeVersion>
+                            <yarnVersion>v1.3.2</yarnVersion>
                             <installDirectory>.mvn</installDirectory>
                             <workingDirectory>../leadlet-ui</workingDirectory>
                         </configuration>

@@ -56,6 +56,8 @@ public class DealResource {
         if (dealDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new deal cannot already have an ID")).body(null);
         }
+        Character c = null;
+
         DealDetailDTO result = dealService.save(dealDTO);
         // TODO lazy load workaround. above save method does not return stage.pipeline
         result = dealService.findOne(result.getId());
