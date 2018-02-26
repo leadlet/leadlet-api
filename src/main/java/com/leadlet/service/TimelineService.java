@@ -54,7 +54,7 @@ public interface TimelineService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<Timeline> findByUserId(Long userId, Pageable pageable);
+    Page<TimelineDTO> findByUserId(Long userId, Pageable pageable);
 
     @Async
     void noteCreated(Note note);

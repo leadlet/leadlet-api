@@ -77,4 +77,15 @@ public class TimelineResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/timeLines/user/{userId}")
+    @Timed
+    public ResponseEntity<List<TimelineDTO>> getUserTimelines(@PathVariable Long userId, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Timelines for user {}", userId);
+
+        Page<TimelineDTO> page = timelineService.findByUserId(userId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }
+

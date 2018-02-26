@@ -136,9 +136,21 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public Page<Timeline> findByUserId(Long userId, Pageable pageable) {
-        log.warn("findByUserId");
-        return null;
+    public Page<TimelineDTO> findByUserId(Long userId, Pageable pageable) {
+
+        return timelineRepository.findByUser_IdAndAppAccount_Id(userId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+            .map(timelineMapper::toDto)
+            .map(timelineDTO -> {
+                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
+                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(noteMapper.toDto(note));
+                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
+                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(activityMapper.toDto(activity));
+                }
+
+                return timelineDTO;
+            });
     }
 
     @Override
