@@ -89,7 +89,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional(readOnly = true)
     public List<ActivityDTO> findAll() {
         log.debug("Request to get all Activities");
-         List<Activity> activityList = activityRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId());
+        List<Activity> activityList = activityRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId());
         return activityMapper.toDto(activityList);
 
     }
@@ -128,7 +128,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     @Transactional(readOnly = true)
     public Page<ActivityDTO> findByPersonId(Long personId, Pageable pageable) {
-        log.debug("Request to get all Activities");
+        log.debug("Request to get all Activities for Person");
         return activityRepository.findByPerson_Id(personId, pageable)
             .map(activityMapper::toDto);
     }
@@ -136,8 +136,16 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     @Transactional(readOnly = true)
     public Page<ActivityDTO> findByOrganizationId(Long organizationId, Pageable pageable) {
-        log.debug("Request to get all Activities");
+        log.debug("Request to get all Activities for Organization");
         return activityRepository.findByOrganization_Id(organizationId, pageable)
+            .map(activityMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ActivityDTO> findByUserId(Long userId, Pageable pageable) {
+        log.debug("Request to get all Activities for User");
+        return activityRepository.findByUser_Id(userId, pageable)
             .map(activityMapper::toDto);
     }
 }
