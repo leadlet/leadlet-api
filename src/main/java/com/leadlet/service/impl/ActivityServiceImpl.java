@@ -148,4 +148,12 @@ public class ActivityServiceImpl implements ActivityService {
         return activityRepository.findByUser_Id(userId, pageable)
             .map(activityMapper::toDto);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ActivityDTO> findByDealId(Long dealId, Pageable pageable) {
+        log.debug("Request to get all Activities for Deal");
+        return activityRepository.findByDeal_Id(dealId, pageable)
+            .map(activityMapper::toDto);
+    }
 }

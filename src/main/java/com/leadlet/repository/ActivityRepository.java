@@ -17,11 +17,18 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ActivityRepository extends JpaRepository<Activity,Long> {
+public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findByAppAccount_Id(Long appAccountId);
+
     Activity findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
+
     Page<Activity> findByPerson_Id(Long id, Pageable page);
+
     Page<Activity> findByOrganization_Id(Long id, Pageable page);
+
     Page<Activity> findByUser_Id(Long id, Pageable page);
+
+    Page<Activity> findByDeal_Id(Long id, Pageable page);
 }
