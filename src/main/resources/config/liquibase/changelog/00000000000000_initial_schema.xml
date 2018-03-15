@@ -46,6 +46,9 @@
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="team_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
         </createTable>
 
         <createTable tableName="jhi_authority">
@@ -84,6 +87,7 @@
                   tableName="jhi_user">
             <column name="activated" type="boolean"/>
             <column name="created_date" type="timestamp"/>
+            <column name="team_id" type="NUMERIC" />
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
 

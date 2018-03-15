@@ -92,6 +92,21 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Deal> deals;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Team team;
+
+    public static long getSerialVersionUID() {
+
+        return serialVersionUID;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
     public Long getId() {
         return id;
@@ -210,33 +225,52 @@ public class User extends AbstractAuditingEntity implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", login='" + login + '\'' +
+            ", password='" + password + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", activated=" + activated +
+            ", langKey='" + langKey + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", activationKey='" + activationKey + '\'' +
+            ", resetKey='" + resetKey + '\'' +
+            ", resetDate=" + resetDate +
+            ", authorities=" + authorities +
+            ", activities=" + activities +
+            ", deals=" + deals +
+            ", team=" + team +
+            '}';
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
         User user = (User) o;
-        return !(user.getId() == null || getId() == null) && Objects.equals(getId(), user.getId());
+        return activated == user.activated &&
+            Objects.equals(id, user.id) &&
+            Objects.equals(login, user.login) &&
+            Objects.equals(password, user.password) &&
+            Objects.equals(firstName, user.firstName) &&
+            Objects.equals(lastName, user.lastName) &&
+            Objects.equals(langKey, user.langKey) &&
+            Objects.equals(imageUrl, user.imageUrl) &&
+            Objects.equals(activationKey, user.activationKey) &&
+            Objects.equals(resetKey, user.resetKey) &&
+            Objects.equals(resetDate, user.resetDate) &&
+            Objects.equals(authorities, user.authorities) &&
+            Objects.equals(activities, user.activities) &&
+            Objects.equals(deals, user.deals) &&
+            Objects.equals(team, user.team);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+
+        return Objects.hash(id, login, password, firstName, lastName, activated, langKey, imageUrl, activationKey, resetKey, resetDate, authorities, activities, deals, team);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated='" + activated + '\'' +
-            ", langKey='" + langKey + '\'' +
-            ", activationKey='" + activationKey + '\'' +
-            "}";
-    }
 }

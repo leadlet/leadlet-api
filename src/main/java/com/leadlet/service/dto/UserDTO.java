@@ -48,6 +48,8 @@ public class UserDTO  implements Serializable {
 
     private Set<AuthorityDTO> authorities;
 
+    private Long teamId;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -155,6 +157,14 @@ public class UserDTO  implements Serializable {
         this.authorities = authorities;
     }
 
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -170,6 +180,7 @@ public class UserDTO  implements Serializable {
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
+            ", teamId=" + teamId +
             '}';
     }
 }

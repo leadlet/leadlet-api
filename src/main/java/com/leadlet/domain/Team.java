@@ -6,7 +6,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Team.
@@ -25,6 +27,12 @@ public class Team implements Serializable {
     @Size(max = 50)
     @Column(name = "name", length = 50)
     private String name;
+
+    @Column(name = "teamLeader", length = 50)
+    private String teamLeader;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<User> members = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private AppAccount appAccount;
@@ -49,6 +57,22 @@ public class Team implements Serializable {
         this.name = name;
     }
 
+    public String getTeamLeader() {
+        return teamLeader;
+    }
+
+    public void setTeamLeader(String teamLeader) {
+        this.teamLeader = teamLeader;
+    }
+
+    public Set<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<User> members) {
+        this.members = members;
+    }
+
     public AppAccount getAppAccount() {
         return appAccount;
     }
@@ -64,13 +88,15 @@ public class Team implements Serializable {
         Team team = (Team) o;
         return Objects.equals(id, team.id) &&
             Objects.equals(name, team.name) &&
+            Objects.equals(teamLeader, team.teamLeader) &&
+            Objects.equals(members, team.members) &&
             Objects.equals(appAccount, team.appAccount);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, appAccount);
+        return Objects.hash(id, name, teamLeader, members, appAccount);
     }
 
     @Override
@@ -78,6 +104,8 @@ public class Team implements Serializable {
         return "Team{" +
             "id=" + id +
             ", name='" + name + '\'' +
+            ", teamLeader='" + teamLeader + '\'' +
+            ", members=" + members +
             ", appAccount=" + appAccount +
             '}';
     }
