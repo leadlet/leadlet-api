@@ -19,5 +19,6 @@
                                  constraintName="fk_user_team_id"
                                  referencedColumnNames="id"
                                  referencedTableName="team"/>
+
     </changeSet>
 </databaseChangeLog>

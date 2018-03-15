@@ -1,8 +1,5 @@
 package com.leadlet.service.dto;
 
-
-import com.leadlet.domain.User;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -13,9 +10,9 @@ public class TeamDTO implements Serializable {
 
     private String name;
 
-    private String teamLeader;
+    private UserDTO teamLeader;
 
-    private List<User> members;
+    private List<UserDTO> members;
 
     public Long getId() {
         return id;
@@ -33,19 +30,19 @@ public class TeamDTO implements Serializable {
         this.name = name;
     }
 
-    public String getTeamLeader() {
+    public UserDTO getTeamLeader() {
         return teamLeader;
     }
 
-    public void setTeamLeader(String teamLeader) {
+    public void setTeamLeader(UserDTO teamLeader) {
         this.teamLeader = teamLeader;
     }
 
-    public List<User> getMembers() {
+    public List<UserDTO> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public void setMembers(List<UserDTO> members) {
         this.members = members;
     }
 
@@ -71,7 +68,7 @@ public class TeamDTO implements Serializable {
         return "TeamDTO{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", teamLeader='" + teamLeader + '\'' +
+            ", teamLeader=" + teamLeader +
             ", members=" + members +
             '}';
     }

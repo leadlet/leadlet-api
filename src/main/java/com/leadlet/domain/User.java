@@ -95,6 +95,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
+//    @OneToOne(fetch = FetchType.LAZY)
+//    private Team leadingTeam;
+
     public static long getSerialVersionUID() {
 
         return serialVersionUID;
@@ -225,27 +228,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-            "id=" + id +
-            ", login='" + login + '\'' +
-            ", password='" + password + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", activated=" + activated +
-            ", langKey='" + langKey + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activationKey='" + activationKey + '\'' +
-            ", resetKey='" + resetKey + '\'' +
-            ", resetDate=" + resetDate +
-            ", authorities=" + authorities +
-            ", activities=" + activities +
-            ", deals=" + deals +
-            ", team=" + team +
-            '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
@@ -264,13 +246,34 @@ public class User extends AbstractAuditingEntity implements Serializable {
             Objects.equals(authorities, user.authorities) &&
             Objects.equals(activities, user.activities) &&
             Objects.equals(deals, user.deals) &&
-            Objects.equals(team, user.team);
+            Objects.equals(team, user.team) ;
     }
 
     @Override
     public int hashCode() {
 
         return Objects.hash(id, login, password, firstName, lastName, activated, langKey, imageUrl, activationKey, resetKey, resetDate, authorities, activities, deals, team);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", login='" + login + '\'' +
+            ", password='" + password + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", activated=" + activated +
+            ", langKey='" + langKey + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", activationKey='" + activationKey + '\'' +
+            ", resetKey='" + resetKey + '\'' +
+            ", resetDate=" + resetDate +
+            ", authorities=" + authorities +
+            ", activities=" + activities +
+            ", deals=" + deals +
+            ", team=" + team +
+            '}';
     }
 
 }

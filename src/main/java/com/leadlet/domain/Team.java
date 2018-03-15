@@ -28,8 +28,8 @@ public class Team implements Serializable {
     @Column(name = "name", length = 50)
     private String name;
 
-    @Column(name = "teamLeader", length = 50)
-    private String teamLeader;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private User teamLeader;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<User> members = new HashSet<>();
@@ -57,11 +57,11 @@ public class Team implements Serializable {
         this.name = name;
     }
 
-    public String getTeamLeader() {
+    public User getTeamLeader() {
         return teamLeader;
     }
 
-    public void setTeamLeader(String teamLeader) {
+    public void setTeamLeader(User teamLeader) {
         this.teamLeader = teamLeader;
     }
 
@@ -104,7 +104,7 @@ public class Team implements Serializable {
         return "Team{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", teamLeader='" + teamLeader + '\'' +
+            ", teamLeader=" + teamLeader +
             ", members=" + members +
             ", appAccount=" + appAccount +
             '}';
