@@ -191,6 +191,6 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, title, memo, start, end, type, deal, person, organization, user, location);
+        return id.hashCode();
     }
 }

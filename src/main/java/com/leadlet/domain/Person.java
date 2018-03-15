@@ -185,8 +185,7 @@ public class Person implements Serializable {
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, name, address, title, phones, email, organization, appAccount, activities, deals, notes, timelines);
+        return id.hashCode();
     }
 
     @Override

@@ -95,8 +95,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    private Team leadingTeam;
+    @NotNull
+    @Column(nullable = false)
+    private boolean isTeamLead = false;
 
     public static long getSerialVersionUID() {
 
@@ -227,6 +228,15 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.deals = deals;
     }
 
+    public User setTeamLead(boolean teamLead) {
+        isTeamLead = teamLead;
+        return this;
+    }
+
+    public boolean isTeamLead() {
+        return isTeamLead;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -252,7 +262,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, login, password, firstName, lastName, activated, langKey, imageUrl, activationKey, resetKey, resetDate, authorities, activities, deals, team);
+        return id.hashCode();
     }
 
     @Override
@@ -273,6 +283,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", activities=" + activities +
             ", deals=" + deals +
             ", team=" + team +
+            ", isTeamLead=" + isTeamLead +
             '}';
     }
 

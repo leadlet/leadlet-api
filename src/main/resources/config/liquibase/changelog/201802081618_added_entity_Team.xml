@@ -25,9 +25,6 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="team_leader_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -39,7 +36,6 @@
                   separator=";"
                   tableName="team">
             <column name="id" type="NUMERIC"/>
-            <column name="team_leader_id" type="NUMERIC" />
         </loadData>
 
     </changeSet>

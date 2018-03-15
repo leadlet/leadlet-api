@@ -14,10 +14,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="app_account"/>
 
-        <addForeignKeyConstraint baseColumnNames="team_leader_id"
-                                 baseTableName="team"
-                                 constraintName="fk_team_team_leader_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
     </changeSet>
 </databaseChangeLog>

@@ -46,6 +46,8 @@ public class UserDTO  implements Serializable {
 
     private Long teamId;
 
+    private boolean isTeamLead;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -159,6 +161,15 @@ public class UserDTO  implements Serializable {
 
     public void setTeamId(Long teamId) {
         this.teamId = teamId;
+    }
+
+    public UserDTO setTeamLead(boolean teamLead) {
+        isTeamLead = teamLead;
+        return this;
+    }
+
+    public boolean isTeamLead() {
+        return isTeamLead;
     }
 
     @Override

@@ -28,9 +28,6 @@ public class Team implements Serializable {
     @Column(name = "name", length = 50)
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private User teamLeader;
-
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<User> members = new HashSet<>();
 
@@ -57,14 +54,6 @@ public class Team implements Serializable {
         this.name = name;
     }
 
-    public User getTeamLeader() {
-        return teamLeader;
-    }
-
-    public void setTeamLeader(User teamLeader) {
-        this.teamLeader = teamLeader;
-    }
-
     public Set<User> getMembers() {
         return members;
     }
@@ -88,7 +77,6 @@ public class Team implements Serializable {
         Team team = (Team) o;
         return Objects.equals(id, team.id) &&
             Objects.equals(name, team.name) &&
-            Objects.equals(teamLeader, team.teamLeader) &&
             Objects.equals(members, team.members) &&
             Objects.equals(appAccount, team.appAccount);
     }
@@ -96,7 +84,7 @@ public class Team implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, teamLeader, members, appAccount);
+        return id.hashCode();
     }
 
     @Override
@@ -104,7 +92,6 @@ public class Team implements Serializable {
         return "Team{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", teamLeader=" + teamLeader +
             ", members=" + members +
             ", appAccount=" + appAccount +
             '}';
