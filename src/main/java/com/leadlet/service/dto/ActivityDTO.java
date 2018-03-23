@@ -2,9 +2,11 @@ package com.leadlet.service.dto;
 
 
 import com.leadlet.domain.enumeration.ActivityType;
+import org.joda.time.DateTime;
 
 import java.time.ZonedDateTime;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -18,9 +20,9 @@ public class ActivityDTO implements Serializable {
 
     private String memo;
 
-    private ZonedDateTime start;
+    private Date start;
 
-    private ZonedDateTime end;
+    private Date end;
 
     private ActivityType type;
 
@@ -66,19 +68,19 @@ public class ActivityDTO implements Serializable {
         this.type = type;
     }
 
-    public ZonedDateTime getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(ZonedDateTime start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public ZonedDateTime getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(ZonedDateTime end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 

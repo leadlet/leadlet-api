@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.leadlet.domain.enumeration.ActivityType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -36,11 +38,11 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
 
     @Column(name = "start", nullable = false)
     @NotNull
-    private ZonedDateTime start;
+    private Date start;
 
     @Column(name = "end", nullable = false)
     @NotNull
-    private ZonedDateTime end;
+    private Date end;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type" , nullable = false)
@@ -89,19 +91,19 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         this.memo = memo;
     }
 
-    public ZonedDateTime getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(ZonedDateTime start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public ZonedDateTime getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(ZonedDateTime end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 
