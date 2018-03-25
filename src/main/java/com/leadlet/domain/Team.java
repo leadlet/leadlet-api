@@ -28,7 +28,7 @@ public class Team implements Serializable {
     @Column(name = "name", length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private Set<User> members = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

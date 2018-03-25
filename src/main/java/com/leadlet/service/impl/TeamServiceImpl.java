@@ -1,10 +1,14 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.Team;
+import com.leadlet.domain.User;
 import com.leadlet.repository.TeamRepository;
+import com.leadlet.repository.UserRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.TeamService;
+import com.leadlet.service.UserService;
 import com.leadlet.service.dto.TeamDTO;
+import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.mapper.TeamMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +32,12 @@ public class TeamServiceImpl implements TeamService {
 
     private final TeamMapper teamMapper;
 
-    public TeamServiceImpl(TeamRepository teamRepository, TeamMapper teamMapper) {
+    private final UserRepository userRepository;
+
+    public TeamServiceImpl(TeamRepository teamRepository, TeamMapper teamMapper, UserRepository userRepository) {
         this.teamRepository = teamRepository;
         this.teamMapper = teamMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -40,6 +47,12 @@ public class TeamServiceImpl implements TeamService {
         Team team = teamMapper.toEntity(teamDTO);
         team.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         team = teamRepository.save(team);
+
+        for (UserDTO userDTO : teamDTO.getMembers()) {
+            User user = userRepository.getOne(userDTO.getId());
+            user.setTeam(team);
+            userRepository.save(user);
+        }
 
         return teamMapper.toDto(team);
     }
@@ -54,6 +67,45 @@ public class TeamServiceImpl implements TeamService {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             team.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             team = teamRepository.save(team);
+
+            for (UserDTO userDTO : teamDTO.getMembers()) {
+                User user = userRepository.getOne(userDTO.getId());
+                user.setTeam(team);
+                userRepository.save(user);
+            }
+
+            //silinenler
+            for (User dbUser : team.getMembers()) {
+                boolean found = false;
+                for (UserDTO userDTO : teamDTO.getMembers()) {
+                    if (dbUser.getId().equals(userDTO.getId())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if(found == false){
+                    dbUser.setTeam(null);
+                    userRepository.save(dbUser);
+                }
+            }
+
+            //eklenenler
+
+            for (UserDTO userDTO : teamDTO.getMembers()) {
+                boolean found = false;
+                for (User dbUser: team.getMembers()){
+                    if(dbUser.getId().equals(userDTO.getId())){
+                        found = true;
+                        break;
+                    }
+                }
+                if(found == false){
+                    User user = userRepository.getOne(userDTO.getId());
+                    user.setTeam(team);
+                    userRepository.save(user);
+                }
+            }
+
             return teamMapper.toDto(team);
         } else {
             throw new EntityNotFoundException();
