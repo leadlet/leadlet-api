@@ -15,11 +15,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -114,24 +119,34 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Page<PersonDTO> search(String filter, Pageable pageable) {
         log.debug("Request to get all Persons");
-        SpecificationsBuilder builder = new SpecificationsBuilder();
+
+        Specifications<Person> searchSpecs = buildSpecificationsFromFilter(filter);
+
+        return personRepository.findAll(searchSpecs, pageable)
+            .map(personMapper::toDto);
+
+    }
+
+    private Specifications<Person> buildSpecificationsFromFilter(String filter) {
+
+        Specification<Person> appAccount = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("appAccount"), SecurityUtils.getCurrentUserAppAccountId());
+
+        Specifications<Person> searchSpec = Specifications.where(appAccount);
 
         if (!StringUtils.isEmpty(filter)) {
             List<SearchCriteria> criteriaList = ParameterUtil.createCriterias(filter);
-
             for (SearchCriteria criteria : criteriaList) {
-                builder.with(criteria);
+                if( criteria.getKey().equals("name")){
+                    Specification<Person> nameLike = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%"+criteria.getValue()+"%");
+                    searchSpec = searchSpec.and(nameLike);
+                }else if( criteria.getKey().equals("organization")){
+                    Specification<Person> hasOrganization = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("organization"), Long.parseLong(criteria.getValue().toString()));
+                    searchSpec = searchSpec.and(hasOrganization);
+                }
             }
-
         }
 
-        // TODO add account criteria
-        builder.with("appAccount", ":", SecurityUtils.getCurrentUserAppAccountReference());
-
-        Specification<Person> spec = builder.build();
-
-        return personRepository.findAll(spec, pageable)
-            .map(personMapper::toDto);
+        return searchSpec;
 
     }
 

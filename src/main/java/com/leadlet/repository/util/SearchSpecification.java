@@ -39,13 +39,13 @@ public class SearchSpecification<T> implements Specification<T> {
                 return builder.equal(
                     root.<String>get(criteria.getKey()), criteria.getValue() );
                 //TODO ygokirmak fix below specific type
-            }else if (root.get(criteria.getKey()).getJavaType() == AppAccount.class){
-                return builder.equal(
-                    root.<String>get(criteria.getKey()), criteria.getValue() );
-            }
-            else {
+            }else if (root.get(criteria.getKey()).getJavaType() == Enumeration.class){
                 Class c = root.get(criteria.getKey()).getJavaType();
                 return builder.equal(root.get(criteria.getKey()), Enum.valueOf(c,criteria.getValue().toString()));
+            }
+            else {
+                return builder.equal(
+                    root.<String>get(criteria.getKey()), criteria.getValue() );
             }
         }
         return null;

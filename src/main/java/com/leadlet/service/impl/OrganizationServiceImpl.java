@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -130,34 +131,36 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Page<OrganizationDTO> search(String filter, Pageable pageable) {
-        log.debug("Request to get all Organizations");
-        SpecificationsBuilder builder = new SpecificationsBuilder();
+        log.debug("Request to get all Persons");
 
-        if (!StringUtils.isEmpty(filter)) {
-            List<SearchCriteria> criteriaList = ParameterUtil.createCriterias(filter);
+        Specifications<Organization> searchSpecs = buildSpecificationsFromFilter(filter);
 
-            for (SearchCriteria criteria : criteriaList) {
-                builder.with(criteria);
-            }
-
-        }
-
-        builder.with("appAccount", ":", SecurityUtils.getCurrentUserAppAccountReference());
-
-        Specification<Organization> spec = builder.build();
-
-        return organizationRepository.findAll(spec, pageable)
+        return organizationRepository.findAll(searchSpecs, pageable)
             .map(organizationMapper::toDto);
 
     }
 
-    @Override
-    public OrganizationDTO findOneByPersonId(Long personId) {
+    private Specifications<Organization> buildSpecificationsFromFilter(String filter) {
 
-        PersonDTO personDTO = personService.findOne(personId);
+        Specification<Organization> appAccount = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("appAccount"), SecurityUtils.getCurrentUserAppAccountId());
 
-        return organizationMapper.toDto(
-            organizationRepository.findOneByIdAndAppAccount_Id(personDTO.getOrganizationId(), SecurityUtils.getCurrentUserAppAccountReference().getId()));
+        Specifications<Organization> searchSpec = Specifications.where(appAccount);
+
+        if (!StringUtils.isEmpty(filter)) {
+            List<SearchCriteria> criteriaList = ParameterUtil.createCriterias(filter);
+            for (SearchCriteria criteria : criteriaList) {
+                if( criteria.getKey().equals("name")){
+                    Specification<Organization> nameLike = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%"+criteria.getValue()+"%");
+                    searchSpec = searchSpec.and(nameLike);
+                }else if( criteria.getKey().equals("person")){
+                    Specification<Organization> hasOrganization = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("organization"), Long.parseLong(criteria.getValue().toString()));
+                    searchSpec = searchSpec.and(hasOrganization);
+                }
+            }
+        }
+
+        return searchSpec;
+
     }
 
     /**

@@ -38,6 +38,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="pipeline_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
             <column name="person_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -66,7 +70,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="created_by" type="varchar(50)">
+            <column name="created_by" type="varchar(50)" defaultValue="system">
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)"/>

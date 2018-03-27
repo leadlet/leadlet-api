@@ -12,6 +12,8 @@ public class DealDetailDTO extends  DealDTO {
 
     private StageDTO stage;
 
+    private PipelineDTO pipeline;
+
     private PersonDTO person;
 
     private OrganizationDTO organization;
@@ -64,6 +66,15 @@ public class DealDetailDTO extends  DealDTO {
 
     public DealDetailDTO setStage(StageDTO stage) {
         this.stage = stage;
+        return this;
+    }
+
+    public PipelineDTO getPipeline() {
+        return pipeline;
+    }
+
+    public DealDetailDTO setPipeline(PipelineDTO pipeline) {
+        this.pipeline = pipeline;
         return this;
     }
 
