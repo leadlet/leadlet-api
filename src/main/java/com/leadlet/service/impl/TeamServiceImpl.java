@@ -61,15 +61,15 @@ public class TeamServiceImpl implements TeamService {
     public TeamDTO update(TeamDTO teamDTO) {
         log.debug("Request to save Team : {}", teamDTO);
         Team team = teamMapper.toEntity(teamDTO);
-        Team teamFromDb = teamRepository.findOneByIdAndAppAccount_Id(team.getId(), SecurityUtils.getCurrentUserAppAccountId());
+        Team oldTeam = teamRepository.findOneByIdAndAppAccount_Id(team.getId(), SecurityUtils.getCurrentUserAppAccountId());
 
-        if (teamFromDb != null) {
+        if (oldTeam != null) {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             team.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
-            team = teamRepository.save(team);
+            //team = teamRepository.save(team);
 
             //silinenler
-            for (User dbUser : team.getMembers()) {
+            for (User dbUser : oldTeam.getMembers()) {
                 boolean found = false;
                 for (UserDTO userDTO : teamDTO.getMembers()) {
                     if (dbUser.getId().equals(userDTO.getId())) {
@@ -87,7 +87,7 @@ public class TeamServiceImpl implements TeamService {
 
             for (UserDTO userDTO : teamDTO.getMembers()) {
                 boolean found = false;
-                for (User dbUser: team.getMembers()){
+                for (User dbUser: oldTeam.getMembers()){
                     if(dbUser.getId().equals(userDTO.getId())){
                         found = true;
                         break;
@@ -99,6 +99,8 @@ public class TeamServiceImpl implements TeamService {
                     userRepository.save(user);
                 }
             }
+
+            team = teamRepository.save(team);
 
             return teamMapper.toDto(team);
         } else {
