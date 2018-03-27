@@ -68,12 +68,6 @@ public class TeamServiceImpl implements TeamService {
             team.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             team = teamRepository.save(team);
 
-            for (UserDTO userDTO : teamDTO.getMembers()) {
-                User user = userRepository.getOne(userDTO.getId());
-                user.setTeam(team);
-                userRepository.save(user);
-            }
-
             //silinenler
             for (User dbUser : team.getMembers()) {
                 boolean found = false;

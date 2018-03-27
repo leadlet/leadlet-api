@@ -31,6 +31,10 @@ public class Team implements Serializable {
     @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private Set<User> members = new HashSet<>();
 
+    @Size(max = 100)
+    @Column(name = "description", length = 100)
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private AppAccount appAccount;
 
@@ -70,6 +74,14 @@ public class Team implements Serializable {
         this.appAccount = appAccount;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,6 +89,7 @@ public class Team implements Serializable {
         Team team = (Team) o;
         return Objects.equals(id, team.id) &&
             Objects.equals(name, team.name) &&
+            Objects.equals(description, team.description) &&
             Objects.equals(members, team.members) &&
             Objects.equals(appAccount, team.appAccount);
     }
@@ -93,6 +106,7 @@ public class Team implements Serializable {
             "id=" + id +
             ", name='" + name + '\'' +
             ", members=" + members +
+            ", description='" + description + '\'' +
             ", appAccount=" + appAccount +
             '}';
     }
