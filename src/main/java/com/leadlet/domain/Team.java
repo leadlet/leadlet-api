@@ -6,7 +6,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Team.
@@ -25,6 +27,13 @@ public class Team implements Serializable {
     @Size(max = 50)
     @Column(name = "name", length = 50)
     private String name;
+
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+    private Set<User> members = new HashSet<>();
+
+    @Size(max = 100)
+    @Column(name = "description", length = 100)
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private AppAccount appAccount;
@@ -49,12 +58,28 @@ public class Team implements Serializable {
         this.name = name;
     }
 
+    public Set<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<User> members) {
+        this.members = members;
+    }
+
     public AppAccount getAppAccount() {
         return appAccount;
     }
 
     public void setAppAccount(AppAccount appAccount) {
         this.appAccount = appAccount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -64,13 +89,15 @@ public class Team implements Serializable {
         Team team = (Team) o;
         return Objects.equals(id, team.id) &&
             Objects.equals(name, team.name) &&
+            Objects.equals(description, team.description) &&
+            Objects.equals(members, team.members) &&
             Objects.equals(appAccount, team.appAccount);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, appAccount);
+        return id.hashCode();
     }
 
     @Override
@@ -78,6 +105,8 @@ public class Team implements Serializable {
         return "Team{" +
             "id=" + id +
             ", name='" + name + '\'' +
+            ", members=" + members +
+            ", description='" + description + '\'' +
             ", appAccount=" + appAccount +
             '}';
     }

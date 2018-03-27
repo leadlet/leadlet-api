@@ -132,6 +132,38 @@ public class Person implements Serializable {
         this.appAccount = appAccount;
     }
 
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
+    }
+
+    public Set<Deal> getDeals() {
+        return deals;
+    }
+
+    public void setDeals(Set<Deal> deals) {
+        this.deals = deals;
+    }
+
+    public Set<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(Set<Note> notes) {
+        this.notes = notes;
+    }
+
+    public Set<Timeline> getTimelines() {
+        return timelines;
+    }
+
+    public void setTimelines(Set<Timeline> timelines) {
+        this.timelines = timelines;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -144,13 +176,16 @@ public class Person implements Serializable {
             Objects.equals(phones, person.phones) &&
             Objects.equals(email, person.email) &&
             Objects.equals(organization, person.organization) &&
-            Objects.equals(appAccount, person.appAccount);
+            Objects.equals(appAccount, person.appAccount) &&
+            Objects.equals(activities, person.activities) &&
+            Objects.equals(deals, person.deals) &&
+            Objects.equals(notes, person.notes) &&
+            Objects.equals(timelines, person.timelines);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, name, address, title, phones, email, organization, appAccount);
+        return id.hashCode();
     }
 
     @Override
@@ -164,6 +199,10 @@ public class Person implements Serializable {
             ", email='" + email + '\'' +
             ", organization=" + organization +
             ", appAccount=" + appAccount +
+            ", activities=" + activities +
+            ", deals=" + deals +
+            ", notes=" + notes +
+            ", timelines=" + timelines +
             '}';
     }
 }

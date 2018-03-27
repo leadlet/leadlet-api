@@ -29,6 +29,9 @@
             <column name="activated" type="boolean" valueBoolean="false">
                 <constraints nullable="false" />
             </column>
+            <column name="is_team_lead" type="boolean" valueBoolean="false">
+                <constraints nullable="false" />
+            </column>
             <column name="lang_key" type="varchar(5)"/>
             <column name="activation_key" type="varchar(20)"/>
             <column name="reset_key" type="varchar(20)"/>
@@ -45,6 +48,9 @@
             <column name="last_modified_date" type="timestamp"/>
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
+            </column>
+            <column name="team_id" type="bigint">
+                <constraints nullable="true" />
             </column>
         </createTable>
 
@@ -84,6 +90,8 @@
                   tableName="jhi_user">
             <column name="activated" type="boolean"/>
             <column name="created_date" type="timestamp"/>
+            <column name="team_id" type="NUMERIC" />
+            <column name="is_team_lead" type="boolean" />
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
 

@@ -13,5 +13,6 @@
                                  constraintName="fk_team_app_account_id"
                                  referencedColumnNames="id"
                                  referencedTableName="app_account"/>
+
     </changeSet>
 </databaseChangeLog>
