@@ -111,20 +111,6 @@ public class OrganizationResource {
     }
 
     /**
-     * GET  /organizations/:id : get the "id" organization.
-     *
-     * @param personId the id of the organizationDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the organizationDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/organizations/person/{personId}")
-    @Timed
-    public ResponseEntity<List<OrganizationDTO>> getOrganizationByPersonId(@PathVariable Long personId) {
-        log.debug("REST request to get Organization : {}", personId);
-        OrganizationDTO organizationDTO = organizationService.findOneByPersonId(personId);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(Arrays.asList(organizationDTO)));
-    }
-
-    /**
      * DELETE  /persons/:idList : delete the "idList" person.
      *
      * @param idList the id of the personDTO to delete

@@ -1,6 +1,8 @@
 package com.leadlet.service.dto;
 
 
+import com.leadlet.domain.Organization;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -18,9 +20,7 @@ public class PersonDTO implements Serializable {
 
     private String title;
 
-    private Long organizationId;
-
-    private String organizationName;
+    private OrganizationDTO organization;
 
     private List<ContactPhoneDTO> phones;
 
@@ -58,14 +58,6 @@ public class PersonDTO implements Serializable {
         this.title = title;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
-    }
-
     public List<ContactPhoneDTO> getPhones() {
         return phones;
     }
@@ -82,12 +74,12 @@ public class PersonDTO implements Serializable {
         this.email = email;
     }
 
-    public String getOrganizationName() {
-        return organizationName;
+    public OrganizationDTO getOrganization() {
+        return organization;
     }
 
-    public PersonDTO setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
+    public PersonDTO setOrganization(OrganizationDTO organization) {
+        this.organization = organization;
         return this;
     }
 
@@ -100,7 +92,7 @@ public class PersonDTO implements Serializable {
             Objects.equals(name, personDTO.name) &&
             Objects.equals(address, personDTO.address) &&
             Objects.equals(title, personDTO.title) &&
-            Objects.equals(organizationId, personDTO.organizationId) &&
+            Objects.equals(organization, personDTO.organization) &&
             Objects.equals(phones, personDTO.phones) &&
             Objects.equals(email, personDTO.email);
     }
@@ -108,7 +100,7 @@ public class PersonDTO implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, address, title, organizationId, phones, email);
+        return Objects.hash(id);
     }
 
     @Override
@@ -118,7 +110,7 @@ public class PersonDTO implements Serializable {
             ", name='" + name + '\'' +
             ", address='" + address + '\'' +
             ", title='" + title + '\'' +
-            ", organizationId=" + organizationId +
+            ", organization=" + organization +
             ", phones=" + phones +
             ", email='" + email + '\'' +
             '}';

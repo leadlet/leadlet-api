@@ -11,12 +11,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {ContactPhoneMapper.class, OrganizationMapper.class})
 public interface PersonMapper extends EntityMapper<PersonDTO, Person> {
 
-    @Mapping(source = "organization.id", target = "organizationId")
-    @Mapping(source = "organization.name", target = "organizationName")
     PersonDTO toDto(Person person);
 
     @Mapping(target = "appAccount", ignore = true)
-    @Mapping(source = "organizationId", target = "organization")
     Person toEntity(PersonDTO personDTO);
 
     default Person fromId(Long id) {

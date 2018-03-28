@@ -62,11 +62,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="lat" type="DECIMAL(11, 8)">
+            <column name="lat" type="DOUBLE">
                 <constraints nullable="true" />
             </column>
 
-            <column name="lng" type="DECIMAL(11, 8)">
+            <column name="lng" type="DOUBLE">
                 <constraints nullable="true" />
             </column>
 

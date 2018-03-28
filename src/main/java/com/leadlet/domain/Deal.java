@@ -35,6 +35,9 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Stage stage;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Pipeline pipeline;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Person person;
 
@@ -160,6 +163,15 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
 
     public Deal setNotes(Set<Note> notes) {
         this.notes = notes;
+        return this;
+    }
+
+    public Pipeline getPipeline() {
+        return pipeline;
+    }
+
+    public Deal setPipeline(Pipeline pipeline) {
+        this.pipeline = pipeline;
         return this;
     }
 
