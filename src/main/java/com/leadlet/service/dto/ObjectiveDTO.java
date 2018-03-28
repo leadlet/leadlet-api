@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.leadlet.domain.enumeration.ActivityType;
-import com.leadlet.domain.enumeration.PeriodType;
 
 /**
  * A DTO for the Objective entity.
@@ -15,11 +14,13 @@ public class ObjectiveDTO implements Serializable {
 
     private ActivityType name;
 
-    private Long amount;
+    private Long dailyAmount;
+
+    private Long weeklyAmount;
+
+    private Long monthlyAmount;
 
     private Long userId;
-
-    private PeriodType period;
 
     public Long getId() {
         return id;
@@ -37,20 +38,28 @@ public class ObjectiveDTO implements Serializable {
         this.name = name;
     }
 
-    public Long getAmount() {
-        return amount;
+    public Long getDailyAmount() {
+        return dailyAmount;
     }
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
+    public void setDailyAmount(Long dailyAmount) {
+        this.dailyAmount = dailyAmount;
     }
 
-    public PeriodType getPeriod() {
-        return period;
+    public Long getWeeklyAmount() {
+        return weeklyAmount;
     }
 
-    public void setPeriod(PeriodType period) {
-        this.period = period;
+    public void setWeeklyAmount(Long weeklyAmount) {
+        this.weeklyAmount = weeklyAmount;
+    }
+
+    public Long getMonthlyAmount() {
+        return monthlyAmount;
+    }
+
+    public void setMonthlyAmount(Long monthlyAmount) {
+        this.monthlyAmount = monthlyAmount;
     }
 
     public Long getUserId() {
@@ -68,9 +77,10 @@ public class ObjectiveDTO implements Serializable {
         ObjectiveDTO that = (ObjectiveDTO) o;
         return Objects.equals(id, that.id) &&
             name == that.name &&
-            Objects.equals(amount, that.amount) &&
-            Objects.equals(userId, that.userId) &&
-            period == that.period;
+            Objects.equals(dailyAmount, that.dailyAmount) &&
+            Objects.equals(weeklyAmount, that.weeklyAmount) &&
+            Objects.equals(monthlyAmount, that.monthlyAmount) &&
+            Objects.equals(userId, that.userId);
     }
 
     @Override
@@ -84,9 +94,10 @@ public class ObjectiveDTO implements Serializable {
         return "ObjectiveDTO{" +
             "id=" + id +
             ", name=" + name +
-            ", amount=" + amount +
+            ", dailyAmount=" + dailyAmount +
+            ", weeklyAmount=" + weeklyAmount +
+            ", monthlyAmount=" + monthlyAmount +
             ", userId=" + userId +
-            ", period=" + period +
             '}';
     }
 }

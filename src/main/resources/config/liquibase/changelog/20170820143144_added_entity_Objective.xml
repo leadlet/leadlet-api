@@ -27,11 +27,15 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="amount" type="bigint">
+            <column name="dailyAmount" type="bigint">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="period" type="varchar(255)">
+            <column name="weeklyAmount" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="monthlyAmount" type="bigint">
                 <constraints nullable="true"/>
             </column>
 

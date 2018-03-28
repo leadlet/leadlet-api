@@ -1,7 +1,6 @@
 package com.leadlet.domain;
 
 import com.leadlet.domain.enumeration.ActivityType;
-import com.leadlet.domain.enumeration.PeriodType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -27,12 +26,14 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
     @Column(name = "name")
     private ActivityType name;
 
-    @Column(name = "amount")
-    private Long amount;
+    @Column(name = "dailyAmount")
+    private Long dailyAmount;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "period")
-    private PeriodType period;
+    @Column(name = "weeklyAmount")
+    private Long weeklyAmount;
+
+    @Column(name = "monthlyAmount")
+    private Long monthlyAmount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private AppAccount appAccount;
@@ -60,20 +61,28 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
         this.name = name;
     }
 
-    public Long getAmount() {
-        return amount;
+    public Long getDailyAmount() {
+        return dailyAmount;
     }
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
+    public void setDailyAmount(Long dailyAmount) {
+        this.dailyAmount = dailyAmount;
     }
 
-    public PeriodType getPeriod() {
-        return period;
+    public Long getWeeklyAmount() {
+        return weeklyAmount;
     }
 
-    public void setPeriod(PeriodType period) {
-        this.period = period;
+    public void setWeeklyAmount(Long weeklyAmount) {
+        this.weeklyAmount = weeklyAmount;
+    }
+
+    public Long getMonthlyAmount() {
+        return monthlyAmount;
+    }
+
+    public void setMonthlyAmount(Long monthlyAmount) {
+        this.monthlyAmount = monthlyAmount;
     }
 
     @Override
@@ -101,8 +110,9 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
         Objective objective = (Objective) o;
         return Objects.equals(id, objective.id) &&
             name == objective.name &&
-            Objects.equals(amount, objective.amount) &&
-            period == objective.period &&
+            Objects.equals(dailyAmount, objective.dailyAmount) &&
+            Objects.equals(weeklyAmount, objective.weeklyAmount) &&
+            Objects.equals(monthlyAmount, objective.monthlyAmount) &&
             Objects.equals(appAccount, objective.appAccount) &&
             Objects.equals(user, objective.user);
     }
@@ -118,8 +128,9 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
         return "Objective{" +
             "id=" + id +
             ", name=" + name +
-            ", amount=" + amount +
-            ", period=" + period +
+            ", dailyAmount=" + dailyAmount +
+            ", weeklyAmount=" + weeklyAmount +
+            ", monthlyAmount=" + monthlyAmount +
             ", appAccount=" + appAccount +
             ", user=" + user +
             '}';
