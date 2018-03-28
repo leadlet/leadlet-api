@@ -1,14 +1,13 @@
 package com.leadlet.domain;
 
+import com.leadlet.domain.enumeration.ActivityType;
+import com.leadlet.domain.enumeration.PeriodType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 import java.util.Objects;
-
-import com.leadlet.domain.enumeration.ObjectiveSourceType;
 
 /**
  * A Objective.
@@ -24,24 +23,26 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "source_id")
-    private Long sourceId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "name")
+    private ActivityType name;
+
+    @Column(name = "amount")
+    private Long amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "source_type")
-    private ObjectiveSourceType sourceType;
+    @Column(name = "period")
+    private PeriodType period;
 
-    @Column(name = "name")
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AppAccount appAccount;
 
-    @Column(name = "due_date")
-    private ZonedDateTime dueDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
-    @Column(name = "target_amount")
-    private Long targetAmount;
-
-    @Column(name = "current_amount")
-    private Long currentAmount;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public Long getId() {
         return id;
@@ -51,114 +52,76 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
         this.id = id;
     }
 
-    public Long getSourceId() {
-        return sourceId;
-    }
-
-    public Objective sourceId(Long sourceId) {
-        this.sourceId = sourceId;
-        return this;
-    }
-
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
-    }
-
-    public ObjectiveSourceType getSourceType() {
-        return sourceType;
-    }
-
-    public Objective sourceType(ObjectiveSourceType sourceType) {
-        this.sourceType = sourceType;
-        return this;
-    }
-
-    public void setSourceType(ObjectiveSourceType sourceType) {
-        this.sourceType = sourceType;
-    }
-
-    public String getName() {
+    public ActivityType getName() {
         return name;
     }
 
-    public Objective name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public void setName(String name) {
+    public void setName(ActivityType name) {
         this.name = name;
     }
 
-    public ZonedDateTime getDueDate() {
-        return dueDate;
+    public Long getAmount() {
+        return amount;
     }
 
-    public Objective dueDate(ZonedDateTime dueDate) {
-        this.dueDate = dueDate;
-        return this;
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 
-    public void setDueDate(ZonedDateTime dueDate) {
-        this.dueDate = dueDate;
+    public PeriodType getPeriod() {
+        return period;
     }
 
-    public Long getTargetAmount() {
-        return targetAmount;
+    public void setPeriod(PeriodType period) {
+        this.period = period;
     }
 
-    public Objective targetAmount(Long targetAmount) {
-        this.targetAmount = targetAmount;
-        return this;
+    @Override
+    public AppAccount getAppAccount() {
+        return appAccount;
     }
 
-    public void setTargetAmount(Long targetAmount) {
-        this.targetAmount = targetAmount;
+    @Override
+    public void setAppAccount(AppAccount appAccount) {
+        this.appAccount = appAccount;
     }
 
-    public Long getCurrentAmount() {
-        return currentAmount;
+    public User getUser() {
+        return user;
     }
 
-    public Objective currentAmount(Long currentAmount) {
-        this.currentAmount = currentAmount;
-        return this;
-    }
-
-    public void setCurrentAmount(Long currentAmount) {
-        this.currentAmount = currentAmount;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof Objective)) return false;
         Objective objective = (Objective) o;
-        if (objective.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), objective.getId());
+        return Objects.equals(id, objective.id) &&
+            name == objective.name &&
+            Objects.equals(amount, objective.amount) &&
+            period == objective.period &&
+            Objects.equals(appAccount, objective.appAccount) &&
+            Objects.equals(user, objective.user);
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Objective{" +
-            "id=" + getId() +
-            ", sourceId='" + getSourceId() + "'" +
-            ", sourceType='" + getSourceType() + "'" +
-            ", name='" + getName() + "'" +
-            ", dueDate='" + getDueDate() + "'" +
-            ", targetAmount='" + getTargetAmount() + "'" +
-            ", currentAmount='" + getCurrentAmount() + "'" +
-            "}";
+            "id=" + id +
+            ", name=" + name +
+            ", amount=" + amount +
+            ", period=" + period +
+            ", appAccount=" + appAccount +
+            ", user=" + user +
+            '}';
     }
 }

@@ -89,8 +89,8 @@ public class Team implements Serializable {
         Team team = (Team) o;
         return Objects.equals(id, team.id) &&
             Objects.equals(name, team.name) &&
-            Objects.equals(description, team.description) &&
             Objects.equals(members, team.members) &&
+            Objects.equals(description, team.description) &&
             Objects.equals(appAccount, team.appAccount);
     }
 

@@ -92,6 +92,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Deal> deals;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Objective> objectives;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
@@ -237,12 +240,21 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return isTeamLead;
     }
 
+    public Set<Objective> getObjectives() {
+        return objectives;
+    }
+
+    public void setObjectives(Set<Objective> objectives) {
+        this.objectives = objectives;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
         return activated == user.activated &&
+            isTeamLead == user.isTeamLead &&
             Objects.equals(id, user.id) &&
             Objects.equals(login, user.login) &&
             Objects.equals(password, user.password) &&
@@ -256,7 +268,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
             Objects.equals(authorities, user.authorities) &&
             Objects.equals(activities, user.activities) &&
             Objects.equals(deals, user.deals) &&
-            Objects.equals(team, user.team) ;
+            Objects.equals(objectives, user.objectives) &&
+            Objects.equals(team, user.team);
     }
 
     @Override
@@ -282,6 +295,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", authorities=" + authorities +
             ", activities=" + activities +
             ", deals=" + deals +
+            ", objectives=" + objectives +
             ", team=" + team +
             ", isTeamLead=" + isTeamLead +
             '}';

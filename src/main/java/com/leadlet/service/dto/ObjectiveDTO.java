@@ -1,10 +1,10 @@
 package com.leadlet.service.dto;
 
-
-import java.time.ZonedDateTime;
 import java.io.Serializable;
 import java.util.Objects;
-import com.leadlet.domain.enumeration.ObjectiveSourceType;
+
+import com.leadlet.domain.enumeration.ActivityType;
+import com.leadlet.domain.enumeration.PeriodType;
 
 /**
  * A DTO for the Objective entity.
@@ -13,17 +13,13 @@ public class ObjectiveDTO implements Serializable {
 
     private Long id;
 
-    private Long sourceId;
+    private ActivityType name;
 
-    private ObjectiveSourceType sourceType;
+    private Long amount;
 
-    private String name;
+    private Long userId;
 
-    private ZonedDateTime dueDate;
-
-    private Long targetAmount;
-
-    private Long currentAmount;
+    private PeriodType period;
 
     public Long getId() {
         return id;
@@ -33,85 +29,64 @@ public class ObjectiveDTO implements Serializable {
         this.id = id;
     }
 
-    public Long getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
-    }
-
-    public ObjectiveSourceType getSourceType() {
-        return sourceType;
-    }
-
-    public void setSourceType(ObjectiveSourceType sourceType) {
-        this.sourceType = sourceType;
-    }
-
-    public String getName() {
+    public ActivityType getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(ActivityType name) {
         this.name = name;
     }
 
-    public ZonedDateTime getDueDate() {
-        return dueDate;
+    public Long getAmount() {
+        return amount;
     }
 
-    public void setDueDate(ZonedDateTime dueDate) {
-        this.dueDate = dueDate;
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 
-    public Long getTargetAmount() {
-        return targetAmount;
+    public PeriodType getPeriod() {
+        return period;
     }
 
-    public void setTargetAmount(Long targetAmount) {
-        this.targetAmount = targetAmount;
+    public void setPeriod(PeriodType period) {
+        this.period = period;
     }
 
-    public Long getCurrentAmount() {
-        return currentAmount;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setCurrentAmount(Long currentAmount) {
-        this.currentAmount = currentAmount;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ObjectiveDTO objectiveDTO = (ObjectiveDTO) o;
-        if(objectiveDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), objectiveDTO.getId());
+        if (this == o) return true;
+        if (!(o instanceof ObjectiveDTO)) return false;
+        ObjectiveDTO that = (ObjectiveDTO) o;
+        return Objects.equals(id, that.id) &&
+            name == that.name &&
+            Objects.equals(amount, that.amount) &&
+            Objects.equals(userId, that.userId) &&
+            period == that.period;
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "ObjectiveDTO{" +
-            "id=" + getId() +
-            ", sourceId='" + getSourceId() + "'" +
-            ", sourceType='" + getSourceType() + "'" +
-            ", name='" + getName() + "'" +
-            ", dueDate='" + getDueDate() + "'" +
-            ", targetAmount='" + getTargetAmount() + "'" +
-            ", currentAmount='" + getCurrentAmount() + "'" +
-            "}";
+            "id=" + id +
+            ", name=" + name +
+            ", amount=" + amount +
+            ", userId=" + userId +
+            ", period=" + period +
+            '}';
     }
 }
