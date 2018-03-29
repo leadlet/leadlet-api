@@ -62,7 +62,7 @@ public interface DealService {
 
     Page<DealDTO> findAllByStageId(Long stageId, Pageable pageable);
 
-    Page<DealDetailDTO> findAllByPersonId(Long stageId, Pageable pageable);
+    Page<DealDetailDTO> findAllByPersonId(Long personId, Pageable pageable);
 
     Double getDealTotalByStage(Long stageId);
 

@@ -130,6 +130,21 @@ public class ObjectiveResource {
     }
 
     /**
+     * GET  /objectives/team/:id : get the "id" objective.
+     *
+     * @param teamId the id of the objectiveDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the objectiveDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/objectives/team/{teamId}")
+    @Timed
+    public ResponseEntity<List<TeamObjectiveDTO>> getTeamObjectives(@PathVariable Long teamId) {
+        log.debug("REST request to get Objective : {}", teamId);
+
+        List<TeamObjectiveDTO> teamObjectiveDTOS = objectiveService.findAllByTeamId(teamId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(teamObjectiveDTOS));
+    }
+
+    /**
      * DELETE  /objectives/:id : delete the "id" objective.
      *
      * @param id the id of the objectiveDTO to delete

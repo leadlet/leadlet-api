@@ -2,6 +2,7 @@ package com.leadlet.service.impl;
 
 import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.User;
+import com.leadlet.domain.enumeration.ActivityType;
 import com.leadlet.repository.AppAccountRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.SecurityUtils;
@@ -18,7 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -43,6 +47,25 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         this.objectiveMapper = objectiveMapper;
         this.userRepository = userRepository;
         this.appAccountRepository = appAccountRepository;
+    }
+
+    public TeamObjectiveDTO getObjectiveByTeamId(ActivityType type, Long teamId) {
+
+        List<User> updatedUsers = userRepository.findAllByTeam_IdAndAppAccount_Id(teamId, SecurityUtils.getCurrentUserAppAccountId());
+        TeamObjectiveDTO newTeamObjectiveDTO = new TeamObjectiveDTO();
+        newTeamObjectiveDTO.setTeamId(teamId);
+        newTeamObjectiveDTO.setName(type);
+
+        for (User user : updatedUsers) {
+            for (Objective objective : user.getObjectives()) {
+                if (objective.getName().equals(type)) {
+                    newTeamObjectiveDTO.setDailyAmount(newTeamObjectiveDTO.getDailyAmount() + objective.getDailyAmount());
+                    newTeamObjectiveDTO.setWeeklyAmount(newTeamObjectiveDTO.getWeeklyAmount() + objective.getWeeklyAmount());
+                    newTeamObjectiveDTO.setMonthlyAmount(newTeamObjectiveDTO.getMonthlyAmount() + objective.getMonthlyAmount());
+                }
+            }
+        }
+        return newTeamObjectiveDTO;
     }
 
     /**
@@ -81,20 +104,9 @@ public class ObjectiveServiceImpl implements ObjectiveService {
 
             objective = objectiveRepository.save(objective);
         }
-        List<User> updatedUsers = userRepository.findAllByTeam_IdAndAppAccount_Id(teamObjectiveDTO.getTeamId(), SecurityUtils.getCurrentUserAppAccountId());
-        TeamObjectiveDTO newTeamObjectiveDTO = new TeamObjectiveDTO();
-        newTeamObjectiveDTO.setTeamId(teamObjectiveDTO.getTeamId());
-        newTeamObjectiveDTO.setName(teamObjectiveDTO.getName());
 
-        for (User user : updatedUsers) {
-            for (Objective objective : user.getObjectives()) {
-                if (objective.getName().equals(teamObjectiveDTO.getName())) {
-                    newTeamObjectiveDTO.setDailyAmount(newTeamObjectiveDTO.getDailyAmount() + objective.getDailyAmount());
-                    newTeamObjectiveDTO.setWeeklyAmount(newTeamObjectiveDTO.getWeeklyAmount() + objective.getWeeklyAmount());
-                    newTeamObjectiveDTO.setMonthlyAmount(newTeamObjectiveDTO.getMonthlyAmount() + objective.getMonthlyAmount());
-                }
-            }
-        }
+        TeamObjectiveDTO newTeamObjectiveDTO = getObjectiveByTeamId(teamObjectiveDTO.getName(), teamObjectiveDTO.getTeamId());
+
         return newTeamObjectiveDTO;
     }
 
@@ -110,6 +122,41 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         log.debug("Request to get all Objectives");
         return objectiveRepository.findAll(pageable)
             .map(objectiveMapper::toDto);
+    }
+
+    @Override
+    public List<TeamObjectiveDTO> findAllByTeamId(Long teamId) {
+
+        Map<ActivityType, TeamObjectiveDTO> objectiveDTOMap = new HashMap<>();
+
+        List<User> updatedUsers = userRepository.findAllByTeam_IdAndAppAccount_Id(teamId, SecurityUtils.getCurrentUserAppAccountId());
+        for (User user : updatedUsers) {
+            for (Objective userObjective : user.getObjectives()) {
+
+                if (objectiveDTOMap.containsKey(userObjective.getName())) {
+                    TeamObjectiveDTO teamObjectiveDTO = objectiveDTOMap.get(userObjective.getName());
+
+                    teamObjectiveDTO.setDailyAmount(teamObjectiveDTO.getDailyAmount() + userObjective.getDailyAmount());
+                    teamObjectiveDTO.setWeeklyAmount(teamObjectiveDTO.getWeeklyAmount() + userObjective.getWeeklyAmount());
+                    teamObjectiveDTO.setMonthlyAmount(teamObjectiveDTO.getMonthlyAmount() + userObjective.getMonthlyAmount());
+
+                    objectiveDTOMap.put(userObjective.getName(), teamObjectiveDTO);
+                } else {
+                    TeamObjectiveDTO teamObjectiveDTO = new TeamObjectiveDTO();
+                    teamObjectiveDTO.setName(userObjective.getName());
+                    teamObjectiveDTO.setTeamId(teamId);
+
+                    teamObjectiveDTO.setDailyAmount(userObjective.getDailyAmount());
+                    teamObjectiveDTO.setWeeklyAmount(userObjective.getWeeklyAmount());
+                    teamObjectiveDTO.setMonthlyAmount(userObjective.getMonthlyAmount());
+
+                    objectiveDTOMap.put(teamObjectiveDTO.getName(), teamObjectiveDTO);
+                }
+            }
+        }
+        List<TeamObjectiveDTO> teamObjectiveDTOList = new ArrayList<>(objectiveDTOMap.values());
+
+        return teamObjectiveDTOList;
     }
 
     /**

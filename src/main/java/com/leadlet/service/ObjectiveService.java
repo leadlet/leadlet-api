@@ -5,6 +5,8 @@ import com.leadlet.service.dto.TeamObjectiveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing Objective.
  */
@@ -33,6 +35,13 @@ public interface ObjectiveService {
      *  @return the list of entities
      */
     Page<ObjectiveDTO> findAll(Pageable pageable);
+
+    /**
+     *  Get all the objectives By Team Id.
+
+     *  @return the list of entities
+     */
+    List<TeamObjectiveDTO> findAllByTeamId(Long teamId);
 
     /**
      *  Get the "id" objective.

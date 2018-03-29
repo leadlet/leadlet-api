@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * A DTO for the Deal entity.
  */
-public class DealDetailDTO extends  DealDTO {
+public class DealDetailDTO extends DealDTO {
 
     private static final long serialVersionUID = 7878276242200417567L;
 
