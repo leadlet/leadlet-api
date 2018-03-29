@@ -280,9 +280,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", resetKey='" + resetKey + '\'' +
             ", resetDate=" + resetDate +
             ", authorities=" + authorities +
-            ", activities=" + activities +
-            ", deals=" + deals +
-            ", team=" + team +
             ", isTeamLead=" + isTeamLead +
             '}';
     }
