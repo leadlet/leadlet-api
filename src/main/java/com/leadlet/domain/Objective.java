@@ -26,17 +26,14 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
     @Column(name = "name")
     private ActivityType name;
 
-    @Column(name = "dailyAmount")
+    @Column(name = "daily_amount")
     private Long dailyAmount;
 
-    @Column(name = "weeklyAmount")
+    @Column(name = "weekly_amount")
     private Long weeklyAmount;
 
-    @Column(name = "monthlyAmount")
+    @Column(name = "monthly_amount")
     private Long monthlyAmount;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private AppAccount appAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -85,16 +82,6 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
         this.monthlyAmount = monthlyAmount;
     }
 
-    @Override
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    @Override
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
-    }
-
     public User getUser() {
         return user;
     }
@@ -113,7 +100,6 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
             Objects.equals(dailyAmount, objective.dailyAmount) &&
             Objects.equals(weeklyAmount, objective.weeklyAmount) &&
             Objects.equals(monthlyAmount, objective.monthlyAmount) &&
-            Objects.equals(appAccount, objective.appAccount) &&
             Objects.equals(user, objective.user);
     }
 
@@ -131,7 +117,6 @@ public class Objective extends AbstractAccountSpecificEntity implements Serializ
             ", dailyAmount=" + dailyAmount +
             ", weeklyAmount=" + weeklyAmount +
             ", monthlyAmount=" + monthlyAmount +
-            ", appAccount=" + appAccount +
             ", user=" + user +
             '}';
     }

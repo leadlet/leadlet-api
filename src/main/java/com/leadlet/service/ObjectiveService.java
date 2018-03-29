@@ -1,6 +1,7 @@
 package com.leadlet.service;
 
 import com.leadlet.service.dto.ObjectiveDTO;
+import com.leadlet.service.dto.TeamObjectiveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,6 +17,14 @@ public interface ObjectiveService {
      * @return the persisted entity
      */
     ObjectiveDTO save(ObjectiveDTO objectiveDTO);
+
+    /**
+     * Save a objective.
+     *
+     * @param teamObjectiveDTO the entity to save
+     * @return the persisted entity
+     */
+    TeamObjectiveDTO saveTeamObjective(TeamObjectiveDTO teamObjectiveDTO);
 
     /**
      *  Get all the objectives.

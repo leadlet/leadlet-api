@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     User findOneByIdAndAppAccount_Id(Long login, Long appAccountId);
 
+    List<User> findAllByTeam_IdAndAppAccount_Id(Long teamId, Long appAccountId);
+
     Optional<User> findOneByActivationKey(String activationKey);
 
     List<User> findAllByActivatedIsFalseAndCreatedDateBefore(Instant dateTime);

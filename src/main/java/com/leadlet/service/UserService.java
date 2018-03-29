@@ -328,4 +328,17 @@ public class UserService {
         User user = userRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         return userMapper.toDto(user);
     }
+
+    /**
+     * Get one user by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public List<User> findUsersByTeamId(Long id) {
+        log.debug("Request to get User By Team Id: {}", id);
+        List<User> users = userRepository.findAllByTeam_IdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
+        return users;
+    }
 }

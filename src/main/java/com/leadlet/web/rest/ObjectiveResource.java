@@ -2,6 +2,7 @@ package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.ObjectiveService;
+import com.leadlet.service.dto.TeamObjectiveDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
 import com.leadlet.service.dto.ObjectiveDTO;
@@ -56,6 +57,24 @@ public class ObjectiveResource {
         ObjectiveDTO result = objectiveService.save(objectiveDTO);
         return ResponseEntity.created(new URI("/api/objectives/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * POST  /objectives : Create a new objective.
+     *
+     * @param teamObjectiveDTO the objectiveDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new objectiveDTO, or with status 400 (Bad Request) if the objective has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/objectives/team")
+    @Timed
+    public ResponseEntity<TeamObjectiveDTO> createTeamObjective(@RequestBody TeamObjectiveDTO teamObjectiveDTO) throws URISyntaxException {
+        log.debug("REST request to save Objective : {}", teamObjectiveDTO);
+
+        TeamObjectiveDTO result = objectiveService.saveTeamObjective(teamObjectiveDTO);
+        return ResponseEntity.created(new URI("/api/objectives/team" + result.getTeamId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getTeamId().toString()))
             .body(result);
     }
 

@@ -27,15 +27,15 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="dailyAmount" type="bigint">
+            <column name="daily_amount" type="bigint">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="weeklyAmount" type="bigint">
+            <column name="weekly_amount" type="bigint">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="monthlyAmount" type="bigint">
+            <column name="monthly_amount" type="bigint">
                 <constraints nullable="true"/>
             </column>
 

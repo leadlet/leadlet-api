@@ -15,4 +15,5 @@ import java.util.Optional;
 @Repository
 public interface AppAccountRepository extends JpaRepository<AppAccount,Long> {
     Optional<AppAccount> findOneByName(String name);
+    AppAccount findOneById(Long id);
 }
