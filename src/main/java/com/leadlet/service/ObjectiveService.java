@@ -29,6 +29,14 @@ public interface ObjectiveService {
     TeamObjectiveDTO saveTeamObjective(TeamObjectiveDTO teamObjectiveDTO);
 
     /**
+     * Save a objective.
+     *
+     * @param objectiveDTO the entity to save
+     * @return the persisted entity
+     */
+    ObjectiveDTO saveUserObjective(ObjectiveDTO objectiveDTO);
+
+    /**
      *  Get all the objectives.
      *
      *  @param pageable the pagination information
@@ -42,6 +50,13 @@ public interface ObjectiveService {
      *  @return the list of entities
      */
     List<TeamObjectiveDTO> findAllByTeamId(Long teamId);
+
+    /**
+     *  Get all the objectives By User Id.
+
+     *  @return the list of entities
+     */
+    List<ObjectiveDTO> findAllByUserId(Long userId);
 
     /**
      *  Get the "id" objective.

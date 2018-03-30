@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the Objective entity.
@@ -15,4 +17,6 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface ObjectiveRepository extends JpaRepository<Objective,Long> {
     Objective findOneByNameAndUserAndAppAccount_Id(ActivityType name, User user, Long appAccountId);
+    List<Objective> findAllByUser_IdAndAppAccount_Id(Long userId, Long appAccountId);
+
 }

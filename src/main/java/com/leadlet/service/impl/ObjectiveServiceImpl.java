@@ -110,6 +110,17 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         return newTeamObjectiveDTO;
     }
 
+    @Override
+    public ObjectiveDTO saveUserObjective(ObjectiveDTO objectiveDTO) {
+        log.debug("Request to save Objective : {}", objectiveDTO);
+
+        Objective objective = objectiveMapper.toEntity(objectiveDTO);
+        objective.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
+        objective = objectiveRepository.save(objective);
+
+        return objectiveMapper.toDto(objective);
+    }
+
     /**
      * Get all the objectives.
      *
@@ -157,6 +168,14 @@ public class ObjectiveServiceImpl implements ObjectiveService {
         List<TeamObjectiveDTO> teamObjectiveDTOList = new ArrayList<>(objectiveDTOMap.values());
 
         return teamObjectiveDTOList;
+    }
+
+    @Override
+    public List<ObjectiveDTO> findAllByUserId(Long userId) {
+        log.debug("Request to get Objectives for user : {}", userId);
+        List<Objective> objectiveList = objectiveRepository.findAllByUser_IdAndAppAccount_Id(userId, SecurityUtils.getCurrentUserAppAccountId());
+        return objectiveMapper.toDto(objectiveList);
+
     }
 
     /**

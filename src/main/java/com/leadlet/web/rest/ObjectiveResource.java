@@ -79,6 +79,24 @@ public class ObjectiveResource {
     }
 
     /**
+     * POST  /objectives : Create a new objective.
+     *
+     * @param objectiveDTO the objectiveDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new objectiveDTO, or with status 400 (Bad Request) if the objective has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/objectives/user")
+    @Timed
+    public ResponseEntity<ObjectiveDTO> createObjectiveForUser(@RequestBody ObjectiveDTO objectiveDTO) throws URISyntaxException {
+        log.debug("REST request to save Objective : {}", objectiveDTO);
+
+        ObjectiveDTO result = objectiveService.saveUserObjective(objectiveDTO);
+        return ResponseEntity.created(new URI("/api/objectives/user" + result.getUserId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getUserId().toString()))
+            .body(result);
+    }
+
+    /**
      * PUT  /objectives : Updates an existing objective.
      *
      * @param objectiveDTO the objectiveDTO to update
@@ -142,6 +160,21 @@ public class ObjectiveResource {
 
         List<TeamObjectiveDTO> teamObjectiveDTOS = objectiveService.findAllByTeamId(teamId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(teamObjectiveDTOS));
+    }
+
+    /**
+     * GET  /objectives/user/:id : get the "id" objective.
+     *
+     * @param userId the id of the objectiveDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the objectiveDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/objectives/user/{userId}")
+    @Timed
+    public ResponseEntity<List<ObjectiveDTO>> getUserObjectives(@PathVariable Long userId) {
+        log.debug("REST request to get Objective : {}", userId);
+
+        List<ObjectiveDTO> userObjectives = objectiveService.findAllByUserId(userId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userObjectives));
     }
 
     /**

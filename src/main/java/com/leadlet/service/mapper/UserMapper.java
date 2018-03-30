@@ -1,8 +1,6 @@
 package com.leadlet.service.mapper;
 
-import com.leadlet.domain.Deal;
 import com.leadlet.domain.User;
-import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
