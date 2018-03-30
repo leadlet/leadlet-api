@@ -2,9 +2,8 @@ package com.leadlet.service.dto;
 
 
 import com.leadlet.domain.enumeration.ActivityType;
-import org.joda.time.DateTime;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -35,6 +34,10 @@ public class ActivityDTO implements Serializable {
     private Long userId;
 
     private LocationDTO location;
+
+    private boolean isClosed;
+
+    private Instant closedDate;
 
     public Long getId() {
         return id;
@@ -124,24 +127,45 @@ public class ActivityDTO implements Serializable {
         this.location = location;
     }
 
+    public boolean isClosed() {
+        return isClosed;
+    }
+
+    public void setClosed(boolean closed) {
+        isClosed = closed;
+    }
+
+    public Instant getClosedDate() {
+        return closedDate;
+    }
+
+    public void setClosedDate(Instant closedDate) {
+        this.closedDate = closedDate;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ActivityDTO activityDTO = (ActivityDTO) o;
-        if(activityDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), activityDTO.getId());
+        if (this == o) return true;
+        if (!(o instanceof ActivityDTO)) return false;
+        ActivityDTO that = (ActivityDTO) o;
+        return isClosed == that.isClosed &&
+            Objects.equals(id, that.id) &&
+            Objects.equals(title, that.title) &&
+            Objects.equals(memo, that.memo) &&
+            Objects.equals(start, that.start) &&
+            Objects.equals(end, that.end) &&
+            type == that.type &&
+            Objects.equals(dealId, that.dealId) &&
+            Objects.equals(personId, that.personId) &&
+            Objects.equals(organizationId, that.organizationId) &&
+            Objects.equals(userId, that.userId) &&
+            Objects.equals(location, that.location) &&
+            Objects.equals(closedDate, that.closedDate);
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hashCode(getId());
     }
 
@@ -158,6 +182,9 @@ public class ActivityDTO implements Serializable {
             ", personId=" + personId +
             ", organizationId=" + organizationId +
             ", userId=" + userId +
+            ", location=" + location +
+            ", isClosed=" + isClosed +
+            ", closedDate=" + closedDate +
             '}';
     }
 }

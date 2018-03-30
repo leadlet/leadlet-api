@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashSet;
@@ -62,6 +63,13 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     private User user;
 
     private Location location;
+
+    @NotNull
+    @Column(nullable = false)
+    private boolean isClosed = false;
+
+    @Column(name = "closed_date")
+    private Instant closedDate = null;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -155,17 +163,20 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         return location;
     }
 
-    @Override
-    public String toString() {
-        return "Activity{" +
-            "id=" + id +
-            ", title='" + title + '\'' +
-            ", memo='" + memo + '\'' +
-            ", start=" + start +
-            ", end=" + end +
-            ", type=" + type +
-            ", location=" + location +
-            '}';
+    public boolean isClosed() {
+        return isClosed;
+    }
+
+    public void setClosed(boolean closed) {
+        isClosed = closed;
+    }
+
+    public Instant getClosedDate() {
+        return closedDate;
+    }
+
+    public void setClosedDate(Instant closedDate) {
+        this.closedDate = closedDate;
     }
 
     @Override
@@ -173,7 +184,8 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         if (this == o) return true;
         if (!(o instanceof Activity)) return false;
         Activity activity = (Activity) o;
-        return Objects.equals(id, activity.id) &&
+        return isClosed == activity.isClosed &&
+            Objects.equals(id, activity.id) &&
             Objects.equals(title, activity.title) &&
             Objects.equals(memo, activity.memo) &&
             Objects.equals(start, activity.start) &&
@@ -183,7 +195,8 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
             Objects.equals(person, activity.person) &&
             Objects.equals(organization, activity.organization) &&
             Objects.equals(user, activity.user) &&
-            Objects.equals(location, activity.location);
+            Objects.equals(location, activity.location) &&
+            Objects.equals(closedDate, activity.closedDate);
     }
 
     @Override
@@ -191,4 +204,24 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
 
         return id.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", memo='" + memo + '\'' +
+            ", start=" + start +
+            ", end=" + end +
+            ", type=" + type +
+            ", deal=" + deal +
+            ", person=" + person +
+            ", organization=" + organization +
+            ", user=" + user +
+            ", location=" + location +
+            ", isClosed=" + isClosed +
+            ", closedDate=" + closedDate +
+            '}';
+    }
+
 }
