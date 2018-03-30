@@ -14,32 +14,32 @@
 # ===================================================================
 
 spring:
+    h2:
+        console:
+            enabled: true
     devtools:
         restart:
             enabled: false
         livereload:
             enabled: false
+
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://${MYSQL_HOST}:3306/leadlet_api?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: leadlet
-        password: leadlet_123
-        hikari:
-            data-source-properties:
-                cachePrepStmts: true
-                prepStmtCacheSize: 250
-                prepStmtCacheSqlLimit: 2048
-                useServerPrepStmts: true
+        url: jdbc:h2:mem:leadlet_api;DB_CLOSE_DELAY=-1
+        name:
+        username:
+        password:
     jpa:
-        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-        database: MYSQL
+        database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+        database: H2
+        open-in-view: false
         show-sql: false
         properties:
             hibernate.id.new_generator_mappings: true
-            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
-            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
+            hibernate.generate_statistics: true
+
     mail:
         host: localhost
         port: 25

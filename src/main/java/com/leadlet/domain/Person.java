@@ -197,12 +197,6 @@ public class Person implements Serializable {
             ", title='" + title + '\'' +
             ", phones=" + phones +
             ", email='" + email + '\'' +
-            ", organization=" + organization +
-            ", appAccount=" + appAccount +
-            ", activities=" + activities +
-            ", deals=" + deals +
-            ", notes=" + notes +
-            ", timelines=" + timelines +
             '}';
     }
 }

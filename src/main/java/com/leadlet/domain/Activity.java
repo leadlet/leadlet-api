@@ -164,10 +164,6 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
             ", start=" + start +
             ", end=" + end +
             ", type=" + type +
-            ", deal=" + deal +
-            ", person=" + person +
-            ", organization=" + organization +
-            ", user=" + user +
             ", location=" + location +
             '}';
     }
