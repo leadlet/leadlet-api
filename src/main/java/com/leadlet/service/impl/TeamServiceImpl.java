@@ -112,9 +112,15 @@ public class TeamServiceImpl implements TeamService {
                 }
             }
 
+
             team = teamRepository.save(team);
 
-            return teamMapper.toDto(team);
+            TeamDTO newTeamDto =teamMapper.toDto(team);
+            newTeamDto.setCompletedObjectives(activityService.getActivityCompletionSummary(team.getId()));
+            newTeamDto.setObjectives(objectiveService.findAllByTeamId(team.getId()));
+
+
+            return newTeamDto;
         } else {
             throw new EntityNotFoundException();
         }
