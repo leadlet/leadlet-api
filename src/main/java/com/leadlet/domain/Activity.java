@@ -1,19 +1,14 @@
 package com.leadlet.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.leadlet.domain.enumeration.ActivityType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -60,16 +55,16 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     private Organization organization;
 
     @ManyToOne
-    private User user;
+    private User agent;
 
     private Location location;
 
     @NotNull
     @Column(nullable = false)
-    private boolean isClosed = false;
+    private boolean done = false;
 
     @Column(name = "closed_date")
-    private Instant closedDate = null;
+    private Date closedDate = null;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -147,12 +142,13 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         this.organization = organization;
     }
 
-    public User getUser() {
-        return user;
+    public User getAgent() {
+        return agent;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Activity setAgent(User agent) {
+        this.agent = agent;
+        return this;
     }
 
     public void setLocation(Location location) {
@@ -163,19 +159,20 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         return location;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public boolean isDone() {
+        return done;
     }
 
-    public void setClosed(boolean closed) {
-        isClosed = closed;
+    public Activity setDone(boolean done) {
+        this.done = done;
+        return this;
     }
 
-    public Instant getClosedDate() {
+    public Date getClosedDate() {
         return closedDate;
     }
 
-    public void setClosedDate(Instant closedDate) {
+    public void setClosedDate(Date closedDate) {
         this.closedDate = closedDate;
     }
 
@@ -184,7 +181,7 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         if (this == o) return true;
         if (!(o instanceof Activity)) return false;
         Activity activity = (Activity) o;
-        return isClosed == activity.isClosed &&
+        return done == activity.done &&
             Objects.equals(id, activity.id) &&
             Objects.equals(title, activity.title) &&
             Objects.equals(memo, activity.memo) &&
@@ -194,7 +191,7 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
             Objects.equals(deal, activity.deal) &&
             Objects.equals(person, activity.person) &&
             Objects.equals(organization, activity.organization) &&
-            Objects.equals(user, activity.user) &&
+            Objects.equals(agent, activity.agent) &&
             Objects.equals(location, activity.location) &&
             Objects.equals(closedDate, activity.closedDate);
     }
@@ -214,12 +211,8 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
             ", start=" + start +
             ", end=" + end +
             ", type=" + type +
-            ", deal=" + deal +
-            ", person=" + person +
-            ", organization=" + organization +
-            ", user=" + user +
             ", location=" + location +
-            ", isClosed=" + isClosed +
+            ", done=" + done +
             ", closedDate=" + closedDate +
             '}';
     }

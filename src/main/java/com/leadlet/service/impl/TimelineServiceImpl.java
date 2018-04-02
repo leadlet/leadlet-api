@@ -193,7 +193,7 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setPerson(activity.getPerson());
         timelineItem.setAppAccount(activity.getAppAccount());
         timelineItem.setSourceId(activity.getId());
-        timelineItem.setUser(activity.getUser());
+        timelineItem.setUser(activity.getAgent());
         timelineItem.setDeal(activity.getDeal());
 
         timelineRepository.save(timelineItem);

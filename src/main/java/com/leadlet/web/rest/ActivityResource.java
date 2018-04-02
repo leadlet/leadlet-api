@@ -2,6 +2,8 @@ package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.ActivityService;
+import com.leadlet.service.dto.ActivityCompleted;
+import com.leadlet.service.dto.TeamObjectiveDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
 import com.leadlet.service.dto.ActivityDTO;

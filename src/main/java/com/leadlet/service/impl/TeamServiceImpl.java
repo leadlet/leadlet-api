@@ -5,8 +5,11 @@ import com.leadlet.domain.User;
 import com.leadlet.repository.TeamRepository;
 import com.leadlet.repository.UserRepository;
 import com.leadlet.security.SecurityUtils;
+import com.leadlet.service.ActivityService;
+import com.leadlet.service.ObjectiveService;
 import com.leadlet.service.TeamService;
 import com.leadlet.service.UserService;
+import com.leadlet.service.dto.ActivityCompleted;
 import com.leadlet.service.dto.TeamDTO;
 import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.mapper.TeamMapper;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 /**
  * Service Implementation for managing Team.
@@ -34,10 +38,18 @@ public class TeamServiceImpl implements TeamService {
 
     private final UserRepository userRepository;
 
-    public TeamServiceImpl(TeamRepository teamRepository, TeamMapper teamMapper, UserRepository userRepository) {
+    private final ActivityService activityService;
+
+    private final ObjectiveService objectiveService;
+
+
+    public TeamServiceImpl(TeamRepository teamRepository, TeamMapper teamMapper, UserRepository userRepository,
+                           ActivityService activityService, ObjectiveService objectiveService) {
         this.teamRepository = teamRepository;
         this.teamMapper = teamMapper;
         this.userRepository = userRepository;
+        this.activityService = activityService;
+        this.objectiveService = objectiveService;
     }
 
     @Override
@@ -111,15 +123,26 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Page<TeamDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Teams");
+
         return teamRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(teamMapper::toDto);
+            .map(team -> {
+                TeamDTO teamDTO = teamMapper.toDto(team);
+                teamDTO.setCompletedObjectives(activityService.getActivityCompletionSummary(team.getId()));
+                teamDTO.setObjectives(objectiveService.findAllByTeamId(team.getId()));
+
+                return teamDTO;
+            });
     }
 
     @Override
     public TeamDTO findOne(Long id) {
         log.debug("Request to get Team : {}", id);
         Team team = teamRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
-        return teamMapper.toDto(team);
+        TeamDTO teamDTO = teamMapper.toDto(team);
+        teamDTO.setCompletedObjectives(activityService.getActivityCompletionSummary(team.getId()));
+        teamDTO.setObjectives(objectiveService.findAllByTeamId(team.getId()));
+
+        return teamDTO;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.leadlet.service.dto;
 
 import com.leadlet.domain.enumeration.ActivityType;
 
-import java.time.Instant;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -25,122 +24,135 @@ public class ActivityDTO implements Serializable {
 
     private ActivityType type;
 
-    private Long dealId;
+    private DealDTO deal;
 
-    private Long personId;
+    private PersonDTO person;
 
-    private Long organizationId;
+    private OrganizationDTO organization;
 
-    private Long userId;
+    private UserDTO agent;
 
     private LocationDTO location;
 
-    private boolean isClosed;
+    private boolean done;
 
-    private Instant closedDate;
+    private Date closedDate;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public ActivityDTO setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public ActivityDTO setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getMemo() {
         return memo;
     }
 
-    public void setMemo(String memo) {
+    public ActivityDTO setMemo(String memo) {
         this.memo = memo;
-    }
-
-    public ActivityType getType() {
-        return type;
-    }
-
-    public void setType(ActivityType type) {
-        this.type = type;
+        return this;
     }
 
     public Date getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public ActivityDTO setStart(Date start) {
         this.start = start;
+        return this;
     }
 
     public Date getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public ActivityDTO setEnd(Date end) {
         this.end = end;
+        return this;
     }
 
-    public Long getDealId() {
-        return dealId;
+    public ActivityType getType() {
+        return type;
     }
 
-    public void setDealId(Long dealId) {
-        this.dealId = dealId;
+    public ActivityDTO setType(ActivityType type) {
+        this.type = type;
+        return this;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public DealDTO getDeal() {
+        return deal;
     }
 
-    public void setPersonId(Long contactId) {
-        this.personId = contactId;
+    public ActivityDTO setDeal(DealDTO deal) {
+        this.deal = deal;
+        return this;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public PersonDTO getPerson() {
+        return person;
     }
 
-    public void setOrganizationId(Long contactId) {
-        this.organizationId = contactId;
+    public ActivityDTO setPerson(PersonDTO person) {
+        this.person = person;
+        return this;
     }
 
-    public Long getUserId() {
-        return userId;
+    public OrganizationDTO getOrganization() {
+        return organization;
     }
 
-    public void setUserId(Long appUserId) {
-        this.userId = appUserId;
+    public ActivityDTO setOrganization(OrganizationDTO organization) {
+        this.organization = organization;
+        return this;
+    }
+
+    public UserDTO getAgent() {
+        return agent;
+    }
+
+    public ActivityDTO setAgent(UserDTO agent) {
+        this.agent = agent;
+        return this;
     }
 
     public LocationDTO getLocation() {
         return location;
     }
 
-    public void setLocation(LocationDTO location) {
+    public ActivityDTO setLocation(LocationDTO location) {
         this.location = location;
+        return this;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public boolean isDone() {
+        return done;
     }
 
-    public void setClosed(boolean closed) {
-        isClosed = closed;
+    public ActivityDTO setDone(boolean done) {
+        this.done = done;
+        return this;
     }
 
-    public Instant getClosedDate() {
+    public Date getClosedDate() {
         return closedDate;
     }
 
-    public void setClosedDate(Instant closedDate) {
+    public ActivityDTO setClosedDate(Date closedDate) {
         this.closedDate = closedDate;
+        return this;
     }
 
     @Override
@@ -148,25 +160,24 @@ public class ActivityDTO implements Serializable {
         if (this == o) return true;
         if (!(o instanceof ActivityDTO)) return false;
         ActivityDTO that = (ActivityDTO) o;
-        return isClosed == that.isClosed &&
+        return done == that.done &&
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
             Objects.equals(memo, that.memo) &&
             Objects.equals(start, that.start) &&
             Objects.equals(end, that.end) &&
             type == that.type &&
-            Objects.equals(dealId, that.dealId) &&
-            Objects.equals(personId, that.personId) &&
-            Objects.equals(organizationId, that.organizationId) &&
-            Objects.equals(userId, that.userId) &&
+            Objects.equals(deal, that.deal) &&
+            Objects.equals(person, that.person) &&
+            Objects.equals(organization, that.organization) &&
+            Objects.equals(agent, that.agent) &&
             Objects.equals(location, that.location) &&
             Objects.equals(closedDate, that.closedDate);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hashCode(getId());
+        return Objects.hash(id, title, memo, start, end, type, deal, person, organization, agent, location, done, closedDate);
     }
 
     @Override
@@ -178,12 +189,12 @@ public class ActivityDTO implements Serializable {
             ", start=" + start +
             ", end=" + end +
             ", type=" + type +
-            ", dealId=" + dealId +
-            ", personId=" + personId +
-            ", organizationId=" + organizationId +
-            ", userId=" + userId +
+            ", deal=" + deal +
+            ", person=" + person +
+            ", organization=" + organization +
+            ", agent=" + agent +
             ", location=" + location +
-            ", isClosed=" + isClosed +
+            ", done=" + done +
             ", closedDate=" + closedDate +
             '}';
     }

@@ -32,7 +32,7 @@
                                  referencedColumnNames="id"
                                  referencedTableName="app_account"/>
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
+        <addForeignKeyConstraint baseColumnNames="agent_id"
                                  baseTableName="activity"
                                  constraintName="fk_activity_user_id"
                                  referencedColumnNames="id"

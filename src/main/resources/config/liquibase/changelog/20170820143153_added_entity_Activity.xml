@@ -58,7 +58,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="user_id" type="bigint">
+            <column name="agent_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
@@ -70,7 +70,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="is_closed" type="boolean" defaultValueBoolean="false">
+            <column name="done" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false" />
             </column>
 

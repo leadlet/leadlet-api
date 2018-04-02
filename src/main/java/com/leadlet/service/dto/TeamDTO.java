@@ -14,6 +14,9 @@ public class TeamDTO implements Serializable {
 
     private List<UserDTO> members;
 
+    private List<TeamObjectiveDTO> completedObjectives;
+    private List<TeamObjectiveDTO> objectives;
+
     public Long getId() {
         return id;
     }
@@ -46,6 +49,23 @@ public class TeamDTO implements Serializable {
         this.description = description;
     }
 
+    public List<TeamObjectiveDTO> getCompletedObjectives() {
+        return completedObjectives;
+    }
+
+    public TeamDTO setCompletedObjectives(List<TeamObjectiveDTO> completedObjectives) {
+        this.completedObjectives = completedObjectives;
+        return this;
+    }
+
+    public List<TeamObjectiveDTO> getObjectives() {
+        return objectives;
+    }
+
+    public TeamDTO setObjectives(List<TeamObjectiveDTO> objectives) {
+        this.objectives = objectives;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {

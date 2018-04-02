@@ -86,7 +86,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Activity> activities;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -293,10 +293,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", resetKey='" + resetKey + '\'' +
             ", resetDate=" + resetDate +
             ", authorities=" + authorities +
-            ", activities=" + activities +
-            ", deals=" + deals +
-            ", objectives=" + objectives +
-            ", team=" + team +
             ", isTeamLead=" + isTeamLead +
             '}';
     }
