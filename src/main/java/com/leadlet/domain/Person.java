@@ -1,7 +1,6 @@
 package com.leadlet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.models.Contact;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
@@ -63,6 +62,9 @@ public class Person implements Serializable {
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Timeline> timelines;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Document> documents;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -164,6 +166,14 @@ public class Person implements Serializable {
         this.timelines = timelines;
     }
 
+    public Set<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -180,11 +190,13 @@ public class Person implements Serializable {
             Objects.equals(activities, person.activities) &&
             Objects.equals(deals, person.deals) &&
             Objects.equals(notes, person.notes) &&
-            Objects.equals(timelines, person.timelines);
+            Objects.equals(timelines, person.timelines) &&
+            Objects.equals(documents, person.documents);
     }
 
     @Override
     public int hashCode() {
+
         return id.hashCode();
     }
 
@@ -197,6 +209,13 @@ public class Person implements Serializable {
             ", title='" + title + '\'' +
             ", phones=" + phones +
             ", email='" + email + '\'' +
+            ", organization=" + organization +
+            ", appAccount=" + appAccount +
+            ", activities=" + activities +
+            ", deals=" + deals +
+            ", notes=" + notes +
+            ", timelines=" + timelines +
+            ", documents=" + documents +
             '}';
     }
 }
