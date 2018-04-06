@@ -1,7 +1,6 @@
 package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.leadlet.domain.Document;
 import com.leadlet.service.DocumentService;
 import com.leadlet.service.dto.DocumentDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
@@ -12,11 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.channels.FileLock;
 import java.util.List;
 import java.util.Optional;
 

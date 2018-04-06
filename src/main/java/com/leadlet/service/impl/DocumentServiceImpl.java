@@ -1,5 +1,7 @@
 package com.leadlet.service.impl;
 
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.storage.*;
 import com.leadlet.domain.Document;
 import com.leadlet.domain.Person;
 import com.leadlet.repository.DocumentRepository;
@@ -15,8 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,11 +47,22 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException {
 
-        File tmpFile = File.createTempFile(multipartFile.getName(),"tmp");
+        final String fileName = multipartFile.getOriginalFilename();
+
+        List<Acl> acls = new ArrayList<>();
+        acls.add(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
+
+        Storage storage = StorageOptions.newBuilder()
+            .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream("/Users/kancergokirmak/Devel/leadlet-api/src/main/resources/demo-storage-1b29eb0993de.json")))
+            .build()
+            .getService();
+        Bucket bucket = storage.get("lead-document");
+
+        Blob blob = bucket.create(fileName, multipartFile.getInputStream());
 
         Document document = new Document();
-        document.setUrl(tmpFile.getAbsolutePath());
-        document.setName(multipartFile.getOriginalFilename());
+        document.setUrl(blob.getMediaLink());
+        document.setName(fileName);
         document.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
 
         Person person = personRepository.findOneByIdAndAppAccount_Id(personId, SecurityUtils.getCurrentUserAppAccountId());
@@ -57,6 +71,7 @@ public class DocumentServiceImpl implements DocumentService {
         document = documentRepository.save(document);
 
         return documentMapper.toDto(document);
+
     }
 
     @Override

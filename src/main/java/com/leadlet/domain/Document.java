@@ -26,8 +26,8 @@ public class Document extends AbstractAuditingEntity implements Serializable {
     @Column(name = "name", length = 100)
     private String name;
 
-    @Size(max = 100)
-    @Column(name = "url", length = 100)
+    @Size(max = 2100)
+    @Column(name = "url", length = 2100)
     private String url;
 
     @ManyToOne
