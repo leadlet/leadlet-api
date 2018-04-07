@@ -17,6 +17,14 @@ public interface DocumentService {
     DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException;
 
     /**
+     * Save a document.
+     *
+     * @param multipartFile the entity to save
+     * @return the persisted entity
+     */
+    DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException;
+
+    /**
      * Update a document.
      *
      * @param documentDTO the entity to update

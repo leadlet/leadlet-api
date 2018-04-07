@@ -44,6 +44,16 @@ public class DocumentResource {
             .body(documentDTO);
     }
 
+    @PostMapping(value = "/documentsOrg", headers = "content-type=multipart/*")
+    public ResponseEntity<DocumentDTO>  uploadForOrganization(@RequestParam(value = "file", required = true ) MultipartFile multipartFile, @RequestParam(value = "organizationId" ) long organizationId) throws IOException {
+
+        DocumentDTO documentDTO = documentService.saveDocumentForOrganization(multipartFile, organizationId);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, documentDTO.getId().toString()))
+            .body(documentDTO);
+    }
+
     /**
      * PUT  /documents : Updates an existing document.
      *

@@ -3,8 +3,10 @@ package com.leadlet.service.impl;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.*;
 import com.leadlet.domain.Document;
+import com.leadlet.domain.Organization;
 import com.leadlet.domain.Person;
 import com.leadlet.repository.DocumentRepository;
+import com.leadlet.repository.OrganizationRepository;
 import com.leadlet.repository.PersonRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DocumentService;
@@ -35,13 +37,16 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final PersonRepository personRepository;
 
+    private final OrganizationRepository organizationRepository;
+
     private final DocumentMapper documentMapper;
 
 
-    public DocumentServiceImpl(DocumentRepository documentRepository, DocumentMapper documentMapper, PersonRepository personRepository) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, DocumentMapper documentMapper, PersonRepository personRepository, OrganizationRepository organizationRepository) {
         this.documentRepository = documentRepository;
         this.documentMapper = documentMapper;
         this.personRepository = personRepository;
+        this.organizationRepository = organizationRepository;
     }
 
     @Override
@@ -72,6 +77,35 @@ public class DocumentServiceImpl implements DocumentService {
 
         return documentMapper.toDto(document);
 
+    }
+
+    @Override
+    public DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException {
+
+        final String fileName = multipartFile.getOriginalFilename();
+
+        List<Acl> acls = new ArrayList<>();
+        acls.add(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
+
+        Storage storage = StorageOptions.newBuilder()
+            .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream("/Users/kancergokirmak/Devel/leadlet-api/src/main/resources/demo-storage-1b29eb0993de.json")))
+            .build()
+            .getService();
+        Bucket bucket = storage.get("lead-document");
+
+        Blob blob = bucket.create(fileName, multipartFile.getInputStream());
+
+        Document document = new Document();
+        document.setUrl(blob.getMediaLink());
+        document.setName(fileName);
+        document.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
+
+        Organization organization = organizationRepository.findOneByIdAndAppAccount_Id(organizationId, SecurityUtils.getCurrentUserAppAccountId());
+        document.setOrganization(organization);
+
+        document = documentRepository.save(document);
+
+        return documentMapper.toDto(document);
     }
 
     @Override

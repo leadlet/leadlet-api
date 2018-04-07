@@ -8,16 +8,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.*;
 
 
-
 /**
  * Spring Data JPA repository for the Deal entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DealRepository extends JpaRepository<Deal,Long>,  JpaSpecificationExecutor<Deal> {
+public interface DealRepository extends JpaRepository<Deal, Long>, JpaSpecificationExecutor<Deal> {
     Page<Deal> findByAppAccount_IdOrderByIdAsc(Long appAccountId, Pageable page);
 
     Deal findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 
     @Modifying
@@ -27,6 +27,8 @@ public interface DealRepository extends JpaRepository<Deal,Long>,  JpaSpecificat
     Page<Deal> findAllByAppAccount_IdAndStage_IdOrderByPriorityAsc(Long appAccountId, Long stageId, Pageable page);
 
     Page<Deal> findAllByAppAccount_IdAndPerson_IdOrderByPriorityAsc(Long appAccountId, Long personId, Pageable page);
+
+    Page<Deal> findAllByAppAccount_IdAndOrganization_IdOrderByPriorityAsc(Long appAccountId, Long organizationId, Pageable page);
 
     @Query("select sum(deal.dealValue.potentialValue) from #{#entityName} deal where deal.appAccount.id = ?1 and deal.stage.id = ?2")
     Double calculateDealTotalByStageId(Long id, Long stageId);
