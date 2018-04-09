@@ -6,7 +6,6 @@ import com.leadlet.service.ActivityService;
 import com.leadlet.domain.Activity;
 import com.leadlet.repository.ActivityRepository;
 import com.leadlet.service.TimelineService;
-import com.leadlet.service.dto.ActivityCompleted;
 import com.leadlet.service.dto.ActivityDTO;
 import com.leadlet.service.dto.TeamObjectiveDTO;
 import com.leadlet.service.mapper.ActivityMapper;
@@ -77,7 +76,7 @@ public class ActivityServiceImpl implements ActivityService {
         if (fromDb != null) {
             //TODO: appaccount todo'su..
             activity.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
-            if(!fromDb.isDone() && activityDTO.isDone()){
+            if (!fromDb.isDone() && activityDTO.isDone()) {
                 activity.setClosedDate(new Date());
             }
             activity = activityRepository.save(activity);
@@ -178,13 +177,13 @@ public class ActivityServiceImpl implements ActivityService {
         Map<ActivityType, Long> monthlyCompleted = convertListToMap(activityRepository.calculateCompletedActivitiesTeamBetweenDates(teamId, startOfMonth.toDate(), new Date()));
 
 
-        for( ActivityType type: ActivityType.values()){
+        for (ActivityType type : ActivityType.values()) {
             TeamObjectiveDTO teamObjectiveForType = new TeamObjectiveDTO();
             teamObjectiveForType.setTeamId(teamId);
             teamObjectiveForType.setName(type);
-            teamObjectiveForType.setDailyAmount(dailyCompleted.get(type) != null ? dailyCompleted.get(type): 0L);
-            teamObjectiveForType.setWeeklyAmount(weeklyCompleted.get(type) != null ? weeklyCompleted.get(type)  : 0L);
-            teamObjectiveForType.setMonthlyAmount(monthlyCompleted.get(type) != null ? monthlyCompleted.get(type): 0L);
+            teamObjectiveForType.setDailyAmount(dailyCompleted.get(type) != null ? dailyCompleted.get(type) : 0L);
+            teamObjectiveForType.setWeeklyAmount(weeklyCompleted.get(type) != null ? weeklyCompleted.get(type) : 0L);
+            teamObjectiveForType.setMonthlyAmount(monthlyCompleted.get(type) != null ? monthlyCompleted.get(type) : 0L);
             completedActivities.add(teamObjectiveForType);
         }
 
@@ -192,13 +191,13 @@ public class ActivityServiceImpl implements ActivityService {
 
     }
 
-    private HashMap<ActivityType,Long> convertListToMap(List<Pair<ActivityType,Long>> completedActivities){
-        HashMap<ActivityType,Long> hmap = new HashMap<>();
+    private HashMap<ActivityType, Long> convertListToMap(List<Pair<ActivityType, Long>> completedActivities) {
+        HashMap<ActivityType, Long> hmap = new HashMap<>();
 
-        for(Pair<ActivityType,Long> entry: completedActivities){
-            hmap.put(entry.getKey(),entry.getValue());
+        for (Pair<ActivityType, Long> entry : completedActivities) {
+            hmap.put(entry.getKey(), entry.getValue());
         }
 
-        return  hmap;
+        return hmap;
     }
 }

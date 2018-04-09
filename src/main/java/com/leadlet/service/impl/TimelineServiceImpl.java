@@ -1,16 +1,19 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.Activity;
+import com.leadlet.domain.Document;
 import com.leadlet.domain.Note;
 import com.leadlet.domain.Timeline;
 import com.leadlet.domain.enumeration.TimelineItemType;
 import com.leadlet.repository.ActivityRepository;
+import com.leadlet.repository.DocumentRepository;
 import com.leadlet.repository.NoteRepository;
 import com.leadlet.repository.TimelineRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.TimelineDTO;
 import com.leadlet.service.mapper.ActivityMapper;
+import com.leadlet.service.mapper.DocumentMapper;
 import com.leadlet.service.mapper.NoteMapper;
 import com.leadlet.service.mapper.TimelineMapper;
 import com.leadlet.web.rest.NoteResource;
@@ -40,23 +43,28 @@ public class TimelineServiceImpl implements TimelineService {
 
     private final ActivityMapper activityMapper;
 
-
     private final ActivityRepository activityRepository;
 
+    private final DocumentRepository documentRepository;
+
+    private final DocumentMapper documentMapper;
 
     public TimelineServiceImpl(TimelineRepository timelineRepository,
                                TimelineMapper timelineMapper,
                                NoteRepository noteRepository,
                                ActivityRepository activityRepository,
                                NoteMapper noteMapper,
-                               ActivityMapper activityMapper) {
+                               ActivityMapper activityMapper,
+                               DocumentRepository documentRepository,
+                               DocumentMapper documentMapper) {
         this.timelineRepository = timelineRepository;
         this.timelineMapper = timelineMapper;
         this.noteRepository = noteRepository;
         this.activityRepository = activityRepository;
         this.noteMapper = noteMapper;
         this.activityMapper = activityMapper;
-
+        this.documentRepository = documentRepository;
+        this.documentMapper = documentMapper;
     }
 
     @Override
@@ -94,6 +102,9 @@ public class TimelineServiceImpl implements TimelineService {
                 } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
                     Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
                     timelineDTO.setSource(activityMapper.toDto(activity));
+                }else if (timelineDTO.getType().equals(TimelineItemType.DOCUMENT_CREATED)) {
+                    Document document = documentRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(documentMapper.toDto(document));
                 }
 
                 return timelineDTO;
@@ -102,7 +113,7 @@ public class TimelineServiceImpl implements TimelineService {
 
     @Override
     public Page<TimelineDTO> findByOrganizationId(Long organizationId, Pageable pageable) {
-        return timelineRepository.findByOrganization_IdAndAppAccount_Id(organizationId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+        return timelineRepository.findByOrganization_IdAndAppAccount_Id(organizationId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(timelineMapper::toDto)
             .map(timelineDTO -> {
                 if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
@@ -111,6 +122,9 @@ public class TimelineServiceImpl implements TimelineService {
                 } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
                     Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
                     timelineDTO.setSource(activityMapper.toDto(activity));
+                } else if (timelineDTO.getType().equals(TimelineItemType.DOCUMENT_CREATED)) {
+                    Document document = documentRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(documentMapper.toDto(document));
                 }
 
                 return timelineDTO;
@@ -120,7 +134,7 @@ public class TimelineServiceImpl implements TimelineService {
     @Override
     public Page<TimelineDTO> findByDealId(Long dealId, Pageable pageable) {
 
-        return timelineRepository.findByDeal_IdAndAppAccount_Id(dealId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+        return timelineRepository.findByDeal_IdAndAppAccount_Id(dealId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(timelineMapper::toDto)
             .map(timelineDTO -> {
                 if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
@@ -138,7 +152,7 @@ public class TimelineServiceImpl implements TimelineService {
     @Override
     public Page<TimelineDTO> findByUserId(Long userId, Pageable pageable) {
 
-        return timelineRepository.findByUser_IdAndAppAccount_Id(userId,SecurityUtils.getCurrentUserAppAccountId(), pageable)
+        return timelineRepository.findByUser_IdAndAppAccount_Id(userId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(timelineMapper::toDto)
             .map(timelineDTO -> {
                 if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
@@ -163,10 +177,10 @@ public class TimelineServiceImpl implements TimelineService {
         if (note.getPerson() != null) {
             timelineItem.setPerson(note.getPerson());
         }
-        if(note.getOrganization() != null){
+        if (note.getOrganization() != null) {
             timelineItem.setOrganization(note.getOrganization());
         }
-        if(note.getDeal() != null){
+        if (note.getDeal() != null) {
             timelineItem.setDeal(note.getDeal());
         }
         if (note.getAppAccount() != null) {
@@ -188,13 +202,33 @@ public class TimelineServiceImpl implements TimelineService {
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.ACTIVITY_CREATED);
-
         timelineItem.setOrganization(activity.getOrganization());
         timelineItem.setPerson(activity.getPerson());
         timelineItem.setAppAccount(activity.getAppAccount());
         timelineItem.setSourceId(activity.getId());
         timelineItem.setUser(activity.getAgent());
         timelineItem.setDeal(activity.getDeal());
+
+        timelineRepository.save(timelineItem);
+    }
+
+    @Override
+    @Async
+    public void documentCreated(Document document) {
+
+        Timeline timelineItem = new Timeline();
+        timelineItem.setType(TimelineItemType.DOCUMENT_CREATED);
+        if (document.getOrganization() != null) {
+            timelineItem.setOrganization(document.getOrganization());
+        }
+        if (document.getPerson() != null) {
+            timelineItem.setPerson(document.getPerson());
+        }
+        if (document.getDeal() != null) {
+            timelineItem.setDeal(document.getDeal());
+        }
+        timelineItem.setAppAccount(document.getAppAccount());
+        timelineItem.setSourceId(document.getId());
 
         timelineRepository.save(timelineItem);
     }

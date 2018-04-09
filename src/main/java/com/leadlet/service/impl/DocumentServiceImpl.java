@@ -10,6 +10,7 @@ import com.leadlet.repository.OrganizationRepository;
 import com.leadlet.repository.PersonRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DocumentService;
+import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.DocumentDTO;
 import com.leadlet.service.mapper.DocumentMapper;
 import org.slf4j.Logger;
@@ -41,12 +42,14 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentMapper documentMapper;
 
+    private final TimelineService timelineService;
 
-    public DocumentServiceImpl(DocumentRepository documentRepository, DocumentMapper documentMapper, PersonRepository personRepository, OrganizationRepository organizationRepository) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, DocumentMapper documentMapper, PersonRepository personRepository, OrganizationRepository organizationRepository, TimelineService timelineService) {
         this.documentRepository = documentRepository;
         this.documentMapper = documentMapper;
         this.personRepository = personRepository;
         this.organizationRepository = organizationRepository;
+        this.timelineService = timelineService;
     }
 
     @Override
@@ -74,6 +77,8 @@ public class DocumentServiceImpl implements DocumentService {
         document.setPerson(person);
 
         document = documentRepository.save(document);
+
+        timelineService.documentCreated(document);
 
         return documentMapper.toDto(document);
 
@@ -104,6 +109,8 @@ public class DocumentServiceImpl implements DocumentService {
         document.setOrganization(organization);
 
         document = documentRepository.save(document);
+
+        timelineService.documentCreated(document);
 
         return documentMapper.toDto(document);
     }
