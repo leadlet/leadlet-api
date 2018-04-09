@@ -1,5 +1,12 @@
 package com.leadlet.service.impl;
 
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.users.FullAccount;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.*;
 import com.leadlet.domain.Document;
@@ -22,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +61,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException {
+    public DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException, DbxException {
 
         final String fileName = multipartFile.getOriginalFilename();
 
@@ -79,6 +87,41 @@ public class DocumentServiceImpl implements DocumentService {
         document = documentRepository.save(document);
 
         timelineService.documentCreated(document);
+
+        //DROPBOX
+
+        final String ACCESS_TOKEN = "H6WrAF39eYQAAAAAAAAJsFBT0tNecl84g1rqVKGjtY8n9uY3ukrgublDsrkUMJU2";
+        // Create Dropbox client
+        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+
+        // Get current account info
+        FullAccount account = null;
+        try {
+            account = client.users().getCurrentAccount();
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+        System.out.println(account.getName().getDisplayName());
+
+        // Get files and folder metadata from Dropbox root directory
+        ListFolderResult result = null;
+
+        result = client.files().listFolder("");
+
+        while (true) {
+            for (Metadata metadata : result.getEntries()) {
+                System.out.println(metadata.getPathLower());
+            }
+
+            if (!result.getHasMore()) {
+                break;
+            }
+            result = client.files().listFolderContinue(result.getCursor());
+
+        }
+
+        FileMetadata metadata = client.files().uploadBuilder("/" + fileName).uploadAndFinish(multipartFile.getInputStream());
 
         return documentMapper.toDto(document);
 
