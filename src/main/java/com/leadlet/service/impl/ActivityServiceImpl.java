@@ -1,16 +1,15 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.ActivityAggregation;
 import com.leadlet.domain.enumeration.ActivityType;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ActivityService;
 import com.leadlet.domain.Activity;
 import com.leadlet.repository.ActivityRepository;
 import com.leadlet.service.TimelineService;
-import com.leadlet.service.dto.ActivityCompleted;
 import com.leadlet.service.dto.ActivityDTO;
 import com.leadlet.service.dto.TeamObjectiveDTO;
 import com.leadlet.service.mapper.ActivityMapper;
-import javafx.util.Pair;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,11 +191,11 @@ public class ActivityServiceImpl implements ActivityService {
 
     }
 
-    private HashMap<ActivityType,Long> convertListToMap(List<Pair<ActivityType,Long>> completedActivities){
+    private HashMap<ActivityType,Long> convertListToMap(List<ActivityAggregation> completedActivities){
         HashMap<ActivityType,Long> hmap = new HashMap<>();
 
-        for(Pair<ActivityType,Long> entry: completedActivities){
-            hmap.put(entry.getKey(),entry.getValue());
+        for(ActivityAggregation entry: completedActivities){
+            hmap.put(entry.getActivityType(),entry.getCount());
         }
 
         return  hmap;
