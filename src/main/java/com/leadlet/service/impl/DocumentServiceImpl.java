@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,7 +127,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException {
+    public DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException {
 
         final String fileName = multipartFile.getOriginalFilename();
 
@@ -154,6 +153,41 @@ public class DocumentServiceImpl implements DocumentService {
         document = documentRepository.save(document);
 
         timelineService.documentCreated(document);
+
+        //DROPBOX
+
+        final String ACCESS_TOKEN = "H6WrAF39eYQAAAAAAAAJsFBT0tNecl84g1rqVKGjtY8n9uY3ukrgublDsrkUMJU2";
+        // Create Dropbox client
+        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+
+        // Get current account info
+        FullAccount account = null;
+        try {
+            account = client.users().getCurrentAccount();
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+        System.out.println(account.getName().getDisplayName());
+
+        // Get files and folder metadata from Dropbox root directory
+        ListFolderResult result = null;
+
+        result = client.files().listFolder("");
+
+        while (true) {
+            for (Metadata metadata : result.getEntries()) {
+                System.out.println(metadata.getPathLower());
+            }
+
+            if (!result.getHasMore()) {
+                break;
+            }
+            result = client.files().listFolderContinue(result.getCursor());
+
+        }
+
+        FileMetadata metadata = client.files().uploadBuilder("/" + fileName).uploadAndFinish(multipartFile.getInputStream());
 
         return documentMapper.toDto(document);
     }
@@ -207,12 +241,27 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws IOException {
         log.debug("Request to delete Document : {}", id);
-        Document documentFromDb = documentRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
 
+        //Delete from Google
+
+        Storage storage = StorageOptions.newBuilder()
+            .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream("/Users/kancergokirmak/Devel/leadlet-api/src/main/resources/demo-storage-1b29eb0993de.json")))
+            .build()
+            .getService();
+
+        Document documentFromDb = documentRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (documentFromDb != null) {
-            documentRepository.delete(id);
+            String blobName = documentFromDb.getName();
+
+            BlobId blobId = BlobId.of("lead-document", blobName);
+            boolean deleted = storage.delete(blobId);
+            if (deleted) {
+                documentRepository.delete(id);
+            } else {
+                throw new EntityNotFoundException("The blob can not delete");
+            }
         } else {
             throw new EntityNotFoundException();
         }

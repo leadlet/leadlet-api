@@ -23,7 +23,7 @@ public interface DocumentService {
      * @param multipartFile the entity to save
      * @return the persisted entity
      */
-    DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException;
+    DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException;
 
     /**
      * Update a document.
@@ -67,5 +67,5 @@ public interface DocumentService {
      *
      * @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(Long id) throws IOException;
 }

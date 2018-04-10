@@ -1,6 +1,7 @@
 package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.dropbox.core.DbxException;
 import com.leadlet.service.DocumentService;
 import com.leadlet.service.dto.DocumentDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
@@ -35,7 +36,7 @@ public class DocumentResource {
 
 
     @PostMapping(value = "/documents", headers = "content-type=multipart/*")
-    public ResponseEntity<DocumentDTO>  upload(@RequestParam(value = "file", required = true ) MultipartFile multipartFile, @RequestParam(value = "personId" ) long personId) throws IOException {
+    public ResponseEntity<DocumentDTO> upload(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "personId") long personId) throws IOException, DbxException {
 
         DocumentDTO documentDTO = documentService.save(multipartFile, personId);
 
@@ -45,7 +46,7 @@ public class DocumentResource {
     }
 
     @PostMapping(value = "/documentsOrg", headers = "content-type=multipart/*")
-    public ResponseEntity<DocumentDTO>  uploadForOrganization(@RequestParam(value = "file", required = true ) MultipartFile multipartFile, @RequestParam(value = "organizationId" ) long organizationId) throws IOException {
+    public ResponseEntity<DocumentDTO> uploadForOrganization(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "organizationId") long organizationId) throws IOException, DbxException {
 
         DocumentDTO documentDTO = documentService.saveDocumentForOrganization(multipartFile, organizationId);
 
@@ -122,7 +123,7 @@ public class DocumentResource {
      */
     @DeleteMapping("/documents/{id}")
     @Timed
-    public ResponseEntity<DocumentDTO> deleteDocument(@PathVariable Long id) {
+    public ResponseEntity<DocumentDTO> deleteDocument(@PathVariable Long id) throws IOException {
         log.debug("REST request to delete Document : {}", id);
         documentService.delete(id);
 
@@ -133,4 +134,5 @@ public class DocumentResource {
             .headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
             .body(result);
     }
+
 }
