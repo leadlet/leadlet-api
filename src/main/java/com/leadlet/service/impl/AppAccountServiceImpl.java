@@ -1,5 +1,7 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.User;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.AppAccountService;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.repository.AppAccountRepository;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 /**
@@ -45,42 +49,14 @@ public class AppAccountServiceImpl implements AppAccountService{
         return appAccountMapper.toDto(appAccount);
     }
 
-    /**
-     *  Get all the appAccounts.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
     @Override
-    @Transactional(readOnly = true)
-    public Page<AppAccountDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all AppAccounts");
-        return appAccountRepository.findAll(pageable)
-            .map(appAccountMapper::toDto);
-    }
+    public AppAccountDTO getCurrent() {
 
-    /**
-     *  Get one appAccount by id.
-     *
-     *  @param id the id of the entity
-     *  @return the entity
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public AppAccountDTO findOne(Long id) {
-        log.debug("Request to get AppAccount : {}", id);
-        AppAccount appAccount = appAccountRepository.findOne(id);
+        Long appAccountId = SecurityUtils.getCurrentUserAppAccountId();
+
+        AppAccount appAccount = appAccountRepository.findOneById(appAccountId);
+
         return appAccountMapper.toDto(appAccount);
     }
 
-    /**
-     *  Delete the  appAccount by id.
-     *
-     *  @param id the id of the entity
-     */
-    @Override
-    public void delete(Long id) {
-        log.debug("Request to delete AppAccount : {}", id);
-        appAccountRepository.delete(id);
-    }
 }

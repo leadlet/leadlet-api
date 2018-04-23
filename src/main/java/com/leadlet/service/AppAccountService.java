@@ -18,25 +18,10 @@ public interface AppAccountService {
     AppAccountDTO save(AppAccountDTO appAccountDTO);
 
     /**
-     *  Get all the appAccounts.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
-    Page<AppAccountDTO> findAll(Pageable pageable);
-
-    /**
      *  Get the "id" appAccount.
      *
-     *  @param id the id of the entity
      *  @return the entity
      */
-    AppAccountDTO findOne(Long id);
+    AppAccountDTO getCurrent();
 
-    /**
-     *  Delete the "id" appAccount.
-     *
-     *  @param id the id of the entity
-     */
-    void delete(Long id);
 }

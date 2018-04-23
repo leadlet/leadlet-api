@@ -32,6 +32,8 @@ public class AppAccount implements Serializable {
     @Column(name = "address")
     private String address;
 
+    StoragePreference storagePreference;
+
     @OneToMany(mappedBy = "appAccount", fetch = FetchType.LAZY)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -124,6 +126,15 @@ public class AppAccount implements Serializable {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public StoragePreference getStoragePreference() {
+        return storagePreference;
+    }
+
+    public AppAccount setStoragePreference(StoragePreference storagePreference) {
+        this.storagePreference = storagePreference;
+        return this;
     }
 
     @Override

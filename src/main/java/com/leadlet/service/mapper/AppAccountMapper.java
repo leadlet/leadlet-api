@@ -8,12 +8,12 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity AppAccount and its DTO AppAccountDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {StoragePreferenceMapper.class})
 public interface AppAccountMapper extends EntityMapper <AppAccountDTO, AppAccount> {
-    
+
     @Mapping(target = "subscriptionPlans", ignore = true)
     @Mapping(target = "users", ignore = true)
-    AppAccount toEntity(AppAccountDTO appAccountDTO); 
+    AppAccount toEntity(AppAccountDTO appAccountDTO);
     default AppAccount fromId(Long id) {
         if (id == null) {
             return null;
