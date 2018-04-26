@@ -32,6 +32,8 @@ public class AppAccount implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="storage_preference_id")
     StoragePreference storagePreference;
 
     @OneToMany(mappedBy = "appAccount", fetch = FetchType.LAZY)

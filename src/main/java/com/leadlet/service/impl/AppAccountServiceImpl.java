@@ -14,6 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Optional;
 
 
@@ -50,13 +54,13 @@ public class AppAccountServiceImpl implements AppAccountService{
     }
 
     @Override
-    public AppAccountDTO getCurrent() {
+    public AppAccount getCurrent() {
 
         Long appAccountId = SecurityUtils.getCurrentUserAppAccountId();
 
         AppAccount appAccount = appAccountRepository.findOneById(appAccountId);
 
-        return appAccountMapper.toDto(appAccount);
+        return appAccount;
     }
 
 }

@@ -1,34 +1,19 @@
 package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.leadlet.domain.User;
-import com.leadlet.repository.UserRepository;
-import com.leadlet.security.SecurityUtils;
+import com.leadlet.domain.AppAccount;
 import com.leadlet.service.AppAccountService;
 import com.leadlet.service.MailService;
-import com.leadlet.service.UserService;
 import com.leadlet.service.dto.AppAccountDTO;
-import com.leadlet.service.dto.DealDTO;
-import com.leadlet.service.dto.DealDetailDTO;
-import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.mapper.AppAccountMapper;
-import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.web.rest.util.HeaderUtil;
-import com.leadlet.web.rest.vm.KeyAndPasswordVM;
-import com.leadlet.web.rest.vm.ManagedUserVM;
-import com.leadlet.web.rest.vm.RegisterUserVm;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
@@ -69,8 +54,8 @@ public class AppAccountResource {
     @Timed
     public ResponseEntity<AppAccountDTO> getAccount() {
 
-        AppAccountDTO appAccountDTO = appAccountService.getCurrent();
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(appAccountDTO));
+        AppAccount appAccount = appAccountService.getCurrent();
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(appAccountMapper.toDto(appAccount)));
     }
 
     /**
@@ -79,9 +64,9 @@ public class AppAccountResource {
      * @param appAccountDTO the current user information
      * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) or 500 (Internal Server Error) if the user couldn't be updated
      */
-    @PostMapping("/account")
+    @PostMapping(value = "/account",consumes = {"multipart/form-data"})
     @Timed
-    public ResponseEntity<AppAccountDTO> updateAccount(@RequestBody AppAccountDTO appAccountDTO) throws URISyntaxException {
+    public ResponseEntity<AppAccountDTO> updateAccount(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart(value = "account") AppAccountDTO appAccountDTO) throws URISyntaxException {
         log.debug("REST request to update AppAccount : {}", appAccountDTO);
 
         AppAccountDTO result = appAccountService.save(appAccountDTO);

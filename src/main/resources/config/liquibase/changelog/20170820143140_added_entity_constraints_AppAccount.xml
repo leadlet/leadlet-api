@@ -7,7 +7,10 @@
         Added the constraints for entity Team.
     -->
     <changeSet id="20170820143140-2" author="jhipster">
-
-
+        <addForeignKeyConstraint baseColumnNames="storage_preference_id"
+                                 baseTableName="app_account"
+                                 constraintName="fk_app_account_storage_preference_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="storage_preference"/>
     </changeSet>
 </databaseChangeLog>

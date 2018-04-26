@@ -16,10 +16,13 @@ import com.leadlet.repository.DocumentRepository;
 import com.leadlet.repository.OrganizationRepository;
 import com.leadlet.repository.PersonRepository;
 import com.leadlet.security.SecurityUtils;
+import com.leadlet.service.AppAccountService;
 import com.leadlet.service.DocumentService;
+import com.leadlet.service.DocumentStorageService;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.DocumentDTO;
 import com.leadlet.service.mapper.DocumentMapper;
+import com.leadlet.service.util.DocumentStorageServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,8 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final Logger log = LoggerFactory.getLogger(DocumentServiceImpl.class);
 
+    private final AppAccountService appAccountService;
+
     private final DocumentRepository documentRepository;
 
     private final PersonRepository personRepository;
@@ -51,33 +56,25 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final TimelineService timelineService;
 
-    public DocumentServiceImpl(DocumentRepository documentRepository, DocumentMapper documentMapper, PersonRepository personRepository, OrganizationRepository organizationRepository, TimelineService timelineService) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, DocumentMapper documentMapper, PersonRepository personRepository, OrganizationRepository organizationRepository, TimelineService timelineService,AppAccountService appAccountService) {
         this.documentRepository = documentRepository;
         this.documentMapper = documentMapper;
         this.personRepository = personRepository;
         this.organizationRepository = organizationRepository;
         this.timelineService = timelineService;
+        this.appAccountService = appAccountService;
     }
 
     @Override
     public DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException, DbxException {
 
-        final String fileName = multipartFile.getOriginalFilename();
+        DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 
-        List<Acl> acls = new ArrayList<>();
-        acls.add(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
-
-        Storage storage = StorageOptions.newBuilder()
-            .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream("/Users/kancergokirmak/Devel/leadlet-api/src/main/resources/demo-storage-1b29eb0993de.json")))
-            .build()
-            .getService();
-        Bucket bucket = storage.get("lead-document");
-
-        Blob blob = bucket.create(fileName, multipartFile.getInputStream());
+        String url = storageService.upload(multipartFile);
 
         Document document = new Document();
-        document.setUrl(blob.getMediaLink());
-        document.setName(fileName);
+        document.setUrl(url);
+        document.setName(multipartFile.getName());
         document.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
 
         Person person = personRepository.findOneByIdAndAppAccount_Id(personId, SecurityUtils.getCurrentUserAppAccountId());
@@ -87,41 +84,6 @@ public class DocumentServiceImpl implements DocumentService {
 
         timelineService.documentCreated(document);
 
-        //DROPBOX
-
-        final String ACCESS_TOKEN = "H6WrAF39eYQAAAAAAAAJsFBT0tNecl84g1rqVKGjtY8n9uY3ukrgublDsrkUMJU2";
-        // Create Dropbox client
-        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
-        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-
-        // Get current account info
-        FullAccount account = null;
-        try {
-            account = client.users().getCurrentAccount();
-        } catch (DbxException e) {
-            e.printStackTrace();
-        }
-        System.out.println(account.getName().getDisplayName());
-
-        // Get files and folder metadata from Dropbox root directory
-        ListFolderResult result = null;
-
-        result = client.files().listFolder("");
-
-        while (true) {
-            for (Metadata metadata : result.getEntries()) {
-                System.out.println(metadata.getPathLower());
-            }
-
-            if (!result.getHasMore()) {
-                break;
-            }
-            result = client.files().listFolderContinue(result.getCursor());
-
-        }
-
-        FileMetadata metadata = client.files().uploadBuilder("/" + fileName).uploadAndFinish(multipartFile.getInputStream());
-
         return documentMapper.toDto(document);
 
     }
@@ -129,22 +91,13 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException {
 
-        final String fileName = multipartFile.getOriginalFilename();
+        DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 
-        List<Acl> acls = new ArrayList<>();
-        acls.add(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
-
-        Storage storage = StorageOptions.newBuilder()
-            .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream("/Users/kancergokirmak/Devel/leadlet-api/src/main/resources/demo-storage-1b29eb0993de.json")))
-            .build()
-            .getService();
-        Bucket bucket = storage.get("lead-document");
-
-        Blob blob = bucket.create(fileName, multipartFile.getInputStream());
+        String url = storageService.upload(multipartFile);
 
         Document document = new Document();
-        document.setUrl(blob.getMediaLink());
-        document.setName(fileName);
+        document.setUrl(url);
+        document.setName(multipartFile.getName());
         document.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
 
         Organization organization = organizationRepository.findOneByIdAndAppAccount_Id(organizationId, SecurityUtils.getCurrentUserAppAccountId());
@@ -153,41 +106,6 @@ public class DocumentServiceImpl implements DocumentService {
         document = documentRepository.save(document);
 
         timelineService.documentCreated(document);
-
-        //DROPBOX
-
-        final String ACCESS_TOKEN = "H6WrAF39eYQAAAAAAAAJsFBT0tNecl84g1rqVKGjtY8n9uY3ukrgublDsrkUMJU2";
-        // Create Dropbox client
-        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
-        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-
-        // Get current account info
-        FullAccount account = null;
-        try {
-            account = client.users().getCurrentAccount();
-        } catch (DbxException e) {
-            e.printStackTrace();
-        }
-        System.out.println(account.getName().getDisplayName());
-
-        // Get files and folder metadata from Dropbox root directory
-        ListFolderResult result = null;
-
-        result = client.files().listFolder("");
-
-        while (true) {
-            for (Metadata metadata : result.getEntries()) {
-                System.out.println(metadata.getPathLower());
-            }
-
-            if (!result.getHasMore()) {
-                break;
-            }
-            result = client.files().listFolderContinue(result.getCursor());
-
-        }
-
-        FileMetadata metadata = client.files().uploadBuilder("/" + fileName).uploadAndFinish(multipartFile.getInputStream());
 
         return documentMapper.toDto(document);
     }
@@ -244,19 +162,11 @@ public class DocumentServiceImpl implements DocumentService {
     public void delete(Long id) throws IOException {
         log.debug("Request to delete Document : {}", id);
 
-        //Delete from Google
-
-        Storage storage = StorageOptions.newBuilder()
-            .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream("/Users/kancergokirmak/Devel/leadlet-api/src/main/resources/demo-storage-1b29eb0993de.json")))
-            .build()
-            .getService();
+        DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 
         Document documentFromDb = documentRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (documentFromDb != null) {
-            String blobName = documentFromDb.getName();
-
-            BlobId blobId = BlobId.of("lead-document", blobName);
-            boolean deleted = storage.delete(blobId);
+            boolean deleted = storageService.delete(documentFromDb.getName());
             if (deleted) {
                 documentRepository.delete(id);
             } else {

@@ -17,31 +17,33 @@
     <!--
         Added the entity AppAccount.
     -->
-    <changeSet id="20170820143140-1" author="jhipster">
-        <createTable tableName="app_account">
+    <changeSet id="20180425101040-1" author="jhipster">
+        <createTable tableName="storage_preference">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
+
+            <column name="storage_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="s3_api_key" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="address" type="varchar(255)">
+            <column name="gs_key_file" type="blob">
                 <constraints nullable="true" />
             </column>
 
-            <column name="storage_preference_id" type="bigint">
+            <column name="gs_key_file_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="gs_bucket_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/app_accounts.csv"
-                  separator=";"
-                  tableName="app_account">
-            <column name="id" type="NUMERIC"/>
-        </loadData>
+
 
     </changeSet>
 </databaseChangeLog>
