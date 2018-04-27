@@ -5,6 +5,7 @@ import com.leadlet.service.dto.DocumentDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface DocumentService {
@@ -15,7 +16,7 @@ public interface DocumentService {
      * @param multipartFile the entity to save
      * @return the persisted entity
      */
-    DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException, DbxException;
+    DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException, DbxException, SQLException;
 
     /**
      * Save a document.
@@ -23,7 +24,7 @@ public interface DocumentService {
      * @param multipartFile the entity to save
      * @return the persisted entity
      */
-    DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException;
+    DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException, SQLException;
 
     /**
      * Update a document.
@@ -67,5 +68,5 @@ public interface DocumentService {
      *
      * @param id the id of the entity
      */
-    void delete(Long id) throws IOException;
+    void delete(Long id) throws IOException, SQLException;
 }

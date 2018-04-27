@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -66,12 +68,12 @@ public class AppAccountResource {
      */
     @PostMapping(value = "/account",consumes = {"multipart/form-data"})
     @Timed
-    public ResponseEntity<AppAccountDTO> updateAccount(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart(value = "account") AppAccountDTO appAccountDTO) throws URISyntaxException {
+    public ResponseEntity<AppAccountDTO> updateAccount(@RequestPart(value = "gsKeyFile", required = false) MultipartFile gsKeyFile, @RequestPart(value = "account") AppAccountDTO appAccountDTO) throws URISyntaxException, IOException, SQLException {
         log.debug("REST request to update AppAccount : {}", appAccountDTO);
 
-        AppAccountDTO result = appAccountService.save(appAccountDTO);
+        AppAccount result = appAccountService.save(appAccountDTO, gsKeyFile);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(appAccountMapper.toDto(result));
     }
 }

@@ -18,6 +18,9 @@ public class StoragePreference {
     @NotNull
     private StorageType type;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
     @Column(name = "s3_api_key")
     private String s3ApiKey;
 
@@ -82,6 +85,15 @@ public class StoragePreference {
 
     public StoragePreference setGsBucketName(String gsBucketName) {
         this.gsBucketName = gsBucketName;
+        return this;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public StoragePreference setEnabled(boolean enabled) {
+        this.enabled = enabled;
         return this;
     }
 }

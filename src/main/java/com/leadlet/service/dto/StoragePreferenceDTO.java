@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public class StoragePreferenceDTO implements Serializable{
 
+    private Long id;
+
     private String type;
 
     private String s3ApiKey;
@@ -13,6 +15,8 @@ public class StoragePreferenceDTO implements Serializable{
     private String gsKeyFileName;
 
     private String gsBucketName;
+
+    private boolean enabled;
 
     public String getType() {
         return type;
@@ -50,4 +54,21 @@ public class StoragePreferenceDTO implements Serializable{
         return this;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public StoragePreferenceDTO setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public StoragePreferenceDTO setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
 }

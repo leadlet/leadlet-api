@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class DocumentResource {
 
 
     @PostMapping(value = "/documents", headers = "content-type=multipart/*")
-    public ResponseEntity<DocumentDTO> upload(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "personId") long personId) throws IOException, DbxException {
+    public ResponseEntity<DocumentDTO> upload(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "personId") long personId) throws IOException, DbxException, SQLException {
 
         DocumentDTO documentDTO = documentService.save(multipartFile, personId);
 
@@ -46,7 +47,7 @@ public class DocumentResource {
     }
 
     @PostMapping(value = "/documentsOrg", headers = "content-type=multipart/*")
-    public ResponseEntity<DocumentDTO> uploadForOrganization(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "organizationId") long organizationId) throws IOException, DbxException {
+    public ResponseEntity<DocumentDTO> uploadForOrganization(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "organizationId") long organizationId) throws IOException, DbxException, SQLException {
 
         DocumentDTO documentDTO = documentService.saveDocumentForOrganization(multipartFile, organizationId);
 
@@ -123,7 +124,7 @@ public class DocumentResource {
      */
     @DeleteMapping("/documents/{id}")
     @Timed
-    public ResponseEntity<DocumentDTO> deleteDocument(@PathVariable Long id) throws IOException {
+    public ResponseEntity<DocumentDTO> deleteDocument(@PathVariable Long id) throws IOException, SQLException {
         log.debug("REST request to delete Document : {}", id);
         documentService.delete(id);
 

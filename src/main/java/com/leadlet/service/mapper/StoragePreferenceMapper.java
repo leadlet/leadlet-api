@@ -14,7 +14,6 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", uses = {UserMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface StoragePreferenceMapper extends EntityMapper<StoragePreferenceDTO, StoragePreference> {
 
-    @Mapping(target = "gsKeyFile", ignore = true)
     StoragePreferenceDTO toDto(StoragePreference storagePreference);
 
     @Mapping(target = "gsKeyFile", ignore = true)

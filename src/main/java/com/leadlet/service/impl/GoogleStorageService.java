@@ -14,8 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-@Scope("session")
 public class GoogleStorageService implements DocumentStorageService{
 
     private StoragePreference storagePreference;
@@ -27,8 +25,7 @@ public class GoogleStorageService implements DocumentStorageService{
         this.storagePreference = storagePreference;
     }
 
-    @PostConstruct
-    public void init() throws IOException, SQLException {
+    public GoogleStorageService init() throws IOException, SQLException {
         List<Acl> acls = new ArrayList<>();
         acls.add(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
 
@@ -39,11 +36,13 @@ public class GoogleStorageService implements DocumentStorageService{
 
         this.bucket = storage.get(storagePreference.getGsBucketName());
 
+        return this;
+
     }
 
     @Override
     public String upload(MultipartFile multipartFile) throws IOException {
-        Blob blob = bucket.create(multipartFile.getName(), multipartFile.getInputStream());
+        Blob blob = bucket.create(multipartFile.getOriginalFilename(), multipartFile.getInputStream());
 
         return blob.getMediaLink();
     }

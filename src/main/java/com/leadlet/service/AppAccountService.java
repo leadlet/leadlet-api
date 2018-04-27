@@ -4,7 +4,9 @@ import com.leadlet.domain.AppAccount;
 import com.leadlet.service.dto.AppAccountDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -20,7 +22,7 @@ public interface AppAccountService {
      * @param appAccountDTO the entity to save
      * @return the persisted entity
      */
-    AppAccountDTO save(AppAccountDTO appAccountDTO);
+    AppAccount save(AppAccountDTO appAccountDTO, MultipartFile gsKeyFile) throws IOException, SQLException;
 
     /**
      *  Get the "id" appAccount.

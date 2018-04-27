@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException, DbxException {
+    public DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException, DbxException, SQLException {
 
         DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 
@@ -89,7 +90,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException {
+    public DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException, SQLException {
 
         DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 
@@ -159,7 +160,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public void delete(Long id) throws IOException {
+    public void delete(Long id) throws IOException, SQLException {
         log.debug("Request to delete Document : {}", id);
 
         DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
