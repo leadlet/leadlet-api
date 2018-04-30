@@ -1,5 +1,7 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.User;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.AppAccountService;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.repository.AppAccountRepository;
@@ -11,6 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Optional;
 
 
 /**
@@ -38,49 +49,31 @@ public class AppAccountServiceImpl implements AppAccountService{
      * @return the persisted entity
      */
     @Override
-    public AppAccountDTO save(AppAccountDTO appAccountDTO) {
+    public AppAccount save(AppAccountDTO appAccountDTO, MultipartFile gsKeyFile) throws IOException, SQLException {
+
+        if( gsKeyFile != null && gsKeyFile.getSize() > 64000){
+            throw new IllegalArgumentException("Key file too big");
+        }
+
         log.debug("Request to save AppAccount : {}", appAccountDTO);
         AppAccount appAccount = appAccountMapper.toEntity(appAccountDTO);
+
+        if( gsKeyFile != null ){
+            appAccount.getStoragePreference().setGsKeyFileName(gsKeyFile.getOriginalFilename());
+            appAccount.getStoragePreference().setGsKeyFile(new SerialBlob(gsKeyFile.getBytes()));
+        }
         appAccount = appAccountRepository.save(appAccount);
-        return appAccountMapper.toDto(appAccount);
+        return appAccount;
     }
 
-    /**
-     *  Get all the appAccounts.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
     @Override
-    @Transactional(readOnly = true)
-    public Page<AppAccountDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all AppAccounts");
-        return appAccountRepository.findAll(pageable)
-            .map(appAccountMapper::toDto);
+    public AppAccount getCurrent() {
+
+        Long appAccountId = SecurityUtils.getCurrentUserAppAccountId();
+
+        AppAccount appAccount = appAccountRepository.findOneById(appAccountId);
+
+        return appAccount;
     }
 
-    /**
-     *  Get one appAccount by id.
-     *
-     *  @param id the id of the entity
-     *  @return the entity
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public AppAccountDTO findOne(Long id) {
-        log.debug("Request to get AppAccount : {}", id);
-        AppAccount appAccount = appAccountRepository.findOne(id);
-        return appAccountMapper.toDto(appAccount);
-    }
-
-    /**
-     *  Delete the  appAccount by id.
-     *
-     *  @param id the id of the entity
-     */
-    @Override
-    public void delete(Long id) {
-        log.debug("Request to delete AppAccount : {}", id);
-        appAccountRepository.delete(id);
-    }
 }

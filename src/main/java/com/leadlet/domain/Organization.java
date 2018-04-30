@@ -57,6 +57,8 @@ public class Organization implements Serializable {
     @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Person> persons;
 
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Document> documents;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -110,6 +112,46 @@ public class Organization implements Serializable {
         this.appAccount = appAccount;
     }
 
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
+    }
+
+    public Set<Deal> getDeals() {
+        return deals;
+    }
+
+    public void setDeals(Set<Deal> deals) {
+        this.deals = deals;
+    }
+
+    public Set<Timeline> getTimelines() {
+        return timelines;
+    }
+
+    public void setTimelines(Set<Timeline> timelines) {
+        this.timelines = timelines;
+    }
+
+    public Set<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(Set<Person> persons) {
+        this.persons = persons;
+    }
+
+    public Set<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,13 +162,18 @@ public class Organization implements Serializable {
             Objects.equals(address, that.address) &&
             Objects.equals(phones, that.phones) &&
             Objects.equals(email, that.email) &&
-            Objects.equals(appAccount, that.appAccount);
+            Objects.equals(appAccount, that.appAccount) &&
+            Objects.equals(activities, that.activities) &&
+            Objects.equals(deals, that.deals) &&
+            Objects.equals(timelines, that.timelines) &&
+            Objects.equals(persons, that.persons) &&
+            Objects.equals(documents, that.documents);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, address, phones, email, appAccount);
+        return Objects.hash(id, name, address, phones, email, appAccount, activities, deals, timelines, persons, documents);
     }
 
     @Override
@@ -138,6 +185,11 @@ public class Organization implements Serializable {
             ", phones=" + phones +
             ", email='" + email + '\'' +
             ", appAccount=" + appAccount +
+            ", activities=" + activities +
+            ", deals=" + deals +
+            ", timelines=" + timelines +
+            ", persons=" + persons +
+            ", documents=" + documents +
             '}';
     }
 }

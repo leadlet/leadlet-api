@@ -17,6 +17,8 @@ public class AppAccountDTO implements Serializable {
 
     private String address;
 
+    private StoragePreferenceDTO storagePreference;
+
     public Long getId() {
         return id;
     }
@@ -39,6 +41,15 @@ public class AppAccountDTO implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public StoragePreferenceDTO getStoragePreference() {
+        return storagePreference;
+    }
+
+    public AppAccountDTO setStoragePreference(StoragePreferenceDTO storagePreference) {
+        this.storagePreference = storagePreference;
+        return this;
     }
 
     @Override

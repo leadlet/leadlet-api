@@ -59,6 +59,9 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Note> notes;
 
+    @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Document> documents;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -175,12 +178,33 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public Set<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Deal)) return false;
         Deal deal = (Deal) o;
-        return Objects.equals(id, deal.id);
+        return Objects.equals(id, deal.id) &&
+            Objects.equals(title, deal.title) &&
+            Objects.equals(priority, deal.priority) &&
+            Objects.equals(dealValue, deal.dealValue) &&
+            Objects.equals(stage, deal.stage) &&
+            Objects.equals(pipeline, deal.pipeline) &&
+            Objects.equals(person, deal.person) &&
+            Objects.equals(organization, deal.organization) &&
+            Objects.equals(owner, deal.owner) &&
+            Objects.equals(possibleCloseDate, deal.possibleCloseDate) &&
+            Objects.equals(activities, deal.activities) &&
+            Objects.equals(timelines, deal.timelines) &&
+            Objects.equals(notes, deal.notes) &&
+            Objects.equals(documents, deal.documents);
     }
 
     @Override
@@ -195,7 +219,16 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             ", title='" + title + '\'' +
             ", priority=" + priority +
             ", dealValue=" + dealValue +
+            ", stage=" + stage +
+            ", pipeline=" + pipeline +
+            ", person=" + person +
+            ", organization=" + organization +
+            ", owner=" + owner +
             ", possibleCloseDate=" + possibleCloseDate +
+            ", activities=" + activities +
+            ", timelines=" + timelines +
+            ", notes=" + notes +
+            ", documents=" + documents +
             '}';
     }
 }

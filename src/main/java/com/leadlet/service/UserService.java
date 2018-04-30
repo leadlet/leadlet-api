@@ -312,7 +312,7 @@ public class UserService {
         Optional<User> user = userRepository.findOneByLogin(login);
 
         user.get().getAuthorities().size();
-
+        user.get().getTeam().getId();
         return user;
     }
 

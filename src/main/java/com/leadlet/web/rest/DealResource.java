@@ -134,6 +134,21 @@ public class DealResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    /**
+     * GET  /deals : get all the deals.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of deals in body
+     */
+    @GetMapping("/deals/organization/{organizationId}")
+    @Timed
+    public ResponseEntity<List<DealDetailDTO>> getDealsByOrganizationId(@PathVariable Long organizationId, @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Deals");
+        Page<DealDetailDTO> page = dealService.findAllByOrganizationId(organizationId,pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/organization");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("/deals")
     @Timed
     public ResponseEntity<List<DealDTO>> getAllDealsByFilter(@ApiParam String filter, @ApiParam Pageable pageable) {

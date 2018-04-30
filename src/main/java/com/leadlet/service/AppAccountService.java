@@ -1,8 +1,15 @@
 package com.leadlet.service;
 
+import com.leadlet.domain.AppAccount;
 import com.leadlet.service.dto.AppAccountDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 /**
  * Service Interface for managing AppAccount.
@@ -15,28 +22,13 @@ public interface AppAccountService {
      * @param appAccountDTO the entity to save
      * @return the persisted entity
      */
-    AppAccountDTO save(AppAccountDTO appAccountDTO);
-
-    /**
-     *  Get all the appAccounts.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
-    Page<AppAccountDTO> findAll(Pageable pageable);
+    AppAccount save(AppAccountDTO appAccountDTO, MultipartFile gsKeyFile) throws IOException, SQLException;
 
     /**
      *  Get the "id" appAccount.
      *
-     *  @param id the id of the entity
      *  @return the entity
      */
-    AppAccountDTO findOne(Long id);
+    AppAccount getCurrent();
 
-    /**
-     *  Delete the "id" appAccount.
-     *
-     *  @param id the id of the entity
-     */
-    void delete(Long id);
 }
