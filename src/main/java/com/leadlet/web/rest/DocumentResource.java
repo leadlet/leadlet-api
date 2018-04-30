@@ -1,16 +1,12 @@
 package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.dropbox.core.DbxException;
 import com.leadlet.service.DocumentService;
 import com.leadlet.service.dto.DocumentDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +35,7 @@ public class DocumentResource {
     }
 
     @PostMapping(value = "/documents", headers = "content-type=multipart/*")
-    public ResponseEntity<DocumentDTO> upload(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "personId") long personId) throws IOException, DbxException, SQLException {
+    public ResponseEntity<DocumentDTO> upload(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "personId") long personId) throws IOException, SQLException {
 
         DocumentDTO documentDTO = documentService.save(multipartFile, personId);
 
@@ -49,7 +45,7 @@ public class DocumentResource {
     }
 
     @PostMapping(value = "/documentsOrg", headers = "content-type=multipart/*")
-    public ResponseEntity<DocumentDTO> uploadForOrganization(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "organizationId") long organizationId) throws IOException, DbxException, SQLException {
+    public ResponseEntity<DocumentDTO> uploadForOrganization(@RequestParam(value = "file", required = true) MultipartFile multipartFile, @RequestParam(value = "organizationId") long organizationId) throws IOException, SQLException {
 
         DocumentDTO documentDTO = documentService.saveDocumentForOrganization(multipartFile, organizationId);
 

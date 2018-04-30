@@ -1,14 +1,5 @@
 package com.leadlet.service.impl;
 
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.ListFolderResult;
-import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.v2.users.FullAccount;
-import com.google.auth.oauth2.ServiceAccountCredentials;
-import com.google.cloud.storage.*;
 import com.leadlet.domain.Document;
 import com.leadlet.domain.DocumentStorageInfo;
 import com.leadlet.domain.Organization;
@@ -26,16 +17,13 @@ import com.leadlet.service.mapper.DocumentMapper;
 import com.leadlet.service.util.DocumentStorageServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,7 +57,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException, DbxException, SQLException {
+    public DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException,  SQLException {
 
         DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 
@@ -92,7 +80,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException, SQLException {
+    public DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException,  SQLException {
 
         DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 

@@ -1,8 +1,6 @@
 package com.leadlet.service;
 
-import com.dropbox.core.DbxException;
 import com.leadlet.service.dto.DocumentDTO;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,7 +15,7 @@ public interface DocumentService {
      * @param multipartFile the entity to save
      * @return the persisted entity
      */
-    DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException, DbxException, SQLException;
+    DocumentDTO save(MultipartFile multipartFile, long personId) throws IOException,  SQLException;
 
     /**
      * Save a document.
@@ -25,7 +23,7 @@ public interface DocumentService {
      * @param multipartFile the entity to save
      * @return the persisted entity
      */
-    DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException, DbxException, SQLException;
+    DocumentDTO saveDocumentForOrganization(MultipartFile multipartFile, long organizationId) throws IOException,  SQLException;
 
     /**
      * Update a document.
