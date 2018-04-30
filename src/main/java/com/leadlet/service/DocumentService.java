@@ -2,6 +2,7 @@ package com.leadlet.service;
 
 import com.dropbox.core.DbxException;
 import com.leadlet.service.dto.DocumentDTO;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -69,4 +70,5 @@ public interface DocumentService {
      * @param id the id of the entity
      */
     void delete(Long id) throws IOException, SQLException;
+
 }

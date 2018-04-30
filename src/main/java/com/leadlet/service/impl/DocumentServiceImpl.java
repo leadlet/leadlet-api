@@ -10,6 +10,7 @@ import com.dropbox.core.v2.users.FullAccount;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.*;
 import com.leadlet.domain.Document;
+import com.leadlet.domain.DocumentStorageInfo;
 import com.leadlet.domain.Organization;
 import com.leadlet.domain.Person;
 import com.leadlet.repository.DocumentRepository;
@@ -25,6 +26,7 @@ import com.leadlet.service.mapper.DocumentMapper;
 import com.leadlet.service.util.DocumentStorageServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,11 +73,11 @@ public class DocumentServiceImpl implements DocumentService {
 
         DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 
-        String url = storageService.upload(multipartFile);
+        DocumentStorageInfo documentStorageInfo = storageService.upload(multipartFile);
 
         Document document = new Document();
-        document.setUrl(url);
-        document.setName(multipartFile.getName());
+        document.setDocumentStorageInfo(documentStorageInfo);
+        document.setName(multipartFile.getOriginalFilename());
         document.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
 
         Person person = personRepository.findOneByIdAndAppAccount_Id(personId, SecurityUtils.getCurrentUserAppAccountId());
@@ -94,10 +96,10 @@ public class DocumentServiceImpl implements DocumentService {
 
         DocumentStorageService storageService = DocumentStorageServiceFactory.getService(appAccountService.getCurrent().getStoragePreference());
 
-        String url = storageService.upload(multipartFile);
+        DocumentStorageInfo documentStorageInfo = storageService.upload(multipartFile);
 
         Document document = new Document();
-        document.setUrl(url);
+        document.setDocumentStorageInfo(documentStorageInfo);
         document.setName(multipartFile.getName());
         document.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
 
@@ -167,7 +169,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         Document documentFromDb = documentRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (documentFromDb != null) {
-            boolean deleted = storageService.delete(documentFromDb.getName());
+            boolean deleted = storageService.delete(documentFromDb.getDocumentStorageInfo());
             if (deleted) {
                 documentRepository.delete(id);
             } else {

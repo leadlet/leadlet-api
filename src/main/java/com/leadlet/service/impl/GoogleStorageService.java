@@ -2,14 +2,13 @@ package com.leadlet.service.impl;
 
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.*;
+import com.leadlet.domain.DocumentStorageInfo;
 import com.leadlet.domain.StoragePreference;
 import com.leadlet.service.DocumentStorageService;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,18 +40,19 @@ public class GoogleStorageService implements DocumentStorageService{
     }
 
     @Override
-    public String upload(MultipartFile multipartFile) throws IOException {
+    public DocumentStorageInfo upload(MultipartFile multipartFile) throws IOException {
         Blob blob = bucket.create(multipartFile.getOriginalFilename(), multipartFile.getInputStream());
 
-        return blob.getMediaLink();
+        return new DocumentStorageInfo(blob);
     }
 
     @Override
-    public boolean delete(String documentName) throws IOException {
+    public boolean delete(DocumentStorageInfo documentStorageInfo) throws IOException {
 
-        BlobId blobId = BlobId.of(storagePreference.getGsBucketName(), documentName);
+        BlobId blobId = BlobId.of(documentStorageInfo.getGsBucket(), documentStorageInfo.getGsName(),documentStorageInfo.getGsGeneration());
         boolean deleted = storage.delete(blobId);
 
         return deleted;
     }
+
 }

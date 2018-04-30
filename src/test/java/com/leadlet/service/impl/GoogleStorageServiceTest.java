@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.DocumentStorageInfo;
 import com.leadlet.domain.StoragePreference;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -66,16 +67,15 @@ public class GoogleStorageServiceTest {
 
     @Test
     public void uploadFileToGoogleStorage() throws IOException, SQLException {
-        String url = googleStorageService.upload(multipartFile);
-
+        DocumentStorageInfo documentStorageInfo = googleStorageService.upload(multipartFile);
 
     }
 
     @Test
     public void deleteFileFromGoogleStorage() throws IOException, SQLException {
-        String url = googleStorageService.upload(multipartFile);
+        DocumentStorageInfo documentStorageInfo  = googleStorageService.upload(multipartFile);
 
-        boolean deleted = googleStorageService.delete(multipartFile.getName());
+        boolean deleted = googleStorageService.delete(documentStorageInfo);
 
         assertThat(deleted).isTrue();
 

@@ -25,9 +25,22 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="url" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="document_url" type="varchar(2100)">
+                <constraints nullable="true" />
             </column>
+            <column name="gs_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="gs_bucket" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="gs_generation" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="storage_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="person_id" type="bigint">
                 <constraints nullable="true" />
             </column>

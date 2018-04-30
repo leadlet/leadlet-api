@@ -1,9 +1,11 @@
 package com.leadlet.service;
 
+import com.leadlet.domain.DocumentStorageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public interface DocumentStorageService {
 
@@ -13,13 +15,13 @@ public interface DocumentStorageService {
      * @param multipartFile the entity to save
      * @return the uploaded file URL
      */
-    String upload(MultipartFile multipartFile) throws IOException;
+    DocumentStorageInfo upload(MultipartFile multipartFile) throws IOException;
 
     /**
      * Upload a document.
      *
-     * @param documentName the document to delete
+     * @param documentStorageInfo the document to delete
      */
-    boolean delete(String documentName) throws IOException;
+    boolean delete(DocumentStorageInfo documentStorageInfo) throws IOException;
 
 }

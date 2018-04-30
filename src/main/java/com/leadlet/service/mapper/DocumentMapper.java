@@ -3,12 +3,15 @@ package com.leadlet.service.mapper;
 import com.leadlet.domain.Document;
 import com.leadlet.service.dto.DocumentDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity Document and its DTO DocumentDTO.
  */
 @Mapper(componentModel = "spring", uses = {PersonMapper.class, OrganizationMapper.class, DealMapper.class})
 public interface DocumentMapper extends EntityMapper<DocumentDTO, Document> {
+
+    @Mapping(source = "documentStorageInfo.documentUrl", target = "url")
 
     DocumentDTO toDto(Document document);
 

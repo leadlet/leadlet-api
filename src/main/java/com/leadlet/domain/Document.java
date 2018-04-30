@@ -26,9 +26,7 @@ public class Document extends AbstractAuditingEntity implements Serializable {
     @Column(name = "name", length = 100)
     private String name;
 
-    @Size(max = 2100)
-    @Column(name = "url", length = 2100)
-    private String url;
+    private DocumentStorageInfo documentStorageInfo;
 
     @ManyToOne
     private Person person;
@@ -47,48 +45,54 @@ public class Document extends AbstractAuditingEntity implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public Document setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Document setName(String name) {
         this.name = name;
+        return this;
     }
 
-    public String getUrl() {
-        return url;
+    public DocumentStorageInfo getDocumentStorageInfo() {
+        return documentStorageInfo;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public Document setDocumentStorageInfo(DocumentStorageInfo documentStorageInfo) {
+        this.documentStorageInfo = documentStorageInfo;
+        return this;
     }
 
     public Person getPerson() {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public Document setPerson(Person person) {
         this.person = person;
+        return this;
     }
 
     public Organization getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Organization organization) {
+    public Document setOrganization(Organization organization) {
         this.organization = organization;
+        return this;
     }
 
     public Deal getDeal() {
         return deal;
     }
 
-    public void setDeal(Deal deal) {
+    public Document setDeal(Deal deal) {
         this.deal = deal;
+        return this;
     }
 
     @Override
@@ -98,7 +102,7 @@ public class Document extends AbstractAuditingEntity implements Serializable {
         Document document = (Document) o;
         return Objects.equals(id, document.id) &&
             Objects.equals(name, document.name) &&
-            Objects.equals(url, document.url) &&
+            Objects.equals(documentStorageInfo, document.documentStorageInfo) &&
             Objects.equals(person, document.person) &&
             Objects.equals(organization, document.organization) &&
             Objects.equals(deal, document.deal);
@@ -106,16 +110,6 @@ public class Document extends AbstractAuditingEntity implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Document{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", url='" + url + '\'' +
-            '}';
     }
 }
