@@ -687,6 +687,9 @@
         </profile>
         <profile>
             <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
@@ -703,13 +706,6 @@
                                     <directory>target/www/</directory>
                                 </fileset>
                             </filesets>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <warSourceDirectory>target/www/</warSourceDirectory>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -763,7 +759,7 @@
                                 </goals>
                                 <phase>prepare-package</phase>
                                 <configuration>
-                                    <outputDirectory>${basedir}/target/www</outputDirectory>
+                                    <outputDirectory>${basedir}/target/www/public</outputDirectory>
                                     <resources>
                                         <resource>
                                             <directory>../leadlet-webapp/build</directory>
@@ -773,6 +769,13 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <warSourceDirectory>target/www/</warSourceDirectory>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
