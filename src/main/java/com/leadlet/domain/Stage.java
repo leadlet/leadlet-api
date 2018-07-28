@@ -33,6 +33,11 @@ public class Stage extends AbstractAccountSpecificEntity implements Serializable
     @ManyToOne(fetch = FetchType.LAZY)
     private Pipeline pipeline;
 
+    @OneToMany(mappedBy = "stage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Deal> deals = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -84,6 +89,15 @@ public class Stage extends AbstractAccountSpecificEntity implements Serializable
 
     public void setPipeline(Pipeline pipeline) {
         this.pipeline = pipeline;
+    }
+
+    public Set<Deal> getDeals() {
+        return deals;
+    }
+
+    public Stage setDeals(Set<Deal> deals) {
+        this.deals = deals;
+        return this;
     }
 
     @Override

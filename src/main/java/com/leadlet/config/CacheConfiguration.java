@@ -51,6 +51,7 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.Pipeline.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Pipeline.class.getName() + ".stages", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Stage.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Stage.class.getName() + ".deals", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Organization.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Organization.class.getName() + ".phones", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Organization.class.getName() + ".emails", jcacheConfiguration);
