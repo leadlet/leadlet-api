@@ -31,7 +31,7 @@ public abstract class AbstractAuditingEntity extends AbstractAccountSpecificEnti
     private String createdBy;
 
     @CreatedDate
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date", nullable = true)
     @JsonIgnore
     private Instant createdDate = Instant.now();
 

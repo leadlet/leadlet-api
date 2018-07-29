@@ -69,7 +69,7 @@ liquibase:
 #        keyAlias: leadlet_api
 # ===================================================================
 server:
-    port: 8080
+    port: ${PORT}
     compression:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
