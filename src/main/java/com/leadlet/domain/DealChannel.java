@@ -9,12 +9,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A Source.
+ * A Deal Channel.
  */
 @Entity
-@Table(name = "source")
+@Table(name = "deal_channel")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Source extends AbstractAccountSpecificEntity implements Serializable {
+public class DealChannel extends AbstractAccountSpecificEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,21 +49,20 @@ public class Source extends AbstractAccountSpecificEntity implements Serializabl
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Source)) return false;
-        Source source = (Source) o;
-        return Objects.equals(id, source.id) &&
-            Objects.equals(name, source.name);
+        if (!(o instanceof DealChannel)) return false;
+        DealChannel channel = (DealChannel) o;
+        return Objects.equals(id, channel.id) &&
+            Objects.equals(name, channel.name);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
-        return "Source{" +
+        return "DealChannel{" +
             "id=" + id +
             ", name='" + name + '\'' +
             '}';

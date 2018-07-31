@@ -32,6 +32,9 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
     @Column(name = "description")
     private String description;
 
+    @ManyToMany
+    private Deal deal;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -68,6 +71,14 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
         this.description = description;
     }
 
+    public Deal getDeal() {
+        return deal;
+    }
+
+    public void setDeal(Deal deal) {
+        this.deal = deal;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,13 +87,14 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
         return Objects.equals(id, product.id) &&
             Objects.equals(name, product.name) &&
             Objects.equals(price, product.price) &&
-            Objects.equals(description, product.description);
+            Objects.equals(description, product.description) &&
+            Objects.equals(deal, product.deal);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, price, description);
+        return Objects.hash(id, name, price, description, deal);
     }
 
     @Override
@@ -92,6 +104,7 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
             ", name='" + name + '\'' +
             ", price=" + price +
             ", description='" + description + '\'' +
+            ", deal=" + deal +
             '}';
     }
 }
