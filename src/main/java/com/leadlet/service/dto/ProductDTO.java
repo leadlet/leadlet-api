@@ -1,7 +1,10 @@
 package com.leadlet.service.dto;
 
+import com.leadlet.domain.Deal;
+
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 public class ProductDTO implements Serializable {
 
@@ -13,7 +16,7 @@ public class ProductDTO implements Serializable {
 
     private String description;
 
-    private Long dealId;
+    private Set<Deal> deals;
 
     public Long getId() {
         return id;
@@ -47,12 +50,12 @@ public class ProductDTO implements Serializable {
         this.description = description;
     }
 
-    public Long getDealId() {
-        return dealId;
+    public Set<Deal> getDeals() {
+        return deals;
     }
 
-    public void setDealId(Long dealId) {
-        this.dealId = dealId;
+    public void setDeals(Set<Deal> deals) {
+        this.deals = deals;
     }
 
     @Override
@@ -64,13 +67,13 @@ public class ProductDTO implements Serializable {
             Objects.equals(name, that.name) &&
             Objects.equals(price, that.price) &&
             Objects.equals(description, that.description) &&
-            Objects.equals(dealId, that.dealId);
+            Objects.equals(deals, that.deals);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, price, description, dealId);
+        return Objects.hash(id);
     }
 
     @Override
@@ -80,7 +83,7 @@ public class ProductDTO implements Serializable {
             ", name='" + name + '\'' +
             ", price=" + price +
             ", description='" + description + '\'' +
-            ", dealId=" + dealId +
+            ", deals=" + deals +
             '}';
     }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity Product.
+    -->
+    <changeSet id="201808031713-1" author="jhipster">
+        <createTable tableName="deal_product">
+            <column name="deal_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="deal_id, product_id" tableName="deal_product"/>
+
+        <addForeignKeyConstraint baseColumnNames="deal_id"
+                                 baseTableName="deal_product"
+                                 constraintName="fk_deal_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="deal"/>
+
+        <addForeignKeyConstraint baseColumnNames="product_id"
+                                 baseTableName="deal_product"
+                                 constraintName="fk_product_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="product"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/deals_products.csv"
+                  separator=";"
+                  tableName="deal_product"/>
+
+    </changeSet>
+</databaseChangeLog>

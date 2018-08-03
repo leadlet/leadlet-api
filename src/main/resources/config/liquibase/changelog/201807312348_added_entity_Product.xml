@@ -28,8 +28,8 @@
             <column name="price" type="double">
                 <constraints nullable="true" />
             </column>
-            <column name="deal_id" type="bigint">
-                <constraints nullable="true" />
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
@@ -43,7 +43,6 @@
                   tableName="product">
             <column name="id" type="NUMERIC"/>
             <column name="price" type="NUMERIC"/>
-            <column name="deal_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
         </loadData>
 

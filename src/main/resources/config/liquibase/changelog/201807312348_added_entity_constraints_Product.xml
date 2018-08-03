@@ -1,4 +1,4 @@
-x<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,12 +7,6 @@ x<?xml version="1.0" encoding="utf-8"?>
         Added the constraints for entity Product.
     -->
     <changeSet id="201807312348-2" author="jhipster">
-
-        <addForeignKeyConstraint baseColumnNames="deal_id"
-                                 baseTableName="product"
-                                 constraintName="fk_product_deal_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="deal"/>
 
         <addForeignKeyConstraint baseColumnNames="app_account_id"
                                  baseTableName="product"

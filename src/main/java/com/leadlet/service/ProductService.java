@@ -1,6 +1,5 @@
 package com.leadlet.service;
 
-import com.leadlet.domain.Product;
 import com.leadlet.service.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

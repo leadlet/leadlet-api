@@ -6,7 +6,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Product.
@@ -32,8 +34,8 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
-    private Deal deal;
+    @ManyToMany(mappedBy = "products")
+    private Set<Deal> deals = new HashSet<>();
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -71,12 +73,12 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
         this.description = description;
     }
 
-    public Deal getDeal() {
-        return deal;
+    public Set<Deal> getDeals() {
+        return deals;
     }
 
-    public void setDeal(Deal deal) {
-        this.deal = deal;
+    public void setDeals(Set<Deal> deals) {
+        this.deals = deals;
     }
 
     @Override
@@ -88,13 +90,13 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
             Objects.equals(name, product.name) &&
             Objects.equals(price, product.price) &&
             Objects.equals(description, product.description) &&
-            Objects.equals(deal, product.deal);
+            Objects.equals(deals, product.deals);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, price, description, deal);
+        return Objects.hash(id);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
             ", name='" + name + '\'' +
             ", price=" + price +
             ", description='" + description + '\'' +
-            ", deal=" + deal +
+            ", deals=" + deals +
             '}';
     }
 }
