@@ -71,6 +71,9 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     )
     Set<Product> products = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DealSource dealSource;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -203,6 +206,14 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         this.products = products;
     }
 
+    public DealSource getDealSource() {
+        return dealSource;
+    }
+
+    public void setDealSource(DealSource dealSource) {
+        this.dealSource = dealSource;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -222,11 +233,13 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             Objects.equals(timelines, deal.timelines) &&
             Objects.equals(notes, deal.notes) &&
             Objects.equals(documents, deal.documents) &&
-            Objects.equals(products, deal.products);
+            Objects.equals(products, deal.products) &&
+            Objects.equals(dealSource, deal.dealSource);
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id);
     }
 
@@ -248,6 +261,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             ", notes=" + notes +
             ", documents=" + documents +
             ", products=" + products +
+            ", dealSource=" + dealSource +
             '}';
     }
 }

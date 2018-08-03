@@ -10,7 +10,10 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = {})
 public interface SourceMapper extends EntityMapper <SourceDTO, DealSource> {
 
+    SourceDTO toDto(DealSource source);
+
     DealSource toEntity(SourceDTO sourceDTO);
+
     default DealSource fromId(Long id) {
         if (id == null) {
             return null;
