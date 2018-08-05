@@ -35,6 +35,10 @@ public class DealDTO implements Serializable {
 
     private DealValueDTO dealValue;
 
+    private SourceDTO source;
+
+    private ChannelDTO channel;
+
     public Long getId() {
         return id;
     }
@@ -141,6 +145,22 @@ public class DealDTO implements Serializable {
     public DealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
         this.possibleCloseDate = possibleCloseDate;
         return this;
+    }
+
+    public SourceDTO getSource() {
+        return source;
+    }
+
+    public void setSource(SourceDTO source) {
+        this.source = source;
+    }
+
+    public ChannelDTO getChannel() {
+        return channel;
+    }
+
+    public void setChannel(ChannelDTO channel) {
+        this.channel = channel;
     }
 
     @Override

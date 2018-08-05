@@ -10,6 +10,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = {})
 public interface ChannelMapper extends EntityMapper<ChannelDTO, DealChannel> {
 
+    ChannelDTO toDto(DealChannel channel);
+
     DealChannel toEntity(ChannelDTO channelDTO);
 
     default DealChannel fromId(Long id) {

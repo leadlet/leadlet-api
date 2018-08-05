@@ -50,5 +50,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="deal_source"/>
 
+        <addForeignKeyConstraint baseColumnNames="deal_channel_id"
+                                 baseTableName="deal"
+                                 constraintName="fk_deal_deal_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="deal_channel"/>
+
     </changeSet>
 </databaseChangeLog>
