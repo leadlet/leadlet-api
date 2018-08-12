@@ -36,9 +36,9 @@ public class DealDTO implements Serializable {
 
     private DealValueDTO dealValue;
 
-    private SourceDTO source;
+    private SourceDTO dealSource;
 
-    private ChannelDTO channel;
+    private ChannelDTO dealChannel;
 
     private Set<ProductDTO> products;
 
@@ -158,20 +158,20 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public SourceDTO getSource() {
-        return source;
+    public SourceDTO getDealSource() {
+        return dealSource;
     }
 
-    public void setSource(SourceDTO source) {
-        this.source = source;
+    public void setDealSource(SourceDTO dealSource) {
+        this.dealSource = dealSource;
     }
 
-    public ChannelDTO getChannel() {
-        return channel;
+    public ChannelDTO getDealChannel() {
+        return dealChannel;
     }
 
-    public void setChannel(ChannelDTO channel) {
-        this.channel = channel;
+    public void setDealChannel(ChannelDTO dealChannel) {
+        this.dealChannel = dealChannel;
     }
 
     @Override
