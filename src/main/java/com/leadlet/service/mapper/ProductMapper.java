@@ -4,7 +4,7 @@ import com.leadlet.domain.Product;
 import com.leadlet.service.dto.ProductDTO;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {DealMapper.class})
+@Mapper(componentModel = "spring", uses = {})
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
 
     ProductDTO toDto(Product product);

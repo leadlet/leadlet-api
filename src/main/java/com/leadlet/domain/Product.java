@@ -34,7 +34,7 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
     private Set<Deal> deals = new HashSet<>();
 
     public static long getSerialVersionUID() {
@@ -106,7 +106,6 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
             ", name='" + name + '\'' +
             ", price=" + price +
             ", description='" + description + '\'' +
-            ", deals=" + deals +
             '}';
     }
 }

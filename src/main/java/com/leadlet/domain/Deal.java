@@ -5,9 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -63,13 +61,13 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Document> documents;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany
     @JoinTable(
         name = "deal_product",
         joinColumns = { @JoinColumn(name = "deal_id", referencedColumnName = "id") },
         inverseJoinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id") }
     )
-    Set<Product> products = new HashSet<>();
+    private Set<Product> products;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private DealSource dealSource;
