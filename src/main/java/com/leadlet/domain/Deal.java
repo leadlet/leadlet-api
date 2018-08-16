@@ -5,7 +5,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -61,6 +60,20 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
 
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Document> documents;
+
+    @ManyToMany
+    @JoinTable(
+        name = "deal_product",
+        joinColumns = { @JoinColumn(name = "deal_id", referencedColumnName = "id") },
+        inverseJoinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id") }
+    )
+    private Set<Product> products;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DealSource dealSource;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DealChannel dealChannel;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -186,6 +199,30 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         this.documents = documents;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
+    public DealSource getDealSource() {
+        return dealSource;
+    }
+
+    public void setDealSource(DealSource dealSource) {
+        this.dealSource = dealSource;
+    }
+
+    public DealChannel getDealChannel() {
+        return dealChannel;
+    }
+
+    public void setDealChannel(DealChannel dealChannel) {
+        this.dealChannel = dealChannel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -204,11 +241,15 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             Objects.equals(activities, deal.activities) &&
             Objects.equals(timelines, deal.timelines) &&
             Objects.equals(notes, deal.notes) &&
-            Objects.equals(documents, deal.documents);
+            Objects.equals(documents, deal.documents) &&
+            Objects.equals(products, deal.products) &&
+            Objects.equals(dealSource, deal.dealSource) &&
+            Objects.equals(dealChannel, deal.dealChannel);
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id);
     }
 
@@ -229,6 +270,9 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             ", timelines=" + timelines +
             ", notes=" + notes +
             ", documents=" + documents +
+            ", products=" + products +
+            ", dealSource=" + dealSource +
+            ", dealChannel=" + dealChannel +
             '}';
     }
 }

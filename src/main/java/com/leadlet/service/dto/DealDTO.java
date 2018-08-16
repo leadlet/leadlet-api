@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Deal entity.
@@ -34,6 +35,20 @@ public class DealDTO implements Serializable {
     private ZonedDateTime possibleCloseDate;
 
     private DealValueDTO dealValue;
+
+    private SourceDTO dealSource;
+
+    private ChannelDTO dealChannel;
+
+    private Set<ProductDTO> products;
+
+    public Set<ProductDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<ProductDTO> products) {
+        this.products = products;
+    }
 
     public Long getId() {
         return id;
@@ -141,6 +156,22 @@ public class DealDTO implements Serializable {
     public DealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
         this.possibleCloseDate = possibleCloseDate;
         return this;
+    }
+
+    public SourceDTO getDealSource() {
+        return dealSource;
+    }
+
+    public void setDealSource(SourceDTO dealSource) {
+        this.dealSource = dealSource;
+    }
+
+    public ChannelDTO getDealChannel() {
+        return dealChannel;
+    }
+
+    public void setDealChannel(ChannelDTO dealChannel) {
+        this.dealChannel = dealChannel;
     }
 
     @Override

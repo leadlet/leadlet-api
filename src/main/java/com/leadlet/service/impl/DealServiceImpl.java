@@ -1,6 +1,5 @@
 package com.leadlet.service.impl;
 
-import com.leadlet.domain.Organization;
 import com.leadlet.domain.Stage;
 import com.leadlet.repository.StageRepository;
 import com.leadlet.repository.util.SearchCriteria;
@@ -9,7 +8,6 @@ import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DealService;
 import com.leadlet.domain.Deal;
 import com.leadlet.repository.DealRepository;
-import com.leadlet.service.StageService;
 import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.DealMoveDTO;
@@ -28,6 +26,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
