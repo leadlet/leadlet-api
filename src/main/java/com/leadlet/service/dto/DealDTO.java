@@ -22,7 +22,7 @@ public class DealDTO implements Serializable {
 
     private Long pipelineId;
 
-    private Long personId;
+    private PersonDTO person;
 
     private Long organizationId;
 
@@ -122,13 +122,12 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public PersonDTO getPerson() {
+        return person;
     }
 
-    public DealDTO setPersonId(Long personId) {
-        this.personId = personId;
-        return this;
+    public void setPerson(PersonDTO person) {
+        this.person = person;
     }
 
     public Long getOrganizationId() {
