@@ -1,6 +1,8 @@
 package com.leadlet.service.dto;
 
 
+import com.leadlet.domain.enumeration.ActivityStatus;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -41,6 +43,16 @@ public class DealDTO implements Serializable {
     private ChannelDTO dealChannel;
 
     private Set<ProductDTO> products;
+
+    private ActivityStatus activityStatus;
+
+    public ActivityStatus getActivityStatus() {
+        return activityStatus;
+    }
+
+    public void setActivityStatus(ActivityStatus activityStatus) {
+        this.activityStatus = activityStatus;
+    }
 
     public Set<ProductDTO> getProducts() {
         return products;

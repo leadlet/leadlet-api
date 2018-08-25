@@ -7,7 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
@@ -41,7 +40,7 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     private Date end;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type" , nullable = false)
+    @Column(name = "type", nullable = false)
     @NotNull
     private ActivityType type;
 
