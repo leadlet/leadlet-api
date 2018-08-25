@@ -17,7 +17,6 @@ import org.springframework.context.annotation.*;
 
 @Configuration
 @EnableCaching
-@AutoConfigureAfter(value = { MetricsConfiguration.class })
 @AutoConfigureBefore(value = { WebConfigurer.class, DatabaseConfiguration.class })
 public class CacheConfiguration {
 
@@ -65,7 +64,6 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.OrganizationPhone.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Team.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Timeline.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Document.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

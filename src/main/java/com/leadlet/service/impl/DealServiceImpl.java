@@ -9,10 +9,12 @@ import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DealService;
 import com.leadlet.domain.Deal;
 import com.leadlet.repository.DealRepository;
+import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.StageService;
 import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.DealMoveDTO;
+import com.leadlet.service.dto.SearchQueryDTO;
 import com.leadlet.service.mapper.DealDetailMapper;
 import com.leadlet.service.mapper.DealMapper;
 import com.leadlet.web.rest.util.ParameterUtil;
@@ -26,9 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -49,12 +53,15 @@ public class DealServiceImpl implements DealService {
 
     private final DealDetailMapper dealDetailMapper;
 
+    private final ElasticsearchService elasticsearchService;
+
     public DealServiceImpl(DealRepository dealRepository, DealMapper dealMapper, StageRepository stageRepository,
-                           DealDetailMapper dealDetailMapper) {
+                           DealDetailMapper dealDetailMapper, ElasticsearchService elasticsearchService) {
         this.dealRepository = dealRepository;
         this.dealMapper = dealMapper;
         this.stageRepository = stageRepository;
         this.dealDetailMapper = dealDetailMapper;
+        this.elasticsearchService = elasticsearchService;
     }
 
     /**
@@ -206,6 +213,15 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
+    public Page<DealDTO> query(String searchQuery, Pageable pageable) throws IOException {
+
+        List<Long> ids = elasticsearchService.getDealsTerms(searchQuery);
+
+        return dealRepository.findAllByIdIn(ids, pageable)
+            .map(dealMapper::toDto);
+    }
+
+    @Override
     public Page<DealDTO> search(String filter, Pageable pageable) {
         log.debug("Request to get all Deals");
         SpecificationsBuilder builder = new SpecificationsBuilder();
@@ -226,6 +242,5 @@ public class DealServiceImpl implements DealService {
         return dealRepository.findAll(spec, pageable)
             .map(dealMapper::toDto);
     }
-
 
 }

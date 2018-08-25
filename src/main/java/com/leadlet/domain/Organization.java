@@ -57,9 +57,6 @@ public class Organization implements Serializable {
     @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Person> persons;
 
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Document> documents;
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -144,14 +141,6 @@ public class Organization implements Serializable {
         this.persons = persons;
     }
 
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(Set<Document> documents) {
-        this.documents = documents;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -166,14 +155,13 @@ public class Organization implements Serializable {
             Objects.equals(activities, that.activities) &&
             Objects.equals(deals, that.deals) &&
             Objects.equals(timelines, that.timelines) &&
-            Objects.equals(persons, that.persons) &&
-            Objects.equals(documents, that.documents);
+            Objects.equals(persons, that.persons);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, address, phones, email, appAccount, activities, deals, timelines, persons, documents);
+        return Objects.hash(id, name, address, phones, email, appAccount, activities, deals, timelines, persons);
     }
 
     @Override
@@ -189,7 +177,6 @@ public class Organization implements Serializable {
             ", deals=" + deals +
             ", timelines=" + timelines +
             ", persons=" + persons +
-            ", documents=" + documents +
-            '}';
+        '}';
     }
 }

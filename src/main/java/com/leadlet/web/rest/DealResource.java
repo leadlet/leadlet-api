@@ -2,12 +2,9 @@ package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.DealService;
-import com.leadlet.service.dto.DealDetailDTO;
-import com.leadlet.service.dto.DealMoveDTO;
-import com.leadlet.service.dto.OrganizationDTO;
+import com.leadlet.service.dto.*;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
-import com.leadlet.service.dto.DealDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -19,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -64,6 +62,16 @@ public class DealResource {
         return ResponseEntity.created(new URI("/api/deals/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @GetMapping("/deals/search")
+    @Timed
+    public ResponseEntity<List<DealDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
+
+        Page<DealDTO> page = dealService.query(q, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/search");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
     }
 
     /**

@@ -63,9 +63,6 @@ public class Person implements Serializable {
     @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Timeline> timelines;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Document> documents;
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -166,14 +163,6 @@ public class Person implements Serializable {
         this.timelines = timelines;
     }
 
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(Set<Document> documents) {
-        this.documents = documents;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -190,8 +179,7 @@ public class Person implements Serializable {
             Objects.equals(activities, person.activities) &&
             Objects.equals(deals, person.deals) &&
             Objects.equals(notes, person.notes) &&
-            Objects.equals(timelines, person.timelines) &&
-            Objects.equals(documents, person.documents);
+            Objects.equals(timelines, person.timelines);
     }
 
     @Override
@@ -215,7 +203,6 @@ public class Person implements Serializable {
             ", deals=" + deals +
             ", notes=" + notes +
             ", timelines=" + timelines +
-            ", documents=" + documents +
             '}';
     }
 }

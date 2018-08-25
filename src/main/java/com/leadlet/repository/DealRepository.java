@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+import java.util.Set;
+
 
 /**
  * Spring Data JPA repository for the Deal entity.
@@ -32,5 +35,7 @@ public interface DealRepository extends JpaRepository<Deal, Long>, JpaSpecificat
 
     @Query("select sum(deal.dealValue.potentialValue) from #{#entityName} deal where deal.appAccount.id = ?1 and deal.stage.id = ?2")
     Double calculateDealTotalByStageId(Long id, Long stageId);
+
+    Page<Deal> findAllByIdIn(List<Long> ids, Pageable page);
 
 }

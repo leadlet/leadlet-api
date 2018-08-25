@@ -5,7 +5,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -58,9 +57,6 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
 
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Note> notes;
-
-    @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Document> documents;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -178,14 +174,6 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(Set<Document> documents) {
-        this.documents = documents;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -203,8 +191,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             Objects.equals(possibleCloseDate, deal.possibleCloseDate) &&
             Objects.equals(activities, deal.activities) &&
             Objects.equals(timelines, deal.timelines) &&
-            Objects.equals(notes, deal.notes) &&
-            Objects.equals(documents, deal.documents);
+            Objects.equals(notes, deal.notes);
     }
 
     @Override
@@ -228,7 +215,6 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             ", activities=" + activities +
             ", timelines=" + timelines +
             ", notes=" + notes +
-            ", documents=" + documents +
             '}';
     }
 }

@@ -54,7 +54,10 @@ spring:
         cache-seconds: 1
     thymeleaf:
         cache: false
-
+    data:
+        elasticsearch:
+          cluster-name: leadlet
+          cluster-nodes: elasticsearch
 liquibase:
     contexts: dev
 
@@ -137,5 +140,6 @@ jhipster:
 # More documentation is available at:
 # https://jhipster.github.io/common-application-properties/
 # ===================================================================
+
 
 application:
