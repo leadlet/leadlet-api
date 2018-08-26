@@ -1,9 +1,11 @@
 package com.leadlet.domain;
 
+import com.leadlet.domain.enumeration.ActivityStatus;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -74,6 +76,19 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private DealChannel dealChannel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_status", nullable = false)
+    @NotNull
+    private ActivityStatus activityStatus;
+
+    public ActivityStatus getActivityStatus() {
+        return activityStatus;
+    }
+
+    public void setActivityStatus(ActivityStatus activityStatus) {
+        this.activityStatus = activityStatus;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -244,7 +259,8 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             Objects.equals(documents, deal.documents) &&
             Objects.equals(products, deal.products) &&
             Objects.equals(dealSource, deal.dealSource) &&
-            Objects.equals(dealChannel, deal.dealChannel);
+            Objects.equals(dealChannel, deal.dealChannel) &&
+            Objects.equals(activityStatus, deal.activityStatus);
     }
 
     @Override
@@ -273,6 +289,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             ", products=" + products +
             ", dealSource=" + dealSource +
             ", dealChannel=" + dealChannel +
+            ", activityStatus=" + activityStatus +
             '}';
     }
 }

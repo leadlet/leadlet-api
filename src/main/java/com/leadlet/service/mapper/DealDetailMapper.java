@@ -13,7 +13,6 @@ import org.mapstruct.Mapping;
 public interface DealDetailMapper extends EntityMapper<DealDetailDTO, Deal> {
 
     @Mapping(source = "stage.id", target = "stageId")
-    @Mapping(source = "person.id", target = "personId")
     @Mapping(source = "pipeline.id", target = "pipelineId")
     DealDetailDTO toDto(Deal deal);
 
