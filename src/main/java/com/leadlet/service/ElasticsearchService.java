@@ -14,4 +14,6 @@ public interface ElasticsearchService {
 
     List<Long> getDealsTerms(String query) throws IOException;
 
+    void syncDeals();
+
 }

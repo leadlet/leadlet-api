@@ -1,27 +1,40 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.enumeration.FacetType;
+import com.leadlet.domain.enumeration.SyncStatus;
+import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.dto.FacetDTO;
 import com.leadlet.service.dto.FacetDefinitionDTO;
-import com.leadlet.service.dto.SearchQueryDTO;
 import com.leadlet.service.dto.TermsFacetDTO;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.*;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Team.
@@ -32,9 +45,11 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 
     private final RestHighLevelClient restHighLevelClient;
+    private final DealRepository dealRepository;
 
-    public ElasticsearchServiceImpl(RestHighLevelClient restHighLevelClient) {
+    public ElasticsearchServiceImpl(RestHighLevelClient restHighLevelClient, DealRepository dealRepository) {
         this.restHighLevelClient = restHighLevelClient;
+        this.dealRepository = dealRepository;
     }
 
 
@@ -69,6 +84,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
         return dealIds;
     }
+
 
     private List<Long> getDealIds(SearchResponse searchResponse) {
 
@@ -123,4 +139,67 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
                 .field(facet.getDataField()));
         }
     }
+
+
+    @Override
+    @Scheduled(fixedDelay = 5000)
+    public void syncDeals() {
+
+        int pageNo = 0;
+
+        boolean getPages = true;
+
+        while(getPages){
+            Pageable pageable = new PageRequest(pageNo, 20);
+
+            Page<Deal> dealsPage = dealRepository.findAllBySyncStatusAndCreatedDateLessThan(SyncStatus.NOT_SYNCED, Instant.now(), pageable);
+
+            if( dealsPage.getContent() == null ||  dealsPage.getContent().size() == 0){
+                break;
+            }
+
+            try {
+                copyDealsToElasticSearch(dealsPage.getContent());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            pageNo++;
+        }
+
+
+    }
+
+    @Transactional
+    void copyDealsToElasticSearch(List<Deal> deals) throws IOException {
+        // Set deal sync status
+
+        List<Long> dealIds = deals.stream().map( deal -> deal.getId()).collect(Collectors.toList());
+
+        dealRepository.updateDealsStatus(SyncStatus.IN_PROGRESS, dealIds);
+
+        sendRecordsToElasticSearch( deals );
+
+        dealRepository.updateDealsStatus(SyncStatus.SYNCED, dealIds);
+
+
+
+    }
+
+    private void sendRecordsToElasticSearch(List<Deal> deals) throws IOException {
+        BulkRequest request = new BulkRequest();
+
+        for ( Deal deal: deals) {
+            request.add(new IndexRequest("leadlet", "deal")
+                .source(XContentType.JSON, "id", deal.getId(),
+                                            "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
+                                            "pipeline_id", deal.getPipeline().getId(),
+                                            "stage_id", deal.getStage().getId()));
+        }
+
+        BulkResponse response = restHighLevelClient.bulk(request);
+    }
+
+
 }

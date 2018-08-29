@@ -1,12 +1,15 @@
 package com.leadlet.repository;
 
 import com.leadlet.domain.Deal;
+import com.leadlet.domain.enumeration.SyncStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -37,5 +40,11 @@ public interface DealRepository extends JpaRepository<Deal, Long>, JpaSpecificat
     Double calculateDealTotalByStageId(Long id, Long stageId);
 
     Page<Deal> findAllByIdIn(List<Long> ids, Pageable page);
+
+    Page<Deal> findAllBySyncStatusAndCreatedDateLessThan(SyncStatus syncStatus, Instant maxDate, Pageable page);
+
+    @Modifying
+    @Query("update #{#entityName} deal set deal.syncStatus = ?1 where deal.id in ?2")
+    void updateDealsStatus(SyncStatus syncStatus, List<Long> ids);
 
 }
