@@ -17,9 +17,11 @@ import com.leadlet.service.dto.SearchQueryDTO;
 import com.leadlet.service.mapper.DealDetailMapper;
 import com.leadlet.service.mapper.DealMapper;
 import com.leadlet.web.rest.util.ParameterUtil;
+import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -215,10 +217,14 @@ public class DealServiceImpl implements DealService {
     @Override
     public Page<DealDTO> query(String searchQuery, Pageable pageable) throws IOException {
 
-        List<Long> ids = elasticsearchService.getDealsTerms(searchQuery);
+        Pair<List<Long>, Long> response = elasticsearchService.getDealsTerms(searchQuery, pageable);
 
-        return dealRepository.findAllByIdIn(ids, pageable)
-            .map(dealMapper::toDto);
+        Page<DealDTO> deals = new PageImpl<DealDTO>(dealRepository.findAllByIdIn(response.getKey()).stream()
+            .map(dealMapper::toDto).collect(Collectors.toList()),
+            pageable,
+            response.getValue());
+
+        return deals;
     }
 
     @Override

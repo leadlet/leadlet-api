@@ -9,6 +9,7 @@ import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.dto.FacetDTO;
 import com.leadlet.service.dto.FacetDefinitionDTO;
 import com.leadlet.service.dto.TermsFacetDTO;
+import javafx.util.Pair;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -77,18 +78,18 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     }
 
     @Override
-    public List<Long> getDealsTerms(String query) throws IOException {
-        SearchRequest searchRequest = buildSearchQuery(query);
+    public Pair<List<Long>, Long> getDealsTerms(String query, Pageable pageable) throws IOException {
+        SearchRequest searchRequest = buildSearchQuery(query, pageable);
 
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
 
-        List<Long> dealIds = getDealIds(searchResponse);
+        Pair<List<Long>, Long> response = getDealIds(searchResponse, pageable);
 
-        return dealIds;
+        return response;
     }
 
 
-    private List<Long> getDealIds(SearchResponse searchResponse) {
+    private Pair<List<Long>, Long> getDealIds(SearchResponse searchResponse, Pageable pageable) {
 
         List<Long> ids = new ArrayList<>();
 
@@ -100,15 +101,19 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
             ids.add(id);
         }
 
-        return ids;
+        Pair<List<Long>, Long> response = new Pair<>(ids, searchHits.getTotalHits());
+
+        return response;
     }
 
-    private SearchRequest buildSearchQuery(String query) {
+    private SearchRequest buildSearchQuery(String query, Pageable pageable) {
 
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         String[] includeFields = new String[] {"id"};
         searchSourceBuilder.fetchSource(includeFields, null);
+        searchSourceBuilder.from(pageable.getOffset());
+        searchSourceBuilder.size(pageable.getPageSize());
 
         searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
 

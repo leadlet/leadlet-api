@@ -39,7 +39,7 @@ public interface DealRepository extends JpaRepository<Deal, Long>, JpaSpecificat
     @Query("select sum(deal.dealValue.potentialValue) from #{#entityName} deal where deal.appAccount.id = ?1 and deal.stage.id = ?2")
     Double calculateDealTotalByStageId(Long id, Long stageId);
 
-    Page<Deal> findAllByIdIn(List<Long> ids, Pageable page);
+    List<Deal> findAllByIdIn(List<Long> ids);
 
     Page<Deal> findAllBySyncStatusAndCreatedDateLessThan(SyncStatus syncStatus, Instant maxDate, Pageable page);
 
