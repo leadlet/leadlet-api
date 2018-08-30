@@ -34,9 +34,16 @@ public class FacetsResource {
      * @param facetDefinition the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of stages in body
      */
-    @PostMapping("/facets")
+    @PostMapping("/facets/")
     public ResponseEntity<FacetDTO> getDistinctTerms(@RequestBody FacetDefinitionDTO facetDefinition) throws IOException {
         FacetDTO facet = filterService.getFieldTerms(facetDefinition);
+
+        return new ResponseEntity<>(facet, HttpStatus.OK);
+    }
+
+    @GetMapping("/facets/range/{id}/{fieldName}")
+    public ResponseEntity<FacetDTO> getFieldRange(@PathVariable String id, @PathVariable String fieldName) throws IOException {
+        FacetDTO facet = filterService.getFieldRange(id, fieldName);
 
         return new ResponseEntity<>(facet, HttpStatus.OK);
     }

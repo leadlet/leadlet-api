@@ -19,4 +19,5 @@ public interface ElasticsearchService {
 
     void syncDeals();
 
+    FacetDTO getFieldRange(String id, String fieldName) throws IOException;
 }

@@ -8,6 +8,7 @@ import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.dto.FacetDTO;
 import com.leadlet.service.dto.FacetDefinitionDTO;
+import com.leadlet.service.dto.RangeFacetDTO;
 import com.leadlet.service.dto.TermsFacetDTO;
 import javafx.util.Pair;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -21,7 +22,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.max.Max;
+import org.elasticsearch.search.aggregations.metrics.min.Min;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -62,18 +66,24 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-        //for (FacetDefinitionDTO facet : facetDefinitions){
-            addFacet( searchSourceBuilder, facetDefinition);
-        //}
+        searchSourceBuilder.aggregation(AggregationBuilders
+            .terms(facetDefinition.getId())
+            .field(facetDefinition.getDataField()));
 
         searchRequest.source(searchSourceBuilder);
         SearchResponse sr = restHighLevelClient.search(searchRequest);
 
-        //for (FacetDefinitionDTO facet : facetDefinitions){
-        FacetDTO facet =  getFacet( sr, facetDefinition );
-        //}
+        // sr is here your SearchResponse object
+        Terms genders = sr.getAggregations().get(facetDefinition.getId());
 
-        return facet;
+        TermsFacetDTO facetDTO = new TermsFacetDTO();
+        facetDTO.setId(facetDefinition.getId());
+
+        for (Terms.Bucket entry : genders.getBuckets()) {
+            facetDTO.addTerm(entry.getKey().toString(),entry.getDocCount());
+        }
+
+        return facetDTO;
 
     }
 
@@ -121,32 +131,6 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         return searchRequest;
     }
 
-    private FacetDTO getFacet(SearchResponse sr, FacetDefinitionDTO facet) {
-
-            // sr is here your SearchResponse object
-            Terms genders = sr.getAggregations().get(facet.getId());
-
-            TermsFacetDTO facetDTO = new TermsFacetDTO();
-            facetDTO.setId(facet.getId());
-
-            // For each entry
-            for (Terms.Bucket entry : genders.getBuckets()) {
-                facetDTO.addTerm(entry.getKey().toString(),entry.getDocCount());
-            }
-
-            return facetDTO;
-
-
-    }
-
-    private void addFacet(SearchSourceBuilder searchSourceBuilder, FacetDefinitionDTO facet) {
-        if( facet.getType().equals(FacetType.TERMS)){
-            searchSourceBuilder.aggregation(AggregationBuilders
-                .terms(facet.getId())
-                .field(facet.getDataField()));
-        }
-    }
-
 
     @Override
     @Scheduled(fixedDelay = 5000)
@@ -176,6 +160,36 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         }
 
 
+    }
+
+    @Override
+    public FacetDTO getFieldRange(String id, String fieldName) throws IOException {
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        String maxAggId = id + "-max";
+        String minAggId = id + "-min";
+
+        searchSourceBuilder.aggregation(AggregationBuilders
+            .max(maxAggId)
+            .field(fieldName))
+        .aggregation(AggregationBuilders
+            .min(minAggId)
+            .field(fieldName));
+
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse sr = restHighLevelClient.search(searchRequest);
+
+        // sr is here your SearchResponse object
+        Max maxAgg = sr.getAggregations().get(maxAggId);
+        Min minAgg = sr.getAggregations().get(minAggId);
+
+        RangeFacetDTO facetDTO = new RangeFacetDTO();
+        facetDTO.setId(id);
+        facetDTO.setMax(maxAgg.getValue());
+        facetDTO.setMin(minAgg.getValue());
+
+        return facetDTO;
     }
 
     @Transactional
