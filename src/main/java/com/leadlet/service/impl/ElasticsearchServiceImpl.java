@@ -1,6 +1,7 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.Deal;
+import com.leadlet.domain.Product;
 import com.leadlet.domain.enumeration.FacetType;
 import com.leadlet.domain.enumeration.SyncStatus;
 import com.leadlet.repository.DealRepository;
@@ -27,6 +28,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -195,7 +197,11 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
                 .source(XContentType.JSON, "id", deal.getId(),
                                             "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
                                             "pipeline_id", deal.getPipeline().getId(),
-                                            "stage_id", deal.getStage().getId()));
+                                            "stage_id", deal.getStage().getId(),
+                                            "priority", deal.getPriority(),
+                                            "source", !StringUtils.isEmpty(deal.getDealSource()) ? deal.getDealSource().getName() : "",
+                                            "channel", !StringUtils.isEmpty(deal.getDealChannel()) ? deal.getDealChannel().getName() : "",
+                                            "products", deal.getProducts().stream().map(Product::getDescription).toArray()));
         }
 
         BulkResponse response = restHighLevelClient.bulk(request);

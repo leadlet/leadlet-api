@@ -31,6 +31,33 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     @Column(name = "priority")
     private Integer priority;
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public Deal setProducts(Set<Product> products) {
+        this.products = products;
+        return this;
+    }
+
+    public DealSource getDealSource() {
+        return dealSource;
+    }
+
+    public Deal setDealSource(DealSource dealSource) {
+        this.dealSource = dealSource;
+        return this;
+    }
+
+    public DealChannel getDealChannel() {
+        return dealChannel;
+    }
+
+    public Deal setDealChannel(DealChannel dealChannel) {
+        this.dealChannel = dealChannel;
+        return this;
+    }
+
     DealValue dealValue;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
