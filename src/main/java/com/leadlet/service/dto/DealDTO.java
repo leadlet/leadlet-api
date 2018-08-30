@@ -1,10 +1,13 @@
 package com.leadlet.service.dto;
 
 
+import com.leadlet.domain.enumeration.ActivityStatus;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Deal entity.
@@ -21,7 +24,7 @@ public class DealDTO implements Serializable {
 
     private Long pipelineId;
 
-    private Long personId;
+    private PersonDTO person;
 
     private Long organizationId;
 
@@ -34,6 +37,30 @@ public class DealDTO implements Serializable {
     private ZonedDateTime possibleCloseDate;
 
     private DealValueDTO dealValue;
+
+    private SourceDTO dealSource;
+
+    private ChannelDTO dealChannel;
+
+    private Set<ProductDTO> products;
+
+    private ActivityStatus activityStatus;
+
+    public ActivityStatus getActivityStatus() {
+        return activityStatus;
+    }
+
+    public void setActivityStatus(ActivityStatus activityStatus) {
+        this.activityStatus = activityStatus;
+    }
+
+    public Set<ProductDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<ProductDTO> products) {
+        this.products = products;
+    }
 
     public Long getId() {
         return id;
@@ -107,13 +134,12 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public PersonDTO getPerson() {
+        return person;
     }
 
-    public DealDTO setPersonId(Long personId) {
-        this.personId = personId;
-        return this;
+    public void setPerson(PersonDTO person) {
+        this.person = person;
     }
 
     public Long getOrganizationId() {
@@ -141,6 +167,22 @@ public class DealDTO implements Serializable {
     public DealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
         this.possibleCloseDate = possibleCloseDate;
         return this;
+    }
+
+    public SourceDTO getDealSource() {
+        return dealSource;
+    }
+
+    public void setDealSource(SourceDTO dealSource) {
+        this.dealSource = dealSource;
+    }
+
+    public ChannelDTO getDealChannel() {
+        return dealChannel;
+    }
+
+    public void setDealChannel(ChannelDTO dealChannel) {
+        this.dealChannel = dealChannel;
     }
 
     @Override

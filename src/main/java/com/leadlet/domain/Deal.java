@@ -1,9 +1,11 @@
 package com.leadlet.domain;
 
+import com.leadlet.domain.enumeration.ActivityStatus;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -57,6 +59,33 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
 
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Note> notes;
+
+    @ManyToMany
+    @JoinTable(
+        name = "deal_product",
+        joinColumns = { @JoinColumn(name = "deal_id", referencedColumnName = "id") },
+        inverseJoinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id") }
+    )
+    private Set<Product> products;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DealSource dealSource;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DealChannel dealChannel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_status", nullable = false)
+    @NotNull
+    private ActivityStatus activityStatus;
+
+    public ActivityStatus getActivityStatus() {
+        return activityStatus;
+    }
+
+    public void setActivityStatus(ActivityStatus activityStatus) {
+        this.activityStatus = activityStatus;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -173,7 +202,6 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         this.pipeline = pipeline;
         return this;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -196,6 +224,7 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id);
     }
 
@@ -215,6 +244,11 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
             ", activities=" + activities +
             ", timelines=" + timelines +
             ", notes=" + notes +
+            ", products=" + products +
+            ", dealSource=" + dealSource +
+            ", dealChannel=" + dealChannel +
+            ", activityStatus=" + activityStatus +
             '}';
+
     }
 }

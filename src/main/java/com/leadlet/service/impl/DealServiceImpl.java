@@ -1,6 +1,5 @@
 package com.leadlet.service.impl;
 
-import com.leadlet.domain.Organization;
 import com.leadlet.domain.Stage;
 import com.leadlet.repository.StageRepository;
 import com.leadlet.repository.util.SearchCriteria;
@@ -31,6 +30,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

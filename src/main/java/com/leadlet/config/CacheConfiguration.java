@@ -64,6 +64,9 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.OrganizationPhone.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Team.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Timeline.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.Product.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.DealChannel.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.DealSource.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

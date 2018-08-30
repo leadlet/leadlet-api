@@ -1,7 +1,6 @@
 package com.leadlet.service.mapper;
 
 import com.leadlet.domain.Deal;
-import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.DealDetailDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,11 +9,10 @@ import org.mapstruct.Mapping;
  * Mapper for the entity Deal and its DTO DealDTO.
  */
 @Mapper(componentModel = "spring", uses = {PersonMapper.class, OrganizationMapper.class, UserMapper.class,
-    StageMapper.class, PipelineMapper.class, DealValueMapper.class})
+    StageMapper.class, PipelineMapper.class, DealValueMapper.class, ProductMapper.class, SourceMapper.class, ChannelMapper.class})
 public interface DealDetailMapper extends EntityMapper<DealDetailDTO, Deal> {
 
     @Mapping(source = "stage.id", target = "stageId")
-    @Mapping(source = "person.id", target = "personId")
     @Mapping(source = "pipeline.id", target = "pipelineId")
     DealDetailDTO toDto(Deal deal);
 
