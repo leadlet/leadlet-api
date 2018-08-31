@@ -3,6 +3,7 @@ package com.leadlet.web.rest;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.dto.FacetDTO;
 import com.leadlet.service.dto.FacetDefinitionDTO;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -34,9 +35,9 @@ public class FacetsResource {
      * @param facetDefinition the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of stages in body
      */
-    @PostMapping("/facets/")
-    public ResponseEntity<FacetDTO> getDistinctTerms(@RequestBody FacetDefinitionDTO facetDefinition) throws IOException {
-        FacetDTO facet = filterService.getFieldTerms(facetDefinition);
+    @PostMapping("/facets")
+    public ResponseEntity<FacetDTO> getDistinctTerms(@RequestBody FacetDefinitionDTO facetDefinition, @ApiParam String q) throws IOException {
+        FacetDTO facet = filterService.getFieldTerms(facetDefinition,q);
 
         return new ResponseEntity<>(facet, HttpStatus.OK);
     }

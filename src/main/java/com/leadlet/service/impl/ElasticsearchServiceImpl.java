@@ -61,11 +61,14 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 
     @Override
-    public FacetDTO getFieldTerms(FacetDefinitionDTO facetDefinition) throws IOException {
+    public FacetDTO getFieldTerms(FacetDefinitionDTO facetDefinition, String query) throws IOException {
 
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
+        if( !StringUtils.isEmpty(query)){
+            searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
+        }
         searchSourceBuilder.aggregation(AggregationBuilders
             .terms(facetDefinition.getId())
             .field(facetDefinition.getDataField()));

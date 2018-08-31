@@ -13,7 +13,7 @@ import java.util.Set;
 
 public interface ElasticsearchService {
 
-    FacetDTO getFieldTerms(FacetDefinitionDTO facetDefinitions) throws IOException;
+    FacetDTO getFieldTerms(FacetDefinitionDTO facetDefinitions, String query) throws IOException;
 
     Pair<List<Long>, Long> getDealsTerms(String query, Pageable pageable) throws IOException;
 
