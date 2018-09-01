@@ -88,7 +88,7 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDetailDTO update(DealDTO dealDTO) {
+    public DealDetailDTO update(DealDTO dealDTO) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
@@ -97,6 +97,23 @@ public class DealServiceImpl implements DealService {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             deal = dealRepository.save(deal);
+            elasticsearchService.indexDeal(deal);
+            return dealDetailMapper.toDto(deal);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    @Override
+    public DealDetailDTO patch(Long id, Integer priority, Long stageId) throws IOException {
+
+        Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
+        Stage newStage = stageRepository.findOne(stageId);
+        if (dealFromDb != null) {
+            dealFromDb.setPriority(priority);
+            dealFromDb.setStage(newStage);
+            Deal deal = dealRepository.save(dealFromDb);
+            elasticsearchService.indexDeal(deal);
             return dealDetailMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
@@ -145,47 +162,6 @@ public class DealServiceImpl implements DealService {
         } else {
             throw new EntityNotFoundException();
         }
-    }
-
-    @Override
-    public DealDetailDTO move(DealMoveDTO dealMoveDTO) {
-        Deal prevDeal = null;
-        Deal nextDeal = null;
-
-        if (dealMoveDTO.getPrevDealId() != null) {
-            prevDeal = dealRepository.getOne(dealMoveDTO.getPrevDealId());
-        }
-
-        if (dealMoveDTO.getNextDealId() != null) {
-            nextDeal = dealRepository.getOne(dealMoveDTO.getNextDealId());
-        }
-        Integer newPriority = -1;
-
-        if (prevDeal == null && nextDeal != null) {
-            newPriority = nextDeal.getPriority() - 1;
-        } else if (prevDeal != null && nextDeal != null) {
-            if ((nextDeal.getPriority() - prevDeal.getPriority()) >= 2) {
-                // we have room for new deal
-                newPriority = nextDeal.getPriority() - 1;
-            } else {
-                newPriority = nextDeal.getPriority();
-                dealRepository.shiftDealsUp(SecurityUtils.getCurrentUserAppAccountId(), nextDeal.getStage().getId(), newPriority);
-            }
-        } else if (nextDeal == null && prevDeal != null) {
-            newPriority = prevDeal.getPriority() + 1;
-        } else {
-            newPriority = 0;
-        }
-
-        Deal movingDeal = dealRepository.getOne(dealMoveDTO.getId());
-        movingDeal.setPriority(newPriority);
-
-        Stage newStage = stageRepository.findOne(dealMoveDTO.getNewStageId());
-
-        movingDeal.setStage(newStage);
-
-        movingDeal = dealRepository.save(movingDeal);
-        return dealDetailMapper.toDto(movingDeal);
     }
 
     @Override

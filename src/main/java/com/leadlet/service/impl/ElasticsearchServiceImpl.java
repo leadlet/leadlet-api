@@ -14,6 +14,7 @@ import javafx.util.Pair;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -215,7 +216,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         BulkRequest request = new BulkRequest();
 
         for ( Deal deal: deals) {
-            request.add(new IndexRequest("leadlet", "deal")
+            request.add(new IndexRequest("leadlet", "deal", String.valueOf(deal.getId()))
                 .source(XContentType.JSON, "id", deal.getId(),
                                             "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
                                             "pipeline_id", deal.getPipeline().getId(),
@@ -229,5 +230,19 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         BulkResponse response = restHighLevelClient.bulk(request);
     }
 
+    public void indexDeal(Deal deal) throws IOException {
+        IndexRequest request = new IndexRequest("leadlet", "deal", String.valueOf(deal.getId()));
+
+        request.source(XContentType.JSON, "id", deal.getId(),
+            "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
+            "pipeline_id", deal.getPipeline().getId(),
+            "stage_id", deal.getStage().getId(),
+            "priority", deal.getPriority(),
+            "source", !StringUtils.isEmpty(deal.getDealSource()) ? deal.getDealSource().getName() : "",
+            "channel", !StringUtils.isEmpty(deal.getDealChannel()) ? deal.getDealChannel().getName() : "",
+            "products", deal.getProducts().stream().map(Product::getDescription).toArray());
+
+        IndexResponse response = restHighLevelClient.index(request);
+    }
 
 }

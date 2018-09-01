@@ -168,18 +168,7 @@ public class Person implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
         Person person = (Person) o;
-        return Objects.equals(id, person.id) &&
-            Objects.equals(name, person.name) &&
-            Objects.equals(address, person.address) &&
-            Objects.equals(title, person.title) &&
-            Objects.equals(phones, person.phones) &&
-            Objects.equals(email, person.email) &&
-            Objects.equals(organization, person.organization) &&
-            Objects.equals(appAccount, person.appAccount) &&
-            Objects.equals(activities, person.activities) &&
-            Objects.equals(deals, person.deals) &&
-            Objects.equals(notes, person.notes) &&
-            Objects.equals(timelines, person.timelines);
+        return Objects.equals(id, person.id);
     }
 
     @Override
@@ -197,12 +186,6 @@ public class Person implements Serializable {
             ", title='" + title + '\'' +
             ", phones=" + phones +
             ", email='" + email + '\'' +
-            ", organization=" + organization +
-            ", appAccount=" + appAccount +
-            ", activities=" + activities +
-            ", deals=" + deals +
-            ", notes=" + notes +
-            ", timelines=" + timelines +
             '}';
     }
 }

@@ -74,21 +74,14 @@ public class DealResource {
 
     }
 
-    /**
-     * POST  /deals : Create a new deal.
-     *
-     * @param dealMoveDTO the dealDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new dealDTO, or with status 400 (Bad Request) if the deal has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/deals/move")
-    @Timed
-    public ResponseEntity<DealDetailDTO> moveDeal(@RequestBody DealMoveDTO dealMoveDTO) throws URISyntaxException {
-        log.debug("REST request to move Deal : {}", dealMoveDTO);
 
-        DealDetailDTO result = dealService.move(dealMoveDTO);
+    @PutMapping("/deals/{id}/partial")
+    @Timed
+    public ResponseEntity<DealDetailDTO> patchDeal(@PathVariable Long id, @ApiParam Integer priority,  @ApiParam Long stageId ) throws URISyntaxException, IOException {
+
+        DealDetailDTO result = dealService.patch(id, priority, stageId);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealMoveDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
             .body(result);
     }
 
@@ -103,7 +96,7 @@ public class DealResource {
      */
     @PutMapping("/deals")
     @Timed
-    public ResponseEntity<DealDetailDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException {
+    public ResponseEntity<DealDetailDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
         log.debug("REST request to update Deal : {}", dealDTO);
 
         DealDetailDTO result = dealService.update(dealDTO);

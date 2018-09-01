@@ -1,5 +1,6 @@
 package com.leadlet.service;
 
+import com.leadlet.domain.Deal;
 import com.leadlet.service.dto.FacetDTO;
 import com.leadlet.service.dto.FacetDefinitionDTO;
 import com.leadlet.service.dto.SearchQueryDTO;
@@ -20,4 +21,6 @@ public interface ElasticsearchService {
     void syncDeals();
 
     FacetDTO getFieldRange(String id, String fieldName) throws IOException;
+
+    void indexDeal(Deal deal) throws IOException ;
 }
