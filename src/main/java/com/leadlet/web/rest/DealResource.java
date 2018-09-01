@@ -77,7 +77,7 @@ public class DealResource {
 
     @PutMapping("/deals/{id}/partial")
     @Timed
-    public ResponseEntity<DealDetailDTO> patchDeal(@PathVariable Long id, @ApiParam Integer priority,  @ApiParam Long stageId ) throws URISyntaxException {
+    public ResponseEntity<DealDetailDTO> patchDeal(@PathVariable Long id, @ApiParam Integer priority,  @ApiParam Long stageId ) throws URISyntaxException, IOException {
 
         DealDetailDTO result = dealService.patch(id, priority, stageId);
         return ResponseEntity.ok()
@@ -96,7 +96,7 @@ public class DealResource {
      */
     @PutMapping("/deals")
     @Timed
-    public ResponseEntity<DealDetailDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException {
+    public ResponseEntity<DealDetailDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
         log.debug("REST request to update Deal : {}", dealDTO);
 
         DealDetailDTO result = dealService.update(dealDTO);

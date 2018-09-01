@@ -29,9 +29,9 @@ public interface DealService {
      * @param dealDTO the entity to update
      * @return the persisted entity
      */
-    DealDetailDTO update(DealDTO dealDTO);
+    DealDetailDTO update(DealDTO dealDTO) throws IOException;
 
-    DealDetailDTO patch(Long id, Integer priority, Long stageId);
+    DealDetailDTO patch(Long id, Integer priority, Long stageId) throws IOException;
 
 
     /**

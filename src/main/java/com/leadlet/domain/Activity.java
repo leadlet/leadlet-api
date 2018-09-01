@@ -181,18 +181,7 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         if (!(o instanceof Activity)) return false;
         Activity activity = (Activity) o;
         return done == activity.done &&
-            Objects.equals(id, activity.id) &&
-            Objects.equals(title, activity.title) &&
-            Objects.equals(memo, activity.memo) &&
-            Objects.equals(start, activity.start) &&
-            Objects.equals(end, activity.end) &&
-            type == activity.type &&
-            Objects.equals(deal, activity.deal) &&
-            Objects.equals(person, activity.person) &&
-            Objects.equals(organization, activity.organization) &&
-            Objects.equals(agent, activity.agent) &&
-            Objects.equals(location, activity.location) &&
-            Objects.equals(closedDate, activity.closedDate);
+            Objects.equals(id, activity.id) ;
     }
 
     @Override

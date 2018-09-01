@@ -88,7 +88,7 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDetailDTO update(DealDTO dealDTO) {
+    public DealDetailDTO update(DealDTO dealDTO) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
@@ -97,6 +97,7 @@ public class DealServiceImpl implements DealService {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             deal = dealRepository.save(deal);
+            elasticsearchService.indexDeal(deal);
             return dealDetailMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
@@ -104,7 +105,7 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public DealDetailDTO patch(Long id, Integer priority, Long stageId) {
+    public DealDetailDTO patch(Long id, Integer priority, Long stageId) throws IOException {
 
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         Stage newStage = stageRepository.findOne(stageId);
@@ -112,6 +113,7 @@ public class DealServiceImpl implements DealService {
             dealFromDb.setPriority(priority);
             dealFromDb.setStage(newStage);
             Deal deal = dealRepository.save(dealFromDb);
+            elasticsearchService.indexDeal(deal);
             return dealDetailMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
