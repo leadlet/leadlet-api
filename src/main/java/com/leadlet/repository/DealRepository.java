@@ -26,10 +26,6 @@ public interface DealRepository extends JpaRepository<Deal, Long>, JpaSpecificat
 
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
 
-    @Modifying
-    @Query("update #{#entityName} deal set deal.priority = (deal.priority + 1) where deal.appAccount.id = ?1 and deal.stage.id = ?2 and deal.priority >= ?3")
-    void shiftDealsUp(Long appAccountId, Long stageId, Integer priority);
-
     Page<Deal> findAllByAppAccount_IdAndStage_IdOrderByPriorityAsc(Long appAccountId, Long stageId, Pageable page);
 
     Page<Deal> findAllByAppAccount_IdAndPerson_IdOrderByPriorityAsc(Long appAccountId, Long personId, Pageable page);

@@ -31,6 +31,9 @@ public interface DealService {
      */
     DealDetailDTO update(DealDTO dealDTO);
 
+    DealDetailDTO patch(Long id, Integer priority, Long stageId);
+
+
     /**
      * Get all the deals.
      *
@@ -53,14 +56,6 @@ public interface DealService {
      * @param id the id of the entity
      */
     void delete(Long id);
-
-    /**
-     * Save a deal.
-     *
-     * @param dealMoveDTO the entity to save
-     * @return the persisted entity
-     */
-    DealDetailDTO move(DealMoveDTO dealMoveDTO);
 
     Page<DealDTO> findAllByStageId(Long stageId, Pageable pageable);
 
