@@ -1,8 +1,15 @@
 package com.leadlet.config;
 
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +21,14 @@ public class ElasticSearchConfig extends AbstractFactoryBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(ElasticSearchConfig.class);
 
-	@Value("${spring.data.elasticsearch.cluster-nodes}")
-    private String clusterNodes;
-    @Value("${spring.data.elasticsearch.cluster-name}")
+	@Value("${spring.data.elasticsearch.cluster-name}")
     private String clusterName;
+    @Value("${spring.data.elasticsearch.cluster-host}")
+    private String clusterHost;
+    @Value("${spring.data.elasticsearch.cluster-port}")
+    private Integer clusterPort;
+    @Value("${spring.data.elasticsearch.protocol}")
+    private String protocol;
     private RestHighLevelClient restHighLevelClient;
 
 
@@ -50,10 +61,23 @@ public class ElasticSearchConfig extends AbstractFactoryBean {
 
     private RestHighLevelClient buildClient() {
         try {
-            restHighLevelClient = new RestHighLevelClient(
-                    RestClient.builder(
-                            new HttpHost("localhost", 9200, "http"),
-                            new HttpHost("localhost", 9201, "http")));
+            Settings settings = Settings.builder()
+                .put("cluster.name", "prod").build();
+
+            final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials(AuthScope.ANY,
+                new UsernamePasswordCredentials("elastic", "0SGYXpSLAqHUMpnD4IGsFAy5"));
+
+            RestClientBuilder builder = RestClient.builder(new HttpHost(clusterHost, clusterPort, protocol))
+                .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+                    @Override
+                    public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+                        return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                    }
+                });
+
+            restHighLevelClient = new RestHighLevelClient(builder);
+
         } catch (Exception e) {
             LOG.error(e.getMessage());
         }

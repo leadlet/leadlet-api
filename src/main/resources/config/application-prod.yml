@@ -47,6 +47,12 @@ spring:
         password:
     thymeleaf:
         cache: true
+    data:
+        elasticsearch:
+          cluster-name: leadlet-db
+          protocol: https
+          cluster-host: 8b90cbd3e3a640c4a7088d8a7d161288.europe-west1.gcp.cloud.es.io
+          cluster-port: 9243
 
 liquibase:
     contexts: prod

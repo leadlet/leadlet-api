@@ -2,7 +2,6 @@ package com.leadlet.service.impl;
 
 import com.leadlet.domain.Deal;
 import com.leadlet.domain.Product;
-import com.leadlet.domain.enumeration.FacetType;
 import com.leadlet.domain.enumeration.SyncStatus;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
@@ -10,7 +9,7 @@ import com.leadlet.service.dto.FacetDTO;
 import com.leadlet.service.dto.FacetDefinitionDTO;
 import com.leadlet.service.dto.RangeFacetDTO;
 import com.leadlet.service.dto.TermsFacetDTO;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -23,7 +22,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.max.Max;
 import org.elasticsearch.search.aggregations.metrics.min.Min;
@@ -115,7 +113,8 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
             ids.add(id);
         }
 
-        Pair<List<Long>, Long> response = new Pair<>(ids, searchHits.getTotalHits());
+
+        Pair<List<Long>, Long> response =  Pair.of(ids, searchHits.getTotalHits());
 
         return response;
     }

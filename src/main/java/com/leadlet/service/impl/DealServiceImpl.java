@@ -9,7 +9,7 @@ import com.leadlet.service.DealService;
 import com.leadlet.domain.Deal;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
-import com.leadlet.service.StageService;
+import org.springframework.data.util.Pair;
 import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.DealDetailDTO;
 import com.leadlet.service.dto.DealMoveDTO;
@@ -17,7 +17,6 @@ import com.leadlet.service.dto.SearchQueryDTO;
 import com.leadlet.service.mapper.DealDetailMapper;
 import com.leadlet.service.mapper.DealMapper;
 import com.leadlet.web.rest.util.ParameterUtil;
-import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -195,10 +194,10 @@ public class DealServiceImpl implements DealService {
 
         Pair<List<Long>, Long> response = elasticsearchService.getDealsTerms(searchQuery, pageable);
 
-        Page<DealDTO> deals = new PageImpl<DealDTO>(dealRepository.findAllByIdIn(response.getKey()).stream()
+        Page<DealDTO> deals = new PageImpl<DealDTO>(dealRepository.findAllByIdIn(response.getFirst()).stream()
             .map(dealMapper::toDto).collect(Collectors.toList()),
             pageable,
-            response.getValue());
+            response.getSecond());
 
         return deals;
     }

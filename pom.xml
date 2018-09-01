@@ -353,7 +353,6 @@
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
 
-
     </dependencies>
     <build>
         <resources>
