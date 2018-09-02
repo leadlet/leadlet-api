@@ -56,8 +56,10 @@ spring:
         cache: false
     data:
         elasticsearch:
-          cluster-name: leadlet
-          cluster-nodes: elasticsearch
+          cluster-name: leadlet-db
+          protocol: http
+          cluster-host: localhost
+          cluster-port: 9200
 liquibase:
     contexts: dev
 

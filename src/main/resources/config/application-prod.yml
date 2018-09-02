@@ -23,12 +23,24 @@ spring:
         livereload:
             enabled: false
 
+#    datasource:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        url: jdbc:h2:mem:leadlet_api;DB_CLOSE_DELAY=-1
+#        name:
+#        username:
+#        password:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:leadlet_api;DB_CLOSE_DELAY=-1
-        name:
-        username:
-        password:
+        url: jdbc:mysql://104.155.58.80:3306/leadlet_api?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: leadlet
+        password: l@@dl@t_231905
+        hikari:
+            data-source-properties:
+                cachePrepStmts: true
+                prepStmtCacheSize: 250
+                prepStmtCacheSqlLimit: 2048
+                useServerPrepStmts: true
+
     jpa:
         database-platform: io.github.jhipster.domain.util.FixedH2Dialect
         database: H2
