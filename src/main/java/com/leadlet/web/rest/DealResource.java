@@ -49,7 +49,7 @@ public class DealResource {
      */
     @PostMapping("/deals")
     @Timed
-    public ResponseEntity<DealDetailDTO> createDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException {
+    public ResponseEntity<DealDetailDTO> createDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Deal : {}", dealDTO);
         if (dealDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new deal cannot already have an ID")).body(null);

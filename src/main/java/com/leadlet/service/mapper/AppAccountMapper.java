@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity AppAccount and its DTO AppAccountDTO.
  */
-@Mapper(componentModel = "spring", uses = {StoragePreferenceMapper.class})
+@Mapper(componentModel = "spring", uses = {})
 public interface AppAccountMapper extends EntityMapper <AppAccountDTO, AppAccount> {
 
     @Mapping(target = "subscriptionPlans", ignore = true)

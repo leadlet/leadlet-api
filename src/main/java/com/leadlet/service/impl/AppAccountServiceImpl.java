@@ -1,27 +1,19 @@
 package com.leadlet.service.impl;
 
-import com.leadlet.domain.User;
-import com.leadlet.security.SecurityUtils;
-import com.leadlet.service.AppAccountService;
 import com.leadlet.domain.AppAccount;
 import com.leadlet.repository.AppAccountRepository;
+import com.leadlet.security.SecurityUtils;
+import com.leadlet.service.AppAccountService;
 import com.leadlet.service.dto.AppAccountDTO;
 import com.leadlet.service.mapper.AppAccountMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.sql.rowset.serial.SerialBlob;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.Optional;
 
 
 /**
@@ -58,10 +50,6 @@ public class AppAccountServiceImpl implements AppAccountService{
         log.debug("Request to save AppAccount : {}", appAccountDTO);
         AppAccount appAccount = appAccountMapper.toEntity(appAccountDTO);
 
-        if( gsKeyFile != null ){
-            appAccount.getStoragePreference().setGsKeyFileName(gsKeyFile.getOriginalFilename());
-            appAccount.getStoragePreference().setGsKeyFile(new SerialBlob(gsKeyFile.getBytes()));
-        }
         appAccount = appAccountRepository.save(appAccount);
         return appAccount;
     }

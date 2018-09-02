@@ -5,7 +5,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -102,8 +101,7 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     private DealChannel dealChannel;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "activity_status", nullable = false)
-    @NotNull
+    @Column(name = "activity_status")
     private ActivityStatus activityStatus;
 
     public ActivityStatus getActivityStatus() {

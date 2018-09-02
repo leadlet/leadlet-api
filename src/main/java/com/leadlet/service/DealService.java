@@ -2,13 +2,10 @@ package com.leadlet.service;
 
 import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.DealDetailDTO;
-import com.leadlet.service.dto.DealMoveDTO;
-import com.leadlet.service.dto.SearchQueryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Service Interface for managing Deal.
@@ -21,7 +18,7 @@ public interface DealService {
      * @param dealDTO the entity to save
      * @return the persisted entity
      */
-    DealDetailDTO save(DealDTO dealDTO);
+    DealDetailDTO save(DealDTO dealDTO) throws IOException;
 
     /**
      * Update a deal.

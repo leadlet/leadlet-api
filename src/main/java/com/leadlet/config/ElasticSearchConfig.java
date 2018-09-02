@@ -21,7 +21,7 @@ public class ElasticSearchConfig extends AbstractFactoryBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(ElasticSearchConfig.class);
 
-	@Value("${spring.data.elasticsearch.cluster-name}")
+    @Value("${spring.data.elasticsearch.cluster-name}")
     private String clusterName;
     @Value("${spring.data.elasticsearch.cluster-host}")
     private String clusterHost;

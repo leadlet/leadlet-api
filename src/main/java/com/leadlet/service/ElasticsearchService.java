@@ -15,8 +15,6 @@ public interface ElasticsearchService {
 
     Pair<List<Long>, Long> getDealsTerms(String query, Pageable pageable) throws IOException;
 
-    void syncDeals();
-
     FacetDTO getFieldRange(String id, String fieldName) throws IOException;
 
     void indexDeal(Deal deal) throws IOException ;

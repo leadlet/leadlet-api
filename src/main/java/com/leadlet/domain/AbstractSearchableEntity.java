@@ -1,18 +1,12 @@
 package com.leadlet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.leadlet.domain.enumeration.ActivityType;
 import com.leadlet.domain.enumeration.SyncStatus;
-import org.hibernate.envers.Audited;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.MappedSuperclass;
 import java.time.Instant;
 
 /**
@@ -22,36 +16,34 @@ import java.time.Instant;
 @MappedSuperclass
 public abstract class AbstractSearchableEntity extends AbstractAuditingEntity {
 
-    @CreatedBy
-    @Column(name = "sync_start_date", nullable = true, length = 50)
+    @Column(name = "sync_start_date", length = 50)
     @JsonIgnore
-    private String syncStartDate;
+    private Instant syncStartDate;
 
-    @CreatedBy
-    @Column(name = "sync_end_date", nullable = true, length = 50)
+    @Column(name = "sync_end_date",length = 50)
     @JsonIgnore
-    private String syncEndDate;
+    private Instant syncEndDate;
 
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "sync_status" , nullable = false)
-    @NotNull
-    private SyncStatus syncStatus;
+    @Column(name = "sync_status")
+    @JsonIgnore
+    private SyncStatus syncStatus = SyncStatus.NOT_SYNCED;
 
-    public String getSyncStartDate() {
+    public Instant getSyncStartDate() {
         return syncStartDate;
     }
 
-    public AbstractSearchableEntity setSyncStartDate(String syncStartDate) {
+    public AbstractSearchableEntity setSyncStartDate(Instant syncStartDate) {
         this.syncStartDate = syncStartDate;
         return this;
     }
 
-    public String getSyncEndDate() {
+    public Instant getSyncEndDate() {
         return syncEndDate;
     }
 
-    public AbstractSearchableEntity setSyncEndDate(String syncEndDate) {
+    public AbstractSearchableEntity setSyncEndDate(Instant syncEndDate) {
         this.syncEndDate = syncEndDate;
         return this;
     }

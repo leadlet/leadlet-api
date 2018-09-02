@@ -1,19 +1,16 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.Stage;
+import com.leadlet.repository.DealRepository;
 import com.leadlet.repository.StageRepository;
 import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DealService;
-import com.leadlet.domain.Deal;
-import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
-import org.springframework.data.util.Pair;
 import com.leadlet.service.dto.DealDTO;
 import com.leadlet.service.dto.DealDetailDTO;
-import com.leadlet.service.dto.DealMoveDTO;
-import com.leadlet.service.dto.SearchQueryDTO;
 import com.leadlet.service.mapper.DealDetailMapper;
 import com.leadlet.service.mapper.DealMapper;
 import com.leadlet.web.rest.util.ParameterUtil;
@@ -23,17 +20,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -72,11 +66,12 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDetailDTO save(DealDTO dealDTO) {
+    public DealDetailDTO save(DealDTO dealDTO) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         deal = dealRepository.save(deal);
+        elasticsearchService.indexDeal(deal);
         return dealDetailMapper.toDto(deal);
     }
 

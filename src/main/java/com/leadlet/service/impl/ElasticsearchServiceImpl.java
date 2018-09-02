@@ -2,16 +2,12 @@ package com.leadlet.service.impl;
 
 import com.leadlet.domain.Deal;
 import com.leadlet.domain.Product;
-import com.leadlet.domain.enumeration.SyncStatus;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.dto.FacetDTO;
 import com.leadlet.service.dto.FacetDefinitionDTO;
 import com.leadlet.service.dto.RangeFacetDTO;
 import com.leadlet.service.dto.TermsFacetDTO;
-import org.springframework.data.util.Pair;
-import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -26,21 +22,17 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.max.Max;
 import org.elasticsearch.search.aggregations.metrics.min.Min;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Team.
@@ -134,37 +126,6 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         return searchRequest;
     }
 
-
-    @Override
-    @Scheduled(fixedDelay = 5000)
-    public void syncDeals() {
-
-        int pageNo = 0;
-
-        boolean getPages = true;
-
-        while(getPages){
-            Pageable pageable = new PageRequest(pageNo, 20);
-
-            Page<Deal> dealsPage = dealRepository.findAllBySyncStatusAndCreatedDateLessThan(SyncStatus.NOT_SYNCED, Instant.now(), pageable);
-
-            if( dealsPage.getContent() == null ||  dealsPage.getContent().size() == 0){
-                break;
-            }
-
-            try {
-                copyDealsToElasticSearch(dealsPage.getContent());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            pageNo++;
-        }
-
-
-    }
-
     @Override
     public FacetDTO getFieldRange(String id, String fieldName) throws IOException {
         SearchRequest searchRequest = new SearchRequest();
@@ -193,40 +154,6 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         facetDTO.setMin(minAgg.getValue());
 
         return facetDTO;
-    }
-
-    @Transactional
-    void copyDealsToElasticSearch(List<Deal> deals) throws IOException {
-        // Set deal sync status
-
-        List<Long> dealIds = deals.stream().map( deal -> deal.getId()).collect(Collectors.toList());
-
-        dealRepository.updateDealsStatus(SyncStatus.IN_PROGRESS, dealIds);
-
-        sendRecordsToElasticSearch( deals );
-
-        dealRepository.updateDealsStatus(SyncStatus.SYNCED, dealIds);
-
-
-
-    }
-
-    private void sendRecordsToElasticSearch(List<Deal> deals) throws IOException {
-        BulkRequest request = new BulkRequest();
-
-        for ( Deal deal: deals) {
-            request.add(new IndexRequest("leadlet", "deal", String.valueOf(deal.getId()))
-                .source(XContentType.JSON, "id", deal.getId(),
-                                            "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
-                                            "pipeline_id", deal.getPipeline().getId(),
-                                            "stage_id", deal.getStage().getId(),
-                                            "priority", deal.getPriority(),
-                                            "source", !StringUtils.isEmpty(deal.getDealSource()) ? deal.getDealSource().getName() : "",
-                                            "channel", !StringUtils.isEmpty(deal.getDealChannel()) ? deal.getDealChannel().getName() : "",
-                                            "products", deal.getProducts().stream().map(Product::getDescription).toArray()));
-        }
-
-        BulkResponse response = restHighLevelClient.bulk(request);
     }
 
     public void indexDeal(Deal deal) throws IOException {
