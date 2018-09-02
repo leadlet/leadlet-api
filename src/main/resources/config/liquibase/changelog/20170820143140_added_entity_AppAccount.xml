@@ -30,10 +30,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="storage_preference_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <loadData encoding="UTF-8"
