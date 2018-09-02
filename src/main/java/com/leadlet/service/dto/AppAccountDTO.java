@@ -2,8 +2,6 @@ package com.leadlet.service.dto;
 
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -16,8 +14,6 @@ public class AppAccountDTO implements Serializable {
     private String name;
 
     private String address;
-
-    private StoragePreferenceDTO storagePreference;
 
     public Long getId() {
         return id;
@@ -43,14 +39,6 @@ public class AppAccountDTO implements Serializable {
         this.address = address;
     }
 
-    public StoragePreferenceDTO getStoragePreference() {
-        return storagePreference;
-    }
-
-    public AppAccountDTO setStoragePreference(StoragePreferenceDTO storagePreference) {
-        this.storagePreference = storagePreference;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

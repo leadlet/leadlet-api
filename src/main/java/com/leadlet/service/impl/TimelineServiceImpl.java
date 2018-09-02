@@ -1,22 +1,18 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.Activity;
-import com.leadlet.domain.Document;
 import com.leadlet.domain.Note;
 import com.leadlet.domain.Timeline;
 import com.leadlet.domain.enumeration.TimelineItemType;
 import com.leadlet.repository.ActivityRepository;
-import com.leadlet.repository.DocumentRepository;
 import com.leadlet.repository.NoteRepository;
 import com.leadlet.repository.TimelineRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.TimelineDTO;
 import com.leadlet.service.mapper.ActivityMapper;
-import com.leadlet.service.mapper.DocumentMapper;
 import com.leadlet.service.mapper.NoteMapper;
 import com.leadlet.service.mapper.TimelineMapper;
-import com.leadlet.web.rest.NoteResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -45,26 +41,18 @@ public class TimelineServiceImpl implements TimelineService {
 
     private final ActivityRepository activityRepository;
 
-    private final DocumentRepository documentRepository;
-
-    private final DocumentMapper documentMapper;
-
     public TimelineServiceImpl(TimelineRepository timelineRepository,
                                TimelineMapper timelineMapper,
                                NoteRepository noteRepository,
                                ActivityRepository activityRepository,
                                NoteMapper noteMapper,
-                               ActivityMapper activityMapper,
-                               DocumentRepository documentRepository,
-                               DocumentMapper documentMapper) {
+                               ActivityMapper activityMapper) {
         this.timelineRepository = timelineRepository;
         this.timelineMapper = timelineMapper;
         this.noteRepository = noteRepository;
         this.activityRepository = activityRepository;
         this.noteMapper = noteMapper;
         this.activityMapper = activityMapper;
-        this.documentRepository = documentRepository;
-        this.documentMapper = documentMapper;
     }
 
     @Override
@@ -102,9 +90,6 @@ public class TimelineServiceImpl implements TimelineService {
                 } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
                     Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
                     timelineDTO.setSource(activityMapper.toDto(activity));
-                }else if (timelineDTO.getType().equals(TimelineItemType.DOCUMENT_CREATED)) {
-                    Document document = documentRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(documentMapper.toDto(document));
                 }
 
                 return timelineDTO;
@@ -122,9 +107,6 @@ public class TimelineServiceImpl implements TimelineService {
                 } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
                     Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
                     timelineDTO.setSource(activityMapper.toDto(activity));
-                } else if (timelineDTO.getType().equals(TimelineItemType.DOCUMENT_CREATED)) {
-                    Document document = documentRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(documentMapper.toDto(document));
                 }
 
                 return timelineDTO;
@@ -208,27 +190,6 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setSourceId(activity.getId());
         timelineItem.setUser(activity.getAgent());
         timelineItem.setDeal(activity.getDeal());
-
-        timelineRepository.save(timelineItem);
-    }
-
-    @Override
-    @Async
-    public void documentCreated(Document document) {
-
-        Timeline timelineItem = new Timeline();
-        timelineItem.setType(TimelineItemType.DOCUMENT_CREATED);
-        if (document.getOrganization() != null) {
-            timelineItem.setOrganization(document.getOrganization());
-        }
-        if (document.getPerson() != null) {
-            timelineItem.setPerson(document.getPerson());
-        }
-        if (document.getDeal() != null) {
-            timelineItem.setDeal(document.getDeal());
-        }
-        timelineItem.setAppAccount(document.getAppAccount());
-        timelineItem.setSourceId(document.getId());
 
         timelineRepository.save(timelineItem);
     }

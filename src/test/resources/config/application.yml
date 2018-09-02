@@ -45,6 +45,9 @@ spring:
             hibernate.hbm2ddl.auto: validate
     mail:
         host: localhost
+        port: 25
+        username:
+        password:
     messages:
         basename: i18n/messages
     mvc:
@@ -52,7 +55,12 @@ spring:
             enabled: false
     thymeleaf:
         mode: XHTML
-
+    data:
+        elasticsearch:
+          cluster-name: leadlet-db
+          protocol: http
+          cluster-host: localhost
+          cluster-port: 9200
 liquibase:
     contexts: test
 
@@ -107,3 +115,4 @@ jhipster:
 # ===================================================================
 
 application:
+

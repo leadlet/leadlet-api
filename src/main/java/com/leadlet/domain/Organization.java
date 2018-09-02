@@ -57,9 +57,6 @@ public class Organization implements Serializable {
     @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Person> persons;
 
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Document> documents;
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -144,36 +141,18 @@ public class Organization implements Serializable {
         this.persons = persons;
     }
 
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(Set<Document> documents) {
-        this.documents = documents;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Organization)) return false;
         Organization that = (Organization) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(name, that.name) &&
-            Objects.equals(address, that.address) &&
-            Objects.equals(phones, that.phones) &&
-            Objects.equals(email, that.email) &&
-            Objects.equals(appAccount, that.appAccount) &&
-            Objects.equals(activities, that.activities) &&
-            Objects.equals(deals, that.deals) &&
-            Objects.equals(timelines, that.timelines) &&
-            Objects.equals(persons, that.persons) &&
-            Objects.equals(documents, that.documents);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, address, phones, email, appAccount, activities, deals, timelines, persons, documents);
+        return Objects.hash(id);
     }
 
     @Override
@@ -184,12 +163,6 @@ public class Organization implements Serializable {
             ", address='" + address + '\'' +
             ", phones=" + phones +
             ", email='" + email + '\'' +
-            ", appAccount=" + appAccount +
-            ", activities=" + activities +
-            ", deals=" + deals +
-            ", timelines=" + timelines +
-            ", persons=" + persons +
-            ", documents=" + documents +
-            '}';
+        '}';
     }
 }

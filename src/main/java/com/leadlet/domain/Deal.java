@@ -5,7 +5,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "deal")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Deal extends AbstractAuditingEntity implements Serializable {
+public class Deal extends AbstractSearchableEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,6 +29,33 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "priority")
     private Integer priority;
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public Deal setProducts(Set<Product> products) {
+        this.products = products;
+        return this;
+    }
+
+    public DealSource getDealSource() {
+        return dealSource;
+    }
+
+    public Deal setDealSource(DealSource dealSource) {
+        this.dealSource = dealSource;
+        return this;
+    }
+
+    public DealChannel getDealChannel() {
+        return dealChannel;
+    }
+
+    public Deal setDealChannel(DealChannel dealChannel) {
+        this.dealChannel = dealChannel;
+        return this;
+    }
 
     DealValue dealValue;
 
@@ -60,9 +86,6 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Note> notes;
 
-    @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Document> documents;
-
     @ManyToMany
     @JoinTable(
         name = "deal_product",
@@ -78,8 +101,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
     private DealChannel dealChannel;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "activity_status", nullable = false)
-    @NotNull
+    @Column(name = "activity_status")
     private ActivityStatus activityStatus;
 
     public ActivityStatus getActivityStatus() {
@@ -205,39 +227,6 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
         this.pipeline = pipeline;
         return this;
     }
-
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(Set<Document> documents) {
-        this.documents = documents;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
-    public DealSource getDealSource() {
-        return dealSource;
-    }
-
-    public void setDealSource(DealSource dealSource) {
-        this.dealSource = dealSource;
-    }
-
-    public DealChannel getDealChannel() {
-        return dealChannel;
-    }
-
-    public void setDealChannel(DealChannel dealChannel) {
-        this.dealChannel = dealChannel;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -255,12 +244,7 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             Objects.equals(possibleCloseDate, deal.possibleCloseDate) &&
             Objects.equals(activities, deal.activities) &&
             Objects.equals(timelines, deal.timelines) &&
-            Objects.equals(notes, deal.notes) &&
-            Objects.equals(documents, deal.documents) &&
-            Objects.equals(products, deal.products) &&
-            Objects.equals(dealSource, deal.dealSource) &&
-            Objects.equals(dealChannel, deal.dealChannel) &&
-            Objects.equals(activityStatus, deal.activityStatus);
+            Objects.equals(notes, deal.notes);
     }
 
     @Override
@@ -276,20 +260,10 @@ public class Deal extends AbstractAuditingEntity implements Serializable {
             ", title='" + title + '\'' +
             ", priority=" + priority +
             ", dealValue=" + dealValue +
-            ", stage=" + stage +
-            ", pipeline=" + pipeline +
-            ", person=" + person +
-            ", organization=" + organization +
-            ", owner=" + owner +
             ", possibleCloseDate=" + possibleCloseDate +
             ", activities=" + activities +
-            ", timelines=" + timelines +
-            ", notes=" + notes +
-            ", documents=" + documents +
-            ", products=" + products +
-            ", dealSource=" + dealSource +
-            ", dealChannel=" + dealChannel +
             ", activityStatus=" + activityStatus +
             '}';
+
     }
 }

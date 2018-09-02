@@ -63,9 +63,6 @@ public class Person implements Serializable {
     @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Timeline> timelines;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Document> documents;
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -166,32 +163,12 @@ public class Person implements Serializable {
         this.timelines = timelines;
     }
 
-    public Set<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(Set<Document> documents) {
-        this.documents = documents;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
         Person person = (Person) o;
-        return Objects.equals(id, person.id) &&
-            Objects.equals(name, person.name) &&
-            Objects.equals(address, person.address) &&
-            Objects.equals(title, person.title) &&
-            Objects.equals(phones, person.phones) &&
-            Objects.equals(email, person.email) &&
-            Objects.equals(organization, person.organization) &&
-            Objects.equals(appAccount, person.appAccount) &&
-            Objects.equals(activities, person.activities) &&
-            Objects.equals(deals, person.deals) &&
-            Objects.equals(notes, person.notes) &&
-            Objects.equals(timelines, person.timelines) &&
-            Objects.equals(documents, person.documents);
+        return Objects.equals(id, person.id);
     }
 
     @Override
@@ -209,13 +186,6 @@ public class Person implements Serializable {
             ", title='" + title + '\'' +
             ", phones=" + phones +
             ", email='" + email + '\'' +
-            ", organization=" + organization +
-            ", appAccount=" + appAccount +
-            ", activities=" + activities +
-            ", deals=" + deals +
-            ", notes=" + notes +
-            ", timelines=" + timelines +
-            ", documents=" + documents +
             '}';
     }
 }

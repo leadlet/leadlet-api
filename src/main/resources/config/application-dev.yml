@@ -54,7 +54,12 @@ spring:
         cache-seconds: 1
     thymeleaf:
         cache: false
-
+    data:
+        elasticsearch:
+          cluster-name: leadlet-db
+          protocol: http
+          cluster-host: localhost
+          cluster-port: 9200
 liquibase:
     contexts: dev
 
@@ -137,5 +142,6 @@ jhipster:
 # More documentation is available at:
 # https://jhipster.github.io/common-application-properties/
 # ===================================================================
+
 
 application:

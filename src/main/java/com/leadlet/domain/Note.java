@@ -84,17 +84,13 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
         if (this == o) return true;
         if (!(o instanceof Note)) return false;
         Note note = (Note) o;
-        return Objects.equals(id, note.id) &&
-            Objects.equals(content, note.content) &&
-            Objects.equals(person, note.person) &&
-            Objects.equals(organization, note.organization) &&
-            Objects.equals(deal, note.deal);
+        return Objects.equals(id, note.id);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, content, person, organization, deal);
+        return Objects.hash(id);
     }
 
     @Override
@@ -102,9 +98,6 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
         return "Note{" +
             "id=" + id +
             ", content='" + content + '\'' +
-            ", person=" + person +
-            ", organization=" + organization +
-            ", deal=" + deal +
             '}';
     }
 }

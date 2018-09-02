@@ -1,16 +1,14 @@
 package com.leadlet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.el.MethodNotFoundException;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A AppAccount.
@@ -31,10 +29,6 @@ public class AppAccount implements Serializable {
 
     @Column(name = "address")
     private String address;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="storage_preference_id")
-    StoragePreference storagePreference;
 
     @OneToMany(mappedBy = "appAccount", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -130,14 +124,6 @@ public class AppAccount implements Serializable {
         this.users = users;
     }
 
-    public StoragePreference getStoragePreference() {
-        return storagePreference;
-    }
-
-    public AppAccount setStoragePreference(StoragePreference storagePreference) {
-        this.storagePreference = storagePreference;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {
