@@ -7,7 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "activity")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Activity extends AbstractAccountSpecificEntity implements Serializable {
+public class Activity extends AbstractSearchableEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,11 +33,11 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
 
     @Column(name = "start", nullable = false)
     @NotNull
-    private Date start;
+    private Instant start;
 
     @Column(name = "end", nullable = false)
     @NotNull
-    private Date end;
+    private Instant end;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
@@ -63,7 +63,7 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
     private boolean done = false;
 
     @Column(name = "closed_date")
-    private Date closedDate = null;
+    private Instant closedDate = null;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -93,19 +93,19 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         this.memo = memo;
     }
 
-    public Date getStart() {
+    public Instant getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Instant start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public Instant getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Instant end) {
         this.end = end;
     }
 
@@ -167,11 +167,11 @@ public class Activity extends AbstractAccountSpecificEntity implements Serializa
         return this;
     }
 
-    public Date getClosedDate() {
+    public Instant getClosedDate() {
         return closedDate;
     }
 
-    public void setClosedDate(Date closedDate) {
+    public void setClosedDate(Instant closedDate) {
         this.closedDate = closedDate;
     }
 

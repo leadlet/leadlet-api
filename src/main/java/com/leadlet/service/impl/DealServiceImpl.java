@@ -187,7 +187,7 @@ public class DealServiceImpl implements DealService {
     @Override
     public Page<DealDTO> query(String searchQuery, Pageable pageable) throws IOException {
 
-        Pair<List<Long>, Long> response = elasticsearchService.getDealsTerms(searchQuery, pageable);
+        Pair<List<Long>, Long> response = elasticsearchService.getEntityIds("leadlet-deal", searchQuery, pageable);
 
         Page<DealDTO> deals = new PageImpl<DealDTO>(dealRepository.findAllByIdIn(response.getFirst()).stream()
             .map(dealMapper::toDto).collect(Collectors.toList()),

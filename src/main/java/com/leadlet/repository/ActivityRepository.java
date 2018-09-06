@@ -2,13 +2,17 @@ package com.leadlet.repository;
 
 import com.leadlet.domain.Activity;
 import com.leadlet.domain.ActivityAggregation;
+import com.leadlet.domain.enumeration.SyncStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
-
-import java.util.*;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -37,5 +41,13 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
         "AND ( activity.closedDate BETWEEN ?2 AND ?3) " +
         "AND user.team.id = ?1 GROUP BY activity.type")
     List<ActivityAggregation> calculateCompletedActivitiesTeamBetweenDates(long teamId, Date minDate, Date maxDate);
+
+    Page<Activity> findAllBySyncStatusAndCreatedDateLessThan(SyncStatus syncStatus, Instant maxDate, Pageable page);
+
+    @Modifying
+    @Query("update #{#entityName} activity set activity.syncStatus = ?1 where activity.id in ?2")
+    void updateActivitiesStatus(SyncStatus syncStatus, List<Long> ids);
+
+    List<Activity> findAllByIdIn(List<Long> ids);
 
 }

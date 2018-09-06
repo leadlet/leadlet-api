@@ -2,13 +2,15 @@ package com.leadlet.web.rest;
 
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.dto.FacetDTO;
-import com.leadlet.service.dto.FacetDefinitionDTO;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -29,22 +31,16 @@ public class FacetsResource {
         this.filterService = filterService;
     }
 
-    /**
-     * GET  /aggregations : get all the stages.
-     *
-     * @param facetDefinition the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of stages in body
-     */
-    @PostMapping("/facets")
-    public ResponseEntity<FacetDTO> getDistinctTerms(@RequestBody FacetDefinitionDTO facetDefinition, @ApiParam String q) throws IOException {
-        FacetDTO facet = filterService.getFieldTerms(facetDefinition,q);
+    @GetMapping("/facets/terms/{id}/{index}")
+    public ResponseEntity<FacetDTO> getDistinctTerms(@PathVariable String id, @PathVariable String index, @ApiParam String field, @ApiParam String q) throws IOException {
+        FacetDTO facet = filterService.getFieldTerms(id, index, field ,q);
 
         return new ResponseEntity<>(facet, HttpStatus.OK);
     }
 
-    @GetMapping("/facets/range/{id}/{fieldName}")
-    public ResponseEntity<FacetDTO> getFieldRange(@PathVariable String id, @PathVariable String fieldName) throws IOException {
-        FacetDTO facet = filterService.getFieldRange(id, fieldName);
+    @GetMapping("/facets/range/{id}/{index}")
+    public ResponseEntity<FacetDTO> getFieldRange(@PathVariable String id, @PathVariable String index, @ApiParam String field, @ApiParam String q) throws IOException {
+        FacetDTO facet = filterService.getFieldRange(id, index, field ,q);
 
         return new ResponseEntity<>(facet, HttpStatus.OK);
     }
