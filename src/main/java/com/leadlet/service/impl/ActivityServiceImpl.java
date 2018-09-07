@@ -218,8 +218,19 @@ public class ActivityServiceImpl implements ActivityService {
 
         Pair<List<Long>, Long> response = elasticsearchService.getEntityIds("leadlet-activity", searchQuery, pageable);
 
-        Page<ActivityDTO> activityDTOS = new PageImpl<ActivityDTO>(activityRepository.findAllByIdIn(response.getFirst()).stream()
-            .map(activityMapper::toDto).collect(Collectors.toList()),
+        List<ActivityDTO> unsorted = activityRepository.findAllByIdIn(response.getFirst()).stream()
+            .map(activityMapper::toDto).collect(Collectors.toList());
+        List<Long> sortedIds = response.getFirst();
+
+        // we are getting ids from ES sorted but JPA returns result not sorted
+        // below code-piece sorts the returned DTOs to have same sort with ids.
+        Collections.sort(unsorted,  new Comparator<ActivityDTO>() {
+            public int compare(ActivityDTO left, ActivityDTO right) {
+                return Integer.compare(sortedIds.indexOf(left.getId()), sortedIds.indexOf(right.getId()));
+            }
+        } );
+
+        Page<ActivityDTO> activityDTOS = new PageImpl<ActivityDTO>(unsorted,
             pageable,
             response.getSecond());
 

@@ -92,6 +92,7 @@ public class ActivityIndexService {
                                             "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
                                             "start_date", new Date(deal.getStart().toEpochMilli()),
                                             "activity_type", deal.getType(),
+                                            "title", deal.getTitle(),
                                             "is_done", deal.isDone()));
         }
 

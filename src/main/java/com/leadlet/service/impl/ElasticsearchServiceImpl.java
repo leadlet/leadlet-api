@@ -21,17 +21,16 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.max.Max;
 import org.elasticsearch.search.aggregations.metrics.min.Min;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Service Implementation for managing Team.
@@ -153,6 +152,15 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
         if( !StringUtils.isEmpty(query)){
             searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
+        }
+
+        if( pageable.getSort() != null){
+            Iterator<Sort.Order> orderIterator = pageable.getSort().iterator();
+            while(orderIterator.hasNext()){
+                Sort.Order order = orderIterator.next();
+                searchSourceBuilder = searchSourceBuilder.sort( order.getProperty()
+                    , order.getDirection() == Sort.Direction.ASC ? SortOrder.ASC : SortOrder.DESC);
+            }
         }
 
         searchRequest.source(searchSourceBuilder);
