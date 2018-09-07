@@ -5,7 +5,6 @@ import com.leadlet.domain.Product;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.dto.FacetDTO;
-import com.leadlet.service.dto.FacetDefinitionDTO;
 import com.leadlet.service.dto.RangeFacetDTO;
 import com.leadlet.service.dto.TermsFacetDTO;
 import org.elasticsearch.action.index.IndexRequest;
@@ -22,17 +21,16 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.max.Max;
 import org.elasticsearch.search.aggregations.metrics.min.Min;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Service Implementation for managing Team.
@@ -52,29 +50,29 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 
     @Override
-    public FacetDTO getFieldTerms(FacetDefinitionDTO facetDefinition, String query) throws IOException {
+    public FacetDTO getFieldTerms(String id, String index, String fieldName, String query) throws IOException {
 
-        SearchRequest searchRequest = new SearchRequest();
+        SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         if( !StringUtils.isEmpty(query)){
             searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
         }
         searchSourceBuilder.aggregation(AggregationBuilders
-            .terms(facetDefinition.getId())
-            .field(facetDefinition.getDataField()));
+            .terms(id)
+            .field(fieldName));
 
         searchRequest.source(searchSourceBuilder);
         SearchResponse sr = restHighLevelClient.search(searchRequest);
 
         // sr is here your SearchResponse object
-        Terms genders = sr.getAggregations().get(facetDefinition.getId());
+        Terms genders = sr.getAggregations().get(id);
 
         TermsFacetDTO facetDTO = new TermsFacetDTO();
-        facetDTO.setId(facetDefinition.getId());
+        facetDTO.setId(id);
 
         for (Terms.Bucket entry : genders.getBuckets()) {
-            facetDTO.addTerm(entry.getKey().toString(),entry.getDocCount());
+            facetDTO.addTerm(entry.getKeyAsString(),entry.getDocCount());
         }
 
         return facetDTO;
@@ -82,18 +80,50 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     }
 
     @Override
-    public Pair<List<Long>, Long> getDealsTerms(String query, Pageable pageable) throws IOException {
-        SearchRequest searchRequest = buildSearchQuery(query, pageable);
+    public FacetDTO getFieldRange(String id, String index, String fieldName , String query) throws IOException {
+        SearchRequest searchRequest = new SearchRequest(index);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
+        String maxAggId = id + "-max";
+        String minAggId = id + "-min";
+
+        if( !StringUtils.isEmpty(query)){
+            searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
+        }
+
+        searchSourceBuilder.aggregation(AggregationBuilders
+            .max(maxAggId)
+            .field(fieldName))
+            .aggregation(AggregationBuilders
+                .min(minAggId)
+                .field(fieldName));
+
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse sr = restHighLevelClient.search(searchRequest);
+
+        // sr is here your SearchResponse object
+        Max maxAgg = sr.getAggregations().get(maxAggId);
+        Min minAgg = sr.getAggregations().get(minAggId);
+
+        RangeFacetDTO facetDTO = new RangeFacetDTO();
+        facetDTO.setId(id);
+        facetDTO.setMax(maxAgg.getValue());
+        facetDTO.setMin(minAgg.getValue());
+
+        return facetDTO;
+    }
+
+    @Override
+    public Pair<List<Long>, Long> getEntityIds(String index, String query, Pageable pageable) throws IOException {
+        SearchRequest searchRequest = buildSearchQuery(index, query, pageable);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
-
-        Pair<List<Long>, Long> response = getDealIds(searchResponse, pageable);
+        Pair<List<Long>, Long> response = parseDealIdsFromResponse(searchResponse, pageable);
 
         return response;
     }
 
 
-    private Pair<List<Long>, Long> getDealIds(SearchResponse searchResponse, Pageable pageable) {
+    private Pair<List<Long>, Long> parseDealIdsFromResponse(SearchResponse searchResponse, Pageable pageable) {
 
         List<Long> ids = new ArrayList<>();
 
@@ -111,49 +141,30 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         return response;
     }
 
-    private SearchRequest buildSearchQuery(String query, Pageable pageable) {
+    private SearchRequest buildSearchQuery(String index, String query, Pageable pageable) {
 
-        SearchRequest searchRequest = new SearchRequest();
+        SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         String[] includeFields = new String[] {"id"};
         searchSourceBuilder.fetchSource(includeFields, null);
         searchSourceBuilder.from(pageable.getOffset());
         searchSourceBuilder.size(pageable.getPageSize());
 
-        searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
+        if( !StringUtils.isEmpty(query)){
+            searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
+        }
+
+        if( pageable.getSort() != null){
+            Iterator<Sort.Order> orderIterator = pageable.getSort().iterator();
+            while(orderIterator.hasNext()){
+                Sort.Order order = orderIterator.next();
+                searchSourceBuilder = searchSourceBuilder.sort( order.getProperty()
+                    , order.getDirection() == Sort.Direction.ASC ? SortOrder.ASC : SortOrder.DESC);
+            }
+        }
 
         searchRequest.source(searchSourceBuilder);
         return searchRequest;
-    }
-
-    @Override
-    public FacetDTO getFieldRange(String id, String fieldName) throws IOException {
-        SearchRequest searchRequest = new SearchRequest();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-        String maxAggId = id + "-max";
-        String minAggId = id + "-min";
-
-        searchSourceBuilder.aggregation(AggregationBuilders
-            .max(maxAggId)
-            .field(fieldName))
-        .aggregation(AggregationBuilders
-            .min(minAggId)
-            .field(fieldName));
-
-        searchRequest.source(searchSourceBuilder);
-        SearchResponse sr = restHighLevelClient.search(searchRequest);
-
-        // sr is here your SearchResponse object
-        Max maxAgg = sr.getAggregations().get(maxAggId);
-        Min minAgg = sr.getAggregations().get(minAggId);
-
-        RangeFacetDTO facetDTO = new RangeFacetDTO();
-        facetDTO.setId(id);
-        facetDTO.setMax(maxAgg.getValue());
-        facetDTO.setMin(minAgg.getValue());
-
-        return facetDTO;
     }
 
     public void indexDeal(Deal deal) throws IOException {

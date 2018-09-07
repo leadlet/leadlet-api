@@ -9,6 +9,8 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +29,11 @@ import java.util.stream.Collectors;
 /**
  * Service Implementation for managing Team.
  */
-@Profile("prod")
+@Profile({"prod", "dev"})
 @Service
 @Transactional
 public class DealIndexService {
+    private final Logger log = LoggerFactory.getLogger(DealIndexService.class);
 
     private final RestHighLevelClient restHighLevelClient;
     private final DealRepository dealRepository;
@@ -89,7 +92,7 @@ public class DealIndexService {
         BulkRequest request = new BulkRequest();
 
         for ( Deal deal: deals) {
-            request.add(new IndexRequest("leadlet", "deal", String.valueOf(deal.getId()))
+            request.add(new IndexRequest("leadlet-deal", "deal",  String.valueOf(deal.getId()))
                 .source(XContentType.JSON, "id", deal.getId(),
                                             "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
                                             "pipeline_id", deal.getPipeline().getId(),
@@ -101,6 +104,10 @@ public class DealIndexService {
         }
 
         BulkResponse response = restHighLevelClient.bulk(request);
+
+        log.info(response.status().toString());
+        log.info(response.buildFailureMessage());
+
     }
 
 }

@@ -2,13 +2,11 @@ package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.leadlet.service.ActivityService;
-import com.leadlet.service.dto.ActivityCompleted;
-import com.leadlet.service.dto.TeamObjectiveDTO;
+import com.leadlet.service.dto.ActivityDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
-import com.leadlet.service.dto.ActivityDTO;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,9 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -92,6 +90,16 @@ public class ActivityResource {
         log.debug("REST request to get Activities");
         List<ActivityDTO> activityDTOList = activityService.findAll();
         return new ResponseEntity<>(activityDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping("/activities/search")
+    @Timed
+    public ResponseEntity<List<ActivityDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
+
+        Page<ActivityDTO> page = activityService.search(q, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activities/search");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
     }
 
     /**

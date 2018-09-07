@@ -1,11 +1,12 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.Activity;
 import com.leadlet.domain.ActivityAggregation;
 import com.leadlet.domain.enumeration.ActivityType;
+import com.leadlet.repository.ActivityRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ActivityService;
-import com.leadlet.domain.Activity;
-import com.leadlet.repository.ActivityRepository;
+import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.ActivityDTO;
 import com.leadlet.service.dto.TeamObjectiveDTO;
@@ -14,12 +15,17 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -37,10 +43,14 @@ public class ActivityServiceImpl implements ActivityService {
 
     private final TimelineService timelineService;
 
-    public ActivityServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper, TimelineService timelineService) {
+    private final ElasticsearchService elasticsearchService;
+
+    public ActivityServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,
+                               TimelineService timelineService, ElasticsearchService elasticsearchService) {
         this.activityRepository = activityRepository;
         this.activityMapper = activityMapper;
         this.timelineService = timelineService;
+        this.elasticsearchService = elasticsearchService;
     }
 
     /**
@@ -77,7 +87,7 @@ public class ActivityServiceImpl implements ActivityService {
             //TODO: appaccount todo'su..
             activity.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             if(!fromDb.isDone() && activityDTO.isDone()){
-                activity.setClosedDate(new Date());
+                activity.setClosedDate(Instant.now());
             }
             activity = activityRepository.save(activity);
             timelineService.activityCreated(activity);
@@ -199,5 +209,31 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         return  hmap;
+    }
+
+    @Override
+    public Page<ActivityDTO> search(String searchQuery, Pageable pageable) throws IOException {
+
+        // TODO add appaccountid
+
+        Pair<List<Long>, Long> response = elasticsearchService.getEntityIds("leadlet-activity", searchQuery, pageable);
+
+        List<ActivityDTO> unsorted = activityRepository.findAllByIdIn(response.getFirst()).stream()
+            .map(activityMapper::toDto).collect(Collectors.toList());
+        List<Long> sortedIds = response.getFirst();
+
+        // we are getting ids from ES sorted but JPA returns result not sorted
+        // below code-piece sorts the returned DTOs to have same sort with ids.
+        Collections.sort(unsorted,  new Comparator<ActivityDTO>() {
+            public int compare(ActivityDTO left, ActivityDTO right) {
+                return Integer.compare(sortedIds.indexOf(left.getId()), sortedIds.indexOf(right.getId()));
+            }
+        } );
+
+        Page<ActivityDTO> activityDTOS = new PageImpl<ActivityDTO>(unsorted,
+            pageable,
+            response.getSecond());
+
+        return activityDTOS;
     }
 }

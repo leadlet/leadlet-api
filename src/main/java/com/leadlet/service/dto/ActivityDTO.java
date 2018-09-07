@@ -4,7 +4,7 @@ package com.leadlet.service.dto;
 import com.leadlet.domain.enumeration.ActivityType;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -18,9 +18,9 @@ public class ActivityDTO implements Serializable {
 
     private String memo;
 
-    private Date start;
+    private Instant start;
 
-    private Date end;
+    private Instant end;
 
     private ActivityType type;
 
@@ -36,7 +36,7 @@ public class ActivityDTO implements Serializable {
 
     private boolean done;
 
-    private Date closedDate;
+    private Instant closedDate;
 
     public Long getId() {
         return id;
@@ -65,20 +65,20 @@ public class ActivityDTO implements Serializable {
         return this;
     }
 
-    public Date getStart() {
+    public Instant getStart() {
         return start;
     }
 
-    public ActivityDTO setStart(Date start) {
+    public ActivityDTO setStart(Instant start) {
         this.start = start;
         return this;
     }
 
-    public Date getEnd() {
+    public Instant getEnd() {
         return end;
     }
 
-    public ActivityDTO setEnd(Date end) {
+    public ActivityDTO setEnd(Instant end) {
         this.end = end;
         return this;
     }
@@ -146,11 +146,11 @@ public class ActivityDTO implements Serializable {
         return this;
     }
 
-    public Date getClosedDate() {
+    public Instant getClosedDate() {
         return closedDate;
     }
 
-    public ActivityDTO setClosedDate(Date closedDate) {
+    public ActivityDTO setClosedDate(Instant closedDate) {
         this.closedDate = closedDate;
         return this;
     }
@@ -161,23 +161,12 @@ public class ActivityDTO implements Serializable {
         if (!(o instanceof ActivityDTO)) return false;
         ActivityDTO that = (ActivityDTO) o;
         return done == that.done &&
-            Objects.equals(id, that.id) &&
-            Objects.equals(title, that.title) &&
-            Objects.equals(memo, that.memo) &&
-            Objects.equals(start, that.start) &&
-            Objects.equals(end, that.end) &&
-            type == that.type &&
-            Objects.equals(deal, that.deal) &&
-            Objects.equals(person, that.person) &&
-            Objects.equals(organization, that.organization) &&
-            Objects.equals(agent, that.agent) &&
-            Objects.equals(location, that.location) &&
-            Objects.equals(closedDate, that.closedDate);
+            Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, memo, start, end, type, deal, person, organization, agent, location, done, closedDate);
+        return Objects.hash(id);
     }
 
     @Override
@@ -189,10 +178,6 @@ public class ActivityDTO implements Serializable {
             ", start=" + start +
             ", end=" + end +
             ", type=" + type +
-            ", deal=" + deal +
-            ", person=" + person +
-            ", organization=" + organization +
-            ", agent=" + agent +
             ", location=" + location +
             ", done=" + done +
             ", closedDate=" + closedDate +
