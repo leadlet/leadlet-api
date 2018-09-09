@@ -70,6 +70,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="deal_status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="lost_reason_id" type="bigint">
                 <constraints nullable="true" />
             </column>

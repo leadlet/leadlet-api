@@ -1,6 +1,7 @@
 package com.leadlet.domain;
 
 import com.leadlet.domain.enumeration.ActivityStatus;
+import com.leadlet.domain.enumeration.DealStatus;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -115,12 +116,24 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         this.lostReason = lostReason;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "deal_status")
+    private DealStatus dealStatus;
+
     public ActivityStatus getActivityStatus() {
         return activityStatus;
     }
 
     public void setActivityStatus(ActivityStatus activityStatus) {
         this.activityStatus = activityStatus;
+    }
+
+    public DealStatus getDealStatus() {
+        return dealStatus;
+    }
+
+    public void setDealStatus(DealStatus dealStatus) {
+        this.dealStatus = dealStatus;
     }
 
     public static long getSerialVersionUID() {
@@ -274,6 +287,7 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
             ", possibleCloseDate=" + possibleCloseDate +
             ", activities=" + activities +
             ", activityStatus=" + activityStatus +
+            ", dealStatus=" + dealStatus +
             '}';
 
     }
