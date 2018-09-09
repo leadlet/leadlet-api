@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Lost Reason.
+    -->
+    <changeSet id="201809082247-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="app_account_id"
+                                 baseTableName="lost_reason"
+                                 constraintName="fk_lost_reason_app_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="app_account"/>
+
+    </changeSet>
+</databaseChangeLog>
