@@ -104,6 +104,17 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     @Column(name = "activity_status")
     private ActivityStatus activityStatus;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private LostReason lostReason;
+
+    public LostReason getLostReason() {
+        return lostReason;
+    }
+
+    public void setLostReason(LostReason lostReason) {
+        this.lostReason = lostReason;
+    }
+
     public ActivityStatus getActivityStatus() {
         return activityStatus;
     }
