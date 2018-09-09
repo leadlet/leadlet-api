@@ -1,9 +1,10 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.config.SearchConstants;
 import com.leadlet.domain.Deal;
-import com.leadlet.domain.Product;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
+import com.leadlet.service.dto.DealSearchIndexDTO;
 import com.leadlet.service.dto.FacetDTO;
 import com.leadlet.service.dto.RangeFacetDTO;
 import com.leadlet.service.dto.TermsFacetDTO;
@@ -12,7 +13,6 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -30,7 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Service Implementation for managing Team.
@@ -168,17 +171,12 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     }
 
     public void indexDeal(Deal deal) throws IOException {
-        IndexRequest request = new IndexRequest("leadlet", "deal", String.valueOf(deal.getId()));
 
-        request.source(XContentType.JSON, "id", deal.getId(),
-            "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
-            "pipeline_id", deal.getPipeline().getId(),
-            "stage_id", deal.getStage().getId(),
-            "priority", deal.getPriority(),
-            "source", !StringUtils.isEmpty(deal.getDealSource()) ? deal.getDealSource().getName() : "",
-            "channel", !StringUtils.isEmpty(deal.getDealChannel()) ? deal.getDealChannel().getName() : "",
-            "products", deal.getProducts().stream().map(Product::getDescription).toArray());
 
+        IndexRequest request = new IndexRequest(SearchConstants.DEAL_INDEX, SearchConstants.DEAL_TYPE, String.valueOf(deal.getId()));
+
+        DealSearchIndexDTO dealSearchIndexDTO = new DealSearchIndexDTO(deal);
+        request.source(dealSearchIndexDTO.getBuilder());
         IndexResponse response = restHighLevelClient.index(request);
     }
 

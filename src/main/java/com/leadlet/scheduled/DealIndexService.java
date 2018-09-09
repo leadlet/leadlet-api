@@ -1,14 +1,14 @@
 package com.leadlet.scheduled;
 
+import com.leadlet.config.SearchConstants;
 import com.leadlet.domain.Deal;
-import com.leadlet.domain.Product;
 import com.leadlet.domain.enumeration.SyncStatus;
 import com.leadlet.repository.DealRepository;
+import com.leadlet.service.dto.DealSearchIndexDTO;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -18,11 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,15 +90,10 @@ public class DealIndexService {
         BulkRequest request = new BulkRequest();
 
         for ( Deal deal: deals) {
-            request.add(new IndexRequest("leadlet-deal", "deal",  String.valueOf(deal.getId()))
-                .source(XContentType.JSON, "id", deal.getId(),
-                                            "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
-                                            "pipeline_id", deal.getPipeline().getId(),
-                                            "stage_id", deal.getStage().getId(),
-                                            "priority", deal.getPriority(),
-                                            "source", !StringUtils.isEmpty(deal.getDealSource()) ? deal.getDealSource().getName() : "",
-                                            "channel", !StringUtils.isEmpty(deal.getDealChannel()) ? deal.getDealChannel().getName() : "",
-                                            "products", deal.getProducts().stream().map(Product::getDescription).toArray()));
+            DealSearchIndexDTO dealSearchIndexDTO = new DealSearchIndexDTO(deal);
+
+            request.add(new IndexRequest(SearchConstants.DEAL_INDEX, SearchConstants.DEAL_TYPE,  String.valueOf(deal.getId()))
+                .source(dealSearchIndexDTO.getBuilder()));
         }
 
         BulkResponse response = restHighLevelClient.bulk(request);
