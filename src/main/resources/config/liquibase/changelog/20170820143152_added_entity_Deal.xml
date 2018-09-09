@@ -46,10 +46,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="organization_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -116,7 +112,6 @@
             <column name="potential_value" type="NUMERIC"/>
             <column name="stage_id" type="NUMERIC" />
             <column name="person_id" type="NUMERIC" />
-            <column name="organization_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
             <column name="owner_id" type="NUMERIC" />
             <column name="deal_source_id" type="NUMERIC" />

@@ -50,10 +50,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="organization_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="app_account_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -108,7 +104,6 @@
             <column name="end" type="DATETIME" />
             <column name="deal_id" type="NUMERIC" />
             <column name="person_id" type="NUMERIC" />
-            <column name="organization_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
             <column name="user_id" type="NUMERIC" />
             <column name="done" type="BOOLEAN" />

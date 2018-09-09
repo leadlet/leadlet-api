@@ -4,7 +4,6 @@ import com.leadlet.domain.ContactPhone;
 import com.leadlet.domain.Person;
 import com.leadlet.repository.PersonRepository;
 import com.leadlet.repository.util.SearchCriteria;
-import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.PersonService;
 import com.leadlet.service.dto.PersonDTO;
@@ -21,10 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -139,21 +134,12 @@ public class PersonServiceImpl implements PersonService {
                 if( criteria.getKey().equals("name")){
                     Specification<Person> nameLike = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%"+criteria.getValue()+"%");
                     searchSpec = searchSpec.and(nameLike);
-                }else if( criteria.getKey().equals("organization")){
-                    Specification<Person> hasOrganization = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("organization"), Long.parseLong(criteria.getValue().toString()));
-                    searchSpec = searchSpec.and(hasOrganization);
                 }
             }
         }
 
         return searchSpec;
 
-    }
-
-    @Override
-    public Page<PersonDTO> findAllByOrganization(Long organizationId, Pageable page) {
-        return personRepository.findAllByAppAccount_IdAndOrganization_Id(
-            SecurityUtils.getCurrentUserAppAccountReference().getId(), organizationId, page).map(personMapper::toDto);
     }
 
     /**

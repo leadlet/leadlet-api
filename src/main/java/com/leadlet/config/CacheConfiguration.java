@@ -9,7 +9,6 @@ import org.ehcache.jsr107.Eh107Configuration;
 
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -46,14 +45,10 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.SubscriptionPlan.class.getName() + ".subscriptionPlans", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.CompanySubscriptionPlan.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.EmailTemplates.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Objective.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Pipeline.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Pipeline.class.getName() + ".stages", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Stage.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Stage.class.getName() + ".deals", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Organization.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Organization.class.getName() + ".phones", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Organization.class.getName() + ".emails", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Person.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Person.class.getName() + ".phones", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Person.class.getName() + ".emails", jcacheConfiguration);
@@ -61,7 +56,6 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.Deal.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Activity.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Note.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.OrganizationPhone.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Team.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Timeline.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Product.class.getName(), jcacheConfiguration);

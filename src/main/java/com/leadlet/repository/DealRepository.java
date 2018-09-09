@@ -4,14 +4,14 @@ import com.leadlet.domain.Deal;
 import com.leadlet.domain.enumeration.SyncStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
-
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -29,8 +29,6 @@ public interface DealRepository extends JpaRepository<Deal, Long>, JpaSpecificat
     Page<Deal> findAllByAppAccount_IdAndStage_IdOrderByPriorityAsc(Long appAccountId, Long stageId, Pageable page);
 
     Page<Deal> findAllByAppAccount_IdAndPerson_IdOrderByPriorityAsc(Long appAccountId, Long personId, Pageable page);
-
-    Page<Deal> findAllByAppAccount_IdAndOrganization_IdOrderByPriorityAsc(Long appAccountId, Long organizationId, Pageable page);
 
     @Query("select sum(deal.dealValue.potentialValue) from #{#entityName} deal where deal.appAccount.id = ?1 and deal.stage.id = ?2")
     Double calculateDealTotalByStageId(Long id, Long stageId);

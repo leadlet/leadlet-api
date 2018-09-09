@@ -33,9 +33,6 @@ public class Timeline extends AbstractAuditingEntity implements Serializable {
     private Person person;
 
     @ManyToOne
-    private Organization organization;
-
-    @ManyToOne
     private Deal deal;
 
     @ManyToOne
@@ -86,15 +83,6 @@ public class Timeline extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public Timeline setOrganization(Organization organization) {
-        this.organization = organization;
-        return this;
-    }
-
     public Deal getDeal() {
         return deal;
     }
@@ -108,19 +96,13 @@ public class Timeline extends AbstractAuditingEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Timeline)) return false;
         Timeline timeline = (Timeline) o;
-        return Objects.equals(id, timeline.id) &&
-            type == timeline.type &&
-            Objects.equals(sourceId, timeline.sourceId) &&
-            Objects.equals(person, timeline.person) &&
-            Objects.equals(organization, timeline.organization) &&
-            Objects.equals(deal, timeline.deal) &&
-            Objects.equals(user, timeline.user);
+        return Objects.equals(id, timeline.id);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, type, sourceId, person, organization, deal, user);
+        return Objects.hash(id);
     }
 
     @Override
@@ -129,10 +111,6 @@ public class Timeline extends AbstractAuditingEntity implements Serializable {
             "id=" + id +
             ", type=" + type +
             ", sourceId=" + sourceId +
-            ", person=" + person +
-            ", organization=" + organization +
-            ", deal=" + deal +
-            ", user=" + user +
             '}';
     }
 }

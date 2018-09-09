@@ -58,8 +58,6 @@ public interface DealService {
 
     Page<DealDetailDTO> findAllByPersonId(Long personId, Pageable pageable);
 
-    Page<DealDetailDTO> findAllByOrganizationId(Long organizationId, Pageable pageable);
-
     Double getDealTotalByStage(Long stageId);
 
     Page<DealDTO> search(String filter, Pageable pageable);

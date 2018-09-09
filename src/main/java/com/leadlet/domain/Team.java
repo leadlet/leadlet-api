@@ -87,11 +87,7 @@ public class Team implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Team)) return false;
         Team team = (Team) o;
-        return Objects.equals(id, team.id) &&
-            Objects.equals(name, team.name) &&
-            Objects.equals(members, team.members) &&
-            Objects.equals(description, team.description) &&
-            Objects.equals(appAccount, team.appAccount);
+        return Objects.equals(id, team.id) ;
     }
 
     @Override
@@ -105,9 +101,7 @@ public class Team implements Serializable {
         return "Team{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", members=" + members +
             ", description='" + description + '\'' +
-            ", appAccount=" + appAccount +
             '}';
     }
 }

@@ -26,12 +26,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="person"/>
 
-        <addForeignKeyConstraint baseColumnNames="organization_id"
-                                 baseTableName="deal"
-                                 constraintName="fk_deal_organization_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="organization"/>
-
         <addForeignKeyConstraint baseColumnNames="app_account_id"
                                  baseTableName="deal"
                                  constraintName="fk_deal_app_account_id"

@@ -70,9 +70,6 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     private Person person;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Organization organization;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
 
     @Column(name = "possible_close_date")
@@ -182,14 +179,6 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         this.person = person;
     }
 
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
-
     public User getOwner() {
         return owner;
     }
@@ -256,19 +245,7 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Deal)) return false;
         Deal deal = (Deal) o;
-        return Objects.equals(id, deal.id) &&
-            Objects.equals(title, deal.title) &&
-            Objects.equals(priority, deal.priority) &&
-            Objects.equals(dealValue, deal.dealValue) &&
-            Objects.equals(stage, deal.stage) &&
-            Objects.equals(pipeline, deal.pipeline) &&
-            Objects.equals(person, deal.person) &&
-            Objects.equals(organization, deal.organization) &&
-            Objects.equals(owner, deal.owner) &&
-            Objects.equals(possibleCloseDate, deal.possibleCloseDate) &&
-            Objects.equals(activities, deal.activities) &&
-            Objects.equals(timelines, deal.timelines) &&
-            Objects.equals(notes, deal.notes);
+        return Objects.equals(id, deal.id);
     }
 
     @Override

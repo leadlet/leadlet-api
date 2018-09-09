@@ -16,8 +16,6 @@ public interface TimelineRepository extends JpaRepository<Timeline, Long> {
 
     Page<Timeline> findByPerson_IdAndAppAccount_Id(Long personId, Long appAccountId, Pageable page);
 
-    Page<Timeline> findByOrganization_IdAndAppAccount_Id(Long organizationId, Long appAccountId, Pageable page);
-
     Page<Timeline> findByDeal_IdAndAppAccount_Id(Long dealId, Long appAccountId, Pageable page);
 
     Page<Timeline> findByUser_IdAndAppAccount_Id(Long userId, Long appAccountId, Pageable page);

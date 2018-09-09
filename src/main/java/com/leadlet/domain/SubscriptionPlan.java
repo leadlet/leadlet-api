@@ -1,16 +1,12 @@
 package com.leadlet.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.leadlet.domain.enumeration.PlanName;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-
-import com.leadlet.domain.enumeration.PlanName;
 
 /**
  * A SubscriptionPlan.
@@ -66,7 +62,7 @@ public class SubscriptionPlan implements Serializable {
     public void setAllowedFeatures(String allowedFeatures) {
         this.allowedFeatures = allowedFeatures;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

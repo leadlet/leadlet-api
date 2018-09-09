@@ -173,13 +173,6 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public Page<DealDetailDTO> findAllByOrganizationId(Long organizationId, Pageable page) {
-        Page<DealDetailDTO> dealList = dealRepository.findAllByAppAccount_IdAndOrganization_IdOrderByPriorityAsc(SecurityUtils.getCurrentUserAppAccountId(), organizationId, page).map(dealDetailMapper::toDto);
-
-        return dealList;
-    }
-
-    @Override
     public Double getDealTotalByStage(Long stageId) {
         return dealRepository.calculateDealTotalByStageId(SecurityUtils.getCurrentUserAppAccountId(),stageId);
     }
