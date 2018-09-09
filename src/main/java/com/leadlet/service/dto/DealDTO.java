@@ -46,6 +46,16 @@ public class DealDTO implements Serializable {
 
     private ActivityStatus activityStatus;
 
+    private LostReasonDTO lostReason;
+
+    public LostReasonDTO getLostReason() {
+        return lostReason;
+    }
+
+    public void setLostReason(LostReasonDTO lostReason) {
+        this.lostReason = lostReason;
+    }
+
     public ActivityStatus getActivityStatus() {
         return activityStatus;
     }

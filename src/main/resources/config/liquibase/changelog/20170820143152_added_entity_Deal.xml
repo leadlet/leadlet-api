@@ -70,6 +70,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="lost_reason_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="possible_close_date" type="timestamp">
                 <constraints nullable="true" />
             </column>
@@ -113,6 +117,7 @@
             <column name="owner_id" type="NUMERIC" />
             <column name="deal_source_id" type="NUMERIC" />
             <column name="deal_channel_id" type="NUMERIC" />
+            <column name="lost_reason_id" type="NUMERIC" />
         </loadData>
 
     </changeSet>
