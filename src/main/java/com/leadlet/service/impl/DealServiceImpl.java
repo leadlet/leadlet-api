@@ -71,7 +71,7 @@ public class DealServiceImpl implements DealService {
         Deal deal = dealMapper.toEntity(dealDTO);
         deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         deal = dealRepository.save(deal);
-        elasticsearchService.indexDeal(deal);
+       // elasticsearchService.indexDeal(deal);
         return dealDetailMapper.toDto(deal);
     }
 
@@ -91,7 +91,7 @@ public class DealServiceImpl implements DealService {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             deal = dealRepository.save(deal);
-            elasticsearchService.indexDeal(deal);
+            //elasticsearchService.indexDeal(deal);
             return dealDetailMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
