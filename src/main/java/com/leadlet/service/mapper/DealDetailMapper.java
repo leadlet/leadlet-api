@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity Deal and its DTO DealDTO.
  */
-@Mapper(componentModel = "spring", uses = {PersonMapper.class, OrganizationMapper.class, UserMapper.class,
+@Mapper(componentModel = "spring", uses = {PersonMapper.class, UserMapper.class,
     StageMapper.class, PipelineMapper.class, DealValueMapper.class, ProductMapper.class, SourceMapper.class, ChannelMapper.class, LostReasonMapper.class})
 public interface DealDetailMapper extends EntityMapper<DealDetailDTO, Deal> {
 

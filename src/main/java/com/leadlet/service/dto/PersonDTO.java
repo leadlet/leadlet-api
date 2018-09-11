@@ -1,8 +1,5 @@
 package com.leadlet.service.dto;
 
-
-import com.leadlet.domain.Organization;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -19,8 +16,6 @@ public class PersonDTO implements Serializable {
     private String address;
 
     private String title;
-
-    private OrganizationDTO organization;
 
     private List<ContactPhoneDTO> phones;
 
@@ -74,27 +69,12 @@ public class PersonDTO implements Serializable {
         this.email = email;
     }
 
-    public OrganizationDTO getOrganization() {
-        return organization;
-    }
-
-    public PersonDTO setOrganization(OrganizationDTO organization) {
-        this.organization = organization;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PersonDTO)) return false;
         PersonDTO personDTO = (PersonDTO) o;
-        return Objects.equals(id, personDTO.id) &&
-            Objects.equals(name, personDTO.name) &&
-            Objects.equals(address, personDTO.address) &&
-            Objects.equals(title, personDTO.title) &&
-            Objects.equals(organization, personDTO.organization) &&
-            Objects.equals(phones, personDTO.phones) &&
-            Objects.equals(email, personDTO.email);
+        return Objects.equals(id, personDTO.id);
     }
 
     @Override
@@ -110,7 +90,6 @@ public class PersonDTO implements Serializable {
             ", name='" + name + '\'' +
             ", address='" + address + '\'' +
             ", title='" + title + '\'' +
-            ", organization=" + organization +
             ", phones=" + phones +
             ", email='" + email + '\'' +
             '}';

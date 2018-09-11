@@ -20,6 +20,4 @@ public interface PersonRepository extends JpaRepository<Person,Long> ,  JpaSpeci
     Person findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdInAndAppAccount_Id(List<Long> idList, Long appAccountId);
-
-    Page<Person> findAllByAppAccount_IdAndOrganization_Id( Long appAccountId,  Long organizationId, Pageable page);
 }

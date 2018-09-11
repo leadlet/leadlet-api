@@ -46,9 +46,6 @@ public class Person implements Serializable {
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Organization organization;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     private AppAccount appAccount;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -113,14 +110,6 @@ public class Person implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
     }
 
     public AppAccount getAppAccount() {

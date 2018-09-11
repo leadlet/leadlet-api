@@ -30,9 +30,6 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
     private Person person;
 
     @ManyToOne
-    private Organization organization;
-
-    @ManyToOne
     private Deal deal;
 
     public static long getSerialVersionUID() {
@@ -61,14 +58,6 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
 
     public void setPerson(Person person) {
         this.person = person;
-    }
-
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
     }
 
     public Deal getDeal() {

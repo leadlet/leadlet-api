@@ -14,20 +14,9 @@ public class DealDetailDTO extends DealDTO {
 
     private PipelineDTO pipeline;
 
-    private OrganizationDTO organization;
-
     private UserDTO owner;
 
     private Instant lastModifiedDate;
-
-    public OrganizationDTO getOrganization() {
-        return organization;
-    }
-
-    public DealDetailDTO setOrganization(OrganizationDTO organization) {
-        this.organization = organization;
-        return this;
-    }
 
     public UserDTO getOwner() {
         return owner;
@@ -73,13 +62,12 @@ public class DealDetailDTO extends DealDTO {
         if (!(o instanceof DealDetailDTO)) return false;
         if (!super.equals(o)) return false;
         DealDetailDTO that = (DealDetailDTO) o;
-        return Objects.equals(organization, that.organization) &&
-            Objects.equals(owner, that.owner) &&
+        return Objects.equals(owner, that.owner) &&
             Objects.equals(lastModifiedDate, that.lastModifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), organization, owner, lastModifiedDate);
+        return Objects.hash(super.hashCode(), owner, lastModifiedDate);
     }
 }

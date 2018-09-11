@@ -86,11 +86,7 @@ public class Product extends AbstractAccountSpecificEntity implements Serializab
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id) &&
-            Objects.equals(name, product.name) &&
-            Objects.equals(price, product.price) &&
-            Objects.equals(description, product.description) &&
-            Objects.equals(deals, product.deals);
+        return Objects.equals(id, product.id);
     }
 
     @Override

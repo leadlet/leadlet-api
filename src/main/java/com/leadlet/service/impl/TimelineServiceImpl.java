@@ -97,23 +97,6 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public Page<TimelineDTO> findByOrganizationId(Long organizationId, Pageable pageable) {
-        return timelineRepository.findByOrganization_IdAndAppAccount_Id(organizationId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(timelineMapper::toDto)
-            .map(timelineDTO -> {
-                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
-                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(noteMapper.toDto(note));
-                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
-                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(activityMapper.toDto(activity));
-                }
-
-                return timelineDTO;
-            });
-    }
-
-    @Override
     public Page<TimelineDTO> findByDealId(Long dealId, Pageable pageable) {
 
         return timelineRepository.findByDeal_IdAndAppAccount_Id(dealId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
@@ -159,9 +142,7 @@ public class TimelineServiceImpl implements TimelineService {
         if (note.getPerson() != null) {
             timelineItem.setPerson(note.getPerson());
         }
-        if (note.getOrganization() != null) {
-            timelineItem.setOrganization(note.getOrganization());
-        }
+
         if (note.getDeal() != null) {
             timelineItem.setDeal(note.getDeal());
         }
@@ -184,7 +165,6 @@ public class TimelineServiceImpl implements TimelineService {
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.ACTIVITY_CREATED);
-        timelineItem.setOrganization(activity.getOrganization());
         timelineItem.setPerson(activity.getPerson());
         timelineItem.setAppAccount(activity.getAppAccount());
         timelineItem.setSourceId(activity.getId());

@@ -28,8 +28,6 @@ public class ActivityDTO implements Serializable {
 
     private PersonDTO person;
 
-    private OrganizationDTO organization;
-
     private UserDTO agent;
 
     private LocationDTO location;
@@ -107,15 +105,6 @@ public class ActivityDTO implements Serializable {
 
     public ActivityDTO setPerson(PersonDTO person) {
         this.person = person;
-        return this;
-    }
-
-    public OrganizationDTO getOrganization() {
-        return organization;
-    }
-
-    public ActivityDTO setOrganization(OrganizationDTO organization) {
-        this.organization = organization;
         return this;
     }
 

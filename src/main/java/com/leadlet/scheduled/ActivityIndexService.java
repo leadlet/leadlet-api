@@ -1,13 +1,14 @@
 package com.leadlet.scheduled;
 
+import com.leadlet.config.SearchConstants;
 import com.leadlet.domain.Activity;
 import com.leadlet.domain.enumeration.SyncStatus;
 import com.leadlet.repository.ActivityRepository;
+import com.leadlet.service.dto.ActivitySearchIndexDTO;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,17 +83,15 @@ public class ActivityIndexService {
 
     }
 
-    private void sendRecordsToElasticSearch(List<Activity> deals) throws IOException {
+    private void sendRecordsToElasticSearch(List<Activity> activities) throws IOException {
         BulkRequest request = new BulkRequest();
+        for ( Activity activity: activities) {
 
-        for ( Activity deal: deals) {
-            request.add(new IndexRequest("leadlet-activity", "activity", String.valueOf(deal.getId()))
-                .source(XContentType.JSON, "id", deal.getId(),
-                                            "created_date", new Date(deal.getCreatedDate().toEpochMilli()),
-                                            "start_date", new Date(deal.getStart().toEpochMilli()),
-                                            "activity_type", deal.getType(),
-                                            "title", deal.getTitle(),
-                                            "is_done", deal.isDone()));
+            ActivitySearchIndexDTO activitySearchIndexDTO = new ActivitySearchIndexDTO(activity);
+
+            request.add(new IndexRequest(SearchConstants.ACTIVITY_INDEX, SearchConstants.ACTIVITY_TYPE,  String.valueOf(activity.getId()))
+                .source(activitySearchIndexDTO.getBuilder()));
+
         }
 
         BulkResponse response = restHighLevelClient.bulk(request);

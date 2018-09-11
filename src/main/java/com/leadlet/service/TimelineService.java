@@ -31,13 +31,6 @@ public interface TimelineService {
      */
     Page<TimelineDTO> findByPersonId(Long personId, Pageable pageable);
 
-    /**
-     * Get all the timelines.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    Page<TimelineDTO> findByOrganizationId(Long organizationId, Pageable pageable);
 
     /**
      * Get all the timelines.

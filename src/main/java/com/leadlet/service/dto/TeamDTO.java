@@ -14,9 +14,6 @@ public class TeamDTO implements Serializable {
 
     private List<UserDTO> members;
 
-    private List<TeamObjectiveDTO> completedObjectives;
-    private List<TeamObjectiveDTO> objectives;
-
     public Long getId() {
         return id;
     }
@@ -49,39 +46,18 @@ public class TeamDTO implements Serializable {
         this.description = description;
     }
 
-    public List<TeamObjectiveDTO> getCompletedObjectives() {
-        return completedObjectives;
-    }
-
-    public TeamDTO setCompletedObjectives(List<TeamObjectiveDTO> completedObjectives) {
-        this.completedObjectives = completedObjectives;
-        return this;
-    }
-
-    public List<TeamObjectiveDTO> getObjectives() {
-        return objectives;
-    }
-
-    public TeamDTO setObjectives(List<TeamObjectiveDTO> objectives) {
-        this.objectives = objectives;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TeamDTO)) return false;
         TeamDTO teamDTO = (TeamDTO) o;
-        return Objects.equals(id, teamDTO.id) &&
-            Objects.equals(name, teamDTO.name) &&
-            Objects.equals(description, teamDTO.description) &&
-            Objects.equals(members, teamDTO.members);
+        return Objects.equals(id, teamDTO.id);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, description, members);
+        return Objects.hash(id);
     }
 
     @Override
@@ -90,7 +66,6 @@ public class TeamDTO implements Serializable {
             "id=" + id +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
-            ", members=" + members +
             '}';
     }
 }

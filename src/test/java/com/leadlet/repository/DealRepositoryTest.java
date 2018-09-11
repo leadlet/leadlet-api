@@ -27,7 +27,6 @@ public class DealRepositoryTest {
     private EntityManager entityManager;
 
     private AppAccount appAccount;
-    private Organization organization;
     private Person person;
     private Pipeline pipeline;
     private Stage stage;
@@ -40,17 +39,9 @@ public class DealRepositoryTest {
         entityManager.persist(appAccount);
         entityManager.flush();
 
-        organization = new Organization();
-        organization.setName("organization");
-        organization.setAppAccount(appAccount);
-
-        entityManager.persist(organization);
-        entityManager.flush();
-
         person = new Person();
         person.setName("person");
         person.setEmail("person1@gmail.com");
-        person.setOrganization(organization);
         person.setAppAccount(appAccount);
         entityManager.persist(person);
         entityManager.flush();
@@ -78,7 +69,6 @@ public class DealRepositoryTest {
         deal.setStage(stage);
         deal.setPipeline(pipeline);
         deal.setPerson(person);
-        deal.setOrganization(organization);
         deal.setPriority(100);
         deal.setAppAccount(appAccount);
 

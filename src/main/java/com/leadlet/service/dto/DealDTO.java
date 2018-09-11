@@ -27,8 +27,6 @@ public class DealDTO implements Serializable {
 
     private PersonDTO person;
 
-    private Long organizationId;
-
     private Long ownerId;
 
     private Instant createdDate;
@@ -161,15 +159,6 @@ public class DealDTO implements Serializable {
 
     public void setPerson(PersonDTO person) {
         this.person = person;
-    }
-
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public DealDTO setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
-        return this;
     }
 
     public Long getOwnerId() {

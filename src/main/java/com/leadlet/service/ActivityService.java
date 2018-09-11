@@ -1,7 +1,6 @@
 package com.leadlet.service;
 
 import com.leadlet.service.dto.ActivityDTO;
-import com.leadlet.service.dto.TeamObjectiveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -65,14 +64,6 @@ public interface ActivityService {
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<ActivityDTO> findByOrganizationId(Long organizationId, Pageable pageable);
-
-    /**
-     *  Get all the activities.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
     Page<ActivityDTO> findByUserId(Long userId, Pageable pageable);
 
     /**
@@ -82,9 +73,6 @@ public interface ActivityService {
      *  @return the list of entities
      */
     Page<ActivityDTO> findByDealId(Long dealId, Pageable pageable);
-
-
-    List<TeamObjectiveDTO> getActivityCompletionSummary(Long teamId);
 
     Page<ActivityDTO> search(String filter, Pageable pageable) throws IOException;
 

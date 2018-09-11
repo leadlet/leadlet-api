@@ -18,8 +18,6 @@ public class TimelineDTO implements Serializable {
 
     private Long personId;
 
-    private Long organizationId;
-
     private Long dealId;
 
     private Long userId;
@@ -56,15 +54,6 @@ public class TimelineDTO implements Serializable {
 
     public TimelineDTO setPersonId(Long personId) {
         this.personId = personId;
-        return this;
-    }
-
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public TimelineDTO setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
         return this;
     }
 
@@ -105,21 +94,13 @@ public class TimelineDTO implements Serializable {
         if (this == o) return true;
         if (!(o instanceof TimelineDTO)) return false;
         TimelineDTO that = (TimelineDTO) o;
-        return Objects.equals(id, that.id) &&
-            type == that.type &&
-            Objects.equals(sourceId, that.sourceId) &&
-            Objects.equals(source, that.source) &&
-            Objects.equals(personId, that.personId) &&
-            Objects.equals(organizationId, that.organizationId) &&
-            Objects.equals(dealId, that.dealId) &&
-            Objects.equals(userId, that.userId) &&
-            Objects.equals(createdDate, that.createdDate);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, type, sourceId, source, personId, organizationId, dealId, userId, createdDate);
+        return Objects.hash(id);
     }
 
     @Override
@@ -130,7 +111,6 @@ public class TimelineDTO implements Serializable {
             ", sourceId=" + sourceId +
             ", source=" + source +
             ", personId=" + personId +
-            ", organizationId=" + organizationId +
             ", dealId=" + dealId +
             ", userId=" + userId +
             ", createdDate=" + createdDate +
