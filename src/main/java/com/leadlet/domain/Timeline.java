@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "timeline")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Timeline extends AbstractAuditingEntity implements Serializable {
+public class Timeline extends AbstractSearchableEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,5 +1,6 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.config.SearchConstants;
 import com.leadlet.domain.Activity;
 import com.leadlet.domain.Note;
 import com.leadlet.domain.Timeline;
@@ -7,7 +8,7 @@ import com.leadlet.domain.enumeration.TimelineItemType;
 import com.leadlet.repository.ActivityRepository;
 import com.leadlet.repository.NoteRepository;
 import com.leadlet.repository.TimelineRepository;
-import com.leadlet.security.SecurityUtils;
+import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.TimelineDTO;
 import com.leadlet.service.mapper.ActivityMapper;
@@ -16,10 +17,16 @@ import com.leadlet.service.mapper.TimelineMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Timeline.
@@ -41,18 +48,22 @@ public class TimelineServiceImpl implements TimelineService {
 
     private final ActivityRepository activityRepository;
 
+    private final ElasticsearchService elasticsearchService;
+
     public TimelineServiceImpl(TimelineRepository timelineRepository,
                                TimelineMapper timelineMapper,
                                NoteRepository noteRepository,
                                ActivityRepository activityRepository,
                                NoteMapper noteMapper,
-                               ActivityMapper activityMapper) {
+                               ActivityMapper activityMapper,
+                               ElasticsearchService elasticsearchService) {
         this.timelineRepository = timelineRepository;
         this.timelineMapper = timelineMapper;
         this.noteRepository = noteRepository;
         this.activityRepository = activityRepository;
         this.noteMapper = noteMapper;
         this.activityMapper = activityMapper;
+        this.elasticsearchService = elasticsearchService;
     }
 
     @Override
@@ -61,11 +72,16 @@ public class TimelineServiceImpl implements TimelineService {
         return null;
     }
 
+
     @Override
-    public Page<TimelineDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Notes");
-        return timelineRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(timelineMapper::toDto)
+    public Page<TimelineDTO> query(String searchQuery, Pageable pageable) throws IOException {
+
+        Pair<List<Long>, Long> response = elasticsearchService.getEntityIds(SearchConstants.TIMELINE_INDEX,searchQuery, pageable);
+
+        Page<TimelineDTO> timelines = new PageImpl<TimelineDTO>(timelineRepository.findAllByIdIn(response.getFirst()).stream()
+            .map(timelineMapper::toDto).collect(Collectors.toList()),
+            pageable,
+            response.getSecond())
             .map(timelineDTO -> {
                 if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
                     Note note = noteRepository.getOne(timelineDTO.getSourceId());
@@ -75,61 +91,10 @@ public class TimelineServiceImpl implements TimelineService {
                     timelineDTO.setSource(activityMapper.toDto(activity));
                 }
 
-                return timelineDTO;
-            });
-    }
+            return timelineDTO;
+        });;
 
-    @Override
-    public Page<TimelineDTO> findByPersonId(Long personId, Pageable pageable) {
-        return timelineRepository.findByPerson_IdAndAppAccount_Id(personId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(timelineMapper::toDto)
-            .map(timelineDTO -> {
-                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
-                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(noteMapper.toDto(note));
-                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
-                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(activityMapper.toDto(activity));
-                }
-
-                return timelineDTO;
-            });
-    }
-
-    @Override
-    public Page<TimelineDTO> findByDealId(Long dealId, Pageable pageable) {
-
-        return timelineRepository.findByDeal_IdAndAppAccount_Id(dealId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(timelineMapper::toDto)
-            .map(timelineDTO -> {
-                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
-                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(noteMapper.toDto(note));
-                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
-                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(activityMapper.toDto(activity));
-                }
-
-                return timelineDTO;
-            });
-    }
-
-    @Override
-    public Page<TimelineDTO> findByUserId(Long userId, Pageable pageable) {
-
-        return timelineRepository.findByUser_IdAndAppAccount_Id(userId, SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(timelineMapper::toDto)
-            .map(timelineDTO -> {
-                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
-                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(noteMapper.toDto(note));
-                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
-                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(activityMapper.toDto(activity));
-                }
-
-                return timelineDTO;
-            });
+        return timelines;
     }
 
     @Override

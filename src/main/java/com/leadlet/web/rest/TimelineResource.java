@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -41,41 +42,12 @@ public class TimelineResource {
      */
     @GetMapping("/timeLines")
     @Timed
-    public ResponseEntity<List<TimelineDTO>> getAllTimelines(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<TimelineDTO>> getTimelines(@ApiParam String q, @ApiParam Pageable pageable) throws IOException {
         log.debug("REST request to get a page of Timelines");
-        Page<TimelineDTO> page = timelineService.findAll(pageable);
+        Page<TimelineDTO> page = timelineService.query(q,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/timeLines/person/{personId}")
-    @Timed
-    public ResponseEntity<List<TimelineDTO>> getPersonTimelines(@PathVariable Long personId, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Timelines for person {}", personId);
-
-        Page<TimelineDTO> page = timelineService.findByPersonId(personId, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/timeLines/deal/{dealId}")
-    @Timed
-    public ResponseEntity<List<TimelineDTO>> getDealTimelines(@PathVariable Long dealId, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Timelines for deal {}", dealId);
-
-        Page<TimelineDTO> page = timelineService.findByDealId(dealId, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/timeLines/user/{userId}")
-    @Timed
-    public ResponseEntity<List<TimelineDTO>> getUserTimelines(@PathVariable Long userId, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Timelines for user {}", userId);
-
-        Page<TimelineDTO> page = timelineService.findByUserId(userId, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
 }
 
