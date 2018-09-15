@@ -3,6 +3,7 @@ package com.leadlet.service.dto;
 
 import com.leadlet.domain.Deal;
 import com.leadlet.domain.Product;
+import com.leadlet.domain.enumeration.DealStatus;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.util.StringUtils;
@@ -24,6 +25,8 @@ public class DealSearchIndexDTO implements Serializable {
     private String source;
     private String channel;
     private String[] products;
+    private DealStatus dealStatus;
+    private String lostReason;
 
     public DealSearchIndexDTO(){
 
@@ -38,6 +41,8 @@ public class DealSearchIndexDTO implements Serializable {
         this.priority = deal.getPriority();
         this.source = !StringUtils.isEmpty(deal.getDealSource()) ? deal.getDealSource().getName() : "";
         this.channel = !StringUtils.isEmpty(deal.getDealChannel()) ? deal.getDealChannel().getName() : "";
+        this.dealStatus = deal.getDealStatus();
+        this.lostReason = deal.getLostReason().getName();
 
         if( deal.getProducts() != null ){
             this.products = deal.getProducts().stream().map(Product::getDescription).toArray(size -> new String[size]);
@@ -117,6 +122,22 @@ public class DealSearchIndexDTO implements Serializable {
         return this;
     }
 
+    public DealStatus getDealStatus() {
+        return dealStatus;
+    }
+
+    public void setDealStatus(DealStatus dealStatus) {
+        this.dealStatus = dealStatus;
+    }
+
+    public String getLostReason() {
+        return lostReason;
+    }
+
+    public void setLostReason(String lostReason) {
+        this.lostReason = lostReason;
+    }
+
     public XContentBuilder getBuilder() throws IOException {
         XContentBuilder builder = XContentFactory.jsonBuilder();
         builder.startObject();
@@ -129,6 +150,8 @@ public class DealSearchIndexDTO implements Serializable {
             builder.field("source", getSource());
             builder.field("channel", getChannel());
             builder.field("products", getProducts());
+            builder.field("dealStatus", getDealStatus());
+            builder.field("lostReason", getLostReason());
         }
         builder.endObject();
 
