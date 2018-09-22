@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 
 /**
  * Service Implementation for managing Note.
@@ -45,7 +46,7 @@ public class NoteServiceImpl implements NoteService {
      * @return the persisted entity
      */
     @Override
-    public NoteDTO save(NoteDTO noteDTO) {
+    public NoteDTO save(NoteDTO noteDTO) throws IOException {
         log.debug("Request to save Note : {}", noteDTO);
         Note note = noteMapper.toEntity(noteDTO);
         note.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());

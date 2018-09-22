@@ -61,13 +61,14 @@ public class ActivityServiceImpl implements ActivityService {
      * @return the persisted entity
      */
     @Override
-    public ActivityDTO save(ActivityDTO activityDTO) {
+    public ActivityDTO save(ActivityDTO activityDTO) throws IOException {
 
         log.debug("Request to save Activity : {}", activityDTO);
         Activity activity = activityMapper.toEntity(activityDTO);
         activity.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         activity = activityRepository.save(activity);
         timelineService.activityCreated(activity);
+        elasticsearchService.indexActivity(activity);
         return activityMapper.toDto(activity);
 
     }

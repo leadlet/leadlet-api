@@ -89,7 +89,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "agent", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Activity> activities;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Deal> deals;
 
     @ManyToOne(fetch = FetchType.LAZY)

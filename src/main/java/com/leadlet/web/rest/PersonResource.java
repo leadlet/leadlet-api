@@ -90,7 +90,8 @@ public class PersonResource {
     public ResponseEntity<List<PersonDTO>> getAllPersons(@ApiParam String filter, @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Persons");
 
-        Page<PersonDTO> page = personService.search(filter, pageable);
+        // TODO add filter
+        Page<PersonDTO> page = personService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/persons");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

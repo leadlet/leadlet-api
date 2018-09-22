@@ -49,14 +49,14 @@ public class DealResource {
      */
     @PostMapping("/deals")
     @Timed
-    public ResponseEntity<DealDetailDTO> createDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
+    public ResponseEntity<DealDTO> createDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Deal : {}", dealDTO);
         if (dealDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new deal cannot already have an ID")).body(null);
         }
         Character c = null;
 
-        DealDetailDTO result = dealService.save(dealDTO);
+        DealDTO result = dealService.save(dealDTO);
         // TODO lazy load workaround. above save method does not return stage.pipeline
         result = dealService.findOne(result.getId());
         return ResponseEntity.created(new URI("/api/deals/" + result.getId()))
@@ -64,9 +64,9 @@ public class DealResource {
             .body(result);
     }
 
-    @GetMapping("/deals/search")
+    @GetMapping("/deals")
     @Timed
-    public ResponseEntity<List<DealDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
+    public ResponseEntity<List<DealDTO>> query(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
 
         Page<DealDTO> page = dealService.query(q, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/search");
@@ -77,9 +77,9 @@ public class DealResource {
 
     @PutMapping("/deals/{id}/partial")
     @Timed
-    public ResponseEntity<DealDetailDTO> patchDeal(@PathVariable Long id, @ApiParam Integer priority,  @ApiParam Long stageId ) throws URISyntaxException, IOException {
+    public ResponseEntity<DealDTO> patchDeal(@PathVariable Long id, @ApiParam Integer priority,  @ApiParam Long stageId ) throws URISyntaxException, IOException {
 
-        DealDetailDTO result = dealService.patch(id, priority, stageId);
+        DealDTO result = dealService.patch(id, priority, stageId);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
             .body(result);
@@ -96,54 +96,15 @@ public class DealResource {
      */
     @PutMapping("/deals")
     @Timed
-    public ResponseEntity<DealDetailDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
+    public ResponseEntity<DealDTO> updateDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
         log.debug("REST request to update Deal : {}", dealDTO);
 
-        DealDetailDTO result = dealService.update(dealDTO);
+        DealDTO result = dealService.update(dealDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealDTO.getId().toString()))
             .body(result);
     }
 
-    /**
-     * GET  /deals : get all the deals.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of deals in body
-     */
-    @GetMapping("/deals/stage/{stageId}")
-    @Timed
-    public ResponseEntity<List<DealDTO>> getDealsByStage(@PathVariable Long stageId, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Deals");
-        Page<DealDTO> page = dealService.findAllByStageId(stageId,pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/stage");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    /**
-     * GET  /deals : get all the deals.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of deals in body
-     */
-    @GetMapping("/deals/person/{personId}")
-    @Timed
-    public ResponseEntity<List<DealDetailDTO>> getDealsByPerson(@PathVariable Long personId, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Deals");
-        Page<DealDetailDTO> page = dealService.findAllByPersonId(personId,pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/person");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/deals")
-    @Timed
-    public ResponseEntity<List<DealDTO>> getAllDealsByFilter(@ApiParam String filter, @ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Deals");
-
-        Page<DealDTO> page = dealService.search(filter, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
 
     /**
      * GET  /deals/:id : get the "id" deal.
@@ -153,9 +114,9 @@ public class DealResource {
      */
     @GetMapping("/deals/{id}")
     @Timed
-    public ResponseEntity<DealDetailDTO> getDeal(@PathVariable Long id) {
+    public ResponseEntity<DealDTO> getDeal(@PathVariable Long id) {
         log.debug("REST request to get Deal : {}", id);
-        DealDetailDTO dealDTO = dealService.findOne(id);
+        DealDTO dealDTO = dealService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(dealDTO));
     }
 

@@ -42,7 +42,7 @@ public class TimelineResource {
      */
     @GetMapping("/timeLines")
     @Timed
-    public ResponseEntity<List<TimelineDTO>> getTimelines(@ApiParam String q, @ApiParam Pageable pageable) throws IOException {
+    public ResponseEntity<List<TimelineDTO>> query(@ApiParam String q, @ApiParam Pageable pageable) throws IOException {
         log.debug("REST request to get a page of Timelines");
         Page<TimelineDTO> page = timelineService.query(q,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");

@@ -6,6 +6,5 @@ package com.leadlet.domain.enumeration;
 public enum TimelineItemType {
     NOTE_CREATED,
     ACTIVITY_CREATED,
-    DEAL_CREATED,
-    DOCUMENT_CREATED
+    DEAL_CREATED
 }

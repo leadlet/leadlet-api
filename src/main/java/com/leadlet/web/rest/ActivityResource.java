@@ -48,7 +48,7 @@ public class ActivityResource {
      */
     @PostMapping("/activities")
     @Timed
-    public ResponseEntity<ActivityDTO> createActivity(@RequestBody ActivityDTO activityDTO) throws URISyntaxException {
+    public ResponseEntity<ActivityDTO> createActivity(@RequestBody ActivityDTO activityDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Activity : {}", activityDTO);
         if (activityDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new activity cannot already have an ID")).body(null);
@@ -79,20 +79,8 @@ public class ActivityResource {
             .body(result);
     }
 
-    /**
-     * GET  /activities : get all the activities.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
-     */
-    @GetMapping("/activities")
-    @Timed
-    public ResponseEntity<List<ActivityDTO>> getAllActivities() {
-        log.debug("REST request to get Activities");
-        List<ActivityDTO> activityDTOList = activityService.findAll();
-        return new ResponseEntity<>(activityDTOList, HttpStatus.OK);
-    }
 
-    @GetMapping("/activities/search")
+    @GetMapping("/activities")
     @Timed
     public ResponseEntity<List<ActivityDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
 

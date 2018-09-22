@@ -105,7 +105,7 @@
             <column name="deal_id" type="NUMERIC" />
             <column name="person_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
-            <column name="user_id" type="NUMERIC" />
+            <column name="agent_id" type="NUMERIC" />
             <column name="done" type="BOOLEAN" />
         </loadData>
 

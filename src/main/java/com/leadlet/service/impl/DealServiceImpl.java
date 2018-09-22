@@ -4,26 +4,20 @@ import com.leadlet.domain.Deal;
 import com.leadlet.domain.Stage;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.repository.StageRepository;
-import com.leadlet.repository.util.SearchCriteria;
-import com.leadlet.repository.util.SpecificationsBuilder;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.DealService;
 import com.leadlet.service.ElasticsearchService;
+import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.DealDTO;
-import com.leadlet.service.dto.DealDetailDTO;
-import com.leadlet.service.mapper.DealDetailMapper;
 import com.leadlet.service.mapper.DealMapper;
-import com.leadlet.web.rest.util.ParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -46,17 +40,18 @@ public class DealServiceImpl implements DealService {
 
     private final DealMapper dealMapper;
 
-    private final DealDetailMapper dealDetailMapper;
-
     private final ElasticsearchService elasticsearchService;
 
+    private final TimelineService timelineService;
+
     public DealServiceImpl(DealRepository dealRepository, DealMapper dealMapper, StageRepository stageRepository,
-                           DealDetailMapper dealDetailMapper, ElasticsearchService elasticsearchService) {
+                           ElasticsearchService elasticsearchService,
+                           TimelineService timelineService) {
         this.dealRepository = dealRepository;
         this.dealMapper = dealMapper;
         this.stageRepository = stageRepository;
-        this.dealDetailMapper = dealDetailMapper;
         this.elasticsearchService = elasticsearchService;
+        this.timelineService = timelineService;
     }
 
     /**
@@ -66,13 +61,15 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDetailDTO save(DealDTO dealDTO) throws IOException {
+    public DealDTO save(DealDTO dealDTO) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         deal = dealRepository.save(deal);
-       // elasticsearchService.indexDeal(deal);
-        return dealDetailMapper.toDto(deal);
+        elasticsearchService.indexDeal(deal);
+        timelineService.dealCreated(deal);
+
+        return dealMapper.toDto(deal);
     }
 
     /**
@@ -82,7 +79,7 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDetailDTO update(DealDTO dealDTO) throws IOException {
+    public DealDTO update(DealDTO dealDTO) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
@@ -92,14 +89,14 @@ public class DealServiceImpl implements DealService {
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             deal = dealRepository.save(deal);
             elasticsearchService.indexDeal(deal);
-            return dealDetailMapper.toDto(deal);
+            return dealMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     @Override
-    public DealDetailDTO patch(Long id, Integer priority, Long stageId) throws IOException {
+    public DealDTO patch(Long id, Integer priority, Long stageId) throws IOException {
 
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         Stage newStage = stageRepository.findOne(stageId);
@@ -108,7 +105,7 @@ public class DealServiceImpl implements DealService {
             dealFromDb.setStage(newStage);
             Deal deal = dealRepository.save(dealFromDb);
             elasticsearchService.indexDeal(deal);
-            return dealDetailMapper.toDto(deal);
+            return dealMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
         }
@@ -136,10 +133,10 @@ public class DealServiceImpl implements DealService {
      */
     @Override
     @Transactional(readOnly = true)
-    public DealDetailDTO findOne(Long id) {
+    public DealDTO findOne(Long id) {
         log.debug("Request to get Deal : {}", id);
         Deal deal = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
-        return dealDetailMapper.toDto(deal);
+        return dealMapper.toDto(deal);
     }
 
     /**
@@ -159,20 +156,6 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public Page<DealDTO> findAllByStageId(Long stageId, Pageable page) {
-        Page<DealDTO> dealList = dealRepository.findAllByAppAccount_IdAndStage_IdOrderByPriorityAsc(SecurityUtils.getCurrentUserAppAccountId(), stageId, page).map(dealMapper::toDto);
-
-        return dealList;
-    }
-
-    @Override
-    public Page<DealDetailDTO> findAllByPersonId(Long personId, Pageable page) {
-        Page<DealDetailDTO> dealList = dealRepository.findAllByAppAccount_IdAndPerson_IdOrderByPriorityAsc(SecurityUtils.getCurrentUserAppAccountId(), personId, page).map(dealDetailMapper::toDto);
-
-        return dealList;
-    }
-
-    @Override
     public Double getDealTotalByStage(Long stageId) {
         return dealRepository.calculateDealTotalByStageId(SecurityUtils.getCurrentUserAppAccountId(),stageId);
     }
@@ -188,28 +171,6 @@ public class DealServiceImpl implements DealService {
             response.getSecond());
 
         return deals;
-    }
-
-    @Override
-    public Page<DealDTO> search(String filter, Pageable pageable) {
-        log.debug("Request to get all Deals");
-        SpecificationsBuilder builder = new SpecificationsBuilder();
-
-        if (!StringUtils.isEmpty(filter)) {
-            List<SearchCriteria> criteriaList = ParameterUtil.createCriterias(filter);
-
-            for (SearchCriteria criteria : criteriaList) {
-                builder.with(criteria);
-            }
-
-        }
-
-        builder.with("appAccount", ":", SecurityUtils.getCurrentUserAppAccountReference());
-
-        Specification<Deal> spec = builder.build();
-
-        return dealRepository.findAll(spec, pageable)
-            .map(dealMapper::toDto);
     }
 
 }

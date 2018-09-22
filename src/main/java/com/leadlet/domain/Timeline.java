@@ -36,7 +36,7 @@ public class Timeline extends AbstractSearchableEntity implements Serializable {
     private Deal deal;
 
     @ManyToOne
-    private User user;
+    private User agent;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -66,12 +66,13 @@ public class Timeline extends AbstractSearchableEntity implements Serializable {
         this.sourceId = sourceId;
     }
 
-    public User getUser() {
-        return user;
+    public User getAgent() {
+        return agent;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Timeline setAgent(User agent) {
+        this.agent = agent;
+        return this;
     }
 
     public Person getPerson() {

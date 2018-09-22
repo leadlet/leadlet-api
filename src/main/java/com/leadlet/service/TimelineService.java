@@ -1,6 +1,7 @@
 package com.leadlet.service;
 
 import com.leadlet.domain.Activity;
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.Note;
 import com.leadlet.domain.Timeline;
 import com.leadlet.service.dto.TimelineDTO;
@@ -21,8 +22,11 @@ public interface TimelineService {
 
 
     @Async
-    void noteCreated(Note note);
+    void noteCreated(Note note) throws IOException;
 
     @Async
     void activityCreated(Activity activity);
+
+    @Async
+    void dealCreated(Deal deal);
 }

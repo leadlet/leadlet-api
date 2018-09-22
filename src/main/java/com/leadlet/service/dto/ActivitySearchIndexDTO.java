@@ -20,6 +20,9 @@ public class ActivitySearchIndexDTO implements Serializable {
     private Date startDate;
     private ActivityType activityType;
     private String title;
+    private Long personId;
+    private Long dealId;
+    private Long agentId;
     private boolean isDone;
 
     public ActivitySearchIndexDTO(){
@@ -34,6 +37,10 @@ public class ActivitySearchIndexDTO implements Serializable {
         this.activityType = activity.getType();
         this.title = activity.getTitle();
         this.isDone = activity.isDone();
+        this.personId = activity.getPerson() == null ? null : activity.getPerson().getId() ;
+        this.dealId = activity.getDeal() == null ? null : activity.getDeal().getId() ;
+        this.agentId = activity.getAgent() == null ? null : activity.getAgent().getId() ;
+
     }
 
     public Long getId() {
@@ -90,6 +97,33 @@ public class ActivitySearchIndexDTO implements Serializable {
         return this;
     }
 
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public ActivitySearchIndexDTO setPersonId(Long personId) {
+        this.personId = personId;
+        return this;
+    }
+
+    public Long getDealId() {
+        return dealId;
+    }
+
+    public ActivitySearchIndexDTO setDealId(Long dealId) {
+        this.dealId = dealId;
+        return this;
+    }
+
+    public Long getAgentId() {
+        return agentId;
+    }
+
+    public ActivitySearchIndexDTO setAgentId(Long agentId) {
+        this.agentId = agentId;
+        return this;
+    }
+
     public XContentBuilder getBuilder() throws IOException {
 
         XContentBuilder builder = XContentFactory.jsonBuilder();
@@ -101,6 +135,10 @@ public class ActivitySearchIndexDTO implements Serializable {
             builder.field("activity_type", getActivityType());
             builder.field("title", getTitle());
             builder.field("is_done", isDone());
+            builder.field("person_id", getPersonId());
+            builder.field("deal_id", getDealId());
+            builder.field("agent_id", getAgentId());
+
         }
         builder.endObject();
 

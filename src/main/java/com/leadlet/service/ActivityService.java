@@ -18,7 +18,7 @@ public interface ActivityService {
      * @param activityDTO the entity to save
      * @return the persisted entity
      */
-    ActivityDTO save(ActivityDTO activityDTO);
+    ActivityDTO save(ActivityDTO activityDTO) throws IOException;
 
     /**
      * Update a activity.

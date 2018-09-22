@@ -50,7 +50,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="owner_id" type="bigint">
+            <column name="agent_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
@@ -113,7 +113,7 @@
             <column name="stage_id" type="NUMERIC" />
             <column name="person_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
-            <column name="owner_id" type="NUMERIC" />
+            <column name="agent_id" type="NUMERIC" />
             <column name="deal_source_id" type="NUMERIC" />
             <column name="deal_channel_id" type="NUMERIC" />
             <column name="lost_reason_id" type="NUMERIC" />

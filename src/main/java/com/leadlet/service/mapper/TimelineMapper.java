@@ -9,12 +9,12 @@ import org.mapstruct.Mapping;
 public interface TimelineMapper extends EntityMapper<TimelineDTO, Timeline> {
 
     @Mapping(source = "person.id", target = "personId")
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "agent.id", target = "agentId")
     @Mapping(source = "deal.id", target = "dealId")
     TimelineDTO toDto(Timeline timeline);
 
     @Mapping(source = "personId", target = "person")
-    @Mapping(source = "userId", target = "user")
+    @Mapping(source = "agentId", target = "agent")
     @Mapping(source = "dealId", target = "deal")
     Timeline toEntity(TimelineDTO timelineDTO);
 

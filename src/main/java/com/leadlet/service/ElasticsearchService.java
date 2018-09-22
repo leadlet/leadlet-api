@@ -1,6 +1,8 @@
 package com.leadlet.service;
 
+import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
+import com.leadlet.domain.Timeline;
 import com.leadlet.service.dto.FacetDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
@@ -17,4 +19,7 @@ public interface ElasticsearchService {
 
 
     void indexDeal(Deal deal) throws IOException ;
+    void indexTimeline(Timeline timeline) throws IOException ;
+    void indexActivity(Activity activity) throws IOException ;
+
 }

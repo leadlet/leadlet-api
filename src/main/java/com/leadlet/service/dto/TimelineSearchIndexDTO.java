@@ -18,7 +18,7 @@ public class TimelineSearchIndexDTO implements Serializable {
     private Long id;
     private Date createdDate;
     private Long personId;
-    private Long userId;
+    private Long agentId;
     private Long dealId;
     private TimelineItemType type;
 
@@ -33,8 +33,8 @@ public class TimelineSearchIndexDTO implements Serializable {
         if(timeline.getPerson() != null){
             this.personId = timeline.getPerson().getId();
         }
-        if(timeline.getUser() != null){
-            this.userId = timeline.getUser().getId();
+        if(timeline.getAgent() != null){
+            this.agentId = timeline.getAgent().getId();
         }
         if(timeline.getDeal() != null){
             this.dealId = timeline.getDeal().getId();
@@ -70,12 +70,12 @@ public class TimelineSearchIndexDTO implements Serializable {
         return this;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getAgentId() {
+        return agentId;
     }
 
-    public TimelineSearchIndexDTO setUserId(Long userId) {
-        this.userId = userId;
+    public TimelineSearchIndexDTO setAgentId(Long agentId) {
+        this.agentId = agentId;
         return this;
     }
 
@@ -104,7 +104,7 @@ public class TimelineSearchIndexDTO implements Serializable {
             builder.field("id", getId());
             builder.timeField("created_date", getCreatedDate());
             builder.field("person_id", getPersonId());
-            builder.field("user_id", getUserId());
+            builder.field("agent_id", getAgentId());
             builder.field("deal_id", getDealId());
             builder.field("type", getType());
         }

@@ -20,7 +20,7 @@ public class TimelineDTO implements Serializable {
 
     private Long dealId;
 
-    private Long userId;
+    private Long agentId;
 
     private Instant createdDate;
 
@@ -57,12 +57,13 @@ public class TimelineDTO implements Serializable {
         return this;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getAgentId() {
+        return agentId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public TimelineDTO setAgentId(Long agentId) {
+        this.agentId = agentId;
+        return this;
     }
 
     public void setSource(Object source) {
@@ -112,7 +113,7 @@ public class TimelineDTO implements Serializable {
             ", source=" + source +
             ", personId=" + personId +
             ", dealId=" + dealId +
-            ", userId=" + userId +
+            ", agentId=" + agentId +
             ", createdDate=" + createdDate +
             '}';
     }

@@ -4,6 +4,8 @@ import com.leadlet.service.dto.NoteDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
+
 public interface NoteService {
 
     /**
@@ -12,7 +14,7 @@ public interface NoteService {
      * @param noteDTO the entity to save
      * @return the persisted entity
      */
-    NoteDTO save(NoteDTO noteDTO);
+    NoteDTO save(NoteDTO noteDTO) throws IOException;
 
     /**
      * Update a note.

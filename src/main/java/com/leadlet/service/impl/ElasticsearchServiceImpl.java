@@ -1,13 +1,12 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.config.SearchConstants;
+import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
+import com.leadlet.domain.Timeline;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.service.ElasticsearchService;
-import com.leadlet.service.dto.DealSearchIndexDTO;
-import com.leadlet.service.dto.FacetDTO;
-import com.leadlet.service.dto.RangeFacetDTO;
-import com.leadlet.service.dto.TermsFacetDTO;
+import com.leadlet.service.dto.*;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -180,4 +179,23 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         IndexResponse response = restHighLevelClient.index(request);
     }
 
+    public void indexTimeline(Timeline timeline) throws IOException {
+
+
+        IndexRequest request = new IndexRequest(SearchConstants.TIMELINE_INDEX, SearchConstants.TIMELINE_TYPE, String.valueOf(timeline.getId()));
+
+        TimelineSearchIndexDTO timelineSearchIndexDTO = new TimelineSearchIndexDTO(timeline);
+        request.source(timelineSearchIndexDTO.getBuilder());
+        IndexResponse response = restHighLevelClient.index(request);
+    }
+
+    public void indexActivity(Activity activity) throws IOException {
+
+
+        IndexRequest request = new IndexRequest(SearchConstants.ACTIVITY_INDEX, SearchConstants.ACTIVITY_TYPE, String.valueOf(activity.getId()));
+
+        ActivitySearchIndexDTO activitySearchIndexDTO = new ActivitySearchIndexDTO(activity);
+        request.source(activitySearchIndexDTO.getBuilder());
+        IndexResponse response = restHighLevelClient.index(request);
+    }
 }

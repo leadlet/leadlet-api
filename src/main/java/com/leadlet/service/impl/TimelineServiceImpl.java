@@ -2,16 +2,19 @@ package com.leadlet.service.impl;
 
 import com.leadlet.config.SearchConstants;
 import com.leadlet.domain.Activity;
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.Note;
 import com.leadlet.domain.Timeline;
 import com.leadlet.domain.enumeration.TimelineItemType;
 import com.leadlet.repository.ActivityRepository;
+import com.leadlet.repository.DealRepository;
 import com.leadlet.repository.NoteRepository;
 import com.leadlet.repository.TimelineRepository;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.TimelineDTO;
 import com.leadlet.service.mapper.ActivityMapper;
+import com.leadlet.service.mapper.DealMapper;
 import com.leadlet.service.mapper.NoteMapper;
 import com.leadlet.service.mapper.TimelineMapper;
 import org.slf4j.Logger;
@@ -25,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +51,12 @@ public class TimelineServiceImpl implements TimelineService {
 
     private final ActivityMapper activityMapper;
 
+    private final DealMapper dealMapper;
+
+
     private final ActivityRepository activityRepository;
+
+    private final DealRepository dealRepository;
 
     private final ElasticsearchService elasticsearchService;
 
@@ -56,6 +66,8 @@ public class TimelineServiceImpl implements TimelineService {
                                ActivityRepository activityRepository,
                                NoteMapper noteMapper,
                                ActivityMapper activityMapper,
+                               DealRepository dealRepository,
+                               DealMapper dealMapper,
                                ElasticsearchService elasticsearchService) {
         this.timelineRepository = timelineRepository;
         this.timelineMapper = timelineMapper;
@@ -64,6 +76,9 @@ public class TimelineServiceImpl implements TimelineService {
         this.noteMapper = noteMapper;
         this.activityMapper = activityMapper;
         this.elasticsearchService = elasticsearchService;
+        this.dealRepository = dealRepository;
+        this.dealMapper = dealMapper;
+
     }
 
     @Override
@@ -78,8 +93,20 @@ public class TimelineServiceImpl implements TimelineService {
 
         Pair<List<Long>, Long> response = elasticsearchService.getEntityIds(SearchConstants.TIMELINE_INDEX,searchQuery, pageable);
 
-        Page<TimelineDTO> timelines = new PageImpl<TimelineDTO>(timelineRepository.findAllByIdIn(response.getFirst()).stream()
-            .map(timelineMapper::toDto).collect(Collectors.toList()),
+        List<TimelineDTO> unsorted = timelineRepository.findAllByIdIn(response.getFirst()).stream()
+            .map(timelineMapper::toDto).collect(Collectors.toList());
+        List<Long> sortedIds = response.getFirst();
+
+        // we are getting ids from ES sorted but JPA returns result not sorted
+        // below code-piece sorts the returned DTOs to have same sort with ids.
+        Collections.sort(unsorted,  new Comparator<TimelineDTO>() {
+            public int compare(TimelineDTO left, TimelineDTO right) {
+                return Integer.compare(sortedIds.indexOf(left.getId()), sortedIds.indexOf(right.getId()));
+            }
+        } );
+
+
+        Page<TimelineDTO> timelines = new PageImpl<TimelineDTO>(unsorted,
             pageable,
             response.getSecond())
             .map(timelineDTO -> {
@@ -89,6 +116,9 @@ public class TimelineServiceImpl implements TimelineService {
                 } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
                     Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
                     timelineDTO.setSource(activityMapper.toDto(activity));
+                } else if (timelineDTO.getType().equals(TimelineItemType.DEAL_CREATED)) {
+                    Deal deal = dealRepository.getOne(timelineDTO.getSourceId());
+                    timelineDTO.setSource(dealMapper.toDto(deal));
                 }
 
             return timelineDTO;
@@ -99,7 +129,7 @@ public class TimelineServiceImpl implements TimelineService {
 
     @Override
     @Async
-    public void noteCreated(Note note) {
+    public void noteCreated(Note note) throws IOException {
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.NOTE_CREATED);
@@ -121,6 +151,7 @@ public class TimelineServiceImpl implements TimelineService {
         //timelineItem.setUser();
 
         timelineRepository.save(timelineItem);
+        elasticsearchService.indexTimeline(timelineItem);
 
     }
 
@@ -133,9 +164,27 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setPerson(activity.getPerson());
         timelineItem.setAppAccount(activity.getAppAccount());
         timelineItem.setSourceId(activity.getId());
-        timelineItem.setUser(activity.getAgent());
+        timelineItem.setAgent(activity.getAgent());
         timelineItem.setDeal(activity.getDeal());
 
         timelineRepository.save(timelineItem);
+
     }
+
+    @Override
+    @Async
+    public void dealCreated(Deal deal) {
+
+        Timeline timelineItem = new Timeline();
+        timelineItem.setType(TimelineItemType.DEAL_CREATED);
+        timelineItem.setPerson(deal.getPerson());
+        timelineItem.setAppAccount(deal.getAppAccount());
+        timelineItem.setSourceId(deal.getId());
+        timelineItem.setAgent(deal.getAgent());
+        timelineItem.setDeal(deal);
+
+        timelineRepository.save(timelineItem);
+
+    }
+
 }
