@@ -143,7 +143,7 @@ curl -X POST "localhost:9200/leadlet/deal/" -H 'Content-Type: application/json' 
  }
 '
 
-#curl -X DELETE "localhost:9200/leadlet"
+#curl -X DELETE "localhost:9200/leadlet-*"
 
 
 curl -u elastic:0SGYXpSLAqHUMpnD4IGsFAy5 -X DELETE "https://8b90cbd3e3a640c4a7088d8a7d161288.europe-west1.gcp.cloud.es.io:9243/leadlet"

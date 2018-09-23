@@ -23,6 +23,8 @@ public class ActivitySearchIndexDTO implements Serializable {
     private Long personId;
     private Long dealId;
     private Long agentId;
+    private Long appAccountId;
+
     private boolean isDone;
 
     public ActivitySearchIndexDTO(){
@@ -40,6 +42,7 @@ public class ActivitySearchIndexDTO implements Serializable {
         this.personId = activity.getPerson() == null ? null : activity.getPerson().getId() ;
         this.dealId = activity.getDeal() == null ? null : activity.getDeal().getId() ;
         this.agentId = activity.getAgent() == null ? null : activity.getAgent().getId() ;
+        this.appAccountId = activity.getAppAccount().getId();
 
     }
 
@@ -124,6 +127,15 @@ public class ActivitySearchIndexDTO implements Serializable {
         return this;
     }
 
+    public Long getAppAccountId() {
+        return appAccountId;
+    }
+
+    public ActivitySearchIndexDTO setAppAccountId(Long appAccountId) {
+        this.appAccountId = appAccountId;
+        return this;
+    }
+
     public XContentBuilder getBuilder() throws IOException {
 
         XContentBuilder builder = XContentFactory.jsonBuilder();
@@ -138,6 +150,7 @@ public class ActivitySearchIndexDTO implements Serializable {
             builder.field("person_id", getPersonId());
             builder.field("deal_id", getDealId());
             builder.field("agent_id", getAgentId());
+            builder.field("app_account_id", getAppAccountId());
 
         }
         builder.endObject();

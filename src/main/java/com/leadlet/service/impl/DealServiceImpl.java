@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -162,6 +163,13 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public Page<DealDTO> query(String searchQuery, Pageable pageable) throws IOException {
+
+        String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
+        if(StringUtils.isEmpty(searchQuery)){
+            searchQuery = appAccountFilter;
+        }else {
+            searchQuery += " AND " + appAccountFilter;
+        }
 
         Pair<List<Long>, Long> response = elasticsearchService.getEntityIds("leadlet-deal", searchQuery, pageable);
 

@@ -10,6 +10,7 @@ import com.leadlet.repository.ActivityRepository;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.repository.NoteRepository;
 import com.leadlet.repository.TimelineRepository;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.TimelineDTO;
@@ -26,6 +27,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -91,6 +93,12 @@ public class TimelineServiceImpl implements TimelineService {
     @Override
     public Page<TimelineDTO> query(String searchQuery, Pageable pageable) throws IOException {
 
+        String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
+        if(StringUtils.isEmpty(searchQuery)){
+            searchQuery = appAccountFilter;
+        }else {
+            searchQuery += " AND " + appAccountFilter;
+        }
         Pair<List<Long>, Long> response = elasticsearchService.getEntityIds(SearchConstants.TIMELINE_INDEX,searchQuery, pageable);
 
         List<TimelineDTO> unsorted = timelineRepository.findAllByIdIn(response.getFirst()).stream()

@@ -5,6 +5,7 @@ import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
 import com.leadlet.domain.Timeline;
 import com.leadlet.repository.DealRepository;
+import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.dto.*;
 import org.elasticsearch.action.index.IndexRequest;
@@ -57,9 +58,14 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-        if( !StringUtils.isEmpty(query)){
-            searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
+        String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
+        if(StringUtils.isEmpty(query)){
+            query = appAccountFilter;
+        }else {
+            query += " AND " + appAccountFilter;
         }
+
+        searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
         searchSourceBuilder.aggregation(AggregationBuilders
             .terms(id)
             .field(fieldName));

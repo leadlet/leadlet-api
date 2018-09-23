@@ -20,6 +20,7 @@ public class TimelineSearchIndexDTO implements Serializable {
     private Long personId;
     private Long agentId;
     private Long dealId;
+    private Long appAccountId;
     private TimelineItemType type;
 
     public TimelineSearchIndexDTO(){
@@ -40,6 +41,7 @@ public class TimelineSearchIndexDTO implements Serializable {
             this.dealId = timeline.getDeal().getId();
         }
         this.type = timeline.getType();
+        this.appAccountId = timeline.getAppAccount().getId();
 
     }
 
@@ -97,6 +99,15 @@ public class TimelineSearchIndexDTO implements Serializable {
         return this;
     }
 
+    public Long getAppAccountId() {
+        return appAccountId;
+    }
+
+    public TimelineSearchIndexDTO setAppAccountId(Long appAccountId) {
+        this.appAccountId = appAccountId;
+        return this;
+    }
+
     public XContentBuilder getBuilder() throws IOException {
         XContentBuilder builder = XContentFactory.jsonBuilder();
         builder.startObject();
@@ -107,6 +118,8 @@ public class TimelineSearchIndexDTO implements Serializable {
             builder.field("agent_id", getAgentId());
             builder.field("deal_id", getDealId());
             builder.field("type", getType());
+            builder.field("app_account_id", getAppAccountId());
+
         }
         builder.endObject();
 

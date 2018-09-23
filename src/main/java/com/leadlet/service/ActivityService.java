@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Service Interface for managing Activity.
@@ -29,13 +28,6 @@ public interface ActivityService {
     ActivityDTO update(ActivityDTO activityDTO);
 
     /**
-     *  Get all the activities.
-     *
-     *  @return the list of entities
-     */
-    List<ActivityDTO> findAll();
-
-    /**
      *  Get the "id" activity.
      *
      *  @param id the id of the entity
@@ -49,30 +41,6 @@ public interface ActivityService {
      *  @param id the id of the entity
      */
     void delete(Long id);
-
-    /**
-     *  Get all the activities.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
-    Page<ActivityDTO> findByPersonId(Long personId, Pageable pageable);
-
-    /**
-     *  Get all the activities.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
-    Page<ActivityDTO> findByUserId(Long userId, Pageable pageable);
-
-    /**
-     *  Get all the activities.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
-    Page<ActivityDTO> findByDealId(Long dealId, Pageable pageable);
 
     Page<ActivityDTO> search(String filter, Pageable pageable) throws IOException;
 
