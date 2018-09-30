@@ -30,8 +30,10 @@ public class ElasticSearchConfig extends AbstractFactoryBean {
     @Value("${spring.data.elasticsearch.protocol}")
     private String protocol;
     private RestHighLevelClient restHighLevelClient;
-
-
+    @Value("${spring.data.elasticsearch.username:''}")
+    private String username;
+    @Value("${spring.data.elasticsearch.password:''}")
+    private String password;
 
     @Override
     public void destroy() {
@@ -66,7 +68,7 @@ public class ElasticSearchConfig extends AbstractFactoryBean {
 
             final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials("elastic", "0SGYXpSLAqHUMpnD4IGsFAy5"));
+                new UsernamePasswordCredentials(username, password));
 
             RestClientBuilder builder = RestClient.builder(new HttpHost(clusterHost, clusterPort, protocol))
                 .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {

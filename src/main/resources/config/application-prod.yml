@@ -61,10 +61,12 @@ spring:
         cache: true
     data:
         elasticsearch:
-          cluster-name: leadlet-db
+          cluster-name: leadlet-test
           protocol: https
-          cluster-host: 8b90cbd3e3a640c4a7088d8a7d161288.europe-west1.gcp.cloud.es.io
+          cluster-host: leadlet-test-8198328235.eu-west-1.bonsaisearch.net
           cluster-port: 9243
+          username: ${ES_USERNAME}
+          password: ${ES_PASSWORD}
 
 liquibase:
     contexts: prod
