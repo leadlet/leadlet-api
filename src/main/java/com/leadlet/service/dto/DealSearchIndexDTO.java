@@ -43,7 +43,7 @@ public class DealSearchIndexDTO implements Serializable {
         this.source = !StringUtils.isEmpty(deal.getDealSource()) ? deal.getDealSource().getName() : "";
         this.channel = !StringUtils.isEmpty(deal.getDealChannel()) ? deal.getDealChannel().getName() : "";
         this.dealStatus = deal.getDealStatus();
-        this.lostReason = deal.getLostReason().getName();
+        this.lostReason = deal.getLostReason() != null ? deal.getLostReason().getName(): "";
         this.appAccountId = deal.getAppAccount().getId();
 
         if( deal.getProducts() != null ){
