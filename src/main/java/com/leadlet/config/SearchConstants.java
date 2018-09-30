@@ -5,7 +5,9 @@ package com.leadlet.config;
  */
 public final class SearchConstants {
 
-    //Regex for acceptable logins
+    public static final String TIMELINE_INDEX = "leadlet-timeline";
+    public static final String TIMELINE_TYPE = "timeline";
+
 
     public static final String DEAL_INDEX = "leadlet-deal";
     public static final String DEAL_TYPE = "deal";

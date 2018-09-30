@@ -41,7 +41,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="user_id" type="bigint">
+            <column name="agent_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
@@ -54,6 +54,14 @@
             </column>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
+
+            <column name="sync_start_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sync_end_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sync_status" type="varchar(255)" defaultValue="NOT_SYNCED"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
@@ -67,7 +75,7 @@
             <column name="person_id" type="NUMERIC" />
             <column name="deal_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
-            <column name="user_id" type="NUMERIC" />
+            <column name="agent_id" type="NUMERIC" />
         </loadData>
 
     </changeSet>

@@ -32,9 +32,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="app_account"/>
 
-        <addForeignKeyConstraint baseColumnNames="owner_id"
+        <addForeignKeyConstraint baseColumnNames="agent_id"
                                  baseTableName="deal"
-                                 constraintName="fk_deal_owner_id"
+                                 constraintName="fk_deal_agent_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 

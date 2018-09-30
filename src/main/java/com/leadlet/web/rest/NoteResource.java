@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -47,7 +48,7 @@ public class NoteResource {
      */
     @PostMapping("/notes")
     @Timed
-    public ResponseEntity<NoteDTO> createNote(@RequestBody NoteDTO noteDTO) throws URISyntaxException {
+    public ResponseEntity<NoteDTO> createNote(@RequestBody NoteDTO noteDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Note : {}", noteDTO);
         if (noteDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new note cannot already have an ID")).body(null);

@@ -26,9 +26,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="app_account"/>
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
+        <addForeignKeyConstraint baseColumnNames="agent_id"
                                  baseTableName="timeline"
-                                 constraintName="fk_timeline_user_id"
+                                 constraintName="fk_timeline_agent_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 

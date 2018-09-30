@@ -3,21 +3,16 @@ package com.leadlet.service.impl;
 import com.leadlet.domain.ContactPhone;
 import com.leadlet.domain.Person;
 import com.leadlet.repository.PersonRepository;
-import com.leadlet.repository.util.SearchCriteria;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.PersonService;
 import com.leadlet.service.dto.PersonDTO;
 import com.leadlet.service.mapper.PersonMapper;
-import com.leadlet.web.rest.util.ParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Iterator;
@@ -109,37 +104,6 @@ public class PersonServiceImpl implements PersonService {
         log.debug("Request to get all Persons");
         return personRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(personMapper::toDto);
-    }
-
-    @Override
-    public Page<PersonDTO> search(String filter, Pageable pageable) {
-        log.debug("Request to get all Persons");
-
-        Specifications<Person> searchSpecs = buildSpecificationsFromFilter(filter);
-
-        return personRepository.findAll(searchSpecs, pageable)
-            .map(personMapper::toDto);
-
-    }
-
-    private Specifications<Person> buildSpecificationsFromFilter(String filter) {
-
-        Specification<Person> appAccount = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("appAccount"), SecurityUtils.getCurrentUserAppAccountId());
-
-        Specifications<Person> searchSpec = Specifications.where(appAccount);
-
-        if (!StringUtils.isEmpty(filter)) {
-            List<SearchCriteria> criteriaList = ParameterUtil.createCriterias(filter);
-            for (SearchCriteria criteria : criteriaList) {
-                if( criteria.getKey().equals("name")){
-                    Specification<Person> nameLike = (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%"+criteria.getValue()+"%");
-                    searchSpec = searchSpec.and(nameLike);
-                }
-            }
-        }
-
-        return searchSpec;
-
     }
 
     /**

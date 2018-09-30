@@ -1,8 +1,6 @@
 package com.leadlet.service.impl;
 
 import com.leadlet.domain.Activity;
-import com.leadlet.domain.ActivityAggregation;
-import com.leadlet.domain.enumeration.ActivityType;
 import com.leadlet.repository.ActivityRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ActivityService;
@@ -18,13 +16,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,13 +59,14 @@ public class ActivityServiceImpl implements ActivityService {
      * @return the persisted entity
      */
     @Override
-    public ActivityDTO save(ActivityDTO activityDTO) {
+    public ActivityDTO save(ActivityDTO activityDTO) throws IOException {
 
         log.debug("Request to save Activity : {}", activityDTO);
         Activity activity = activityMapper.toEntity(activityDTO);
         activity.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
         activity = activityRepository.save(activity);
         timelineService.activityCreated(activity);
+        elasticsearchService.indexActivity(activity);
         return activityMapper.toDto(activity);
 
     }
@@ -96,20 +95,6 @@ public class ActivityServiceImpl implements ActivityService {
         } else {
             throw new EntityNotFoundException();
         }
-    }
-
-    /**
-     * Get all the activities.
-     *
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<ActivityDTO> findAll() {
-        log.debug("Request to get all Activities");
-        List<Activity> activityList = activityRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId());
-        return activityMapper.toDto(activityList);
-
     }
 
     /**
@@ -143,45 +128,16 @@ public class ActivityServiceImpl implements ActivityService {
         }
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ActivityDTO> findByPersonId(Long personId, Pageable pageable) {
-        log.debug("Request to get all Activities for Person");
-        return activityRepository.findByPerson_Id(personId, pageable)
-            .map(activityMapper::toDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ActivityDTO> findByUserId(Long userId, Pageable pageable) {
-        log.debug("Request to get all Activities for User");
-        return activityRepository.findByAgent_Id(userId, pageable)
-            .map(activityMapper::toDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ActivityDTO> findByDealId(Long dealId, Pageable pageable) {
-        log.debug("Request to get all Activities for Deal");
-        return activityRepository.findByDeal_Id(dealId, pageable)
-            .map(activityMapper::toDto);
-    }
-
-    private HashMap<ActivityType,Long> convertListToMap(List<ActivityAggregation> completedActivities){
-        HashMap<ActivityType,Long> hmap = new HashMap<>();
-
-        for(ActivityAggregation entry: completedActivities){
-            hmap.put(entry.getActivityType(),entry.getCount());
-        }
-
-        return  hmap;
-    }
 
     @Override
     public Page<ActivityDTO> search(String searchQuery, Pageable pageable) throws IOException {
 
-        // TODO add appaccountid
-
+        String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
+        if(StringUtils.isEmpty(searchQuery)){
+            searchQuery = appAccountFilter;
+        }else {
+            searchQuery += " AND " + appAccountFilter;
+        }
         Pair<List<Long>, Long> response = elasticsearchService.getEntityIds("leadlet-activity", searchQuery, pageable);
 
         List<ActivityDTO> unsorted = activityRepository.findAllByIdIn(response.getFirst()).stream()

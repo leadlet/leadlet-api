@@ -31,33 +31,6 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     @Column(name = "priority")
     private Integer priority;
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public Deal setProducts(Set<Product> products) {
-        this.products = products;
-        return this;
-    }
-
-    public DealSource getDealSource() {
-        return dealSource;
-    }
-
-    public Deal setDealSource(DealSource dealSource) {
-        this.dealSource = dealSource;
-        return this;
-    }
-
-    public DealChannel getDealChannel() {
-        return dealChannel;
-    }
-
-    public Deal setDealChannel(DealChannel dealChannel) {
-        this.dealChannel = dealChannel;
-        return this;
-    }
-
     DealValue dealValue;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -70,7 +43,7 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     private Person person;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User owner;
+    private User agent;
 
     @Column(name = "possible_close_date")
     private ZonedDateTime possibleCloseDate;
@@ -179,12 +152,13 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         this.person = person;
     }
 
-    public User getOwner() {
-        return owner;
+    public User getAgent() {
+        return agent;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public Deal setAgent(User agent) {
+        this.agent = agent;
+        return this;
     }
 
     public Deal setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
@@ -240,6 +214,34 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         this.pipeline = pipeline;
         return this;
     }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public Deal setProducts(Set<Product> products) {
+        this.products = products;
+        return this;
+    }
+
+    public DealSource getDealSource() {
+        return dealSource;
+    }
+
+    public Deal setDealSource(DealSource dealSource) {
+        this.dealSource = dealSource;
+        return this;
+    }
+
+    public DealChannel getDealChannel() {
+        return dealChannel;
+    }
+
+    public Deal setDealChannel(DealChannel dealChannel) {
+        this.dealChannel = dealChannel;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

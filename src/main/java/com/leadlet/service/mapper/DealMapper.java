@@ -12,13 +12,8 @@ import org.mapstruct.*;
     PipelineMapper.class, StageMapper.class, DealValueMapper.class, ProductMapper.class, SourceMapper.class, ChannelMapper.class, PersonMapper.class,LostReasonMapper.class})
 public interface DealMapper extends EntityMapper<DealDTO, Deal> {
 
-    @Mapping(source = "stage.id", target = "stageId")
-    @Mapping(source = "pipeline.id", target = "pipelineId")
     DealDTO toDto(Deal deal);
 
-    @Mapping(source = "stageId", target = "stage")
-    @Mapping(source = "pipelineId", target = "pipeline")
-    @Mapping(source = "ownerId", target = "owner")
     @Mapping(source = "priority", target = "priority", defaultValue = "0")
     Deal toEntity(DealDTO dealDTO);
 

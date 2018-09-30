@@ -57,5 +57,4 @@ public interface PersonService {
      */
     void delete(List<Long> idList);
 
-    Page<PersonDTO> search(String filter, Pageable pageable);
 }

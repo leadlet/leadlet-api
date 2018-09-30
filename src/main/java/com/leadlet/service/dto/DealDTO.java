@@ -21,13 +21,13 @@ public class DealDTO implements Serializable {
 
     private Integer priority;
 
-    private Long stageId;
+    private StageDTO stage;
 
-    private Long pipelineId;
+    private PipelineDTO pipeline;
 
     private PersonDTO person;
 
-    private Long ownerId;
+    private UserDTO agent;
 
     private Instant createdDate;
 
@@ -108,21 +108,39 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public Long getStageId() {
-        return stageId;
+    public StageDTO getStage() {
+        return stage;
     }
 
-    public DealDTO setStageId(Long stageId) {
-        this.stageId = stageId;
+    public DealDTO setStage(StageDTO stage) {
+        this.stage = stage;
         return this;
     }
 
-    public Long getPipelineId() {
-        return pipelineId;
+    public PipelineDTO getPipeline() {
+        return pipeline;
     }
 
-    public DealDTO setPipelineId(Long pipelineId) {
-        this.pipelineId = pipelineId;
+    public DealDTO setPipeline(PipelineDTO pipeline) {
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    public PersonDTO getPerson() {
+        return person;
+    }
+
+    public DealDTO setPerson(PersonDTO person) {
+        this.person = person;
+        return this;
+    }
+
+    public UserDTO getAgent() {
+        return agent;
+    }
+
+    public DealDTO setAgent(UserDTO agent) {
+        this.agent = agent;
         return this;
     }
 
@@ -144,32 +162,6 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public DealValueDTO getDealValue() {
-        return dealValue;
-    }
-
-    public DealDTO setDealValue(DealValueDTO dealValue) {
-        this.dealValue = dealValue;
-        return this;
-    }
-
-    public PersonDTO getPerson() {
-        return person;
-    }
-
-    public void setPerson(PersonDTO person) {
-        this.person = person;
-    }
-
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public DealDTO setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-        return this;
-    }
-
     public ZonedDateTime getPossibleCloseDate() {
         return possibleCloseDate;
     }
@@ -179,20 +171,31 @@ public class DealDTO implements Serializable {
         return this;
     }
 
+    public DealValueDTO getDealValue() {
+        return dealValue;
+    }
+
+    public DealDTO setDealValue(DealValueDTO dealValue) {
+        this.dealValue = dealValue;
+        return this;
+    }
+
     public SourceDTO getDealSource() {
         return dealSource;
     }
 
-    public void setDealSource(SourceDTO dealSource) {
+    public DealDTO setDealSource(SourceDTO dealSource) {
         this.dealSource = dealSource;
+        return this;
     }
 
     public ChannelDTO getDealChannel() {
         return dealChannel;
     }
 
-    public void setDealChannel(ChannelDTO dealChannel) {
+    public DealDTO setDealChannel(ChannelDTO dealChannel) {
         this.dealChannel = dealChannel;
+        return this;
     }
 
     @Override

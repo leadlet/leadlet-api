@@ -21,6 +21,7 @@ public class DealSearchIndexDTO implements Serializable {
     private Date createdDate;
     private Long pipelineId;
     private Long stageId;
+    private Long appAccountId;
     private Integer priority;
     private String source;
     private String channel;
@@ -42,7 +43,8 @@ public class DealSearchIndexDTO implements Serializable {
         this.source = !StringUtils.isEmpty(deal.getDealSource()) ? deal.getDealSource().getName() : "";
         this.channel = !StringUtils.isEmpty(deal.getDealChannel()) ? deal.getDealChannel().getName() : "";
         this.dealStatus = deal.getDealStatus();
-        this.lostReason = deal.getLostReason().getName();
+        this.lostReason = deal.getLostReason() != null ? deal.getLostReason().getName(): "";
+        this.appAccountId = deal.getAppAccount().getId();
 
         if( deal.getProducts() != null ){
             this.products = deal.getProducts().stream().map(Product::getDescription).toArray(size -> new String[size]);
@@ -138,6 +140,15 @@ public class DealSearchIndexDTO implements Serializable {
         this.lostReason = lostReason;
     }
 
+    public Long getAppAccountId() {
+        return appAccountId;
+    }
+
+    public DealSearchIndexDTO setAppAccountId(Long appAccountId) {
+        this.appAccountId = appAccountId;
+        return this;
+    }
+
     public XContentBuilder getBuilder() throws IOException {
         XContentBuilder builder = XContentFactory.jsonBuilder();
         builder.startObject();
@@ -150,6 +161,7 @@ public class DealSearchIndexDTO implements Serializable {
             builder.field("source", getSource());
             builder.field("channel", getChannel());
             builder.field("products", getProducts());
+            builder.field("app_account_id", getAppAccountId());
             builder.field("dealStatus", getDealStatus());
             builder.field("lostReason", getLostReason());
         }

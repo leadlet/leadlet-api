@@ -48,7 +48,7 @@ public class ActivityResource {
      */
     @PostMapping("/activities")
     @Timed
-    public ResponseEntity<ActivityDTO> createActivity(@RequestBody ActivityDTO activityDTO) throws URISyntaxException {
+    public ResponseEntity<ActivityDTO> createActivity(@RequestBody ActivityDTO activityDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Activity : {}", activityDTO);
         if (activityDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new activity cannot already have an ID")).body(null);
@@ -79,20 +79,8 @@ public class ActivityResource {
             .body(result);
     }
 
-    /**
-     * GET  /activities : get all the activities.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
-     */
-    @GetMapping("/activities")
-    @Timed
-    public ResponseEntity<List<ActivityDTO>> getAllActivities() {
-        log.debug("REST request to get Activities");
-        List<ActivityDTO> activityDTOList = activityService.findAll();
-        return new ResponseEntity<>(activityDTOList, HttpStatus.OK);
-    }
 
-    @GetMapping("/activities/search")
+    @GetMapping("/activities")
     @Timed
     public ResponseEntity<List<ActivityDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
 
@@ -137,49 +125,4 @@ public class ActivityResource {
 
     }
 
-    /**
-     * GET  /activities : get all the activities.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
-     */
-    @GetMapping("/activities/person/{id}")
-    @Timed
-    public ResponseEntity<List<ActivityDTO>> getActivitiesByPersonId(@ApiParam Pageable pageable, @PathVariable Long id) {
-        log.debug("REST request to get a page of Activities");
-        Page<ActivityDTO> page = activityService.findByPersonId(id, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activities");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-
-    /**
-     * GET  /activities : get all the activities.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
-     */
-    @GetMapping("/activities/user/{id}")
-    @Timed
-    public ResponseEntity<List<ActivityDTO>> getActivitiesByUserId(@ApiParam Pageable pageable, @PathVariable Long id) {
-        log.debug("REST request to get a page of Activities");
-        Page<ActivityDTO> page = activityService.findByUserId(id, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activities");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    /**
-     * GET  /activities : get all the activities.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
-     */
-    @GetMapping("/activities/deal/{id}")
-    @Timed
-    public ResponseEntity<List<ActivityDTO>> getActivitiesByDealId(@ApiParam Pageable pageable, @PathVariable Long id) {
-        log.debug("REST request to get a page of Activities");
-        Page<ActivityDTO> page = activityService.findByDealId(id, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activities");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
 }
