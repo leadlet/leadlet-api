@@ -66,7 +66,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="deal_status" type="varchar(255)">
+            <column name="deal_status" type="varchar(255)" defaultValue="NOT_SET">
                 <constraints nullable="true" />
             </column>
 
