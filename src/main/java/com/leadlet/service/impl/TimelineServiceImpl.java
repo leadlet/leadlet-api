@@ -24,7 +24,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -136,7 +135,6 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    @Async
     public void noteCreated(Note note) throws IOException {
 
         Timeline timelineItem = new Timeline();
@@ -164,7 +162,6 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    @Async
     public void activityCreated(Activity activity) {
 
         Timeline timelineItem = new Timeline();
@@ -180,7 +177,6 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    @Async
     public void dealCreated(Deal deal) {
 
         Timeline timelineItem = new Timeline();
