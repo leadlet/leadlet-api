@@ -7,7 +7,6 @@ import com.leadlet.domain.Timeline;
 import com.leadlet.service.dto.TimelineDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 
 import java.io.IOException;
 
@@ -20,13 +19,9 @@ public interface TimelineService {
 
     Page<TimelineDTO> query(String searchQuery, Pageable pageable) throws IOException;
 
-
-    @Async
     void noteCreated(Note note) throws IOException;
 
-    @Async
     void activityCreated(Activity activity);
 
-    @Async
     void dealCreated(Deal deal);
 }
