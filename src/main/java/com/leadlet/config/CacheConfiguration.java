@@ -62,6 +62,7 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.DealChannel.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.DealSource.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.LostReason.class.getName(), jcacheConfiguration);
+            cm.createCache(com.leadlet.domain.ActivityType.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
