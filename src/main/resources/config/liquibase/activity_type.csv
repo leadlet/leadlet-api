@@ -1,0 +1,6 @@
+id;name;icon;app_account_id
+1;CALL;fa fa-phone;1
+2;MEETING;fa fa-users;1
+3;TASK;fa fa-clock-o;1
+4;DEADLINE;fa fa-flag;1
+5;EMAIL;fa fa-paper-plane;1

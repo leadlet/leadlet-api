@@ -1,8 +1,6 @@
 package com.leadlet.service.dto;
 
 
-import com.leadlet.domain.enumeration.ActivityType;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -22,7 +20,7 @@ public class ActivityDTO implements Serializable {
 
     private Instant end;
 
-    private ActivityType type;
+    private ActivityTypeDTO type;
 
     private DealDTO deal;
 
@@ -81,15 +79,6 @@ public class ActivityDTO implements Serializable {
         return this;
     }
 
-    public ActivityType getType() {
-        return type;
-    }
-
-    public ActivityDTO setType(ActivityType type) {
-        this.type = type;
-        return this;
-    }
-
     public DealDTO getDeal() {
         return deal;
     }
@@ -142,6 +131,14 @@ public class ActivityDTO implements Serializable {
     public ActivityDTO setClosedDate(Instant closedDate) {
         this.closedDate = closedDate;
         return this;
+    }
+
+    public ActivityTypeDTO getType() {
+        return type;
+    }
+
+    public void setType(ActivityTypeDTO type) {
+        this.type = type;
     }
 
     @Override

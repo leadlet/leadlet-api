@@ -2,7 +2,7 @@ package com.leadlet.service.dto;
 
 
 import com.leadlet.domain.Activity;
-import com.leadlet.domain.enumeration.ActivityType;
+import com.leadlet.domain.ActivityType;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 
@@ -36,7 +36,7 @@ public class ActivitySearchIndexDTO implements Serializable {
         this.id = activity.getId();
         this.createdDate = new Date(activity.getCreatedDate().toEpochMilli());
         this.startDate = new Date(activity.getStart().toEpochMilli());
-        this.activityType = activity.getType();
+        this.activityType = activity.getActivityType();
         this.title = activity.getTitle();
         this.isDone = activity.isDone();
         this.personId = activity.getPerson() == null ? null : activity.getPerson().getId() ;
@@ -144,7 +144,7 @@ public class ActivitySearchIndexDTO implements Serializable {
             builder.field("id", getId());
             builder.timeField("created_date", getCreatedDate());
             builder.field("start_date", getStartDate());
-            builder.field("activity_type", getActivityType());
+            builder.field("activity_type", getActivityType().getName());
             builder.field("title", getTitle());
             builder.field("is_done", isDone());
             builder.field("person_id", getPersonId());
