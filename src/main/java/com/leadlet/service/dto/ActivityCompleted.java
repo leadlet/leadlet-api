@@ -1,6 +1,6 @@
 package com.leadlet.service.dto;
 
-import com.leadlet.domain.enumeration.ActivityType;
+import com.leadlet.domain.ActivityType;
 
 public class ActivityCompleted {
 

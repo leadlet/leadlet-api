@@ -32,5 +32,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
+        <addForeignKeyConstraint baseColumnNames="activity_type_id"
+                                 baseTableName="activity"
+                                 constraintName="fk_activity_activity_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="activity_type"/>
+
     </changeSet>
 </databaseChangeLog>

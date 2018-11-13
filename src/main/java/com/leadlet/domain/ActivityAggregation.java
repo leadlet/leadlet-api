@@ -1,7 +1,5 @@
 package com.leadlet.domain;
 
-import com.leadlet.domain.enumeration.ActivityType;
-
 public class ActivityAggregation {
     private ActivityType activityType;
     private Long count;

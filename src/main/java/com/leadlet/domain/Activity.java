@@ -1,6 +1,5 @@
 package com.leadlet.domain;
 
-import com.leadlet.domain.enumeration.ActivityType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -39,10 +38,9 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
     @NotNull
     private Instant end;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @OneToOne
     @NotNull
-    private ActivityType type;
+    private ActivityType activityType;
 
     @ManyToOne
     private Deal deal;
@@ -106,12 +104,12 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
         this.end = end;
     }
 
-    public ActivityType getType() {
-        return type;
+    public ActivityType getActivityType() {
+        return activityType;
     }
 
-    public void setType(ActivityType type) {
-        this.type = type;
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 
     public Deal getDeal() {
@@ -187,11 +185,10 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
             ", memo='" + memo + '\'' +
             ", start=" + start +
             ", end=" + end +
-            ", type=" + type +
+            ", activityType=" + activityType +
             ", location=" + location +
             ", done=" + done +
             ", closedDate=" + closedDate +
             '}';
     }
-
 }
