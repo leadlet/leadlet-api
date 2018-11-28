@@ -22,7 +22,7 @@ public interface AppAccountService {
      * @param appAccountDTO the entity to save
      * @return the persisted entity
      */
-    AppAccount save(AppAccountDTO appAccountDTO, MultipartFile gsKeyFile) throws IOException, SQLException;
+    AppAccount save(AppAccountDTO appAccountDTO) throws IOException, SQLException;
 
     /**
      *  Get the "id" appAccount.
