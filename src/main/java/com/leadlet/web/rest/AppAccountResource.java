@@ -66,12 +66,12 @@ public class AppAccountResource {
      * @param appAccountDTO the current user information
      * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) or 500 (Internal Server Error) if the user couldn't be updated
      */
-    @PostMapping(value = "/account",consumes = {"multipart/form-data"})
+    @PostMapping("/account")
     @Timed
-    public ResponseEntity<AppAccountDTO> updateAccount(@RequestPart(value = "gsKeyFile", required = false) MultipartFile gsKeyFile, @RequestPart(value = "account") AppAccountDTO appAccountDTO) throws URISyntaxException, IOException, SQLException {
+    public ResponseEntity<AppAccountDTO> updateAccount( @RequestBody AppAccountDTO appAccountDTO) throws URISyntaxException, IOException, SQLException {
         log.debug("REST request to update AppAccount : {}", appAccountDTO);
 
-        AppAccount result = appAccountService.save(appAccountDTO, gsKeyFile);
+        AppAccount result = appAccountService.save(appAccountDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getId().toString()))
             .body(appAccountMapper.toDto(result));
