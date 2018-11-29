@@ -46,6 +46,8 @@ spring:
     thymeleaf:
         mode: XHTML
 
+liquibase:
+    dropFirst: true
 
 security:
     basic:

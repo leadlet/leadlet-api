@@ -616,7 +616,7 @@
             </properties>
         </profile>
         <profile>
-            <id>swagger</id>
+            <id>c</id>
             <properties>
                 <profile.swagger>,swagger</profile.swagger>
             </properties>
