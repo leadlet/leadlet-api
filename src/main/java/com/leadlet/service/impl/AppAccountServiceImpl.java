@@ -41,11 +41,7 @@ public class AppAccountServiceImpl implements AppAccountService{
      * @return the persisted entity
      */
     @Override
-    public AppAccount save(AppAccountDTO appAccountDTO, MultipartFile gsKeyFile) throws IOException, SQLException {
-
-        if( gsKeyFile != null && gsKeyFile.getSize() > 64000){
-            throw new IllegalArgumentException("Key file too big");
-        }
+    public AppAccount save(AppAccountDTO appAccountDTO) throws IOException, SQLException {
 
         log.debug("Request to save AppAccount : {}", appAccountDTO);
         AppAccount appAccount = appAccountMapper.toEntity(appAccountDTO);
