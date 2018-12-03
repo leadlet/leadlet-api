@@ -1,6 +1,7 @@
 package com.leadlet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.leadlet.domain.enumeration.Gender;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
@@ -33,8 +34,12 @@ public class Person implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "login")
+    private String login;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private Gender gender;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
@@ -88,12 +93,12 @@ public class Person implements Serializable {
         this.address = address;
     }
 
-    public String getTitle() {
-        return title;
+    public String getLogin() {
+        return login;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Set<ContactPhone> getPhones() {
@@ -152,6 +157,14 @@ public class Person implements Serializable {
         this.timelines = timelines;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -172,9 +185,10 @@ public class Person implements Serializable {
             "id=" + id +
             ", name='" + name + '\'' +
             ", address='" + address + '\'' +
-            ", title='" + title + '\'' +
+            ", login='" + login + '\'' +
             ", phones=" + phones +
             ", email='" + email + '\'' +
+            ", gender='" + gender + '\'' +
             '}';
     }
 }

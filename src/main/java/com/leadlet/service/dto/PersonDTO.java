@@ -1,5 +1,7 @@
 package com.leadlet.service.dto;
 
+import com.leadlet.domain.enumeration.Gender;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +17,9 @@ public class PersonDTO implements Serializable {
 
     private String address;
 
-    private String title;
+    private String login;
+
+    private Gender gender;
 
     private List<ContactPhoneDTO> phones;
 
@@ -45,12 +49,20 @@ public class PersonDTO implements Serializable {
         this.address = address;
     }
 
-    public String getTitle() {
-        return title;
+    public String getLogin() {
+        return login;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public List<ContactPhoneDTO> getPhones() {
@@ -89,7 +101,8 @@ public class PersonDTO implements Serializable {
             "id=" + id +
             ", name='" + name + '\'' +
             ", address='" + address + '\'' +
-            ", title='" + title + '\'' +
+            ", login='" + login + '\'' +
+            ", gender='" + gender + '\'' +
             ", phones=" + phones +
             ", email='" + email + '\'' +
             '}';

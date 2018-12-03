@@ -1,0 +1,8 @@
+package com.leadlet.domain.enumeration;
+
+/**
+ * The EmailType enumeration.
+ */
+public enum Gender {
+    M, F
+}
