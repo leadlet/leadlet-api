@@ -17,7 +17,6 @@ public interface ElasticsearchService {
 
     Pair<List<Long>, Long> getEntityIds(String index, String query, Pageable pageable)  throws IOException;
 
-
     void indexDeal(Deal deal) throws IOException ;
     void indexTimeline(Timeline timeline) throws IOException ;
     void indexActivity(Activity activity) throws IOException ;
