@@ -22,6 +22,8 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -178,7 +180,24 @@ public class DealServiceImpl implements DealService {
             pageable,
             response.getSecond());
 
-        return deals;
+
+        List<DealDTO> unsorted = dealRepository.findAllByIdIn(response.getFirst()).stream()
+            .map(dealMapper::toDto).collect(Collectors.toList());
+        List<Long> sortedIds = response.getFirst();
+
+        // we are getting ids from ES sorted but JPA returns result not sorted
+        // below code-piece sorts the returned DTOs to have same sort with ids.
+        Collections.sort(unsorted,  new Comparator<DealDTO>() {
+            public int compare(DealDTO left, DealDTO right) {
+                return Integer.compare(sortedIds.indexOf(left.getId()), sortedIds.indexOf(right.getId()));
+            }
+        } );
+
+        Page<DealDTO> dealDTOS = new PageImpl<DealDTO>(unsorted,
+            pageable,
+            response.getSecond());
+
+        return dealDTOS;
     }
 
 }
