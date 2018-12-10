@@ -1,5 +1,19 @@
 version: '2'
 services:
+    leadlet_api-mysql:
+        image: mysql:5.7.18
+        # volumes:
+        #     - ~/volumes/jhipster/leadlet_api/mysql/:/var/lib/mysql/
+        volumes:
+            - ./mycustom.cnf:/etc/mysql/conf.d/custom.cnf
+        environment:
+            - MYSQL_USER=leadlet
+            - MYSQL_PASSWORD=leadlet_123
+            - MYSQL_DATABASE=leadlet_api
+            - MYSQL_RANDOM_ROOT_PASSWORD=yes
+        ports:
+            - 3306:3306
+
     leadlet-elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
         container_name: elasticsearch
@@ -20,14 +34,8 @@ services:
         image: docker.elastic.co/kibana/kibana:6.3.2
         ports:
             - 5601:5601
-#    leadlet-logstash:
-#        image: docker.elastic.co/logstash/logstash:6.3.2
-#        container_name: logstash
-#        volumes:
-#            - esdata1:/usr/share/elasticsearch/data
-#       ports:
-#           - 9200:9200
 
 volumes:
-    esdata1:
-        driver: local
+  mycustom.cnf:
+  esdata1:
+    driver: local

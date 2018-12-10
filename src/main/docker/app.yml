@@ -10,5 +10,5 @@ services:
             - 8080:8080
     leadlet_api-mysql:
         extends:
-            file: mysql.yml
+            file: dependencies.yml
             service: leadlet_api-mysql
