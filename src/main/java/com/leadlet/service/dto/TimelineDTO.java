@@ -12,9 +12,7 @@ public class TimelineDTO implements Serializable {
 
     private TimelineItemType type;
 
-    private Long sourceId;
-
-    private Object source;
+    private String content;
 
     private Long personId;
 
@@ -40,14 +38,6 @@ public class TimelineDTO implements Serializable {
         this.type = type;
     }
 
-    public Long getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
-    }
-
     public Long getPersonId() {
         return personId;
     }
@@ -66,14 +56,6 @@ public class TimelineDTO implements Serializable {
         return this;
     }
 
-    public void setSource(Object source) {
-        this.source = source;
-    }
-
-    public Object getSource() {
-        return source;
-    }
-
     public Instant getCreatedDate() {
         return createdDate;
     }
@@ -88,6 +70,14 @@ public class TimelineDTO implements Serializable {
 
     public void setDealId(Long dealId) {
         this.dealId = dealId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
@@ -109,8 +99,7 @@ public class TimelineDTO implements Serializable {
         return "TimelineDTO{" +
             "id=" + id +
             ", type=" + type +
-            ", sourceId=" + sourceId +
-            ", source=" + source +
+            ", content='" + content + '\'' +
             ", personId=" + personId +
             ", dealId=" + dealId +
             ", agentId=" + agentId +

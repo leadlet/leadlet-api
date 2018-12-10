@@ -1,5 +1,8 @@
 package com.leadlet.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.leadlet.config.SearchConstants;
 import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
@@ -14,10 +17,7 @@ import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.TimelineDTO;
-import com.leadlet.service.mapper.ActivityMapper;
-import com.leadlet.service.mapper.DealMapper;
-import com.leadlet.service.mapper.NoteMapper;
-import com.leadlet.service.mapper.TimelineMapper;
+import com.leadlet.service.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -31,6 +31,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,8 @@ public class TimelineServiceImpl implements TimelineService {
     private final DealRepository dealRepository;
 
     private final ElasticsearchService elasticsearchService;
+
+    ObjectMapper mapper = new ObjectMapper();
 
     public TimelineServiceImpl(TimelineRepository timelineRepository,
                                TimelineMapper timelineMapper,
@@ -93,12 +96,12 @@ public class TimelineServiceImpl implements TimelineService {
     public Page<TimelineDTO> query(String searchQuery, Pageable pageable) throws IOException {
 
         String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
-        if(StringUtils.isEmpty(searchQuery)){
+        if (StringUtils.isEmpty(searchQuery)) {
             searchQuery = appAccountFilter;
-        }else {
+        } else {
             searchQuery += " AND " + appAccountFilter;
         }
-        Pair<List<Long>, Long> response = elasticsearchService.getEntityIds(SearchConstants.TIMELINE_INDEX,searchQuery, pageable);
+        Pair<List<Long>, Long> response = elasticsearchService.getEntityIds(SearchConstants.TIMELINE_INDEX, searchQuery, pageable);
 
         List<TimelineDTO> unsorted = timelineRepository.findAllByIdIn(response.getFirst()).stream()
             .map(timelineMapper::toDto).collect(Collectors.toList());
@@ -106,30 +109,20 @@ public class TimelineServiceImpl implements TimelineService {
 
         // we are getting ids from ES sorted but JPA returns result not sorted
         // below code-piece sorts the returned DTOs to have same sort with ids.
-        Collections.sort(unsorted,  new Comparator<TimelineDTO>() {
+        Collections.sort(unsorted, new Comparator<TimelineDTO>() {
             public int compare(TimelineDTO left, TimelineDTO right) {
                 return Integer.compare(sortedIds.indexOf(left.getId()), sortedIds.indexOf(right.getId()));
             }
-        } );
+        });
 
 
         Page<TimelineDTO> timelines = new PageImpl<TimelineDTO>(unsorted,
             pageable,
             response.getSecond())
             .map(timelineDTO -> {
-                if (timelineDTO.getType().equals(TimelineItemType.NOTE_CREATED)) {
-                    Note note = noteRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(noteMapper.toDto(note));
-                } else if (timelineDTO.getType().equals(TimelineItemType.ACTIVITY_CREATED)) {
-                    Activity activity = activityRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(activityMapper.toDto(activity));
-                } else if (timelineDTO.getType().equals(TimelineItemType.DEAL_CREATED)) {
-                    Deal deal = dealRepository.getOne(timelineDTO.getSourceId());
-                    timelineDTO.setSource(dealMapper.toDto(deal));
-                }
 
-            return timelineDTO;
-        });;
+                return timelineDTO;
+            });
 
         return timelines;
     }
@@ -151,9 +144,6 @@ public class TimelineServiceImpl implements TimelineService {
             timelineItem.setAppAccount(note.getAppAccount());
         }
 
-        // TODO note id should be there
-        timelineItem.setSourceId(note.getId());
-
         //timelineItem.setUser();
 
         timelineRepository.save(timelineItem);
@@ -168,7 +158,6 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setType(TimelineItemType.ACTIVITY_CREATED);
         timelineItem.setPerson(activity.getPerson());
         timelineItem.setAppAccount(activity.getAppAccount());
-        timelineItem.setSourceId(activity.getId());
         timelineItem.setAgent(activity.getAgent());
         timelineItem.setDeal(activity.getDeal());
 
@@ -183,12 +172,57 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setType(TimelineItemType.DEAL_CREATED);
         timelineItem.setPerson(deal.getPerson());
         timelineItem.setAppAccount(deal.getAppAccount());
-        timelineItem.setSourceId(deal.getId());
         timelineItem.setAgent(deal.getAgent());
         timelineItem.setDeal(deal);
 
         timelineRepository.save(timelineItem);
 
+    }
+
+    @Override
+    public void dealUpdated(Deal dealOld, Deal dealNew, List<String> modifiedFields) throws JsonProcessingException {
+
+        HashMap<String, Object> oldObjectFields = extractFields(dealOld, modifiedFields);
+        HashMap<String, Object> newObjectFields = extractFields(dealNew, modifiedFields);
+        HashMap<String, Object> contentObject = buildContentForDealUpdate(oldObjectFields, newObjectFields);
+
+        String contentJSON = mapper.writeValueAsString(contentObject);
+
+        Timeline timelineItem = new Timeline();
+        timelineItem.setType(TimelineItemType.DEAL_UPDATED);
+        timelineItem.setAppAccount(dealNew.getAppAccount());
+        timelineItem.setAgent(dealNew.getAgent());
+        timelineItem.setDeal(dealNew);
+        timelineItem.setContent(contentJSON);
+
+        timelineRepository.save(timelineItem);
+
+    }
+
+    private HashMap<String, Object> buildContentForDealUpdate(HashMap<String, Object> oldObjectFields, HashMap<String, Object> newObjectFields) {
+
+        HashMap<String, Object> content = new HashMap<>();
+
+        content.put("oldDeal", oldObjectFields);
+        content.put("newDeal", newObjectFields);
+
+        return content;
+
+    }
+
+    private HashMap<String, Object> extractFields(Deal deal, List<String> modifiedFields) {
+        HashMap<String, Object> fields = new HashMap<>();
+
+        for (String field : modifiedFields) {
+            if (field.equals("title")) {
+                fields.put("title", deal.getTitle());
+            } else if (field.equals("person")) {
+                PersonMapper personMapper = new PersonMapperImpl();
+                fields.put("person", personMapper.toDto(deal.getPerson()));
+            }
+        }
+
+        return fields;
     }
 
 }

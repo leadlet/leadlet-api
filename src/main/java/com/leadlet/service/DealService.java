@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Service Interface for managing Deal.
@@ -25,7 +26,7 @@ public interface DealService {
      * @param dealDTO the entity to update
      * @return the persisted entity
      */
-    DealDTO update(DealDTO dealDTO) throws IOException;
+    DealDTO update(DealDTO dealDTO, List<String> modifiedFields) throws IOException;
 
     DealDTO patch(Long id, Integer priority, Long stageId) throws IOException;
 

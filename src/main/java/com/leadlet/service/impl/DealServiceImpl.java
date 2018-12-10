@@ -82,7 +82,7 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDTO update(DealDTO dealDTO) throws IOException {
+    public DealDTO update(DealDTO dealDTO, List<String> modifiedFields) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
@@ -90,6 +90,7 @@ public class DealServiceImpl implements DealService {
         if (dealFromDb != null) {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
+            timelineService.dealUpdated(dealFromDb, deal, modifiedFields);
             deal = dealRepository.save(deal);
             elasticsearchService.indexDeal(deal);
             return dealMapper.toDto(deal);
