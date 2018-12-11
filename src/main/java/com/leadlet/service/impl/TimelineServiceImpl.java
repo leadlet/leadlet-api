@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.leadlet.config.SearchConstants;
-import com.leadlet.domain.Activity;
-import com.leadlet.domain.Deal;
-import com.leadlet.domain.Note;
-import com.leadlet.domain.Timeline;
+import com.leadlet.domain.*;
 import com.leadlet.domain.enumeration.TimelineItemType;
 import com.leadlet.repository.ActivityRepository;
 import com.leadlet.repository.DealRepository;
@@ -28,7 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -86,13 +87,6 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public Timeline save(Timeline timeline) {
-        log.warn("save");
-        return null;
-    }
-
-
-    @Override
     public Page<TimelineDTO> query(String searchQuery, Pageable pageable) throws IOException {
 
         String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
@@ -118,11 +112,7 @@ public class TimelineServiceImpl implements TimelineService {
 
         Page<TimelineDTO> timelines = new PageImpl<TimelineDTO>(unsorted,
             pageable,
-            response.getSecond())
-            .map(timelineDTO -> {
-
-                return timelineDTO;
-            });
+            response.getSecond());
 
         return timelines;
     }
@@ -144,7 +134,9 @@ public class TimelineServiceImpl implements TimelineService {
             timelineItem.setAppAccount(note.getAppAccount());
         }
 
-        //timelineItem.setUser();
+        NoteMapper noteMapper = new NoteMapperImpl();
+        String contentJSON = mapper.writeValueAsString(noteMapper.toDto(note));
+        timelineItem.setContent(contentJSON);
 
         timelineRepository.save(timelineItem);
         elasticsearchService.indexTimeline(timelineItem);
@@ -152,7 +144,7 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public void activityCreated(Activity activity) {
+    public void activityCreated(Activity activity) throws IOException {
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.ACTIVITY_CREATED);
@@ -161,12 +153,16 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setAgent(activity.getAgent());
         timelineItem.setDeal(activity.getDeal());
 
-        timelineRepository.save(timelineItem);
+        ActivityMapper activityMapper = new ActivityMapperImpl();
+        String contentJSON = mapper.writeValueAsString(activityMapper.toDto(activity));
+        timelineItem.setContent(contentJSON);
 
+        timelineRepository.save(timelineItem);
+        elasticsearchService.indexTimeline(timelineItem);
     }
 
     @Override
-    public void dealCreated(Deal deal) {
+    public void dealCreated(Deal deal) throws IOException {
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.DEAL_CREATED);
@@ -175,12 +171,16 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setAgent(deal.getAgent());
         timelineItem.setDeal(deal);
 
-        timelineRepository.save(timelineItem);
+        DealMapper dealMapper = new DealMapperImpl();
+        String contentJSON = mapper.writeValueAsString(dealMapper.toDto(deal));
+        timelineItem.setContent(contentJSON);
 
+        timelineRepository.save(timelineItem);
+        elasticsearchService.indexTimeline(timelineItem);
     }
 
     @Override
-    public void dealUpdated(Deal dealOld, Deal dealNew, List<String> modifiedFields) throws JsonProcessingException {
+    public void dealUpdated(Deal dealOld, Deal dealNew, List<String> modifiedFields) throws IOException {
 
         HashMap<String, Object> oldObjectFields = extractFields(dealOld, modifiedFields);
         HashMap<String, Object> newObjectFields = extractFields(dealNew, modifiedFields);
@@ -196,15 +196,15 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setContent(contentJSON);
 
         timelineRepository.save(timelineItem);
-
+        elasticsearchService.indexTimeline(timelineItem);
     }
 
     private HashMap<String, Object> buildContentForDealUpdate(HashMap<String, Object> oldObjectFields, HashMap<String, Object> newObjectFields) {
 
         HashMap<String, Object> content = new HashMap<>();
 
-        content.put("oldDeal", oldObjectFields);
-        content.put("newDeal", newObjectFields);
+        content.put("previous", oldObjectFields);
+        content.put("current", newObjectFields);
 
         return content;
 
@@ -213,12 +213,30 @@ public class TimelineServiceImpl implements TimelineService {
     private HashMap<String, Object> extractFields(Deal deal, List<String> modifiedFields) {
         HashMap<String, Object> fields = new HashMap<>();
 
+        fields.put("id", deal.getId());
+
         for (String field : modifiedFields) {
             if (field.equals("title")) {
                 fields.put("title", deal.getTitle());
             } else if (field.equals("person")) {
                 PersonMapper personMapper = new PersonMapperImpl();
                 fields.put("person", personMapper.toDto(deal.getPerson()));
+            } else if (field.equals("stage")) {
+                StageMapper stageMapper = new StageMapperImpl();
+                fields.put("stage", stageMapper.toDto(deal.getStage()));
+            } else if (field.equals("priority")) {
+                fields.put("priority", deal.getPriority());
+            } else if (field.equals("dealValue")) {
+                DealValueMapper dealValueMapper = new DealValueMapperImpl();
+                fields.put("dealValue", dealValueMapper.toDto(deal.getDealValue()));
+            } else if (field.equals("pipeline")) {
+                PipelineMapper pipelineMapper = new PipelineMapperImpl();
+                fields.put("pipeline", pipelineMapper.toDto(deal.getPipeline()));
+            } else if (field.equals("agent")) {
+                UserMapper userMapper = new UserMapperImpl();
+                fields.put("agent", userMapper.toDto(deal.getAgent()));
+            } else if (field.equals("possibleCloseDate")) {
+                fields.put("possibleCloseDate", deal.getPossibleCloseDate());
             }
         }
 

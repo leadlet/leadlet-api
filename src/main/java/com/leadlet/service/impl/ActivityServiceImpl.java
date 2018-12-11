@@ -78,7 +78,7 @@ public class ActivityServiceImpl implements ActivityService {
      * @return the persisted entity
      */
     @Override
-    public ActivityDTO update(ActivityDTO activityDTO) {
+    public ActivityDTO update(ActivityDTO activityDTO) throws IOException {
         log.debug("Request to update Activity : {}", activityDTO);
 
         Activity activity = activityMapper.toEntity(activityDTO);
