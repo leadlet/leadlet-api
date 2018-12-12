@@ -1,10 +1,8 @@
 package com.leadlet.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
 import com.leadlet.domain.Note;
-import com.leadlet.domain.Timeline;
 import com.leadlet.service.dto.TimelineDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
