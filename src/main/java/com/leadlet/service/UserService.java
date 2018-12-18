@@ -16,18 +16,19 @@ import com.leadlet.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -49,13 +50,17 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    private final ElasticsearchService elasticsearchService;
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
-                       AppAccountRepository appAccountRepository, UserMapper userMapper) {
+                       AppAccountRepository appAccountRepository, UserMapper userMapper,
+                       ElasticsearchService elasticsearchService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.appAccountRepository = appAccountRepository;
         this.userMapper = userMapper;
+        this.elasticsearchService = elasticsearchService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -304,16 +309,39 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
-    /**
-     * Get one user by id.
-     *
-     * @param id the id of the entity
-     * @return the entity
-     */
-    @Transactional(readOnly = true)
-    public List<User> findUsersByTeamId(Long id) {
-        log.debug("Request to get User By Team Id: {}", id);
-        List<User> users = userRepository.findAllByTeam_IdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
-        return users;
+    public Page<UserDTO> search(String searchQuery, Pageable pageable) throws IOException {
+        String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
+        if(StringUtils.isEmpty(searchQuery)){
+            searchQuery = appAccountFilter;
+        }else {
+            searchQuery += " AND " + appAccountFilter;
+        }
+
+        Pair<List<Long>, Long> response = elasticsearchService.getEntityIds("leadlet-user", searchQuery, pageable);
+
+        Page<UserDTO> deals = new PageImpl<UserDTO>(userRepository.findAllByIdIn(response.getFirst()).stream()
+            .map(userMapper::toDto).collect(Collectors.toList()),
+            pageable,
+            response.getSecond());
+
+
+        List<UserDTO> unsorted = userRepository.findAllByIdIn(response.getFirst()).stream()
+            .map(userMapper::toDto).collect(Collectors.toList());
+        List<Long> sortedIds = response.getFirst();
+
+        // we are getting ids from ES sorted but JPA returns result not sorted
+        // below code-piece sorts the returned DTOs to have same sort with ids.
+        Collections.sort(unsorted,  new Comparator<UserDTO>() {
+            public int compare(UserDTO left, UserDTO right) {
+                return Integer.compare(sortedIds.indexOf(left.getId()), sortedIds.indexOf(right.getId()));
+            }
+        } );
+
+        Page<UserDTO> dealDTOS = new PageImpl<UserDTO>(unsorted,
+            pageable,
+            response.getSecond());
+
+        return dealDTOS;
+
     }
 }

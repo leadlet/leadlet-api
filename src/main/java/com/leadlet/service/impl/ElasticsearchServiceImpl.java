@@ -4,6 +4,7 @@ import com.leadlet.config.SearchConstants;
 import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
 import com.leadlet.domain.Timeline;
+import com.leadlet.domain.User;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ElasticsearchService;
@@ -41,7 +42,6 @@ import java.util.Map;
 @Service
 @Transactional
 public class ElasticsearchServiceImpl implements ElasticsearchService {
-
 
     private final RestHighLevelClient restHighLevelClient;
     private final DealRepository dealRepository;
@@ -143,7 +143,6 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
             ids.add(id);
         }
 
-
         Pair<List<Long>, Long> response =  Pair.of(ids, searchHits.getTotalHits());
 
         return response;
@@ -177,7 +176,6 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
     public void indexDeal(Deal deal) throws IOException {
 
-
         IndexRequest request = new IndexRequest(SearchConstants.DEAL_INDEX, SearchConstants.DEAL_TYPE, String.valueOf(deal.getId()));
 
         DealSearchIndexDTO dealSearchIndexDTO = new DealSearchIndexDTO(deal);
@@ -197,11 +195,19 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
     public void indexActivity(Activity activity) throws IOException {
 
-
         IndexRequest request = new IndexRequest(SearchConstants.ACTIVITY_INDEX, SearchConstants.ACTIVITY_TYPE, String.valueOf(activity.getId()));
 
         ActivitySearchIndexDTO activitySearchIndexDTO = new ActivitySearchIndexDTO(activity);
         request.source(activitySearchIndexDTO.getBuilder());
+        IndexResponse response = restHighLevelClient.index(request);
+    }
+
+    public void indexUser(User user) throws IOException {
+
+        IndexRequest request = new IndexRequest(SearchConstants.USER_INDEX, SearchConstants.USER_TYPE, String.valueOf(user.getId()));
+
+        UserSearchIndexDTO userSearchIndexDTO = new UserSearchIndexDTO(user);
+        request.source(userSearchIndexDTO.getBuilder());
         IndexResponse response = restHighLevelClient.index(request);
     }
 }

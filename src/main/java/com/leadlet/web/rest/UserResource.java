@@ -26,6 +26,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -146,12 +147,11 @@ public class UserResource {
      */
     @GetMapping("/users")
     @Timed
-    public ResponseEntity<List<UserDTO>> getAllUsers(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<UserDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws IOException {
         log.debug("REST request to get a page of Users");
 
         // TODO fix
-        // Page<UserDTO> page = userService.search(filter, pageable);
-        Page<UserDTO> page = null;
+        Page<UserDTO> page = userService.search(q, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
