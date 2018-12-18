@@ -52,6 +52,14 @@
             <column name="team_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="sync_start_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sync_end_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sync_status" type="varchar(255)" defaultValue="NOT_SYNCED"/>
+
         </createTable>
 
         <createTable tableName="jhi_authority">

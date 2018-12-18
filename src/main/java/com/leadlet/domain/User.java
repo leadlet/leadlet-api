@@ -23,7 +23,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "jhi_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User extends AbstractAuditingEntity implements Serializable {
+public class User extends AbstractSearchableEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

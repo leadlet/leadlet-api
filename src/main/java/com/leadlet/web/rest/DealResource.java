@@ -66,7 +66,7 @@ public class DealResource {
 
     @GetMapping("/deals")
     @Timed
-    public ResponseEntity<List<DealDTO>> query(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
+    public ResponseEntity<List<DealDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
 
         Page<DealDTO> page = dealService.query(q, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/search");
