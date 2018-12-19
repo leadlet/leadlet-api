@@ -228,8 +228,8 @@ public class TimelineServiceImpl implements TimelineService {
             } else if (field.equals("agent")) {
                 UserMapper userMapper = new UserMapperImpl();
                 fields.put("agent", userMapper.toDto(deal.getAgent()));
-            } else if (field.equals("possibleCloseDate")) {
-                fields.put("possibleCloseDate", deal.getPossibleCloseDate());
+            } else if (field.equals("possibleCloseDate") ) {
+                fields.put("possibleCloseDate", deal.getPossibleCloseDate() != null ? deal.getPossibleCloseDate().toEpochSecond(): "");
             }
         }
 
