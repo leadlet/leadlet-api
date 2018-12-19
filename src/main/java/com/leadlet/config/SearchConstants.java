@@ -15,6 +15,9 @@ public final class SearchConstants {
     public static final String ACTIVITY_INDEX = "leadlet-activity";
     public static final String ACTIVITY_TYPE = "activity";
 
+    public static final String USER_INDEX = "leadlet-user";
+    public static final String USER_TYPE = "user";
+
     private SearchConstants() {
     }
 }
