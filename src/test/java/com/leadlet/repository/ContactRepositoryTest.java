@@ -3,7 +3,7 @@ package com.leadlet.repository;
 
 import com.leadlet.LeadletApiApp;
 import com.leadlet.domain.AppAccount;
-import com.leadlet.domain.Person;
+import com.leadlet.domain.Contact;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,15 +24,15 @@ import static org.springframework.data.jpa.domain.Specifications.where;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LeadletApiApp.class)
 @Transactional
-public class PersonRepositoryTest {
+public class ContactRepositoryTest {
     @Autowired
-    PersonRepository personRepository;
+    ContactRepository contactRepository;
 
     @Autowired
     AppAccountRepository appAccountRepository;
 
     private AppAccount appAccount1, appAccount2;
-    private Person person1, person2, person3, person4;
+    private Contact contact1, contact2, contact3, contact4;
 
     @Before
     public void setup() {
@@ -44,47 +44,47 @@ public class PersonRepositoryTest {
         appAccount2.setName("appAccount2");
         appAccount2 = appAccountRepository.save(appAccount2);
 
-        person1 = new Person();
-        person1.setName("person1");
-        person1.setEmail("person1@gmail.com");
-        person1.setAppAccount(appAccount1);
-        person1 = personRepository.save(person1);
+        contact1 = new Contact();
+        contact1.setName("contact1");
+        contact1.setEmail("contact1@gmail.com");
+        contact1.setAppAccount(appAccount1);
+        contact1 = contactRepository.save(contact1);
 
-        person2 = new Person();
-        person2.setName("person2");
-        person2.setEmail("person2@gmail.com");
-        person2.setAppAccount(appAccount2);
+        contact2 = new Contact();
+        contact2.setName("contact2");
+        contact2.setEmail("contact2@gmail.com");
+        contact2.setAppAccount(appAccount2);
 
-        person2 = personRepository.save(person2);
+        contact2 = contactRepository.save(contact2);
 
-        person3 = new Person();
-        person3.setName("person3");
-        person3.setEmail("person3@gmail.com");
-        person3.setAppAccount(appAccount2);
-        person3 = personRepository.save(person3);
+        contact3 = new Contact();
+        contact3.setName("contact3");
+        contact3.setEmail("contact3@gmail.com");
+        contact3.setAppAccount(appAccount2);
+        contact3 = contactRepository.save(contact3);
 
-        person4 = new Person();
-        person4.setName("person4");
-        person4.setEmail("person4@gmail.com");
-        person4.setAppAccount(appAccount2);
+        contact4 = new Contact();
+        contact4.setName("contact4");
+        contact4.setEmail("contact4@gmail.com");
+        contact4.setAppAccount(appAccount2);
 
-        person4 = personRepository.save(person4);
+        contact4 = contactRepository.save(contact4);
     }
 
     @Test
     public void findBySpecification(){
 
 
-        Specification<Person> isNamePerson1 = new Specification<Person>() {
+        Specification<Contact> isNameContact1 = new Specification<Contact>() {
             @Override
-            public Predicate toPredicate(Root<Person> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("name"),"person1");
+            public Predicate toPredicate(Root<Contact> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return criteriaBuilder.equal(root.get("name"),"contact1");
             }
         };
 
-        Person person = personRepository.findOne(where(isNamePerson1));
+        Contact contact = contactRepository.findOne(where(isNameContact1));
 
-        assertThat(person.getId()).isEqualTo(person1.getId());
+        assertThat(contact.getId()).isEqualTo(contact1.getId());
 
     }
 

@@ -20,7 +20,7 @@ public class ActivitySearchIndexDTO implements Serializable {
     private Date startDate;
     private ActivityType activityType;
     private String title;
-    private Long personId;
+    private Long contactId;
     private Long dealId;
     private Long agentId;
     private Long appAccountId;
@@ -39,7 +39,7 @@ public class ActivitySearchIndexDTO implements Serializable {
         this.activityType = activity.getActivityType();
         this.title = activity.getTitle();
         this.isDone = activity.isDone();
-        this.personId = activity.getPerson() == null ? null : activity.getPerson().getId() ;
+        this.contactId = activity.getContact() == null ? null : activity.getContact().getId() ;
         this.dealId = activity.getDeal() == null ? null : activity.getDeal().getId() ;
         this.agentId = activity.getAgent() == null ? null : activity.getAgent().getId() ;
         this.appAccountId = activity.getAppAccount().getId();
@@ -100,12 +100,12 @@ public class ActivitySearchIndexDTO implements Serializable {
         return this;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getContactId() {
+        return contactId;
     }
 
-    public ActivitySearchIndexDTO setPersonId(Long personId) {
-        this.personId = personId;
+    public ActivitySearchIndexDTO setContactId(Long contactId) {
+        this.contactId = contactId;
         return this;
     }
 
@@ -147,7 +147,7 @@ public class ActivitySearchIndexDTO implements Serializable {
             builder.field("activity_type", getActivityType().getName());
             builder.field("title", getTitle());
             builder.field("is_done", isDone());
-            builder.field("person_id", getPersonId());
+            builder.field("contact_id", getContactId());
             builder.field("deal_id", getDealId());
             builder.field("agent_id", getAgentId());
             builder.field("app_account_id", getAppAccountId());

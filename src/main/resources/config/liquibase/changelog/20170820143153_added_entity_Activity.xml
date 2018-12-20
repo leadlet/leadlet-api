@@ -46,7 +46,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="person_id" type="bigint">
+            <column name="contact_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
@@ -103,7 +103,7 @@
             <column name="start" type="DATETIME" />
             <column name="end" type="DATETIME" />
             <column name="deal_id" type="NUMERIC" />
-            <column name="person_id" type="NUMERIC" />
+            <column name="contact_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
             <column name="agent_id" type="NUMERIC" />
             <column name="done" type="BOOLEAN" />

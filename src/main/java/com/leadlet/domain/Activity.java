@@ -46,7 +46,7 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
     private Deal deal;
 
     @ManyToOne
-    private Person person;
+    private Contact contact;
 
     @ManyToOne
     private User agent;
@@ -120,12 +120,12 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
         this.deal = deal;
     }
 
-    public Person getPerson() {
-        return person;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public User getAgent() {

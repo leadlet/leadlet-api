@@ -1,57 +1,57 @@
 package com.leadlet.service;
 
-import com.leadlet.service.dto.PersonDTO;
+import com.leadlet.service.dto.ContactDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 /**
- * Service Interface for managing Person.
+ * Service Interface for managing Contact.
  */
-public interface PersonService {
+public interface ContactService {
 
     /**
-     * Save a person.
+     * Save a contact.
      *
-     * @param personDTO the entity to save
+     * @param contactDTO the entity to save
      * @return the persisted entity
      */
-    PersonDTO save(PersonDTO personDTO);
+    ContactDTO save(ContactDTO contactDTO);
 
     /**
-     * Update a person.
+     * Update a contact.
      *
-     * @param personDTO the entity to update
+     * @param contactDTO the entity to update
      * @return the persisted entity
      */
-    PersonDTO update(PersonDTO personDTO);
+    ContactDTO update(ContactDTO contactDTO);
 
     /**
-     *  Get all the persons.
+     *  Get all the contacts.
      *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<PersonDTO> findAll(Pageable pageable);
+    Page<ContactDTO> findAll(Pageable pageable);
 
     /**
-     *  Get the "id" person.
+     *  Get the "id" contact.
      *
      *  @param id the id of the entity
      *  @return the entity
      */
-    PersonDTO findOne(Long id);
+    ContactDTO findOne(Long id);
 
     /**
-     *  Delete the "id" person.
+     *  Delete the "id" contact.
      *
      *  @param id the id of the entity
      */
     void delete(Long id);
 
     /**
-     *  Delete the "id" person.
+     *  Delete the "id" contact.
      *
      *  @param idList the id of the entity
      */

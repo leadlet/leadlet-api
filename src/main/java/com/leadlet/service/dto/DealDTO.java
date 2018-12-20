@@ -25,7 +25,7 @@ public class DealDTO implements Serializable {
 
     private PipelineDTO pipeline;
 
-    private PersonDTO person;
+    private ContactDTO contact;
 
     private UserDTO agent;
 
@@ -126,12 +126,12 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public PersonDTO getPerson() {
-        return person;
+    public ContactDTO getContact() {
+        return contact;
     }
 
-    public DealDTO setPerson(PersonDTO person) {
-        this.person = person;
+    public DealDTO setContact(ContactDTO contact) {
+        this.contact = contact;
         return this;
     }
 

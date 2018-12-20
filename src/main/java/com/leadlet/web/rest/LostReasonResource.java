@@ -86,7 +86,7 @@ public class LostReasonResource {
      */
     @GetMapping("/lost-reasons")
     @Timed
-    public ResponseEntity<List<LostReasonDTO>> getAllLostReasons(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<LostReasonDTO>> getLostReasons(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of lost reasons");
         Page<LostReasonDTO> page = lostReasonService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/lost-reasons");

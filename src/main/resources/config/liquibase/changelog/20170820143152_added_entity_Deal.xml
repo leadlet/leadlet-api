@@ -42,7 +42,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="person_id" type="bigint">
+            <column name="contact_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
@@ -111,7 +111,7 @@
             <column name="jhi_order" type="NUMERIC"/>
             <column name="potential_value" type="NUMERIC"/>
             <column name="stage_id" type="NUMERIC" />
-            <column name="person_id" type="NUMERIC" />
+            <column name="contact_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
             <column name="agent_id" type="NUMERIC" />
             <column name="deal_source_id" type="NUMERIC" />

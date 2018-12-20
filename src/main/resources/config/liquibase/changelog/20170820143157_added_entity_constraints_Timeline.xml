@@ -14,11 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="deal"/>
 
-        <addForeignKeyConstraint baseColumnNames="person_id"
+        <addForeignKeyConstraint baseColumnNames="contact_id"
                                  baseTableName="timeline"
-                                 constraintName="fk_timeline_person_id"
+                                 constraintName="fk_timeline_contact_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="person"/>
+                                 referencedTableName="contact"/>
 
         <addForeignKeyConstraint baseColumnNames="app_account_id"
                                  baseTableName="timeline"

@@ -66,7 +66,7 @@ public class DealResource {
 
     @GetMapping("/deals")
     @Timed
-    public ResponseEntity<List<DealDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
+    public ResponseEntity<List<DealDTO>> getDeals(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
 
         Page<DealDTO> page = dealService.query(q, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/search");
@@ -75,11 +75,11 @@ public class DealResource {
     }
 
 
-    @PutMapping("/deals/{id}/partial")
+    @PutMapping("/deals/{id}/stage/{stageId}")
     @Timed
-    public ResponseEntity<DealDTO> patchDeal(@PathVariable Long id, @ApiParam Integer priority,  @ApiParam Long stageId ) throws URISyntaxException, IOException {
+    public ResponseEntity<DealDTO> updateDealStage(@PathVariable Long id, @ApiParam Long stageId ) throws IOException {
 
-        DealDTO result = dealService.patch(id, priority, stageId);
+        DealDTO result = dealService.updateStage(id, stageId);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
             .body(result);

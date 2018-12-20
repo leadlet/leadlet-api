@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A DTO for the Person entity.
+ * A DTO for the Contact entity.
  */
-public class PersonDTO implements Serializable {
+public class ContactDTO implements Serializable {
 
     private Long id;
 
@@ -84,9 +84,9 @@ public class PersonDTO implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PersonDTO)) return false;
-        PersonDTO personDTO = (PersonDTO) o;
-        return Objects.equals(id, personDTO.id);
+        if (!(o instanceof ContactDTO)) return false;
+        ContactDTO contactDTO = (ContactDTO) o;
+        return Objects.equals(id, contactDTO.id);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class PersonDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "PersonDTO{" +
+        return "ContactDTO{" +
             "id=" + id +
             ", name='" + name + '\'' +
             ", address='" + address + '\'' +
