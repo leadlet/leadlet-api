@@ -92,24 +92,9 @@ public class User extends AbstractSearchableEntity implements Serializable {
     @OneToMany(mappedBy = "agent", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Deal> deals;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Team team;
-
-    @NotNull
-    @Column(nullable = false)
-    private boolean isTeamLead = false;
-
     public static long getSerialVersionUID() {
 
         return serialVersionUID;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
     }
 
     public Long getId() {
@@ -228,22 +213,12 @@ public class User extends AbstractSearchableEntity implements Serializable {
         this.deals = deals;
     }
 
-    public User setTeamLead(boolean teamLead) {
-        isTeamLead = teamLead;
-        return this;
-    }
-
-    public boolean isTeamLead() {
-        return isTeamLead;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
         return activated == user.activated &&
-            isTeamLead == user.isTeamLead &&
             Objects.equals(id, user.id);
     }
 
@@ -268,7 +243,6 @@ public class User extends AbstractSearchableEntity implements Serializable {
             ", resetKey='" + resetKey + '\'' +
             ", resetDate=" + resetDate +
             ", authorities=" + authorities +
-            ", isTeamLead=" + isTeamLead +
             '}';
     }
 
