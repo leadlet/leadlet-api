@@ -36,9 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service Implementation for managing Team.
- */
 @Service
 @Transactional
 public class ElasticsearchServiceImpl implements ElasticsearchService {

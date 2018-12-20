@@ -27,9 +27,6 @@ public class Pipeline extends AbstractAccountSpecificEntity implements Serializa
     @Column(name = "name")
     private String name;
 
-    @Column(name = "jhi_order")
-    private Integer order;
-
     @OneToMany(mappedBy = "pipeline", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -54,19 +51,6 @@ public class Pipeline extends AbstractAccountSpecificEntity implements Serializa
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getOrder() {
-        return order;
-    }
-
-    public Pipeline order(Integer order) {
-        this.order = order;
-        return this;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
     }
 
     public Set<Stage> getStages() {
@@ -114,7 +98,6 @@ public class Pipeline extends AbstractAccountSpecificEntity implements Serializa
         return "Pipeline{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", order='" + getOrder() + "'" +
             "}";
     }
 }
