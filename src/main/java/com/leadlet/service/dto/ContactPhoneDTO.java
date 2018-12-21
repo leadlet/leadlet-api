@@ -1,11 +1,10 @@
 package com.leadlet.service.dto;
 
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
 import com.leadlet.domain.enumeration.PhoneType;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A DTO for the ContactPhone entity.
@@ -18,7 +17,7 @@ public class ContactPhoneDTO implements Serializable {
 
     private PhoneType type;
 
-    private Long personId;
+    private Long contactId;
 
     public Long getId() {
         return id;
@@ -44,12 +43,12 @@ public class ContactPhoneDTO implements Serializable {
         this.type = type;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getcontactId() {
+        return contactId;
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public void setcontactId(Long contactId) {
+        this.contactId = contactId;
     }
 
     @Override

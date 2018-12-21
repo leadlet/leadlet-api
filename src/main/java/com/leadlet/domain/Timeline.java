@@ -30,7 +30,7 @@ public class Timeline extends AbstractSearchableEntity implements Serializable {
     private Long sourceId;
 
     @ManyToOne
-    private Person person;
+    private Contact contact;
 
     @ManyToOne
     private Deal deal;
@@ -75,12 +75,12 @@ public class Timeline extends AbstractSearchableEntity implements Serializable {
         return this;
     }
 
-    public Person getPerson() {
-        return person;
+    public Contact getContact() {
+        return contact;
     }
 
-    public Timeline setPerson(Person person) {
-        this.person = person;
+    public Timeline setContact(Contact contact) {
+        this.contact = contact;
         return this;
     }
 

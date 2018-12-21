@@ -1,4 +1,4 @@
-id;title;priority;potential_value;stage_id;pipeline_id;person_id;app_account_id;agent_id;deal_source_id;deal_channel_id;activity_status;lost_reason_id;created_date
+id;title;priority;potential_value;stage_id;pipeline_id;contact_id;app_account_id;agent_id;deal_source_id;deal_channel_id;activity_status;lost_reason_id;created_date
 100;amet justo morbi ut odio;1;74.07;15;2;198;1;11;1;1;EXPIRED;1;2018-10-11 22:41:58
 101;id luctus nec molestie sed justo;2;11.25;11;1;126;1;11;2;1;EXPIRED;1;2018-09-30 22:41:58
 102;in lacus curabitur;3;78.98;15;2;179;1;10;2;1;EXPIRED;1;2018-09-13 22:41:58

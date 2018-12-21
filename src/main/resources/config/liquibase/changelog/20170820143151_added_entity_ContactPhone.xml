@@ -30,7 +30,7 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="person_id" type="bigint">
+            <column name="contact_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
 
@@ -43,7 +43,7 @@
                   separator=";"
                   tableName="contact_phone">
             <column name="id" type="NUMERIC"/>
-            <column name="person_id" type="NUMERIC" />
+            <column name="contact_id" type="NUMERIC" />
         </loadData>
 
     </changeSet>

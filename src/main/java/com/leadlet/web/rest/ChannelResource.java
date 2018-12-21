@@ -86,7 +86,7 @@ public class ChannelResource {
      */
     @GetMapping("/channels")
     @Timed
-    public ResponseEntity<List<ChannelDTO>> getAllChannels(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<ChannelDTO>> getChannels(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Channels");
         Page<ChannelDTO> page = channelService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/channels");

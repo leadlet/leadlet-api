@@ -1,5 +1,6 @@
 package com.leadlet.config;
 
+import com.leadlet.domain.Contact;
 import io.github.jhipster.config.JHipsterProperties;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
@@ -49,9 +50,9 @@ public class CacheConfiguration {
             cm.createCache(com.leadlet.domain.Pipeline.class.getName() + ".stages", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Stage.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Stage.class.getName() + ".deals", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Person.class.getName(), jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Person.class.getName() + ".phones", jcacheConfiguration);
-            cm.createCache(com.leadlet.domain.Person.class.getName() + ".emails", jcacheConfiguration);
+            cm.createCache(Contact.class.getName(), jcacheConfiguration);
+            cm.createCache(Contact.class.getName() + ".phones", jcacheConfiguration);
+            cm.createCache(Contact.class.getName() + ".emails", jcacheConfiguration);
             cm.createCache(com.leadlet.domain.ContactPhone.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Deal.class.getName(), jcacheConfiguration);
             cm.createCache(com.leadlet.domain.Activity.class.getName(), jcacheConfiguration);

@@ -87,7 +87,7 @@ public class NoteResource {
      */
     @GetMapping("/notes")
     @Timed
-    public ResponseEntity<List<NoteDTO>> getAllNotes(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<NoteDTO>> getNotes(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Notes");
         Page<NoteDTO> page = noteService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notes");

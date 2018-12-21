@@ -89,7 +89,7 @@ public class SubscriptionPlanResource {
      */
     @GetMapping("/subscription-plans")
     @Timed
-    public ResponseEntity<List<SubscriptionPlanDTO>> getAllSubscriptionPlans(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<SubscriptionPlanDTO>> getSubscriptionPlans(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of SubscriptionPlans");
         Page<SubscriptionPlanDTO> page = subscriptionPlanService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/subscription-plans");

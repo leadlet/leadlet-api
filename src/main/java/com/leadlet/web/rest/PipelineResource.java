@@ -1,15 +1,12 @@
 package com.leadlet.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.leadlet.domain.AppAccount;
-import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.PipelineService;
-import com.leadlet.service.dto.StageDTO;
+import com.leadlet.service.dto.PipelineDTO;
 import com.leadlet.web.rest.util.HeaderUtil;
 import com.leadlet.web.rest.util.PaginationUtil;
-import com.leadlet.service.dto.PipelineDTO;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -91,7 +87,7 @@ public class PipelineResource {
      */
     @GetMapping("/pipelines")
     @Timed
-    public ResponseEntity<List<PipelineDTO>> getAllPipelines(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<PipelineDTO>> getPipelines(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Pipelines");
         Page<PipelineDTO> page = pipelineService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pipelines");

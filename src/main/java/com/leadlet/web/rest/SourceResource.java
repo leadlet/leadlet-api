@@ -86,7 +86,7 @@ public class SourceResource {
      */
     @GetMapping("/sources")
     @Timed
-    public ResponseEntity<List<SourceDTO>> getAllSources(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<SourceDTO>> getSources(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Sources");
         Page<SourceDTO> page = sourceService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/sources");

@@ -20,11 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="pipeline"/>
 
-        <addForeignKeyConstraint baseColumnNames="person_id"
+        <addForeignKeyConstraint baseColumnNames="contact_id"
                                  baseTableName="deal"
-                                 constraintName="fk_deal_person_id"
+                                 constraintName="fk_deal_contact_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="person"/>
+                                 referencedTableName="contact"/>
 
         <addForeignKeyConstraint baseColumnNames="app_account_id"
                                  baseTableName="deal"

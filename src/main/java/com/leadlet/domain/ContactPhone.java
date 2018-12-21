@@ -31,7 +31,7 @@ public class ContactPhone implements Serializable {
     private PhoneType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Person person;
+    private Contact contact;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -61,12 +61,12 @@ public class ContactPhone implements Serializable {
         this.type = type;
     }
 
-    public Person getPerson() {
-        return person;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ContactPhone implements Serializable {
             "id=" + id +
             ", phone='" + phone + '\'' +
             ", type=" + type +
-            ", person=" + person +
+            ", contact=" + contact +
             '}';
     }
 }

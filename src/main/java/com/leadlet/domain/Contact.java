@@ -14,12 +14,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A Person.
+ * A Contact.
  */
 @Entity
-@Table(name = "person")
+@Table(name = "contact")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Person implements Serializable {
+public class Contact implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,7 +41,7 @@ public class Person implements Serializable {
     @Column(name = "gender")
     private Gender gender;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ContactPhone> phones = new HashSet<>();
@@ -53,16 +53,16 @@ public class Person implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private AppAccount appAccount;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Activity> activities;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Deal> deals;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Note> notes;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Timeline> timelines;
 
     public static long getSerialVersionUID() {
@@ -168,9 +168,9 @@ public class Person implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Person)) return false;
-        Person person = (Person) o;
-        return Objects.equals(id, person.id);
+        if (!(o instanceof Contact)) return false;
+        Contact contact = (Contact) o;
+        return Objects.equals(id, contact.id);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "Contact{" +
             "id=" + id +
             ", name='" + name + '\'' +
             ", address='" + address + '\'' +

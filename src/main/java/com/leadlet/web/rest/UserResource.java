@@ -147,7 +147,7 @@ public class UserResource {
      */
     @GetMapping("/users")
     @Timed
-    public ResponseEntity<List<UserDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws IOException {
+    public ResponseEntity<List<UserDTO>> getUsers(@ApiParam String q, @ApiParam Pageable pageable) throws IOException {
         log.debug("REST request to get a page of Users");
 
         // TODO fix

@@ -17,7 +17,7 @@ public interface TimelineService {
 
     Timeline save(Timeline timeline);
 
-    Page<TimelineDTO> query(String searchQuery, Pageable pageable) throws IOException;
+    Page<TimelineDTO> findAll(String searchQuery, Pageable pageable) throws IOException;
 
     void noteCreated(Note note) throws IOException;
 
