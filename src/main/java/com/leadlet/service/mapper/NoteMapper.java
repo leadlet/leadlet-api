@@ -5,14 +5,14 @@ import com.leadlet.service.dto.NoteDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {PersonMapper.class, DealMapper.class})
+@Mapper(componentModel = "spring", uses = {ContactMapper.class, DealMapper.class})
 public interface NoteMapper extends EntityMapper<NoteDTO, Note> {
 
-    @Mapping(source = "person.id", target = "personId")
+    @Mapping(source = "contact.id", target = "contactId")
     @Mapping(source = "deal.id", target = "dealId")
-    NoteDTO toDto(Note person);
+    NoteDTO toDto(Note contact);
 
-    @Mapping(source = "personId", target = "person")
+    @Mapping(source = "contactId", target = "contact")
     @Mapping(source = "dealId", target = "deal")
     Note toEntity(NoteDTO noteDTO);
 

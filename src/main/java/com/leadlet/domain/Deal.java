@@ -40,7 +40,7 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     private Pipeline pipeline;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Person person;
+    private Contact contact;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User agent;
@@ -144,12 +144,12 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         this.stage = stage;
     }
 
-    public Person getPerson() {
-        return person;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public User getAgent() {

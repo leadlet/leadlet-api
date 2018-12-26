@@ -116,8 +116,8 @@ public class TimelineServiceImpl implements TimelineService {
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.NOTE_CREATED);
 
-        if (note.getPerson() != null) {
-            timelineItem.setPerson(note.getPerson());
+        if (note.getContact() != null) {
+            timelineItem.setContact(note.getContact());
         }
 
         if (note.getDeal() != null) {
@@ -141,7 +141,7 @@ public class TimelineServiceImpl implements TimelineService {
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.ACTIVITY_CREATED);
-        timelineItem.setPerson(activity.getPerson());
+        timelineItem.setContact(activity.getContact());
         timelineItem.setAppAccount(activity.getAppAccount());
         timelineItem.setAgent(activity.getAgent());
         timelineItem.setDeal(activity.getDeal());
@@ -159,7 +159,7 @@ public class TimelineServiceImpl implements TimelineService {
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.DEAL_CREATED);
-        timelineItem.setPerson(deal.getPerson());
+        timelineItem.setContact(deal.getContact());
         timelineItem.setAppAccount(deal.getAppAccount());
         timelineItem.setAgent(deal.getAgent());
         timelineItem.setDeal(deal);

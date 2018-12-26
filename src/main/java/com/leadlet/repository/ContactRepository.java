@@ -1,6 +1,6 @@
 package com.leadlet.repository;
 
-import com.leadlet.domain.Person;
+import com.leadlet.domain.Contact;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,9 +15,9 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PersonRepository extends JpaRepository<Person,Long> ,  JpaSpecificationExecutor<Person> {
-    Page<Person> findByAppAccount_Id(Long appAccountId, Pageable page);
-    Person findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
+public interface ContactRepository extends JpaRepository<Contact,Long> ,  JpaSpecificationExecutor<Contact> {
+    Page<Contact> findByAppAccount_Id(Long appAccountId, Pageable page);
+    Contact findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdInAndAppAccount_Id(List<Long> idList, Long appAccountId);
 }

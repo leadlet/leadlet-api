@@ -87,7 +87,7 @@ public class StageResource {
      */
     @GetMapping("/stages")
     @Timed
-    public ResponseEntity<List<StageDTO>> getAllStages(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<StageDTO>> getStages(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Stages");
         Page<StageDTO> page = stageService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stages");

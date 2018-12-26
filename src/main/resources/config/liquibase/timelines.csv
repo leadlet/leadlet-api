@@ -1,4 +1,4 @@
-id;app_account_id;type;person_id;deal_id;agent_id;created_date;created_by
+id;app_account_id;type;contact_id;deal_id;agent_id;created_date;created_by
 1;1;NOTE_CREATED;100;null;10;2018-01-08T00:00:00;system
 2;1;NOTE_CREATED;100;null;10;2018-01-09T00:00:00;system
 3;1;NOTE_CREATED;100;null;10;2018-01-10T00:00:00;system

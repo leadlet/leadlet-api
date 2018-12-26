@@ -2,8 +2,6 @@ package com.leadlet.service.dto;
 
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -14,8 +12,6 @@ public class PipelineDTO implements Serializable {
     private Long id;
 
     private String name;
-
-    private Integer order;
 
     public Long getId() {
         return id;
@@ -31,14 +27,6 @@ public class PipelineDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getOrder() {
-        return order;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
     }
 
     @Override
@@ -67,7 +55,6 @@ public class PipelineDTO implements Serializable {
         return "PipelineDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", order='" + getOrder() + "'" +
             "}";
     }
 }

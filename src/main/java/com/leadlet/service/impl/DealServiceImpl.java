@@ -100,12 +100,11 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public DealDTO patch(Long id, Integer priority, Long stageId) throws IOException {
+    public DealDTO updateStage(Long id, Long stageId) throws IOException {
 
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         Stage newStage = stageRepository.findOne(stageId);
         if (dealFromDb != null) {
-            dealFromDb.setPriority(priority);
             dealFromDb.setStage(newStage);
             Deal deal = dealRepository.save(dealFromDb);
             elasticsearchService.indexDeal(deal);
@@ -160,11 +159,6 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public Double getDealTotalByStage(Long stageId) {
-        return dealRepository.calculateDealTotalByStageId(SecurityUtils.getCurrentUserAppAccountId(),stageId);
-    }
-
-    @Override
     public Page<DealDTO> query(String searchQuery, Pageable pageable) throws IOException {
 
         String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
@@ -175,12 +169,6 @@ public class DealServiceImpl implements DealService {
         }
 
         Pair<List<Long>, Long> response = elasticsearchService.getEntityIds("leadlet-deal", searchQuery, pageable);
-
-        Page<DealDTO> deals = new PageImpl<DealDTO>(dealRepository.findAllByIdIn(response.getFirst()).stream()
-            .map(dealMapper::toDto).collect(Collectors.toList()),
-            pageable,
-            response.getSecond());
-
 
         List<DealDTO> unsorted = dealRepository.findAllByIdIn(response.getFirst()).stream()
             .map(dealMapper::toDto).collect(Collectors.toList());

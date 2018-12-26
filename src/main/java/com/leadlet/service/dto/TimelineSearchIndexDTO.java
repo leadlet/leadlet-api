@@ -17,7 +17,7 @@ public class TimelineSearchIndexDTO implements Serializable {
 
     private Long id;
     private Date createdDate;
-    private Long personId;
+    private Long contactId;
     private Long agentId;
     private Long dealId;
     private Long appAccountId;
@@ -31,8 +31,8 @@ public class TimelineSearchIndexDTO implements Serializable {
 
         this.id = timeline.getId();
         this.createdDate = new Date(timeline.getCreatedDate().toEpochMilli());
-        if(timeline.getPerson() != null){
-            this.personId = timeline.getPerson().getId();
+        if(timeline.getContact() != null){
+            this.contactId = timeline.getContact().getId();
         }
         if(timeline.getAgent() != null){
             this.agentId = timeline.getAgent().getId();
@@ -63,12 +63,12 @@ public class TimelineSearchIndexDTO implements Serializable {
         return this;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getcontactId() {
+        return contactId;
     }
 
-    public TimelineSearchIndexDTO setPersonId(Long personId) {
-        this.personId = personId;
+    public TimelineSearchIndexDTO setContactId(Long contactId) {
+        this.contactId = contactId;
         return this;
     }
 
@@ -114,7 +114,7 @@ public class TimelineSearchIndexDTO implements Serializable {
         {
             builder.field("id", getId());
             builder.timeField("created_date", getCreatedDate());
-            builder.field("person_id", getPersonId());
+            builder.field("contact_id", getcontactId());
             builder.field("agent_id", getAgentId());
             builder.field("deal_id", getDealId());
             builder.field("type", getType());

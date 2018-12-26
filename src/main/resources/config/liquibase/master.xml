@@ -15,9 +15,8 @@
     <include file="config/liquibase/changelog/20170820143152_added_entity_Deal.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143153_added_entity_Activity.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201801021129_added_entity_Note.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170820143154_added_entity_Person.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143154_added_entity_Contact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143157_added_entity_Timeline.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/201802081618_added_entity_Team.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201807312348_added_entity_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201808031713_added_entity_Deal_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201808040102_added_entity_Source.xml" relativeToChangelogFile="false"/>
@@ -33,9 +32,8 @@
     <include file="config/liquibase/changelog/20170820143152_added_entity_constraints_Deal.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143153_added_entity_constraints_Activity.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201801021129_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170820143154_added_entity_constraints_Person.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170820143154_added_entity_constraints_Contact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170820143157_added_entity_constraints_Timeline.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/201802081618_added_entity_constraints_Team.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201807312348_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201809082247_added_entity_constraints_LostReason.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201811132132_added_entity_constraints_ActivityType.xml" relativeToChangelogFile="false"/>

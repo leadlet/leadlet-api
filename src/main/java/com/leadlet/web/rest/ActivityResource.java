@@ -82,7 +82,7 @@ public class ActivityResource {
 
     @GetMapping("/activities")
     @Timed
-    public ResponseEntity<List<ActivityDTO>> search(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
+    public ResponseEntity<List<ActivityDTO>> getActivities(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
 
         Page<ActivityDTO> page = activityService.search(q, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activities/search");

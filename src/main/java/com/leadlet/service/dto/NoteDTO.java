@@ -9,7 +9,7 @@ public class NoteDTO implements Serializable {
 
     private String content;
 
-    private Long personId;
+    private Long contactId;
 
     private Long dealId;
 
@@ -29,12 +29,12 @@ public class NoteDTO implements Serializable {
         this.content = content;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getContactId() {
+        return contactId;
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
     }
 
     public Long getDealId() {
@@ -64,7 +64,7 @@ public class NoteDTO implements Serializable {
         return "NoteDTO{" +
             "id=" + id +
             ", content='" + content + '\'' +
-            ", personId=" + personId +
+            ", contactId=" + contactId +
             ", dealId=" + dealId +
             '}';
     }

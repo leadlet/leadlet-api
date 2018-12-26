@@ -28,7 +28,8 @@
             <column name="content" type="longtext">
                 <constraints nullable="true" />
             </column>
-            <column name="person_id" type="bigint">
+
+            <column name="contact_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
@@ -70,7 +71,7 @@
                   tableName="timeline">
             <column name="id" type="NUMERIC"/>
             <column name="created_date" type="DATETIME" />
-            <column name="person_id" type="NUMERIC" />
+            <column name="contact_id" type="NUMERIC" />
             <column name="deal_id" type="NUMERIC" />
             <column name="app_account_id" type="NUMERIC" />
             <column name="agent_id" type="NUMERIC" />

@@ -24,7 +24,7 @@ public class ActivityDTO implements Serializable {
 
     private DealDTO deal;
 
-    private PersonDTO person;
+    private ContactDTO contact;
 
     private UserDTO agent;
 
@@ -88,12 +88,12 @@ public class ActivityDTO implements Serializable {
         return this;
     }
 
-    public PersonDTO getPerson() {
-        return person;
+    public ContactDTO getContact() {
+        return contact;
     }
 
-    public ActivityDTO setPerson(PersonDTO person) {
-        this.person = person;
+    public ActivityDTO setContact(ContactDTO contact) {
+        this.contact = contact;
         return this;
     }
 

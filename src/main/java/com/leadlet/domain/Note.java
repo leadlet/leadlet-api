@@ -27,7 +27,7 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
     private String content;
 
     @ManyToOne
-    private Person person;
+    private Contact contact;
 
     @ManyToOne
     private Deal deal;
@@ -52,12 +52,12 @@ public class Note extends AbstractAccountSpecificEntity implements Serializable 
         this.content = content;
     }
 
-    public Person getPerson() {
-        return person;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public Deal getDeal() {

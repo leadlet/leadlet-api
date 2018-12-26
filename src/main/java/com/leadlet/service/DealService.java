@@ -28,8 +28,7 @@ public interface DealService {
      */
     DealDTO update(DealDTO dealDTO, List<String> modifiedFields) throws IOException;
 
-    DealDTO patch(Long id, Integer priority, Long stageId) throws IOException;
-
+    DealDTO updateStage(Long id, Long stageId) throws IOException;
 
     /**
      * Get all the deals.
@@ -53,8 +52,6 @@ public interface DealService {
      * @param id the id of the entity
      */
     void delete(Long id);
-
-    Double getDealTotalByStage(Long stageId);
 
     Page<DealDTO> query(String searchQuery, Pageable pageable) throws IOException;
 }

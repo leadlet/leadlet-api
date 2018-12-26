@@ -1,4 +1,4 @@
-id;content;person_id;app_account_id;deal_id
+id;content;contact_id;app_account_id;deal_id
 1;nonummy integer non velit donec;111;1;null
 2;ante nulla;160;1;null
 3;sit amet eleifend pede;175;1;null
