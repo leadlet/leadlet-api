@@ -113,7 +113,7 @@ public class Timeline extends AbstractSearchableEntity implements Serializable {
             "id=" + id +
             ", type=" + type +
             ", content='" + content + '\'' +
-            ", person=" + person +
+            ", contact=" + contact +
             ", deal=" + deal +
             ", agent=" + agent +
             '}';

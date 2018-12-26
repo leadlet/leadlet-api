@@ -44,7 +44,7 @@ public class TimelineResource {
     @Timed
     public ResponseEntity<List<TimelineDTO>> getTimelines(@ApiParam String q, @ApiParam Pageable pageable) throws IOException {
         log.debug("REST request to get a page of Timelines");
-        Page<TimelineDTO> page = timelineService.findAll(q,pageable);
+        Page<TimelineDTO> page = timelineService.query(q,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/timeLines");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

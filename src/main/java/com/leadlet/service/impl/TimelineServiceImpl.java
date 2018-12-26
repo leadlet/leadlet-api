@@ -55,6 +55,7 @@ public class TimelineServiceImpl implements TimelineService {
     private final DealRepository dealRepository;
 
     private final ElasticsearchService elasticsearchService;
+    private final UserMapper userMapper;
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -64,6 +65,7 @@ public class TimelineServiceImpl implements TimelineService {
                                ActivityRepository activityRepository,
                                NoteMapper noteMapper,
                                ActivityMapper activityMapper,
+                               UserMapper userMapper,
                                DealRepository dealRepository,
                                DealMapper dealMapper,
                                ElasticsearchService elasticsearchService) {
@@ -76,6 +78,7 @@ public class TimelineServiceImpl implements TimelineService {
         this.elasticsearchService = elasticsearchService;
         this.dealRepository = dealRepository;
         this.dealMapper = dealMapper;
+        this.userMapper = userMapper;
 
     }
 
@@ -211,9 +214,9 @@ public class TimelineServiceImpl implements TimelineService {
         for (String field : modifiedFields) {
             if (field.equals("title")) {
                 fields.put("title", deal.getTitle());
-            } else if (field.equals("person")) {
-                PersonMapper personMapper = new PersonMapperImpl();
-                fields.put("person", personMapper.toDto(deal.getPerson()));
+            } else if (field.equals("contact")) {
+                ContactMapper contactMapper = new ContactMapperImpl();
+                fields.put("contact", contactMapper.toDto(deal.getContact()));
             } else if (field.equals("stage")) {
                 StageMapper stageMapper = new StageMapperImpl();
                 fields.put("stage", stageMapper.toDto(deal.getStage()));
@@ -226,7 +229,6 @@ public class TimelineServiceImpl implements TimelineService {
                 PipelineMapper pipelineMapper = new PipelineMapperImpl();
                 fields.put("pipeline", pipelineMapper.toDto(deal.getPipeline()));
             } else if (field.equals("agent")) {
-                UserMapper userMapper = new UserMapperImpl();
                 fields.put("agent", userMapper.toDto(deal.getAgent()));
             } else if (field.equals("possibleCloseDate") ) {
                 fields.put("possibleCloseDate", deal.getPossibleCloseDate() != null ? deal.getPossibleCloseDate().toEpochSecond(): "");
