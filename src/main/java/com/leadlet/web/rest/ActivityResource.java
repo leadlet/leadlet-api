@@ -70,7 +70,7 @@ public class ActivityResource {
      */
     @PutMapping("/activities")
     @Timed
-    public ResponseEntity<ActivityDTO> updateActivity(@RequestBody ActivityDTO activityDTO) throws URISyntaxException {
+    public ResponseEntity<ActivityDTO> updateActivity(@RequestBody ActivityDTO activityDTO) throws IOException {
         log.debug("REST request to update Activity : {}", activityDTO);
 
         ActivityDTO result = activityService.update(activityDTO);

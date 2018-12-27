@@ -96,10 +96,10 @@ public class DealResource {
      */
     @PutMapping("/deals")
     @Timed
-    public ResponseEntity<DealDTO> updateDeal(@RequestBody DealDTO dealDTO) throws IOException {
+    public ResponseEntity<DealDTO> updateDeal(@RequestBody DealDTO dealDTO, @RequestHeader("modified-fields") List<String> modifiedFields) throws URISyntaxException, IOException {
         log.debug("REST request to update Deal : {}", dealDTO);
 
-        DealDTO result = dealService.update(dealDTO);
+        DealDTO result = dealService.update(dealDTO, modifiedFields);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealDTO.getId().toString()))
             .body(result);

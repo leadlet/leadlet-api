@@ -26,8 +26,9 @@ public class Timeline extends AbstractSearchableEntity implements Serializable {
     @Column(name = "type", nullable = false)
     private TimelineItemType type;
 
-    @Column(name = "source_id", nullable = false)
-    private Long sourceId;
+    @Lob
+    @Column(name = "content", nullable = true)
+    private String content;
 
     @ManyToOne
     private Contact contact;
@@ -58,12 +59,12 @@ public class Timeline extends AbstractSearchableEntity implements Serializable {
         this.type = type;
     }
 
-    public Long getSourceId() {
-        return sourceId;
+    public String getContent() {
+        return content;
     }
 
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public User getAgent() {
@@ -111,7 +112,10 @@ public class Timeline extends AbstractSearchableEntity implements Serializable {
         return "Timeline{" +
             "id=" + id +
             ", type=" + type +
-            ", sourceId=" + sourceId +
+            ", content='" + content + '\'' +
+            ", contact=" + contact +
+            ", deal=" + deal +
+            ", agent=" + agent +
             '}';
     }
 }

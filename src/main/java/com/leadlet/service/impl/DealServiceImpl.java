@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
@@ -47,14 +48,17 @@ public class DealServiceImpl implements DealService {
 
     private final TimelineService timelineService;
 
+    private final EntityManager entityManager;
+
     public DealServiceImpl(DealRepository dealRepository, DealMapper dealMapper, StageRepository stageRepository,
                            ElasticsearchService elasticsearchService,
-                           TimelineService timelineService) {
+                           TimelineService timelineService, EntityManager entityManager) {
         this.dealRepository = dealRepository;
         this.dealMapper = dealMapper;
         this.stageRepository = stageRepository;
         this.elasticsearchService = elasticsearchService;
         this.timelineService = timelineService;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -82,15 +86,18 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDTO update(DealDTO dealDTO) throws IOException {
+    public DealDTO update(DealDTO dealDTO, List<String> modifiedFields) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
+
+        entityManager.detach(dealFromDb);
 
         if (dealFromDb != null) {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             deal = dealRepository.save(deal);
+            timelineService.dealUpdated(dealFromDb, deal, modifiedFields);
             elasticsearchService.indexDeal(deal);
             return dealMapper.toDto(deal);
         } else {
