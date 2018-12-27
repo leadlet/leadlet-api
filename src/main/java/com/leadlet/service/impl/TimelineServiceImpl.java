@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
 /**
  * Service Implementation for managing Timeline.
  */
@@ -37,25 +38,20 @@ import java.util.stream.Collectors;
 public class TimelineServiceImpl implements TimelineService {
 
     private final Logger log = LoggerFactory.getLogger(TimelineServiceImpl.class);
-
     private final TimelineRepository timelineRepository;
     private final TimelineMapper timelineMapper;
-
     private final NoteRepository noteRepository;
-
     private final NoteMapper noteMapper;
-
     private final ActivityMapper activityMapper;
-
     private final DealMapper dealMapper;
-
-
     private final ActivityRepository activityRepository;
-
     private final DealRepository dealRepository;
-
     private final ElasticsearchService elasticsearchService;
     private final UserMapper userMapper;
+    private final PipelineMapper pipelineMapper;
+    private final DealValueMapper dealValueMapper;
+    private final StageMapper stageMapper;
+    private final ContactMapper contactMapper;
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -68,7 +64,11 @@ public class TimelineServiceImpl implements TimelineService {
                                UserMapper userMapper,
                                DealRepository dealRepository,
                                DealMapper dealMapper,
-                               ElasticsearchService elasticsearchService) {
+                               ElasticsearchService elasticsearchService,
+                               PipelineMapper pipelineMapper,
+                               DealValueMapper dealValueMapper,
+                               StageMapper stageMapper,
+                               ContactMapper contactMapper) {
         this.timelineRepository = timelineRepository;
         this.timelineMapper = timelineMapper;
         this.noteRepository = noteRepository;
@@ -79,6 +79,10 @@ public class TimelineServiceImpl implements TimelineService {
         this.dealRepository = dealRepository;
         this.dealMapper = dealMapper;
         this.userMapper = userMapper;
+        this.pipelineMapper = pipelineMapper;
+        this.dealValueMapper = dealValueMapper;
+        this.stageMapper = stageMapper;
+        this.contactMapper = contactMapper;
 
     }
 
@@ -215,23 +219,19 @@ public class TimelineServiceImpl implements TimelineService {
             if (field.equals("title")) {
                 fields.put("title", deal.getTitle());
             } else if (field.equals("contact")) {
-                ContactMapper contactMapper = new ContactMapperImpl();
                 fields.put("contact", contactMapper.toDto(deal.getContact()));
             } else if (field.equals("stage")) {
-                StageMapper stageMapper = new StageMapperImpl();
                 fields.put("stage", stageMapper.toDto(deal.getStage()));
             } else if (field.equals("priority")) {
                 fields.put("priority", deal.getPriority());
             } else if (field.equals("dealValue")) {
-                DealValueMapper dealValueMapper = new DealValueMapperImpl();
                 fields.put("dealValue", dealValueMapper.toDto(deal.getDealValue()));
             } else if (field.equals("pipeline")) {
-                PipelineMapper pipelineMapper = new PipelineMapperImpl();
                 fields.put("pipeline", pipelineMapper.toDto(deal.getPipeline()));
             } else if (field.equals("agent")) {
                 fields.put("agent", userMapper.toDto(deal.getAgent()));
-            } else if (field.equals("possibleCloseDate") ) {
-                fields.put("possibleCloseDate", deal.getPossibleCloseDate() != null ? deal.getPossibleCloseDate().toEpochSecond(): "");
+            } else if (field.equals("possibleCloseDate")) {
+                fields.put("possibleCloseDate", deal.getPossibleCloseDate() != null ? deal.getPossibleCloseDate().toEpochSecond() : "");
             }
         }
 
