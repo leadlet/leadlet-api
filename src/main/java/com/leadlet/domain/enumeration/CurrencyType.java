@@ -1,7 +1,7 @@
 package com.leadlet.domain.enumeration;
 
 /**
- * The ActivityType enumeration.
+ * The Currency Type enumeration.
  */
 public enum CurrencyType {
     USD,
