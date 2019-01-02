@@ -134,7 +134,6 @@ public class TimelineServiceImpl implements TimelineService {
             timelineItem.setAppAccount(note.getAppAccount());
         }
 
-        NoteMapper noteMapper = new NoteMapperImpl();
         String contentJSON = mapper.writeValueAsString(noteMapper.toDto(note));
         timelineItem.setContent(contentJSON);
 
@@ -153,7 +152,6 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setAgent(activity.getAgent());
         timelineItem.setDeal(activity.getDeal());
 
-        ActivityMapper activityMapper = new ActivityMapperImpl();
         String contentJSON = mapper.writeValueAsString(activityMapper.toDto(activity));
         timelineItem.setContent(contentJSON);
 
@@ -171,7 +169,6 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setAgent(deal.getAgent());
         timelineItem.setDeal(deal);
 
-        DealMapper dealMapper = new DealMapperImpl();
         String contentJSON = mapper.writeValueAsString(dealMapper.toDto(deal));
         timelineItem.setContent(contentJSON);
 

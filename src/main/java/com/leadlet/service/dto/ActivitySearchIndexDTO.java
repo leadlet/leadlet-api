@@ -36,7 +36,7 @@ public class ActivitySearchIndexDTO implements Serializable {
         this.id = activity.getId();
         this.createdDate = new Date(activity.getCreatedDate().toEpochMilli());
         this.startDate = new Date(activity.getStart().toEpochMilli());
-        this.activityType = activity.getActivityType();
+        this.activityType = activity.getType();
         this.title = activity.getTitle();
         this.isDone = activity.isDone();
         this.contactId = activity.getContact() == null ? null : activity.getContact().getId() ;
