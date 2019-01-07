@@ -264,7 +264,6 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
             ", priority=" + priority +
             ", dealValue=" + dealValue +
             ", possibleCloseDate=" + possibleCloseDate +
-            ", activities=" + activities +
             ", activityStatus=" + activityStatus +
             ", dealStatus=" + dealStatus +
             '}';
