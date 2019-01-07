@@ -40,7 +40,7 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
 
     @OneToOne
     @NotNull
-    private ActivityType activityType;
+    private ActivityType type;
 
     @ManyToOne
     private Deal deal;
@@ -104,12 +104,12 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
         this.end = end;
     }
 
-    public ActivityType getActivityType() {
-        return activityType;
+    public ActivityType getType() {
+        return type;
     }
 
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
+    public void setType(ActivityType type) {
+        this.type = type;
     }
 
     public Deal getDeal() {
@@ -168,13 +168,13 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
         if (!(o instanceof Activity)) return false;
         Activity activity = (Activity) o;
         return done == activity.done &&
-            Objects.equals(id, activity.id) ;
+            Objects.equals(id, activity.id);
     }
 
     @Override
     public int hashCode() {
 
-        return id.hashCode();
+        return Objects.hash(id);
     }
 
     @Override
@@ -185,7 +185,7 @@ public class Activity extends AbstractSearchableEntity implements Serializable {
             ", memo='" + memo + '\'' +
             ", start=" + start +
             ", end=" + end +
-            ", activityType=" + activityType +
+            ", type=" + type +
             ", location=" + location +
             ", done=" + done +
             ", closedDate=" + closedDate +

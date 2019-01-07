@@ -38,7 +38,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="activity_type_id" type="bigint">
+            <column name="type_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
@@ -107,7 +107,7 @@
             <column name="app_account_id" type="NUMERIC" />
             <column name="agent_id" type="NUMERIC" />
             <column name="done" type="BOOLEAN" />
-            <column name="activity_type_id" type="NUMERIC" />
+            <column name="type_id" type="NUMERIC" />
         </loadData>
 
     </changeSet>

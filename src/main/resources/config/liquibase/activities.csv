@@ -1,4 +1,4 @@
-id;title;memo;start;end;activity_type_id;deal_id;contact_id;app_account_id;agent_id;done
+id;title;memo;start;end;type_id;deal_id;contact_id;app_account_id;agent_id;done
 1;sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non;nec dui luctus;2018-02-01T01:00:00;2018-02-01T30:00:00;3;272;266;2;21;FALSE
 2;nulla sed vel enim sit amet nunc viverra dapibus nulla suscipit ligula in;ac nibh fusce lacus purus aliquet;2018-01-01T00:00:00;2018-01-10T00:00:00;5;441;408;4;40;FALSE
 3;ultrices aliquet maecenas leo odio condimentum id luctus;tincidunt nulla mollis molestie lorem;2018-01-03T00:00:00;2018-01-09T00:00:00;5;536;535;5;51;FALSE

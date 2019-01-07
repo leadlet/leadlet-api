@@ -134,7 +134,6 @@ public class TimelineServiceImpl implements TimelineService {
             timelineItem.setAppAccount(note.getAppAccount());
         }
 
-        NoteMapper noteMapper = new NoteMapperImpl();
         String contentJSON = mapper.writeValueAsString(noteMapper.toDto(note));
         timelineItem.setContent(contentJSON);
 
