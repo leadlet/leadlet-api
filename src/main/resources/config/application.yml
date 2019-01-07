@@ -47,7 +47,7 @@ spring:
         mode: XHTML
 
 liquibase:
-    dropFirst: true
+    dropFirst: false
 
 security:
     basic:

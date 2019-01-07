@@ -62,6 +62,7 @@ spring:
           cluster-port: 9200
 liquibase:
     contexts: dev
+    drop-first: true
 
 # ===================================================================
 # To enable SSL, generate a certificate using:
