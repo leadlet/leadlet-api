@@ -5,7 +5,7 @@ import com.leadlet.service.dto.TimelineDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {ContactMapper.class, UserMapper.class, DealMapper.class})
+@Mapper(componentModel = "spring", uses = {ContactMapper.class, UserMapper.class, DetailedDealMapper.class})
 public interface TimelineMapper extends EntityMapper<TimelineDTO, Timeline> {
 
     @Mapping(source = "contact.id", target = "contactId")

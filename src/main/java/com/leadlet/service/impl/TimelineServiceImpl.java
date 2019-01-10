@@ -43,7 +43,7 @@ public class TimelineServiceImpl implements TimelineService {
     private final NoteRepository noteRepository;
     private final NoteMapper noteMapper;
     private final ActivityMapper activityMapper;
-    private final DealMapper dealMapper;
+    private final DetailedDealMapper detailedDealMapper;
     private final ActivityRepository activityRepository;
     private final DealRepository dealRepository;
     private final ElasticsearchService elasticsearchService;
@@ -63,7 +63,7 @@ public class TimelineServiceImpl implements TimelineService {
                                ActivityMapper activityMapper,
                                UserMapper userMapper,
                                DealRepository dealRepository,
-                               DealMapper dealMapper,
+                               DetailedDealMapper detailedDealMapper,
                                ElasticsearchService elasticsearchService,
                                PipelineMapper pipelineMapper,
                                DealValueMapper dealValueMapper,
@@ -77,7 +77,7 @@ public class TimelineServiceImpl implements TimelineService {
         this.activityMapper = activityMapper;
         this.elasticsearchService = elasticsearchService;
         this.dealRepository = dealRepository;
-        this.dealMapper = dealMapper;
+        this.detailedDealMapper = detailedDealMapper;
         this.userMapper = userMapper;
         this.pipelineMapper = pipelineMapper;
         this.dealValueMapper = dealValueMapper;
@@ -169,7 +169,7 @@ public class TimelineServiceImpl implements TimelineService {
         timelineItem.setAgent(deal.getAgent());
         timelineItem.setDeal(deal);
 
-        String contentJSON = mapper.writeValueAsString(dealMapper.toDto(deal));
+        String contentJSON = mapper.writeValueAsString(detailedDealMapper.toDto(deal));
         timelineItem.setContent(contentJSON);
 
         timelineRepository.save(timelineItem);

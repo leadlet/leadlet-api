@@ -1,6 +1,7 @@
 package com.leadlet.service;
 
 import com.leadlet.service.dto.DealDTO;
+import com.leadlet.service.dto.DetailedDealDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,7 +19,7 @@ public interface DealService {
      * @param dealDTO the entity to save
      * @return the persisted entity
      */
-    DealDTO save(DealDTO dealDTO) throws IOException;
+    DetailedDealDTO save(DealDTO dealDTO) throws IOException;
 
     /**
      * Update a deal.
@@ -26,9 +27,9 @@ public interface DealService {
      * @param dealDTO the entity to update
      * @return the persisted entity
      */
-    DealDTO update(DealDTO dealDTO, List<String> modifiedFields) throws IOException;
+    DetailedDealDTO update(DealDTO dealDTO, List<String> modifiedFields) throws IOException;
 
-    DealDTO updateStage(Long id, Long stageId) throws IOException;
+    DetailedDealDTO updateStage(Long id, Long stageId) throws IOException;
 
     /**
      * Get all the deals.
@@ -36,7 +37,7 @@ public interface DealService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<DealDTO> findAll(Pageable pageable);
+    Page<DetailedDealDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" deal.
@@ -44,7 +45,7 @@ public interface DealService {
      * @param id the id of the entity
      * @return the entity
      */
-    DealDTO findOne(Long id);
+    DetailedDealDTO findOne(Long id);
 
     /**
      * Delete the "id" deal.
@@ -53,5 +54,5 @@ public interface DealService {
      */
     void delete(Long id);
 
-    Page<DealDTO> query(String searchQuery, Pageable pageable) throws IOException;
+    Page<DetailedDealDTO> query(String searchQuery, Pageable pageable) throws IOException;
 }

@@ -9,7 +9,9 @@ import com.leadlet.service.DealService;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
 import com.leadlet.service.dto.DealDTO;
+import com.leadlet.service.dto.DetailedDealDTO;
 import com.leadlet.service.mapper.DealMapper;
+import com.leadlet.service.mapper.DetailedDealMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -42,6 +44,8 @@ public class DealServiceImpl implements DealService {
 
     private final StageRepository stageRepository;
 
+    private final DetailedDealMapper detailedDealMapper;
+
     private final DealMapper dealMapper;
 
     private final ElasticsearchService elasticsearchService;
@@ -50,10 +54,11 @@ public class DealServiceImpl implements DealService {
 
     private final EntityManager entityManager;
 
-    public DealServiceImpl(DealRepository dealRepository, DealMapper dealMapper, StageRepository stageRepository,
-                           ElasticsearchService elasticsearchService,
+    public DealServiceImpl(DealRepository dealRepository, DetailedDealMapper detailedDealMapper, StageRepository stageRepository,
+                           DealMapper dealMapper, ElasticsearchService elasticsearchService,
                            TimelineService timelineService, EntityManager entityManager) {
         this.dealRepository = dealRepository;
+        this.detailedDealMapper = detailedDealMapper;
         this.dealMapper = dealMapper;
         this.stageRepository = stageRepository;
         this.elasticsearchService = elasticsearchService;
@@ -68,7 +73,7 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDTO save(DealDTO dealDTO) throws IOException {
+    public DetailedDealDTO save(DealDTO dealDTO) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
@@ -76,7 +81,7 @@ public class DealServiceImpl implements DealService {
         elasticsearchService.indexDeal(deal);
         timelineService.dealCreated(deal);
 
-        return dealMapper.toDto(deal);
+        return detailedDealMapper.toDto(deal);
     }
 
     /**
@@ -86,7 +91,7 @@ public class DealServiceImpl implements DealService {
      * @return the persisted entity
      */
     @Override
-    public DealDTO update(DealDTO dealDTO, List<String> modifiedFields) throws IOException {
+    public DetailedDealDTO update(DealDTO dealDTO, List<String> modifiedFields) throws IOException {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
@@ -99,14 +104,14 @@ public class DealServiceImpl implements DealService {
             deal = dealRepository.save(deal);
             timelineService.dealUpdated(dealFromDb, deal, modifiedFields);
             elasticsearchService.indexDeal(deal);
-            return dealMapper.toDto(deal);
+            return detailedDealMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     @Override
-    public DealDTO updateStage(Long id, Long stageId) throws IOException {
+    public DetailedDealDTO updateStage(Long id, Long stageId) throws IOException {
 
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         Stage newStage = stageRepository.findOne(stageId);
@@ -114,7 +119,7 @@ public class DealServiceImpl implements DealService {
             dealFromDb.setStage(newStage);
             Deal deal = dealRepository.save(dealFromDb);
             elasticsearchService.indexDeal(deal);
-            return dealMapper.toDto(deal);
+            return detailedDealMapper.toDto(deal);
         } else {
             throw new EntityNotFoundException();
         }
@@ -128,10 +133,10 @@ public class DealServiceImpl implements DealService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<DealDTO> findAll(Pageable pageable) {
+    public Page<DetailedDealDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Deals");
         return dealRepository.findByAppAccount_IdOrderByIdAsc(SecurityUtils.getCurrentUserAppAccountId(), pageable)
-            .map(dealMapper::toDto);
+            .map(detailedDealMapper::toDto);
     }
 
     /**
@@ -142,10 +147,10 @@ public class DealServiceImpl implements DealService {
      */
     @Override
     @Transactional(readOnly = true)
-    public DealDTO findOne(Long id) {
+    public DetailedDealDTO findOne(Long id) {
         log.debug("Request to get Deal : {}", id);
         Deal deal = dealRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
-        return dealMapper.toDto(deal);
+        return detailedDealMapper.toDto(deal);
     }
 
     /**
@@ -165,7 +170,7 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public Page<DealDTO> query(String searchQuery, Pageable pageable) throws IOException {
+    public Page<DetailedDealDTO> query(String searchQuery, Pageable pageable) throws IOException {
 
         String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
         if(StringUtils.isEmpty(searchQuery)){
@@ -176,19 +181,19 @@ public class DealServiceImpl implements DealService {
 
         Pair<List<Long>, Long> response = elasticsearchService.getEntityIds("leadlet-deal", searchQuery, pageable);
 
-        List<DealDTO> unsorted = dealRepository.findAllByIdIn(response.getFirst()).stream()
-            .map(dealMapper::toDto).collect(Collectors.toList());
+        List<DetailedDealDTO> unsorted = dealRepository.findAllByIdIn(response.getFirst()).stream()
+            .map(detailedDealMapper::toDto).collect(Collectors.toList());
         List<Long> sortedIds = response.getFirst();
 
         // we are getting ids from ES sorted but JPA returns result not sorted
         // below code-piece sorts the returned DTOs to have same sort with ids.
-        Collections.sort(unsorted,  new Comparator<DealDTO>() {
-            public int compare(DealDTO left, DealDTO right) {
+        Collections.sort(unsorted,  new Comparator<DetailedDealDTO>() {
+            public int compare(DetailedDealDTO left, DetailedDealDTO right) {
                 return Integer.compare(sortedIds.indexOf(left.getId()), sortedIds.indexOf(right.getId()));
             }
         } );
 
-        Page<DealDTO> dealDTOS = new PageImpl<DealDTO>(unsorted,
+        Page<DetailedDealDTO> dealDTOS = new PageImpl<DetailedDealDTO>(unsorted,
             pageable,
             response.getSecond());
 
