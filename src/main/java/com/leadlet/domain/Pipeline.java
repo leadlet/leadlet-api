@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +26,7 @@ public class Pipeline extends AbstractAccountSpecificEntity implements Serializa
     private Long id;
 
     @Column(name = "name")
+    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "pipeline", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
