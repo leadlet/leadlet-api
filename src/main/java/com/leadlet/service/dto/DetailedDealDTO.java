@@ -46,6 +46,8 @@ public class DetailedDealDTO implements Serializable {
 
     private DealStatus deal_status;
 
+    private LostReasonDTO lost_reason;
+
     public DetailedDealDTO() {
     }
 
@@ -193,5 +195,12 @@ public class DetailedDealDTO implements Serializable {
         return this;
     }
 
+    public LostReasonDTO getLost_reason() {
+        return lost_reason;
+    }
 
+    public DetailedDealDTO setLost_reason(LostReasonDTO lost_reason) {
+        this.lost_reason = lost_reason;
+        return this;
+    }
 }

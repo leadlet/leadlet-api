@@ -12,9 +12,19 @@ import org.mapstruct.*;
     PipelineMapper.class, StageMapper.class, DealValueMapper.class, ProductMapper.class, SourceMapper.class, ChannelMapper.class, ContactMapper.class,LostReasonMapper.class})
 public interface DetailedDealMapper extends EntityMapper<DetailedDealDTO, Deal> {
 
+    @Mappings({
+        @Mapping(source = "dealSource", target = "deal_source"),
+        @Mapping(source = "dealChannel", target = "deal_channel"),
+        @Mapping(source = "lostReason", target = "lost_reason")
+    })
     DetailedDealDTO toDto(Deal deal);
 
-    @Mapping(source = "priority", target = "priority", defaultValue = "0")
+    @Mappings({
+        @Mapping(source = "deal_source", target = "dealSource"),
+        @Mapping(source = "deal_channel", target = "dealChannel"),
+        @Mapping(source = "lost_reason", target = "lostReason"),
+        @Mapping(source = "priority", target = "priority", defaultValue = "0")
+    })
     Deal toEntity(DetailedDealDTO detailedDealDTO);
 
     default Deal fromId(Long id) {
