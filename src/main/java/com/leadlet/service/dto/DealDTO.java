@@ -27,13 +27,13 @@ public class DealDTO implements Serializable {
 
     private Long agent_id;
 
-    private Instant createdDate;
+    private Instant created_date;
 
-    private Instant lastModifiedDate;
+    private Instant last_modified_date;
 
-    private ZonedDateTime possibleCloseDate;
+    private ZonedDateTime possible_close_date;
 
-    private DealValueDTO dealValue;
+    private DealValueDTO deal_value;
 
     private Long deal_source_id;
 
@@ -45,9 +45,9 @@ public class DealDTO implements Serializable {
 
     private Set<Long> activity_ids;
 
-    private ActivityStatus activityStatus;
+    private ActivityStatus activity_status;
 
-    private DealStatus dealStatus;
+    private DealStatus deal_status;
 
     public DealDTO() {
     }
@@ -106,39 +106,39 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public Instant getCreated_date() {
+        return created_date;
     }
 
-    public DealDTO setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
+    public DealDTO setCreated_date(Instant created_date) {
+        this.created_date = created_date;
         return this;
     }
 
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
+    public Instant getLast_modified_date() {
+        return last_modified_date;
     }
 
-    public DealDTO setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public DealDTO setLast_modified_date(Instant last_modified_date) {
+        this.last_modified_date = last_modified_date;
         return this;
     }
 
-    public ZonedDateTime getPossibleCloseDate() {
-        return possibleCloseDate;
+    public ZonedDateTime getPossible_close_date() {
+        return possible_close_date;
     }
 
-    public DealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
-        this.possibleCloseDate = possibleCloseDate;
+    public DealDTO setPossible_close_date(ZonedDateTime possible_close_date) {
+        this.possible_close_date = possible_close_date;
         return this;
     }
 
-    public DealValueDTO getDealValue() {
-        return dealValue;
+    public DealValueDTO getDeal_value() {
+        return deal_value;
     }
 
-    public DealDTO setDealValue(DealValueDTO dealValue) {
-        this.dealValue = dealValue;
+    public DealDTO setDeal_value(DealValueDTO deal_value) {
+        this.deal_value = deal_value;
         return this;
     }
 
@@ -187,21 +187,21 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public ActivityStatus getActivityStatus() {
-        return activityStatus;
+    public ActivityStatus getActivity_status() {
+        return activity_status;
     }
 
-    public DealDTO setActivityStatus(ActivityStatus activityStatus) {
-        this.activityStatus = activityStatus;
+    public DealDTO setActivity_status(ActivityStatus activity_status) {
+        this.activity_status = activity_status;
         return this;
     }
 
-    public DealStatus getDealStatus() {
-        return dealStatus;
+    public DealStatus getDeal_status() {
+        return deal_status;
     }
 
-    public DealDTO setDealStatus(DealStatus dealStatus) {
-        this.dealStatus = dealStatus;
+    public DealDTO setDeal_status(DealStatus deal_status) {
+        this.deal_status = deal_status;
         return this;
     }
 

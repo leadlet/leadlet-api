@@ -7,7 +7,6 @@ import com.leadlet.domain.enumeration.DealStatus;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -29,23 +28,23 @@ public class DetailedDealDTO implements Serializable {
 
     private UserDTO agent;
 
-    private Instant createdDate;
+    private Instant created_date;
 
-    private Instant lastModifiedDate;
+    private Instant last_modified_date;
 
-    private ZonedDateTime possibleCloseDate;
+    private ZonedDateTime possible_close_date;
 
-    private DealValueDTO dealValue;
+    private DealValueDTO deal_value;
 
-    private SourceDTO dealSource;
+    private SourceDTO deal_source;
 
-    private ChannelDTO dealChannel;
+    private ChannelDTO deal_channel;
 
     private Set<ProductDTO> products;
 
-    private ActivityStatus activityStatus;
+    private ActivityStatus activity_status;
 
-    private DealStatus dealStatus;
+    private DealStatus deal_status;
 
     public DetailedDealDTO() {
     }
@@ -113,57 +112,57 @@ public class DetailedDealDTO implements Serializable {
         return this;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public Instant getCreated_date() {
+        return created_date;
     }
 
-    public DetailedDealDTO setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
+    public DetailedDealDTO setCreated_date(Instant created_date) {
+        this.created_date = created_date;
         return this;
     }
 
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
+    public Instant getLast_modified_date() {
+        return last_modified_date;
     }
 
-    public DetailedDealDTO setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public DetailedDealDTO setLast_modified_date(Instant last_modified_date) {
+        this.last_modified_date = last_modified_date;
         return this;
     }
 
-    public ZonedDateTime getPossibleCloseDate() {
-        return possibleCloseDate;
+    public ZonedDateTime getPossible_close_date() {
+        return possible_close_date;
     }
 
-    public DetailedDealDTO setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
-        this.possibleCloseDate = possibleCloseDate;
+    public DetailedDealDTO setPossible_close_date(ZonedDateTime possible_close_date) {
+        this.possible_close_date = possible_close_date;
         return this;
     }
 
-    public DealValueDTO getDealValue() {
-        return dealValue;
+    public DealValueDTO getDeal_value() {
+        return deal_value;
     }
 
-    public DetailedDealDTO setDealValue(DealValueDTO dealValue) {
-        this.dealValue = dealValue;
+    public DetailedDealDTO setDeal_value(DealValueDTO deal_value) {
+        this.deal_value = deal_value;
         return this;
     }
 
-    public SourceDTO getDealSource() {
-        return dealSource;
+    public SourceDTO getDeal_source() {
+        return deal_source;
     }
 
-    public DetailedDealDTO setDealSource(SourceDTO dealSource) {
-        this.dealSource = dealSource;
+    public DetailedDealDTO setDeal_source(SourceDTO deal_source) {
+        this.deal_source = deal_source;
         return this;
     }
 
-    public ChannelDTO getDealChannel() {
-        return dealChannel;
+    public ChannelDTO getDeal_channel() {
+        return deal_channel;
     }
 
-    public DetailedDealDTO setDealChannel(ChannelDTO dealChannel) {
-        this.dealChannel = dealChannel;
+    public DetailedDealDTO setDeal_channel(ChannelDTO deal_channel) {
+        this.deal_channel = deal_channel;
         return this;
     }
 
@@ -176,34 +175,23 @@ public class DetailedDealDTO implements Serializable {
         return this;
     }
 
-    public ActivityStatus getActivityStatus() {
-        return activityStatus;
+    public ActivityStatus getActivity_status() {
+        return activity_status;
     }
 
-    public DetailedDealDTO setActivityStatus(ActivityStatus activityStatus) {
-        this.activityStatus = activityStatus;
+    public DetailedDealDTO setActivity_status(ActivityStatus activity_status) {
+        this.activity_status = activity_status;
         return this;
     }
 
-    public DealStatus getDealStatus() {
-        return dealStatus;
+    public DealStatus getDeal_status() {
+        return deal_status;
     }
 
-    public DetailedDealDTO setDealStatus(DealStatus dealStatus) {
-        this.dealStatus = dealStatus;
+    public DetailedDealDTO setDeal_status(DealStatus deal_status) {
+        this.deal_status = deal_status;
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DetailedDealDTO)) return false;
-        DetailedDealDTO that = (DetailedDealDTO) o;
-        return Objects.equals(id, that.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

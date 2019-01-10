@@ -1,10 +1,15 @@
 package com.leadlet.service.mapper;
 
+import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
+import com.leadlet.domain.Product;
 import com.leadlet.service.dto.DealDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Mapper for the entity Deal and its DTO DetailedDealDTO.
@@ -20,7 +25,10 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
         @Mapping(source = "dealChannel.id", target = "deal_channel_id"),
         @Mapping(source = "lostReason.id", target = "lost_reason_id"),
         @Mapping(source = "agent.id", target = "agent_id"),
-        @Mapping(source = "contact.id", target = "contact_id")
+        @Mapping(source = "contact.id", target = "contact_id"),
+        @Mapping(source = "products", target = "product_ids"),
+        @Mapping(source = "activities", target = "activity_ids")
+
     })
     DealDTO toDto(Deal deal);
 
@@ -31,7 +39,9 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
         @Mapping(source = "deal_channel_id", target = "dealChannel"),
         @Mapping(source = "lost_reason_id", target = "lostReason"),
         @Mapping(source = "agent_id", target = "agent"),
-        @Mapping(source = "contact_id", target = "contact")
+        @Mapping(source = "contact_id", target = "contact"),
+        @Mapping(source = "product_ids", target = "products"),
+        @Mapping(source = "activity_ids", target = "activities")
     })
     Deal toEntity(DealDTO dealDTO);
 
@@ -43,4 +53,29 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
         deal.setId(id);
         return deal;
     }
+
+    default Set<Product> productIdsToProducts(Set<Long> ids) {
+        return ids.stream().map( id -> {
+            Product p = new Product();
+            p.setId(id);
+            return p;
+        }).collect(Collectors.toSet());
+    }
+
+    default Set<Long> productsToProductIds(Set<Product> products) {
+        return products.stream().map(product -> product.getId()).collect(Collectors.toSet());
+    }
+
+    default Set<Activity> activityIdsToActivities(Set<Long> ids) {
+        return ids.stream().map( id -> {
+            Activity p = new Activity();
+            p.setId(id);
+            return p;
+        }).collect(Collectors.toSet());
+    }
+
+    default Set<Long> activitiesToActivityIds(Set<Activity> activities) {
+        return activities.stream().map(activity -> activity.getId()).collect(Collectors.toSet());
+    }
+
 }

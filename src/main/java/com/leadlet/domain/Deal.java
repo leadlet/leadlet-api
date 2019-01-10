@@ -66,10 +66,10 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     private Set<Product> products;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private DealSource DealSource;
+    private DealSource dealSource;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private DealChannel DealChannel;
+    private DealChannel dealChannel;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "activity_status")
@@ -208,20 +208,20 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     }
 
     public com.leadlet.domain.DealSource getDealSource() {
-        return DealSource;
+        return dealSource;
     }
 
     public Deal setDealSource(com.leadlet.domain.DealSource dealSource) {
-        DealSource = dealSource;
+        this.dealSource = dealSource;
         return this;
     }
 
     public com.leadlet.domain.DealChannel getDealChannel() {
-        return DealChannel;
+        return dealChannel;
     }
 
     public Deal setDealChannel(com.leadlet.domain.DealChannel dealChannel) {
-        DealChannel = dealChannel;
+        this.dealChannel = dealChannel;
         return this;
     }
 
