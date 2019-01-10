@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,9 +26,11 @@ public class Stage extends AbstractAccountSpecificEntity implements Serializable
     private Long id;
 
     @Column(name = "name")
+    @NotNull
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     private Pipeline pipeline;
 
     @OneToMany(mappedBy = "stage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
