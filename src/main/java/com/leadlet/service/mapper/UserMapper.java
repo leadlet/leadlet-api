@@ -5,7 +5,7 @@ import com.leadlet.service.dto.UserDTO;
 import org.mapstruct.Mapper;
 
 /**
- * Mapper for the entity Deal and its DTO DealDTO.
+ * Mapper for the entity Deal and its DTO DetailedDealDTO.
  */
 @Mapper(componentModel = "spring", uses = {AuthorityMapper.class})
 public interface UserMapper extends EntityMapper<UserDTO, User> {

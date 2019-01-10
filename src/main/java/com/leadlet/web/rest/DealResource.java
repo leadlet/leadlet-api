@@ -43,20 +43,20 @@ public class DealResource {
     /**
      * POST  /deals : Create a new deal.
      *
-     * @param dealDTO the dealDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new dealDTO, or with status 400 (Bad Request) if the deal has already an ID
+     * @param dealDTO the detailedDealDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new detailedDealDTO, or with status 400 (Bad Request) if the deal has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/deals")
     @Timed
-    public ResponseEntity<DealDTO> createDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
+    public ResponseEntity<DetailedDealDTO> createDeal(@RequestBody DealDTO dealDTO) throws URISyntaxException, IOException {
         log.debug("REST request to save Deal : {}", dealDTO);
         if (dealDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new deal cannot already have an ID")).body(null);
         }
         Character c = null;
 
-        DealDTO result = dealService.save(dealDTO);
+        DetailedDealDTO result = dealService.save(dealDTO);
         // TODO lazy load workaround. above save method does not return stage.pipeline
         result = dealService.findOne(result.getId());
         return ResponseEntity.created(new URI("/api/deals/" + result.getId()))
@@ -66,9 +66,9 @@ public class DealResource {
 
     @GetMapping("/deals")
     @Timed
-    public ResponseEntity<List<DealDTO>> getDeals(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
+    public ResponseEntity<List<DetailedDealDTO>> getDeals(@ApiParam String q, @ApiParam Pageable pageable) throws URISyntaxException, IOException {
 
-        Page<DealDTO> page = dealService.query(q, pageable);
+        Page<DetailedDealDTO> page = dealService.query(q, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals/search");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 
@@ -77,9 +77,9 @@ public class DealResource {
 
     @PutMapping("/deals/{id}/stage/{stageId}")
     @Timed
-    public ResponseEntity<DealDTO> updateDealStage(@PathVariable Long id, @ApiParam Long stageId ) throws IOException {
+    public ResponseEntity<DetailedDealDTO> updateDealStage(@PathVariable Long id, @ApiParam Long stageId ) throws IOException {
 
-        DealDTO result = dealService.updateStage(id, stageId);
+        DetailedDealDTO result = dealService.updateStage(id, stageId);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
             .body(result);
@@ -88,18 +88,18 @@ public class DealResource {
     /**
      * PUT  /deals : Updates an existing deal.
      *
-     * @param dealDTO the dealDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated dealDTO,
-     * or with status 400 (Bad Request) if the dealDTO is not valid,
-     * or with status 500 (Internal Server Error) if the dealDTO couldn't be updated
+     * @param dealDTO the detailedDealDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated detailedDealDTO,
+     * or with status 400 (Bad Request) if the detailedDealDTO is not valid,
+     * or with status 500 (Internal Server Error) if the detailedDealDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/deals")
     @Timed
-    public ResponseEntity<DealDTO> updateDeal(@RequestBody DealDTO dealDTO, @RequestHeader("modified-fields") List<String> modifiedFields) throws URISyntaxException, IOException {
+    public ResponseEntity<DetailedDealDTO> updateDeal(@RequestBody DealDTO dealDTO, @RequestHeader("modified-fields") List<String> modifiedFields) throws URISyntaxException, IOException {
         log.debug("REST request to update Deal : {}", dealDTO);
 
-        DealDTO result = dealService.update(dealDTO, modifiedFields);
+        DetailedDealDTO result = dealService.update(dealDTO, modifiedFields);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dealDTO.getId().toString()))
             .body(result);
@@ -113,10 +113,10 @@ public class DealResource {
      */
     @GetMapping("/deals/{id}")
     @Timed
-    public ResponseEntity<DealDTO> getDeal(@PathVariable Long id) {
+    public ResponseEntity<DetailedDealDTO> getDeal(@PathVariable Long id) {
         log.debug("REST request to get Deal : {}", id);
-        DealDTO dealDTO = dealService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(dealDTO));
+        DetailedDealDTO detailedDealDTO = dealService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(detailedDealDTO));
     }
 
     /**
@@ -127,11 +127,11 @@ public class DealResource {
      */
     @DeleteMapping("/deals/{id}")
     @Timed
-    public ResponseEntity<DealDTO> deleteDeal(@PathVariable Long id) {
+    public ResponseEntity<DetailedDealDTO> deleteDeal(@PathVariable Long id) {
         log.debug("REST request to delete Deal : {}", id);
         dealService.delete(id);
 
-        DealDTO result = new DealDTO();
+        DetailedDealDTO result = new DetailedDealDTO();
         result.setId(id);
 
         return ResponseEntity.ok()

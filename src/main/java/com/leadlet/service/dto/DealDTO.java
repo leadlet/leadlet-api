@@ -19,15 +19,13 @@ public class DealDTO implements Serializable {
 
     private String title;
 
-    private Integer priority;
+    private Long stage_id;
 
-    private StageDTO stage;
+    private Long pipeline_id;
 
-    private PipelineDTO pipeline;
+    private Long contact_id;
 
-    private ContactDTO contact;
-
-    private UserDTO agent;
+    private Long agent_id;
 
     private Instant createdDate;
 
@@ -37,48 +35,21 @@ public class DealDTO implements Serializable {
 
     private DealValueDTO dealValue;
 
-    private SourceDTO dealSource;
+    private Long deal_source_id;
 
-    private ChannelDTO dealChannel;
+    private Long deal_channel_id;
 
-    private Set<ProductDTO> products;
+    private Long lost_reason_id;
+
+    private Set<Long> product_ids;
+
+    private Set<Long> activity_ids;
 
     private ActivityStatus activityStatus;
 
     private DealStatus dealStatus;
 
-    public DealStatus getDealStatus() {
-        return dealStatus;
-    }
-
-    public void setDealStatus(DealStatus dealStatus) {
-        this.dealStatus = dealStatus;
-    }
-
-    private LostReasonDTO lostReason;
-
-    public LostReasonDTO getLostReason() {
-        return lostReason;
-    }
-
-    public void setLostReason(LostReasonDTO lostReason) {
-        this.lostReason = lostReason;
-    }
-
-    public ActivityStatus getActivityStatus() {
-        return activityStatus;
-    }
-
-    public void setActivityStatus(ActivityStatus activityStatus) {
-        this.activityStatus = activityStatus;
-    }
-
-    public Set<ProductDTO> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<ProductDTO> products) {
-        this.products = products;
+    public DealDTO() {
     }
 
     public Long getId() {
@@ -99,48 +70,39 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public Integer getPriority() {
-        return priority;
+    public Long getStage_id() {
+        return stage_id;
     }
 
-    public DealDTO setPriority(Integer priority) {
-        this.priority = priority;
+    public DealDTO setStage_id(Long stage_id) {
+        this.stage_id = stage_id;
         return this;
     }
 
-    public StageDTO getStage() {
-        return stage;
+    public Long getPipeline_id() {
+        return pipeline_id;
     }
 
-    public DealDTO setStage(StageDTO stage) {
-        this.stage = stage;
+    public DealDTO setPipeline_id(Long pipeline_id) {
+        this.pipeline_id = pipeline_id;
         return this;
     }
 
-    public PipelineDTO getPipeline() {
-        return pipeline;
+    public Long getContact_id() {
+        return contact_id;
     }
 
-    public DealDTO setPipeline(PipelineDTO pipeline) {
-        this.pipeline = pipeline;
+    public DealDTO setContact_id(Long contact_id) {
+        this.contact_id = contact_id;
         return this;
     }
 
-    public ContactDTO getContact() {
-        return contact;
+    public Long getAgent_id() {
+        return agent_id;
     }
 
-    public DealDTO setContact(ContactDTO contact) {
-        this.contact = contact;
-        return this;
-    }
-
-    public UserDTO getAgent() {
-        return agent;
-    }
-
-    public DealDTO setAgent(UserDTO agent) {
-        this.agent = agent;
+    public DealDTO setAgent_id(Long agent_id) {
+        this.agent_id = agent_id;
         return this;
     }
 
@@ -180,21 +142,66 @@ public class DealDTO implements Serializable {
         return this;
     }
 
-    public SourceDTO getDealSource() {
-        return dealSource;
+    public Long getDeal_source_id() {
+        return deal_source_id;
     }
 
-    public DealDTO setDealSource(SourceDTO dealSource) {
-        this.dealSource = dealSource;
+    public DealDTO setDeal_source_id(Long deal_source_id) {
+        this.deal_source_id = deal_source_id;
         return this;
     }
 
-    public ChannelDTO getDealChannel() {
-        return dealChannel;
+    public Long getDeal_channel_id() {
+        return deal_channel_id;
     }
 
-    public DealDTO setDealChannel(ChannelDTO dealChannel) {
-        this.dealChannel = dealChannel;
+    public DealDTO setDeal_channel_id(Long deal_channel_id) {
+        this.deal_channel_id = deal_channel_id;
+        return this;
+    }
+
+    public Long getLost_reason_id() {
+        return lost_reason_id;
+    }
+
+    public DealDTO setLost_reason_id(Long lost_reason_id) {
+        this.lost_reason_id = lost_reason_id;
+        return this;
+    }
+
+    public Set<Long> getProduct_ids() {
+        return product_ids;
+    }
+
+    public DealDTO setProduct_ids(Set<Long> product_ids) {
+        this.product_ids = product_ids;
+        return this;
+    }
+
+    public Set<Long> getActivity_ids() {
+        return activity_ids;
+    }
+
+    public DealDTO setActivity_ids(Set<Long> activity_ids) {
+        this.activity_ids = activity_ids;
+        return this;
+    }
+
+    public ActivityStatus getActivityStatus() {
+        return activityStatus;
+    }
+
+    public DealDTO setActivityStatus(ActivityStatus activityStatus) {
+        this.activityStatus = activityStatus;
+        return this;
+    }
+
+    public DealStatus getDealStatus() {
+        return dealStatus;
+    }
+
+    public DealDTO setDealStatus(DealStatus dealStatus) {
+        this.dealStatus = dealStatus;
         return this;
     }
 

@@ -22,7 +22,7 @@ public class ActivityDTO implements Serializable {
 
     private ActivityTypeDTO type;
 
-    private DealDTO deal;
+    private DetailedDealDTO deal;
 
     private ContactDTO contact;
 
@@ -79,11 +79,11 @@ public class ActivityDTO implements Serializable {
         return this;
     }
 
-    public DealDTO getDeal() {
+    public DetailedDealDTO getDeal() {
         return deal;
     }
 
-    public ActivityDTO setDeal(DealDTO deal) {
+    public ActivityDTO setDeal(DetailedDealDTO deal) {
         this.deal = deal;
         return this;
     }

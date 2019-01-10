@@ -1,20 +1,38 @@
 package com.leadlet.service.mapper;
 
-import com.leadlet.domain.*;
+import com.leadlet.domain.Deal;
 import com.leadlet.service.dto.DealDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 /**
- * Mapper for the entity Deal and its DTO DealDTO.
+ * Mapper for the entity Deal and its DTO DetailedDealDTO.
  */
 @Mapper(componentModel = "spring", uses = {ContactMapper.class, UserMapper.class,
     PipelineMapper.class, StageMapper.class, DealValueMapper.class, ProductMapper.class, SourceMapper.class, ChannelMapper.class, ContactMapper.class,LostReasonMapper.class})
 public interface DealMapper extends EntityMapper<DealDTO, Deal> {
 
+    @Mappings({
+        @Mapping(source = "pipeline.id", target = "pipeline_id"),
+        @Mapping(source = "stage.id", target = "stage_id"),
+        @Mapping(source = "dealSource.id", target = "deal_source_id"),
+        @Mapping(source = "dealChannel.id", target = "deal_channel_id"),
+        @Mapping(source = "lostReason.id", target = "lost_reason_id"),
+        @Mapping(source = "agent.id", target = "agent_id"),
+        @Mapping(source = "contact.id", target = "contact_id")
+    })
     DealDTO toDto(Deal deal);
 
-    @Mapping(source = "priority", target = "priority", defaultValue = "0")
+    @Mappings({
+        @Mapping(source = "pipeline_id", target = "pipeline"),
+        @Mapping(source = "stage_id", target = "stage"),
+        @Mapping(source = "deal_source_id", target = "dealSource"),
+        @Mapping(source = "deal_channel_id", target = "dealChannel"),
+        @Mapping(source = "lost_reason_id", target = "lostReason"),
+        @Mapping(source = "agent_id", target = "agent"),
+        @Mapping(source = "contact_id", target = "contact")
+    })
     Deal toEntity(DealDTO dealDTO);
 
     default Deal fromId(Long id) {

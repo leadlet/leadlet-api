@@ -66,10 +66,10 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     private Set<Product> products;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private DealSource dealSource;
+    private DealSource DealSource;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private DealChannel dealChannel;
+    private DealChannel DealChannel;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "activity_status")
@@ -90,32 +90,13 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
     @Column(name = "deal_status")
     private DealStatus dealStatus;
 
-    public ActivityStatus getActivityStatus() {
-        return activityStatus;
-    }
-
-    public void setActivityStatus(ActivityStatus activityStatus) {
-        this.activityStatus = activityStatus;
-    }
-
-    public DealStatus getDealStatus() {
-        return dealStatus;
-    }
-
-    public void setDealStatus(DealStatus dealStatus) {
-        this.dealStatus = dealStatus;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Deal setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
@@ -136,20 +117,40 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         return this;
     }
 
+    public DealValue getDealValue() {
+        return dealValue;
+    }
+
+    public Deal setDealValue(DealValue dealValue) {
+        this.dealValue = dealValue;
+        return this;
+    }
+
     public Stage getStage() {
         return stage;
     }
 
-    public void setStage(Stage stage) {
+    public Deal setStage(Stage stage) {
         this.stage = stage;
+        return this;
+    }
+
+    public Pipeline getPipeline() {
+        return pipeline;
+    }
+
+    public Deal setPipeline(Pipeline pipeline) {
+        this.pipeline = pipeline;
+        return this;
     }
 
     public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact) {
+    public Deal setContact(Contact contact) {
         this.contact = contact;
+        return this;
     }
 
     public User getAgent() {
@@ -161,21 +162,12 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         return this;
     }
 
-    public Deal setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
-        this.possibleCloseDate = possibleCloseDate;
-        return this;
-    }
-
     public ZonedDateTime getPossibleCloseDate() {
         return possibleCloseDate;
     }
 
-    public DealValue getDealValue() {
-        return dealValue;
-    }
-
-    public Deal setDealValue(DealValue dealValue) {
-        this.dealValue = dealValue;
+    public Deal setPossibleCloseDate(ZonedDateTime possibleCloseDate) {
+        this.possibleCloseDate = possibleCloseDate;
         return this;
     }
 
@@ -206,15 +198,6 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         return this;
     }
 
-    public Pipeline getPipeline() {
-        return pipeline;
-    }
-
-    public Deal setPipeline(Pipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
     public Set<Product> getProducts() {
         return products;
     }
@@ -224,21 +207,39 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
         return this;
     }
 
-    public DealSource getDealSource() {
-        return dealSource;
+    public com.leadlet.domain.DealSource getDealSource() {
+        return DealSource;
     }
 
-    public Deal setDealSource(DealSource dealSource) {
-        this.dealSource = dealSource;
+    public Deal setDealSource(com.leadlet.domain.DealSource dealSource) {
+        DealSource = dealSource;
         return this;
     }
 
-    public DealChannel getDealChannel() {
-        return dealChannel;
+    public com.leadlet.domain.DealChannel getDealChannel() {
+        return DealChannel;
     }
 
-    public Deal setDealChannel(DealChannel dealChannel) {
-        this.dealChannel = dealChannel;
+    public Deal setDealChannel(com.leadlet.domain.DealChannel dealChannel) {
+        DealChannel = dealChannel;
+        return this;
+    }
+
+    public ActivityStatus getActivityStatus() {
+        return activityStatus;
+    }
+
+    public Deal setActivityStatus(ActivityStatus activityStatus) {
+        this.activityStatus = activityStatus;
+        return this;
+    }
+
+    public DealStatus getDealStatus() {
+        return dealStatus;
+    }
+
+    public Deal setDealStatus(DealStatus dealStatus) {
+        this.dealStatus = dealStatus;
         return this;
     }
 
@@ -252,21 +253,6 @@ public class Deal extends AbstractSearchableEntity implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Deal{" +
-            "id=" + id +
-            ", title='" + title + '\'' +
-            ", priority=" + priority +
-            ", dealValue=" + dealValue +
-            ", possibleCloseDate=" + possibleCloseDate +
-            ", activityStatus=" + activityStatus +
-            ", dealStatus=" + dealStatus +
-            '}';
-
     }
 }
