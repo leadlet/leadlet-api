@@ -1,6 +1,8 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.DealSource;
+import com.leadlet.repository.DealRepository;
 import com.leadlet.repository.SourceRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.SourceService;
@@ -9,6 +11,7 @@ import com.leadlet.service.mapper.SourceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +29,13 @@ public class SourceServiceImpl implements SourceService {
     private final Logger log = LoggerFactory.getLogger(SourceServiceImpl.class);
 
     private final SourceRepository sourceRepository;
-
     private final SourceMapper sourceMapper;
+    private final DealRepository dealRepository;
 
-    public SourceServiceImpl(SourceRepository sourceRepository, SourceMapper sourceMapper) {
+    public SourceServiceImpl(SourceRepository sourceRepository, SourceMapper sourceMapper, DealRepository dealRepository) {
         this.sourceRepository = sourceRepository;
         this.sourceMapper = sourceMapper;
+        this.dealRepository = dealRepository;
     }
 
     /**
@@ -107,6 +111,9 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Source : {}", id);
+
+        deleteSourceFromDeal(id);
+
         DealSource sourceFromDb = sourceRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (sourceFromDb != null) {
             sourceRepository.delete(id);
@@ -115,4 +122,27 @@ public class SourceServiceImpl implements SourceService {
         }
     }
 
+    private void deleteSourceFromDeal(Long id) {
+        int pageNo = 0;
+        boolean getPages = true;
+
+
+        while (getPages) {
+            Pageable pageable = new PageRequest(pageNo, 20);
+
+            Page<Deal> deals =
+                dealRepository.findAllByAppAccount_IdAndDealSource_Id(SecurityUtils.getCurrentUserAppAccountId(), id, pageable);
+
+            if (deals.getContent() == null || deals.getContent().size() == 0) {
+                break;
+            }
+
+            for (Deal deal : deals) {
+                deal.setDealSource(null);
+                dealRepository.save(deal);
+            }
+
+            pageNo++;
+        }
+    }
 }
