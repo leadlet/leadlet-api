@@ -16,7 +16,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface ContactRepository extends JpaRepository<Contact,Long> ,  JpaSpecificationExecutor<Contact> {
-    Page<Contact> findByAppAccount_Id(Long appAccountId, Pageable page);
+    Page<Contact> findByAppAccount_IdOrderByCreatedDateDesc(Long appAccountId, Pageable page);
     Contact findOneByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdAndAppAccount_Id(Long id, Long appAccountId);
     void deleteByIdInAndAppAccount_Id(List<Long> idList, Long appAccountId);

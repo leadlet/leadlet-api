@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "contact")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Contact implements Serializable {
+public class Contact extends AbstractAuditingEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,9 +48,6 @@ public class Contact implements Serializable {
     @Column(name = "email")
     @Email
     private String email;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private AppAccount appAccount;
 
     @OneToMany(mappedBy = "contact", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Activity> activities;
@@ -115,14 +111,6 @@ public class Contact implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public AppAccount getAppAccount() {
-        return appAccount;
-    }
-
-    public void setAppAccount(AppAccount appAccount) {
-        this.appAccount = appAccount;
     }
 
     public Set<Activity> getActivities() {

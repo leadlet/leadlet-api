@@ -53,12 +53,14 @@ public class ContactServiceImpl implements ContactService {
         Contact contactFromDb = contactRepository.save(contact);
 
         Set<ContactPhone> phones = contact.getPhones();
-        Iterator<ContactPhone> iter = phones.iterator();
-        while (iter.hasNext()) {
-            iter.next().setContact(contactFromDb);
-        }
+        if (phones != null) {
+            Iterator<ContactPhone> iter = phones.iterator();
+            while (iter.hasNext()) {
+                iter.next().setContact(contactFromDb);
+            }
 
-        contactFromDb.setPhones(phones);
+            contactFromDb.setPhones(phones);
+        }
 
         contactFromDb = contactRepository.save(contactFromDb);
         return contactMapper.toDto(contactFromDb);
@@ -80,9 +82,11 @@ public class ContactServiceImpl implements ContactService {
             contact.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
 
             Set<ContactPhone> phones = contact.getPhones();
-            Iterator<ContactPhone> iter = phones.iterator();
-            while (iter.hasNext()) {
-                iter.next().setContact(contactFromDb);
+            if (phones != null) {
+                Iterator<ContactPhone> iter = phones.iterator();
+                while (iter.hasNext()) {
+                    iter.next().setContact(contactFromDb);
+                }
             }
 
             contact = contactRepository.save(contact);
@@ -102,7 +106,7 @@ public class ContactServiceImpl implements ContactService {
     @Transactional(readOnly = true)
     public Page<ContactDTO> findAll(Pageable pageable) {
         log.debug("Request to get all contacts");
-        return contactRepository.findByAppAccount_Id(SecurityUtils.getCurrentUserAppAccountId(), pageable)
+        return contactRepository.findByAppAccount_IdOrderByCreatedDateDesc(SecurityUtils.getCurrentUserAppAccountId(), pageable)
             .map(contactMapper::toDto);
     }
 
