@@ -30,6 +30,8 @@ public interface DealRepository extends JpaRepository<Deal, Long>, JpaSpecificat
 
     Page<Deal> findAllByAppAccount_IdAndContact_IdOrderByPriorityAsc(Long appAccountId, Long contactId, Pageable page);
 
+    Page<Deal> findAllByAppAccount_IdAndDealSource_Id(Long appAccountId, Long sourceId, Pageable page);
+
     @Query("select sum(deal.dealValue.potentialValue) from #{#entityName} deal where deal.appAccount.id = ?1 and deal.stage.id = ?2")
     Double calculateDealTotalByStageId(Long id, Long stageId);
 
