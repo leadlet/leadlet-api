@@ -59,25 +59,6 @@ public class NoteResource {
             .body(result);
     }
 
-    /**
-     * PUT  /notes : Updates an existing note.
-     *
-     * @param noteDTO the noteDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated noteDTO,
-     * or with status 400 (Bad Request) if the noteDTO is not valid,
-     * or with status 500 (Internal Server Error) if the noteDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/notes")
-    @Timed
-    public ResponseEntity<NoteDTO> updateNote(@RequestBody NoteDTO noteDTO) throws URISyntaxException {
-        log.debug("REST request to update Note : {}", noteDTO);
-
-        NoteDTO result = noteService.update(noteDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, noteDTO.getId().toString()))
-            .body(result);
-    }
 
     /**
      * GET  /notes : get all the notes.
