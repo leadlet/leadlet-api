@@ -56,28 +56,6 @@ public class NoteServiceImpl implements NoteService {
     }
 
     /**
-     * Update a note.
-     *
-     * @param noteDTO the entity to update
-     * @return the persisted entity
-     */
-    @Override
-    public NoteDTO update(NoteDTO noteDTO) {
-        log.debug("Request to save Note : {}", noteDTO);
-        Note note = noteMapper.toEntity(noteDTO);
-        Note noteFromDb = noteRepository.findOneByIdAndAppAccount_Id(note.getId(), SecurityUtils.getCurrentUserAppAccountId());
-
-        if (noteFromDb != null) {
-            // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
-            note.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
-            note = noteRepository.save(note);
-            return noteMapper.toDto(note);
-        } else {
-            throw new EntityNotFoundException();
-        }
-    }
-
-    /**
      * Get all the notes.
      *
      * @param pageable the pagination information

@@ -17,14 +17,6 @@ public interface NoteService {
     NoteDTO save(NoteDTO noteDTO) throws IOException;
 
     /**
-     * Update a note.
-     *
-     * @param noteDTO the entity to update
-     * @return the persisted entity
-     */
-    NoteDTO update(NoteDTO noteDTO);
-
-    /**
      * Get all the notes.
      *
      * @param pageable the pagination information
