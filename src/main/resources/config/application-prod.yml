@@ -31,7 +31,7 @@ spring:
 #        password:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/leadlet_api?useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB_NAME}?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: ${MYSQL_USERNAME}
         password: ${MYSQL_PASSWORD}
         hikari:
@@ -60,10 +60,10 @@ spring:
         cache: true
     data:
         elasticsearch:
-          cluster-name: leadlet-db
+          cluster-name: ${ES_CLUSTER_NAME}
           protocol: http
-          cluster-host: localhost
-          cluster-port: 9200
+          cluster-host: ${ES_HOST}
+          cluster-port: ${ES_PORT}
           username: ${ES_USERNAME}
           password: ${ES_PASSWORD}
 
@@ -88,7 +88,7 @@ liquibase:
 #        keyAlias: leadlet_api
 # ===================================================================
 server:
-    port: ${PORT}
+    port: ${SERVER_PORT}
     compression:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
