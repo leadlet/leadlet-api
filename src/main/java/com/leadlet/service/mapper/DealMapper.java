@@ -1,5 +1,6 @@
 package com.leadlet.service.mapper;
 
+import com.google.common.collect.ImmutableSet;
 import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
 import com.leadlet.domain.Product;
@@ -56,6 +57,9 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
     }
 
     default Set<Product> productIdsToProducts(Set<Long> ids) {
+        if(ids==null){
+            return ImmutableSet.of();
+        }
         return ids.stream().map( id -> {
             Product p = new Product();
             p.setId(id);
@@ -64,10 +68,17 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
     }
 
     default Set<Long> productsToProductIds(Set<Product> products) {
+        if(products==null){
+            return ImmutableSet.of();
+        }
         return products.stream().map(product -> product.getId()).collect(Collectors.toSet());
     }
 
     default Set<Activity> activityIdsToActivities(Set<Long> ids) {
+        if(ids==null){
+            return ImmutableSet.of();
+        }
+
         return ids.stream().map( id -> {
             Activity p = new Activity();
             p.setId(id);
@@ -76,6 +87,9 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
     }
 
     default Set<Long> activitiesToActivityIds(Set<Activity> activities) {
+        if(activities==null){
+            return ImmutableSet.of();
+        }
         return activities.stream().map(activity -> activity.getId()).collect(Collectors.toSet());
     }
 
