@@ -9,6 +9,8 @@ import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ActivityIndexService {
+    private final Logger log = LoggerFactory.getLogger(ActivityIndexService.class);
 
     private final RestHighLevelClient restHighLevelClient;
     private final ActivityRepository activityRepository;
@@ -92,6 +95,11 @@ public class ActivityIndexService {
         }
 
         BulkResponse response = restHighLevelClient.bulk(request);
+
+        if(response.status().getStatus() != 200 ){
+            log.info(response.status().toString());
+            log.info(response.buildFailureMessage());
+        }
     }
 
 }

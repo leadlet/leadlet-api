@@ -95,8 +95,10 @@ public class DealIndexService {
 
         BulkResponse response = restHighLevelClient.bulk(request);
 
-        log.info(response.status().toString());
-        log.info(response.buildFailureMessage());
+        if(response.status().getStatus() != 200 ){
+            log.info(response.status().toString());
+            log.info(response.buildFailureMessage());
+        }
 
     }
 
