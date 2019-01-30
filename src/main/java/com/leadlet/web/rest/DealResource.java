@@ -77,7 +77,7 @@ public class DealResource {
 
     @PutMapping("/deals/{id}/stage/{stageId}")
     @Timed
-    public ResponseEntity<DetailedDealDTO> updateDealStage(@PathVariable Long id, @ApiParam Long stageId ) throws IOException {
+    public ResponseEntity<DetailedDealDTO> updateDealStage(@PathVariable Long id, @PathVariable Long stageId ) throws IOException {
 
         DetailedDealDTO result = dealService.updateStage(id, stageId);
         return ResponseEntity.ok()
