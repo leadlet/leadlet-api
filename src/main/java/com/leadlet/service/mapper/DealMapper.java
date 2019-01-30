@@ -27,8 +27,8 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
         @Mapping(source = "agent.id", target = "agent_id"),
         @Mapping(source = "contact.id", target = "contact_id"),
         @Mapping(source = "products", target = "product_ids"),
-        @Mapping(source = "activities", target = "activity_ids")
-
+        @Mapping(source = "activities", target = "activity_ids"),
+        @Mapping(source = "dealValue", target = "deal_value")
     })
     DealDTO toDto(Deal deal);
 
@@ -41,7 +41,8 @@ public interface DealMapper extends EntityMapper<DealDTO, Deal> {
         @Mapping(source = "agent_id", target = "agent"),
         @Mapping(source = "contact_id", target = "contact"),
         @Mapping(source = "product_ids", target = "products"),
-        @Mapping(source = "activity_ids", target = "activities")
+        @Mapping(source = "activity_ids", target = "activities"),
+        @Mapping(source = "deal_value", target = "dealValue")
     })
     Deal toEntity(DealDTO dealDTO);
 
