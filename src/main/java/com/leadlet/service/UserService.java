@@ -13,6 +13,7 @@ import com.leadlet.service.dto.UserDTO;
 import com.leadlet.service.dto.UserUpdateDTO;
 import com.leadlet.service.mapper.UserMapper;
 import com.leadlet.service.util.RandomUtil;
+import com.leadlet.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -129,7 +130,7 @@ public class UserService {
         return newUser;
     }
 
-    public User createUser(UserDTO userDTO) {
+    public User createUser(ManagedUserVM userDTO) {
 
         User user = new User();
         user.setLogin(userDTO.getLogin());
@@ -148,7 +149,7 @@ public class UserService {
             );
             user.setAuthorities(authorities);
         }
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
