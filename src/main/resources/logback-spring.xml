@@ -8,10 +8,7 @@
             <fileNamePattern>var/log/leadlet/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
-        <encoder>
-            <charset>utf-8</charset>
-            <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
-        </encoder>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
     </appender>
 
     <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
