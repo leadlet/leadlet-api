@@ -28,6 +28,12 @@ public class DealSearchIndexDTO implements Serializable {
     private String[] products;
     private DealStatus dealStatus;
     private String lostReason;
+    private Long agentId;
+    private String agentName;
+    private Long contactId;
+    private String contactName;
+    private String dealTitle;
+
 
     public DealSearchIndexDTO(){
 
@@ -45,6 +51,11 @@ public class DealSearchIndexDTO implements Serializable {
         this.dealStatus = deal.getDealStatus();
         this.lostReason = deal.getLostReason() != null ? deal.getLostReason().getName(): "";
         this.appAccountId = deal.getAppAccount().getId();
+        this.agentId = deal.getAgent() != null ? deal.getAgent().getId(): null;
+        this.agentName = deal.getAgent() != null ? deal.getAgent().getFirstName() + deal.getAgent().getLastName(): null;
+        this.contactId = deal.getContact() != null ? deal.getContact().getId(): null;
+        this.contactName = deal.getContact() != null ? deal.getContact().getName() : null;
+        this.dealTitle = deal.getTitle();
 
         if( deal.getProducts() != null ){
             this.products = deal.getProducts().stream().map(Product::getDescription).toArray(size -> new String[size]);
@@ -115,6 +126,51 @@ public class DealSearchIndexDTO implements Serializable {
         return this;
     }
 
+    public Long getAgentId() {
+        return agentId;
+    }
+
+    public DealSearchIndexDTO setAgentId(Long agentId) {
+        this.agentId = agentId;
+        return this;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public DealSearchIndexDTO setAgentName(String agentName) {
+        this.agentName = agentName;
+        return this;
+    }
+
+    public Long getContactId() {
+        return contactId;
+    }
+
+    public DealSearchIndexDTO setContactId(Long contactId) {
+        this.contactId = contactId;
+        return this;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public DealSearchIndexDTO setContactName(String contactName) {
+        this.contactName = contactName;
+        return this;
+    }
+
+    public String getDealTitle() {
+        return dealTitle;
+    }
+
+    public DealSearchIndexDTO setDealTitle(String dealTitle) {
+        this.dealTitle = dealTitle;
+        return this;
+    }
+
     public String[] getProducts() {
         return products;
     }
@@ -164,6 +220,13 @@ public class DealSearchIndexDTO implements Serializable {
             builder.field("app_account_id", getAppAccountId());
             builder.field("dealStatus", getDealStatus());
             builder.field("lostReason", getLostReason());
+
+            builder.field("contact_id", getContactId());
+            builder.field("contact_name", getContactName());
+            builder.field("agent_id", getAgentId());
+            builder.field("agent_name", getAgentName());
+            builder.field("deal_title", getDealTitle());
+
         }
         builder.endObject();
 
