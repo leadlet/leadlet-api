@@ -218,8 +218,8 @@ public class DealSearchIndexDTO implements Serializable {
             builder.field("channel", getChannel());
             builder.field("products", getProducts());
             builder.field("app_account_id", getAppAccountId());
-            builder.field("dealStatus", getDealStatus());
-            builder.field("lostReason", getLostReason());
+            builder.field("deal_status", getDealStatus());
+            builder.field("lost_reason", getLostReason());
 
             builder.field("contact_id", getContactId());
             builder.field("contact_name", getContactName());

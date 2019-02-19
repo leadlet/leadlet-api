@@ -13,6 +13,7 @@ import org.mapstruct.*;
 public interface DetailedDealMapper extends EntityMapper<DetailedDealDTO, Deal> {
 
     @Mappings({
+        @Mapping(source = "dealStatus", target = "deal_status"),
         @Mapping(source = "dealSource", target = "deal_source"),
         @Mapping(source = "dealChannel", target = "deal_channel"),
         @Mapping(source = "dealValue", target = "deal_value"),
@@ -24,6 +25,7 @@ public interface DetailedDealMapper extends EntityMapper<DetailedDealDTO, Deal> 
     DetailedDealDTO toDto(Deal deal);
 
     @Mappings({
+        @Mapping(source = "deal_status", target = "dealStatus"),
         @Mapping(source = "deal_source", target = "dealSource"),
         @Mapping(source = "deal_channel", target = "dealChannel"),
         @Mapping(source = "lost_reason", target = "lostReason"),
