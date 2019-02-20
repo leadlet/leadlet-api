@@ -13,6 +13,8 @@ public class PipelineDTO implements Serializable {
 
     private String name;
 
+    private boolean defaultSelected;
+
     public Long getId() {
         return id;
     }
@@ -27,6 +29,15 @@ public class PipelineDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDefaultSelected() {
+        return defaultSelected;
+    }
+
+    public PipelineDTO setDefaultSelected(boolean defaultSelected) {
+        this.defaultSelected = defaultSelected;
+        return this;
     }
 
     @Override

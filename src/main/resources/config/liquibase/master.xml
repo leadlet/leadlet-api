@@ -37,6 +37,7 @@
     <include file="config/liquibase/changelog/201807312348_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201809082247_added_entity_constraints_LostReason.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/201811132132_added_entity_constraints_ActivityType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/pipeline_add_is_default_field.xml" relativeToChangelogFile="false"/>
 
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

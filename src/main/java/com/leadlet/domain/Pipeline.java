@@ -29,10 +29,23 @@ public class Pipeline extends AbstractAccountSpecificEntity implements Serializa
     @NotNull
     private String name;
 
+    @Column(name = "is_default_selected")
+    @NotNull
+    private boolean defaultSelected;
+
     @OneToMany(mappedBy = "pipeline", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Stage> stages = new HashSet<>();
+
+    public Set<Stage> getStages() {
+        return stages;
+    }
+
+    public Pipeline setStages(Set<Stage> stages) {
+        this.stages = stages;
+        return this;
+    }
 
     public Long getId() {
         return id;
@@ -55,24 +68,13 @@ public class Pipeline extends AbstractAccountSpecificEntity implements Serializa
         this.name = name;
     }
 
-    public Set<Stage> getStages() {
-        return stages;
+    public boolean isDefaultSelected() {
+        return defaultSelected;
     }
 
-    public Pipeline addStage(Stage stage) {
-        this.stages.add(stage);
-        stage.setPipeline(this);
+    public Pipeline setDefaultSelected(boolean defaultSelected) {
+        this.defaultSelected = defaultSelected;
         return this;
-    }
-
-    public Pipeline removeStage(Stage stage) {
-        this.stages.remove(stage);
-        stage.setPipeline(null);
-        return this;
-    }
-
-    public void setPipelineStages(Set<Stage> pipelineStages) {
-        this.stages = pipelineStages;
     }
 
     @Override
