@@ -1,6 +1,6 @@
 id;login;password_hash;first_name;last_name;activated;lang_key;image_url;activation_key;reset_key;app_account_id;created_by;last_modified_by
-10;bfurmonger0@xinhuanet.com;$2a$10$qUBdDC7PrMMrzPxPLvFgT.u0ntzHvOpl4TJIOm8LutHimZ6lHbwDy;Bartie;Furmonger;TRUE;en;;;;1;system;system
-11;hpendered1@sakura.ne.jp;$2a$10$qUBdDC7PrMMrzPxPLvFgT.u0ntzHvOpl4TJIOm8LutHimZ6lHbwDy;Hyacinthe;Pendered;TRUE;en;;;;1;system;system
+10;manager@test.com;$2a$10$qUBdDC7PrMMrzPxPLvFgT.u0ntzHvOpl4TJIOm8LutHimZ6lHbwDy;Bartie;Furmonger;TRUE;en;;;;1;system;system
+11;agent@test.com;$2a$10$qUBdDC7PrMMrzPxPLvFgT.u0ntzHvOpl4TJIOm8LutHimZ6lHbwDy;Hyacinthe;Pendered;TRUE;en;;;;1;system;system
 12;jhesey2@quantcast.com;$2a$10$qUBdDC7PrMMrzPxPLvFgT.u0ntzHvOpl4TJIOm8LutHimZ6lHbwDy;Janot;Hesey;TRUE;en;;;;1;system;system
 13;sdrewes3@cdc.gov;$2a$10$qUBdDC7PrMMrzPxPLvFgT.u0ntzHvOpl4TJIOm8LutHimZ6lHbwDy;Sioux;Drewes;TRUE;en;;;;1;system;system
 14;czavattari4@spotify.com;$2a$10$qUBdDC7PrMMrzPxPLvFgT.u0ntzHvOpl4TJIOm8LutHimZ6lHbwDy;Carry;Zavattari;TRUE;en;;;;1;system;system

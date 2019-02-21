@@ -211,6 +211,7 @@ public class UserService {
             .map(user -> {
                 user.setFirstName(userUpdateDTO.getFirstName());
                 user.setLastName(userUpdateDTO.getLastName());
+                user.setPhone(userUpdateDTO.getPhone());
                 if(userUpdateDTO.getPassword() != null){
                     user.setPassword( passwordEncoder.encode(userUpdateDTO.getPassword()));
                 }else{

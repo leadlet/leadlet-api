@@ -76,6 +76,10 @@ public class User extends AbstractSearchableEntity implements Serializable {
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
+    @Size(max = 50)
+    @Column(name = "phone", length = 50)
+    private String phone;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -211,6 +215,15 @@ public class User extends AbstractSearchableEntity implements Serializable {
 
     public void setDeals(Set<Deal> deals) {
         this.deals = deals;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public User setPhone(String phone) {
+        this.phone = phone;
+        return this;
     }
 
     @Override
