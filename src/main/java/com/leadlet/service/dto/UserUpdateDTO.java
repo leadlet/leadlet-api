@@ -22,6 +22,9 @@ public class UserUpdateDTO {
     @Size(max = 50)
     private String lastName;
 
+    @Size(max = 50)
+    private String phone;
+
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 
@@ -68,11 +71,21 @@ public class UserUpdateDTO {
         this.password = password;
     }
 
-    public UserUpdateDTO(Long id, String firstName, String lastName, String password) {
+    public UserUpdateDTO(Long id, String firstName, String lastName, String password, String phone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public UserUpdateDTO setPhone(String phone) {
+        this.phone = phone;
+        return this;
     }
 
     @Override

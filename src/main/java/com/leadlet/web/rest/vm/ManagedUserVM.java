@@ -28,10 +28,10 @@ public class ManagedUserVM extends UserDTO {
     public ManagedUserVM(Long id, String login, String password, String firstName, String lastName,
                          boolean activated, String imageUrl, String langKey,
                          String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                         Set<String> authorities) {
+                         Set<String> authorities, String phone) {
 
         super(id, login, firstName, lastName, activated, imageUrl, langKey,
-            createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities.stream().map(authority -> (new AuthorityDTO(authority))).collect(Collectors.toSet()));
+            createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities.stream().map(authority -> (new AuthorityDTO(authority))).collect(Collectors.toSet()), phone);
 
         this.password = password;
     }

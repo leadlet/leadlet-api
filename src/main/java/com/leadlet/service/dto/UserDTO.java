@@ -44,6 +44,18 @@ public class UserDTO  implements Serializable {
 
     private Set<AuthorityDTO> authorities;
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public UserDTO setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    @Size(max = 50)
+    private String phone;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -51,7 +63,7 @@ public class UserDTO  implements Serializable {
     public UserDTO(Long id, String login, String firstName, String lastName,
         boolean activated, String imageUrl, String langKey,
         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-        Set<AuthorityDTO> authorities) {
+        Set<AuthorityDTO> authorities, String phone) {
 
         this.id = id;
         this.login = login;
@@ -65,6 +77,7 @@ public class UserDTO  implements Serializable {
         this.lastModifiedBy = lastModifiedBy;
         this.lastModifiedDate = lastModifiedDate;
         this.authorities = authorities;
+        this.phone = phone;
     }
 
     public Long getId() {
