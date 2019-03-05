@@ -27,6 +27,9 @@ public class AppAccount implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "logo")
+    private String logo;
+
     @Column(name = "address")
     private String address;
 
@@ -124,6 +127,14 @@ public class AppAccount implements Serializable {
         this.users = users;
     }
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public AppAccount setLogo(String logo) {
+        this.logo = logo;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {

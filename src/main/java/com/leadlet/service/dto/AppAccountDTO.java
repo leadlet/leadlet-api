@@ -13,6 +13,8 @@ public class AppAccountDTO implements Serializable {
 
     private String name;
 
+    private String logo;
+
     private String address;
 
     public Long getId() {
@@ -54,6 +56,15 @@ public class AppAccountDTO implements Serializable {
             return false;
         }
         return Objects.equals(getId(), appAccountDTO.getId());
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public AppAccountDTO setLogo(String logo) {
+        this.logo = logo;
+        return this;
     }
 
     @Override

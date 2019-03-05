@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 /**
  * Mapper for the entity Deal and its DTO DetailedDealDTO.
  */
-@Mapper(componentModel = "spring", uses = {AuthorityMapper.class})
+@Mapper(componentModel = "spring", uses = {AuthorityMapper.class, AppAccountMapper.class})
 public interface UserMapper extends EntityMapper<UserDTO, User> {
 
     default User fromId(Long id) {
