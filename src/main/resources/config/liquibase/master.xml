@@ -39,6 +39,7 @@
     <include file="config/liquibase/changelog/201811132132_added_entity_constraints_ActivityType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/pipeline_add_is_default_field.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/agent_add_phone_field.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/appaccount_add_logo_field.xml" relativeToChangelogFile="false"/>
 
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

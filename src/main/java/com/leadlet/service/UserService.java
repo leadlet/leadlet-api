@@ -261,7 +261,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
-        return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
+        User user = userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
+        if( user!=null )
+            user.getAppAccount().getId();
+        return user;
     }
 
 
@@ -294,6 +297,8 @@ public class UserService {
         Optional<User> user = userRepository.findOneByLogin(login);
 
         user.get().getAuthorities().size();
+        user.get().getAppAccount().getId();
+
         return user;
     }
 

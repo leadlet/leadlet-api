@@ -15,6 +15,8 @@ public class UserDTO  implements Serializable {
 
     private Long id;
 
+    private AppAccountDTO appAccount;
+
     @NotBlank
     @Email
     @Size(min = 5, max = 100)
@@ -162,6 +164,15 @@ public class UserDTO  implements Serializable {
 
     public void setAuthorities(Set<AuthorityDTO> authorities) {
         this.authorities = authorities;
+    }
+
+    public AppAccountDTO getAppAccount() {
+        return appAccount;
+    }
+
+    public UserDTO setAppAccount(AppAccountDTO appAccount) {
+        this.appAccount = appAccount;
+        return this;
     }
 
     @Override
