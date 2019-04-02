@@ -2,7 +2,10 @@ package com.leadlet.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leadlet.config.SearchConstants;
-import com.leadlet.domain.*;
+import com.leadlet.domain.Activity;
+import com.leadlet.domain.Deal;
+import com.leadlet.domain.Note;
+import com.leadlet.domain.Timeline;
 import com.leadlet.domain.enumeration.TimelineItemType;
 import com.leadlet.repository.ActivityRepository;
 import com.leadlet.repository.DealRepository;
@@ -11,6 +14,7 @@ import com.leadlet.repository.TimelineRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
+import com.leadlet.service.dto.EntityChangeLogDTO;
 import com.leadlet.service.dto.TimelineDTO;
 import com.leadlet.service.mapper.*;
 import org.slf4j.Logger;
@@ -24,10 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -177,62 +178,54 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public void dealUpdated(Deal dealOld, Deal dealNew, List<String> modifiedFields) throws IOException {
+    public void dealUpdated(Deal oldDeal, Deal newDeal) throws IOException {
+        List<EntityChangeLogDTO> changeLogs = buildChangeLogForDealUpdate(oldDeal, newDeal);
 
-        HashMap<String, Object> oldObjectFields = extractFields(dealOld, modifiedFields);
-        HashMap<String, Object> newObjectFields = extractFields(dealNew, modifiedFields);
-        HashMap<String, Object> contentObject = buildContentForDealUpdate(oldObjectFields, newObjectFields);
-
-        String contentJSON = mapper.writeValueAsString(contentObject);
+        String contentJSON = mapper.writeValueAsString(changeLogs);
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.DEAL_UPDATED);
-        timelineItem.setAppAccount(dealNew.getAppAccount());
-        timelineItem.setAgent(dealNew.getAgent());
-        timelineItem.setDeal(dealNew);
+        timelineItem.setAppAccount(newDeal.getAppAccount());
+        timelineItem.setAgent(newDeal.getAgent());
+        timelineItem.setDeal(newDeal);
         timelineItem.setContent(contentJSON);
 
         timelineRepository.save(timelineItem);
         elasticsearchService.indexTimeline(timelineItem);
     }
 
-    private HashMap<String, Object> buildContentForDealUpdate(HashMap<String, Object> oldObjectFields, HashMap<String, Object> newObjectFields) {
+    private List<EntityChangeLogDTO> buildChangeLogForDealUpdate(Deal oldDeal, Deal newDeal) {
 
-        HashMap<String, Object> content = new HashMap<>();
+        List<EntityChangeLogDTO> changeLogs = new ArrayList<>();
 
-        content.put("previous", oldObjectFields);
-        content.put("current", newObjectFields);
-
-        return content;
-
-    }
-
-    private HashMap<String, Object> extractFields(Deal deal, List<String> modifiedFields) {
-        HashMap<String, Object> fields = new HashMap<>();
-
-        fields.put("id", deal.getId());
-
-        for (String field : modifiedFields) {
-            if (field.equals("title")) {
-                fields.put("title", deal.getTitle());
-            } else if (field.equals("contact")) {
-                fields.put("contact", contactMapper.toDto(deal.getContact()));
-            } else if (field.equals("stage")) {
-                fields.put("stage", stageMapper.toDto(deal.getStage()));
-            } else if (field.equals("priority")) {
-                fields.put("priority", deal.getPriority());
-            } else if (field.equals("dealValue")) {
-                fields.put("dealValue", dealValueMapper.toDto(deal.getDealValue()));
-            } else if (field.equals("pipeline")) {
-                fields.put("pipeline", pipelineMapper.toDto(deal.getPipeline()));
-            } else if (field.equals("agent")) {
-                fields.put("agent", userMapper.toDto(deal.getAgent()));
-            } else if (field.equals("possibleCloseDate")) {
-                fields.put("possibleCloseDate", deal.getPossibleCloseDate() != null ? deal.getPossibleCloseDate().toEpochSecond() : "");
-            }
+        if(!oldDeal.getTitle().equals(newDeal.getTitle())){
+            changeLogs.add(new EntityChangeLogDTO("title",oldDeal.getTitle(),newDeal.getTitle()));
+        }
+        if(!oldDeal.getAgent().equals(newDeal.getAgent())){
+            changeLogs.add(new EntityChangeLogDTO("agent",oldDeal.getAgent(),newDeal.getAgent()));
+        }
+        if(!oldDeal.getStage().equals(newDeal.getStage())){
+            changeLogs.add(new EntityChangeLogDTO("stage",oldDeal.getStage(),newDeal.getStage()));
+        }
+        if(!oldDeal.getContact().equals(newDeal.getContact())){
+            changeLogs.add(new EntityChangeLogDTO("contact",oldDeal.getContact(),newDeal.getContact()));
+        }
+        if(!oldDeal.getDealChannel().equals(newDeal.getDealChannel())){
+            changeLogs.add(new EntityChangeLogDTO("channel",oldDeal.getDealChannel(),newDeal.getDealChannel()));
+        }
+        if(!oldDeal.getDealSource().equals(newDeal.getDealSource())){
+            changeLogs.add(new EntityChangeLogDTO("source",oldDeal.getDealSource(),newDeal.getDealSource()));
+        }
+        if(!oldDeal.getDealStatus().equals(newDeal.getDealStatus())){
+            changeLogs.add(new EntityChangeLogDTO("status",oldDeal.getDealStatus(),newDeal.getDealStatus()));
+        }
+        if(!oldDeal.getDealValue().equals(newDeal.getDealValue())){
+            changeLogs.add(new EntityChangeLogDTO("value",oldDeal.getDealValue(),newDeal.getDealValue()));
         }
 
-        return fields;
+
+        return changeLogs;
+
     }
 
 }
