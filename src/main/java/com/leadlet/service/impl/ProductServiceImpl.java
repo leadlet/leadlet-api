@@ -1,6 +1,8 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.Product;
+import com.leadlet.repository.DealRepository;
 import com.leadlet.repository.ProductRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ProductService;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Iterator;
 
 /**
  * Service Implementation for managing Product.
@@ -27,11 +30,14 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private final DealRepository dealRepository;
+
     private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper, DealRepository dealRepository) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.dealRepository = dealRepository;
     }
 
     /**
@@ -109,6 +115,19 @@ public class ProductServiceImpl implements ProductService {
         log.debug("Request to delete Product : {}", id);
         Product productFromDb = productRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (productFromDb != null) {
+
+            Iterator<Deal> iteratorDeal = productFromDb.getDeals().iterator();
+            while (iteratorDeal.hasNext()) {
+                Deal deal = iteratorDeal.next();
+                Iterator<Product> iteratorProduct = deal.getProducts().iterator();
+                while (iteratorProduct.hasNext()) {
+                    if (iteratorProduct.next().equals(productFromDb)) {
+                        iteratorProduct.remove();
+                    }
+                }
+                dealRepository.save(deal);
+            }
+
             productRepository.delete(id);
         } else {
             throw new EntityNotFoundException();
