@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Deal Channel.
@@ -25,6 +26,17 @@ public class DealChannel extends AbstractAccountSpecificEntity implements Serial
     @Column(name = "name", nullable = false, length = 64)
     @NotNull
     private String name;
+
+    @OneToMany(mappedBy = "dealChannel", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Deal> deals;
+
+    public Set<Deal> getDeals() {
+        return deals;
+    }
+
+    public void setDeals(Set<Deal> deals) {
+        this.deals = deals;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

@@ -113,6 +113,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Product : {}", id);
+        Product nextProduct;
+
         Product productFromDb = productRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (productFromDb != null) {
 
@@ -121,7 +123,8 @@ public class ProductServiceImpl implements ProductService {
                 Deal deal = iteratorDeal.next();
                 Iterator<Product> iteratorProduct = deal.getProducts().iterator();
                 while (iteratorProduct.hasNext()) {
-                    if (iteratorProduct.next().equals(productFromDb)) {
+                    nextProduct = iteratorProduct.next();
+                    if (nextProduct.equals(productFromDb)) {
                         iteratorProduct.remove();
                     }
                 }
