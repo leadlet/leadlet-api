@@ -1,7 +1,9 @@
 package com.leadlet.service.impl;
 
+import com.leadlet.domain.Deal;
 import com.leadlet.domain.DealChannel;
 import com.leadlet.repository.ChannelRepository;
+import com.leadlet.repository.DealRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ChannelService;
 import com.leadlet.service.dto.ChannelDTO;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Iterator;
 
 /**
  * Service Implementation for managing Channel.
@@ -27,11 +30,14 @@ public class ChannelServiceImpl implements ChannelService {
 
     private final ChannelRepository channelRepository;
 
+    private final DealRepository dealRepository;
+
     private final ChannelMapper channelMapper;
 
-    public ChannelServiceImpl(ChannelRepository channelRepository, ChannelMapper channelMapper) {
+    public ChannelServiceImpl(ChannelRepository channelRepository, ChannelMapper channelMapper, DealRepository dealRepository) {
         this.channelRepository = channelRepository;
         this.channelMapper = channelMapper;
+        this.dealRepository = dealRepository;
     }
 
     /**
@@ -109,6 +115,17 @@ public class ChannelServiceImpl implements ChannelService {
         log.debug("Request to delete Channel : {}", id);
         DealChannel channelFromDb = channelRepository.findOneByIdAndAppAccount_Id(id, SecurityUtils.getCurrentUserAppAccountId());
         if (channelFromDb != null) {
+
+            Iterator<Deal> iteratorDeal = channelFromDb.getDeals().iterator();
+
+            while (iteratorDeal.hasNext()) {
+                Deal deal = iteratorDeal.next();
+                DealChannel dealChannel = deal.getDealChannel();
+                if (dealChannel.getId().equals(channelFromDb.getId())) {
+                    deal.setDealChannel(null);
+                }
+                dealRepository.save(deal);
+            }
             channelRepository.delete(id);
         } else {
             throw new EntityNotFoundException();
