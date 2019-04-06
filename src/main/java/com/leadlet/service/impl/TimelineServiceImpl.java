@@ -2,17 +2,22 @@ package com.leadlet.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leadlet.config.SearchConstants;
-import com.leadlet.domain.*;
+import com.leadlet.domain.Activity;
+import com.leadlet.domain.Deal;
+import com.leadlet.domain.Note;
+import com.leadlet.domain.Timeline;
 import com.leadlet.domain.enumeration.TimelineItemType;
-import com.leadlet.repository.ActivityRepository;
-import com.leadlet.repository.DealRepository;
-import com.leadlet.repository.NoteRepository;
 import com.leadlet.repository.TimelineRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
+import com.leadlet.service.dto.DetailedDealDTO;
+import com.leadlet.service.dto.EntityChangeLogDTO;
 import com.leadlet.service.dto.TimelineDTO;
-import com.leadlet.service.mapper.*;
+import com.leadlet.service.mapper.ActivityMapper;
+import com.leadlet.service.mapper.DetailedDealMapper;
+import com.leadlet.service.mapper.NoteMapper;
+import com.leadlet.service.mapper.TimelineMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,10 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,50 +42,25 @@ public class TimelineServiceImpl implements TimelineService {
     private final Logger log = LoggerFactory.getLogger(TimelineServiceImpl.class);
     private final TimelineRepository timelineRepository;
     private final TimelineMapper timelineMapper;
-    private final NoteRepository noteRepository;
     private final NoteMapper noteMapper;
     private final ActivityMapper activityMapper;
     private final DetailedDealMapper detailedDealMapper;
-    private final ActivityRepository activityRepository;
-    private final DealRepository dealRepository;
     private final ElasticsearchService elasticsearchService;
-    private final UserMapper userMapper;
-    private final PipelineMapper pipelineMapper;
-    private final DealValueMapper dealValueMapper;
-    private final StageMapper stageMapper;
-    private final ContactMapper contactMapper;
 
     ObjectMapper mapper = new ObjectMapper();
 
     public TimelineServiceImpl(TimelineRepository timelineRepository,
                                TimelineMapper timelineMapper,
-                               NoteRepository noteRepository,
-                               ActivityRepository activityRepository,
                                NoteMapper noteMapper,
                                ActivityMapper activityMapper,
-                               UserMapper userMapper,
-                               DealRepository dealRepository,
                                DetailedDealMapper detailedDealMapper,
-                               ElasticsearchService elasticsearchService,
-                               PipelineMapper pipelineMapper,
-                               DealValueMapper dealValueMapper,
-                               StageMapper stageMapper,
-                               ContactMapper contactMapper) {
+                               ElasticsearchService elasticsearchService) {
         this.timelineRepository = timelineRepository;
         this.timelineMapper = timelineMapper;
-        this.noteRepository = noteRepository;
-        this.activityRepository = activityRepository;
         this.noteMapper = noteMapper;
         this.activityMapper = activityMapper;
         this.elasticsearchService = elasticsearchService;
-        this.dealRepository = dealRepository;
         this.detailedDealMapper = detailedDealMapper;
-        this.userMapper = userMapper;
-        this.pipelineMapper = pipelineMapper;
-        this.dealValueMapper = dealValueMapper;
-        this.stageMapper = stageMapper;
-        this.contactMapper = contactMapper;
-
     }
 
     @Override
@@ -177,13 +154,13 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public void dealUpdated(Deal dealOld, Deal dealNew, List<String> modifiedFields) throws IOException {
+    public void dealUpdated(DetailedDealDTO dealOldDto, DetailedDealDTO dealNewDto, Deal dealNew) throws IOException {
+        List<EntityChangeLogDTO> changeLogs = buildChangeLogForDealUpdate(dealOldDto, dealNewDto);
 
-        HashMap<String, Object> oldObjectFields = extractFields(dealOld, modifiedFields);
-        HashMap<String, Object> newObjectFields = extractFields(dealNew, modifiedFields);
-        HashMap<String, Object> contentObject = buildContentForDealUpdate(oldObjectFields, newObjectFields);
-
-        String contentJSON = mapper.writeValueAsString(contentObject);
+        if(changeLogs.isEmpty()){
+            return;
+        }
+        String contentJSON = mapper.writeValueAsString(changeLogs);
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.DEAL_UPDATED);
@@ -196,43 +173,55 @@ public class TimelineServiceImpl implements TimelineService {
         elasticsearchService.indexTimeline(timelineItem);
     }
 
-    private HashMap<String, Object> buildContentForDealUpdate(HashMap<String, Object> oldObjectFields, HashMap<String, Object> newObjectFields) {
+    private List<EntityChangeLogDTO> buildChangeLogForDealUpdate(DetailedDealDTO oldDeal, DetailedDealDTO newDeal) {
 
-        HashMap<String, Object> content = new HashMap<>();
+        List<EntityChangeLogDTO> changeLogs = new ArrayList<>();
 
-        content.put("previous", oldObjectFields);
-        content.put("current", newObjectFields);
-
-        return content;
-
-    }
-
-    private HashMap<String, Object> extractFields(Deal deal, List<String> modifiedFields) {
-        HashMap<String, Object> fields = new HashMap<>();
-
-        fields.put("id", deal.getId());
-
-        for (String field : modifiedFields) {
-            if (field.equals("title")) {
-                fields.put("title", deal.getTitle());
-            } else if (field.equals("contact")) {
-                fields.put("contact", contactMapper.toDto(deal.getContact()));
-            } else if (field.equals("stage")) {
-                fields.put("stage", stageMapper.toDto(deal.getStage()));
-            } else if (field.equals("priority")) {
-                fields.put("priority", deal.getPriority());
-            } else if (field.equals("dealValue")) {
-                fields.put("dealValue", dealValueMapper.toDto(deal.getDealValue()));
-            } else if (field.equals("pipeline")) {
-                fields.put("pipeline", pipelineMapper.toDto(deal.getPipeline()));
-            } else if (field.equals("agent")) {
-                fields.put("agent", userMapper.toDto(deal.getAgent()));
-            } else if (field.equals("possibleCloseDate")) {
-                fields.put("possibleCloseDate", deal.getPossibleCloseDate() != null ? deal.getPossibleCloseDate().toEpochSecond() : "");
-            }
+        if(!Objects.equals(oldDeal.getTitle(),newDeal.getTitle())){
+            changeLogs.add(new EntityChangeLogDTO("title",oldDeal.getTitle(),newDeal.getTitle()));
+        }
+        if(!Objects.equals(oldDeal.getAgent(),newDeal.getAgent())){
+            changeLogs.add(new EntityChangeLogDTO("agent",
+                oldDeal.getAgent(), newDeal.getAgent()));
+        }
+        if(!Objects.equals(oldDeal.getStage(),newDeal.getStage())){
+            changeLogs.add(new EntityChangeLogDTO("stage",
+                oldDeal.getStage(), newDeal.getStage()));
+        }
+        if(!Objects.equals(oldDeal.getContact(),newDeal.getContact())){
+            changeLogs.add(new EntityChangeLogDTO("contact",
+                oldDeal.getContact(), newDeal.getContact()));
+        }
+        if(!Objects.equals(oldDeal.getDeal_channel(),newDeal.getDeal_channel())){
+            changeLogs.add(new EntityChangeLogDTO("deal_channel",
+                oldDeal.getDeal_channel(), newDeal.getDeal_channel()));
+        }
+        if(!Objects.equals(oldDeal.getDeal_source(),newDeal.getDeal_source())){
+            changeLogs.add(new EntityChangeLogDTO("deal_source",
+                oldDeal.getDeal_source(), newDeal.getDeal_source()));
+        }
+        if(!Objects.equals(oldDeal.getDeal_status(),newDeal.getDeal_status())){
+            changeLogs.add(new EntityChangeLogDTO("deal_status",
+                oldDeal.getDeal_status(),newDeal.getDeal_status()));
+        }
+        if(!Objects.equals(oldDeal.getDeal_value(),newDeal.getDeal_value())){
+            changeLogs.add(new EntityChangeLogDTO("deal_value",
+                oldDeal.getDeal_value(), newDeal.getDeal_value()));
+        }
+        // Means something changed in products.
+        if(!Objects.equals(oldDeal.getProducts(), newDeal.getProducts())){
+            changeLogs.add(new EntityChangeLogDTO("products",
+                oldDeal.getProducts(), newDeal.getProducts()));
         }
 
-        return fields;
+        if(!Objects.equals(oldDeal.getPossible_close_date(), newDeal.getPossible_close_date())){
+            changeLogs.add(new EntityChangeLogDTO("possible_close_date",
+                oldDeal.getPossible_close_date().toInstant().toEpochMilli(),
+                newDeal.getPossible_close_date().toInstant().toEpochMilli()));
+        }
+
+        return changeLogs;
+
     }
 
 }
