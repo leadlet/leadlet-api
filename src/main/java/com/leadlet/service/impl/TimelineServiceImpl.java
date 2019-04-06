@@ -165,7 +165,7 @@ public class TimelineServiceImpl implements TimelineService {
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.DEAL_UPDATED);
         timelineItem.setAppAccount(dealNew.getAppAccount());
-        timelineItem.setAgent(dealNew.getAgent());
+        timelineItem.setAgent(SecurityUtils.getCurrentUserRef());
         timelineItem.setDeal(dealNew);
         timelineItem.setContent(contentJSON);
 
@@ -216,8 +216,8 @@ public class TimelineServiceImpl implements TimelineService {
 
         if(!Objects.equals(oldDeal.getPossible_close_date(), newDeal.getPossible_close_date())){
             changeLogs.add(new EntityChangeLogDTO("possible_close_date",
-                oldDeal.getPossible_close_date().toInstant().toEpochMilli(),
-                newDeal.getPossible_close_date().toInstant().toEpochMilli()));
+                oldDeal.getPossible_close_date()!=null ? oldDeal.getPossible_close_date().toInstant().toEpochMilli() : null,
+                newDeal.getPossible_close_date()!=null ? newDeal.getPossible_close_date().toInstant().toEpochMilli() : null));
         }
 
         return changeLogs;
