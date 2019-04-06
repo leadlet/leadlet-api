@@ -42,7 +42,9 @@ public class DomainUserDetailsService implements UserDetailsService {
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());
-            return new AppUserDetail(user.getAppAccount().getId(),
+            return new AppUserDetail(
+                user.getId(),
+                user.getAppAccount().getId(),
                 lowercaseLogin,
                 user.getPassword(),
                 grantedAuthorities);

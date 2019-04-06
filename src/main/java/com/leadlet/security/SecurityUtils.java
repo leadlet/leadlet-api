@@ -2,9 +2,7 @@ package com.leadlet.security;
 
 import com.leadlet.domain.AppAccount;
 import com.leadlet.domain.User;
-import com.leadlet.repository.UserRepository;
 import com.leadlet.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +46,6 @@ public final class SecurityUtils {
         return userName;
     }
 
-
     /**
      * Get the login of the current user.
      *
@@ -67,6 +64,21 @@ public final class SecurityUtils {
         return appAccountRef;
     }
 
+    public static User getCurrentUserRef() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Long userId = null;
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof UserDetails) {
+                AppUserDetail springSecurityUser = (AppUserDetail) authentication.getPrincipal();
+                userId = springSecurityUser.getUserId();
+            }
+        }
+
+        User userRef = entityManager.getReference(User.class, userId);
+
+        return userRef;
+    }
 
     /**
      * Get the login of the current user.

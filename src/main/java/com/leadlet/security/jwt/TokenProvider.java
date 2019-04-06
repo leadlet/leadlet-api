@@ -2,11 +2,7 @@ package com.leadlet.security.jwt;
 
 import com.leadlet.security.AppUserDetail;
 import io.github.jhipster.config.JHipsterProperties;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +12,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.*;
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider {
@@ -25,6 +25,7 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String APP_ACCOUNT_KEY = "account";
+    private static final String USER_KEY = "user";
 
     private String secretKey;
 
@@ -55,6 +56,7 @@ public class TokenProvider {
             .collect(Collectors.joining(","));
 
         Long appAccountId = ((AppUserDetail) authentication.getPrincipal()).getAppAccountId();
+        Long userId = ((AppUserDetail) authentication.getPrincipal()).getUserId();
 
         long now = (new Date()).getTime();
         Date validity;
@@ -68,6 +70,7 @@ public class TokenProvider {
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
             .claim(APP_ACCOUNT_KEY,appAccountId)
+            .claim(USER_KEY,userId)
             .signWith(SignatureAlgorithm.HS512, secretKey)
             .setExpiration(validity)
             .compact();
@@ -85,8 +88,9 @@ public class TokenProvider {
                 .collect(Collectors.toList());
 
         Long appAccountId = Long.valueOf(claims.get(APP_ACCOUNT_KEY).toString());
+        Long userId = Long.valueOf(claims.get(USER_KEY).toString());
 
-        User principal = new AppUserDetail(appAccountId, claims.getSubject(), "", authorities);
+        User principal = new AppUserDetail(userId, appAccountId, claims.getSubject(), "", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
