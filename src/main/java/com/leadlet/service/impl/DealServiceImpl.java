@@ -95,14 +95,16 @@ public class DealServiceImpl implements DealService {
         log.debug("Request to save Deal : {}", dealDTO);
         Deal deal = dealMapper.toEntity(dealDTO);
         Deal dealFromDb = dealRepository.findOneByIdAndAppAccount_Id(deal.getId(), SecurityUtils.getCurrentUserAppAccountId());
-
+        DetailedDealDTO oldDealDto = detailedDealMapper.toDto(dealFromDb);
         entityManager.detach(dealFromDb);
 
         if (dealFromDb != null) {
             // TODO appaccount'u eklemek dogru fakat appaccount olmadan da kayit hatasi almaliydik.
             deal.setAppAccount(SecurityUtils.getCurrentUserAppAccountReference());
             deal = dealRepository.save(deal);
-            timelineService.dealUpdated(dealFromDb, deal);
+            DetailedDealDTO newDealDto = detailedDealMapper.toDto(deal);
+
+            timelineService.dealUpdated(oldDealDto, newDealDto, deal);
             elasticsearchService.indexDeal(deal);
             return detailedDealMapper.toDto(deal);
         } else {

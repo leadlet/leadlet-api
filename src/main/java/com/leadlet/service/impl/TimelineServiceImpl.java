@@ -7,16 +7,17 @@ import com.leadlet.domain.Deal;
 import com.leadlet.domain.Note;
 import com.leadlet.domain.Timeline;
 import com.leadlet.domain.enumeration.TimelineItemType;
-import com.leadlet.repository.ActivityRepository;
-import com.leadlet.repository.DealRepository;
-import com.leadlet.repository.NoteRepository;
 import com.leadlet.repository.TimelineRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ElasticsearchService;
 import com.leadlet.service.TimelineService;
+import com.leadlet.service.dto.DetailedDealDTO;
 import com.leadlet.service.dto.EntityChangeLogDTO;
 import com.leadlet.service.dto.TimelineDTO;
-import com.leadlet.service.mapper.*;
+import com.leadlet.service.mapper.ActivityMapper;
+import com.leadlet.service.mapper.DetailedDealMapper;
+import com.leadlet.service.mapper.NoteMapper;
+import com.leadlet.service.mapper.TimelineMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -41,50 +42,25 @@ public class TimelineServiceImpl implements TimelineService {
     private final Logger log = LoggerFactory.getLogger(TimelineServiceImpl.class);
     private final TimelineRepository timelineRepository;
     private final TimelineMapper timelineMapper;
-    private final NoteRepository noteRepository;
     private final NoteMapper noteMapper;
     private final ActivityMapper activityMapper;
     private final DetailedDealMapper detailedDealMapper;
-    private final ActivityRepository activityRepository;
-    private final DealRepository dealRepository;
     private final ElasticsearchService elasticsearchService;
-    private final UserMapper userMapper;
-    private final PipelineMapper pipelineMapper;
-    private final DealValueMapper dealValueMapper;
-    private final StageMapper stageMapper;
-    private final ContactMapper contactMapper;
 
     ObjectMapper mapper = new ObjectMapper();
 
     public TimelineServiceImpl(TimelineRepository timelineRepository,
                                TimelineMapper timelineMapper,
-                               NoteRepository noteRepository,
-                               ActivityRepository activityRepository,
                                NoteMapper noteMapper,
                                ActivityMapper activityMapper,
-                               UserMapper userMapper,
-                               DealRepository dealRepository,
                                DetailedDealMapper detailedDealMapper,
-                               ElasticsearchService elasticsearchService,
-                               PipelineMapper pipelineMapper,
-                               DealValueMapper dealValueMapper,
-                               StageMapper stageMapper,
-                               ContactMapper contactMapper) {
+                               ElasticsearchService elasticsearchService) {
         this.timelineRepository = timelineRepository;
         this.timelineMapper = timelineMapper;
-        this.noteRepository = noteRepository;
-        this.activityRepository = activityRepository;
         this.noteMapper = noteMapper;
         this.activityMapper = activityMapper;
         this.elasticsearchService = elasticsearchService;
-        this.dealRepository = dealRepository;
         this.detailedDealMapper = detailedDealMapper;
-        this.userMapper = userMapper;
-        this.pipelineMapper = pipelineMapper;
-        this.dealValueMapper = dealValueMapper;
-        this.stageMapper = stageMapper;
-        this.contactMapper = contactMapper;
-
     }
 
     @Override
@@ -178,51 +154,71 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public void dealUpdated(Deal oldDeal, Deal newDeal) throws IOException {
-        List<EntityChangeLogDTO> changeLogs = buildChangeLogForDealUpdate(oldDeal, newDeal);
+    public void dealUpdated(DetailedDealDTO dealOldDto, DetailedDealDTO dealNewDto, Deal dealNew) throws IOException {
+        List<EntityChangeLogDTO> changeLogs = buildChangeLogForDealUpdate(dealOldDto, dealNewDto);
 
+        if(changeLogs.isEmpty()){
+            return;
+        }
         String contentJSON = mapper.writeValueAsString(changeLogs);
 
         Timeline timelineItem = new Timeline();
         timelineItem.setType(TimelineItemType.DEAL_UPDATED);
-        timelineItem.setAppAccount(newDeal.getAppAccount());
-        timelineItem.setAgent(newDeal.getAgent());
-        timelineItem.setDeal(newDeal);
+        timelineItem.setAppAccount(dealNew.getAppAccount());
+        timelineItem.setAgent(dealNew.getAgent());
+        timelineItem.setDeal(dealNew);
         timelineItem.setContent(contentJSON);
 
         timelineRepository.save(timelineItem);
         elasticsearchService.indexTimeline(timelineItem);
     }
 
-    private List<EntityChangeLogDTO> buildChangeLogForDealUpdate(Deal oldDeal, Deal newDeal) {
+    private List<EntityChangeLogDTO> buildChangeLogForDealUpdate(DetailedDealDTO oldDeal, DetailedDealDTO newDeal) {
 
         List<EntityChangeLogDTO> changeLogs = new ArrayList<>();
 
-        if(!oldDeal.getTitle().equals(newDeal.getTitle())){
+        if(!Objects.equals(oldDeal.getTitle(),newDeal.getTitle())){
             changeLogs.add(new EntityChangeLogDTO("title",oldDeal.getTitle(),newDeal.getTitle()));
         }
-        if(!oldDeal.getAgent().equals(newDeal.getAgent())){
-            changeLogs.add(new EntityChangeLogDTO("agent",oldDeal.getAgent(),newDeal.getAgent()));
+        if(!Objects.equals(oldDeal.getAgent(),newDeal.getAgent())){
+            changeLogs.add(new EntityChangeLogDTO("agent",
+                oldDeal.getAgent(), newDeal.getAgent()));
         }
-        if(!oldDeal.getStage().equals(newDeal.getStage())){
-            changeLogs.add(new EntityChangeLogDTO("stage",oldDeal.getStage(),newDeal.getStage()));
+        if(!Objects.equals(oldDeal.getStage(),newDeal.getStage())){
+            changeLogs.add(new EntityChangeLogDTO("stage",
+                oldDeal.getStage(), newDeal.getStage()));
         }
-        if(!oldDeal.getContact().equals(newDeal.getContact())){
-            changeLogs.add(new EntityChangeLogDTO("contact",oldDeal.getContact(),newDeal.getContact()));
+        if(!Objects.equals(oldDeal.getContact(),newDeal.getContact())){
+            changeLogs.add(new EntityChangeLogDTO("contact",
+                oldDeal.getContact(), newDeal.getContact()));
         }
-        if(!oldDeal.getDealChannel().equals(newDeal.getDealChannel())){
-            changeLogs.add(new EntityChangeLogDTO("channel",oldDeal.getDealChannel(),newDeal.getDealChannel()));
+        if(!Objects.equals(oldDeal.getDeal_channel(),newDeal.getDeal_channel())){
+            changeLogs.add(new EntityChangeLogDTO("deal_channel",
+                oldDeal.getDeal_channel(), newDeal.getDeal_channel()));
         }
-        if(!oldDeal.getDealSource().equals(newDeal.getDealSource())){
-            changeLogs.add(new EntityChangeLogDTO("source",oldDeal.getDealSource(),newDeal.getDealSource()));
+        if(!Objects.equals(oldDeal.getDeal_source(),newDeal.getDeal_source())){
+            changeLogs.add(new EntityChangeLogDTO("deal_source",
+                oldDeal.getDeal_source(), newDeal.getDeal_source()));
         }
-        if(!oldDeal.getDealStatus().equals(newDeal.getDealStatus())){
-            changeLogs.add(new EntityChangeLogDTO("status",oldDeal.getDealStatus(),newDeal.getDealStatus()));
+        if(!Objects.equals(oldDeal.getDeal_status(),newDeal.getDeal_status())){
+            changeLogs.add(new EntityChangeLogDTO("deal_status",
+                oldDeal.getDeal_status(),newDeal.getDeal_status()));
         }
-        if(!oldDeal.getDealValue().equals(newDeal.getDealValue())){
-            changeLogs.add(new EntityChangeLogDTO("value",oldDeal.getDealValue(),newDeal.getDealValue()));
+        if(!Objects.equals(oldDeal.getDeal_value(),newDeal.getDeal_value())){
+            changeLogs.add(new EntityChangeLogDTO("deal_value",
+                oldDeal.getDeal_value(), newDeal.getDeal_value()));
+        }
+        // Means something changed in products.
+        if(!Objects.equals(oldDeal.getProducts(), newDeal.getProducts())){
+            changeLogs.add(new EntityChangeLogDTO("products",
+                oldDeal.getProducts(), newDeal.getProducts()));
         }
 
+        if(!Objects.equals(oldDeal.getPossible_close_date(), newDeal.getPossible_close_date())){
+            changeLogs.add(new EntityChangeLogDTO("possible_close_date",
+                oldDeal.getPossible_close_date().toInstant().toEpochMilli(),
+                newDeal.getPossible_close_date().toInstant().toEpochMilli()));
+        }
 
         return changeLogs;
 

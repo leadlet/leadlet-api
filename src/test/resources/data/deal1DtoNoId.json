@@ -1,0 +1,14 @@
+{
+    "title" : "id luctus nec molestie sed justo",
+    "stage_id": 2,
+    "pipeline_id": 3,
+    "contact_id": 4,
+    "agent_id": 5,
+    "deal_source_id": 6,
+    "deal_channel_id": 7,
+    "lost_reason_id": 8,
+    "product_ids": [9],
+    "activity_ids": [10],
+    "activityStatus" : "EXPIRED",
+    "dealStatus" : "NOT_SET"
+}
