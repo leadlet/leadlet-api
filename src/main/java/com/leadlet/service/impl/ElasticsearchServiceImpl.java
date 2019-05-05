@@ -1,10 +1,12 @@
 package com.leadlet.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.leadlet.config.SearchConstants;
 import com.leadlet.domain.Activity;
 import com.leadlet.domain.Deal;
 import com.leadlet.domain.Timeline;
 import com.leadlet.domain.User;
+import com.leadlet.domain.enumeration.FacetType;
 import com.leadlet.repository.DealRepository;
 import com.leadlet.security.SecurityUtils;
 import com.leadlet.service.ElasticsearchService;
@@ -31,14 +33,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
 public class ElasticsearchServiceImpl implements ElasticsearchService {
+
+    ImmutableMap<String, String> resourceIndexMap
+        = ImmutableMap.of("activity", "leadlet-activity");
 
     private final RestHighLevelClient restHighLevelClient;
     private final DealRepository dealRepository;
@@ -197,6 +199,74 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         ActivitySearchIndexDTO activitySearchIndexDTO = new ActivitySearchIndexDTO(activity);
         request.source(activitySearchIndexDTO.getBuilder());
         IndexResponse response = restHighLevelClient.index(request);
+    }
+
+    @Override
+    public Set<FacetDTO> getFilterData(String resource, Set<FilterDefinitionDTO> filterDefinitions, String query) throws IOException {
+
+        String index = resourceIndexMap.get(resource);
+
+        SearchSourceBuilder searchSourceBuilder = buildInitialSearchQuery(query);
+
+        for (FilterDefinitionDTO filter:filterDefinitions) {
+            addAggregation(searchSourceBuilder, filter);
+        }
+
+        SearchRequest searchRequest = new SearchRequest(index);
+
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse sr = restHighLevelClient.search(searchRequest);
+
+        // sr is here your SearchResponse object
+
+        Set<FacetDTO> filters = extractFiltersFromSearchResult(sr, filterDefinitions);
+
+        return filters;
+    }
+
+    private Set<FacetDTO> extractFiltersFromSearchResult(SearchResponse sr, Set<FilterDefinitionDTO> filterDefinitions) {
+
+        Set<FacetDTO> filters = new HashSet<>();
+
+        for (FilterDefinitionDTO filter:filterDefinitions) {
+            if(filter.getType().equals(FacetType.list)){
+                Terms genders = sr.getAggregations().get(filter.getId());
+                TermsFacetDTO facetDTO = new TermsFacetDTO();
+                facetDTO.setId(filter.getId());
+                facetDTO.setField(filter.getField());
+
+                for (Terms.Bucket entry : genders.getBuckets()) {
+                    facetDTO.addTerm(entry.getKeyAsString(),entry.getDocCount());
+                }
+
+                filters.add(facetDTO);
+            }
+        }
+        return filters;
+    }
+
+    private void addAggregation(SearchSourceBuilder sourceBuilder, FilterDefinitionDTO filter) {
+        if( filter.getType().equals(FacetType.list)){
+            String fieldName = filter.getField();
+            sourceBuilder.aggregation(AggregationBuilders
+                .terms(filter.getId())
+                .field(fieldName));
+        }
+    }
+
+    private SearchSourceBuilder buildInitialSearchQuery(String query) {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        String appAccountFilter = "app_account_id:" + SecurityUtils.getCurrentUserAppAccountId();
+        if(StringUtils.isEmpty(query)){
+            query = appAccountFilter;
+        }else {
+            query += " AND " + appAccountFilter;
+        }
+
+        searchSourceBuilder = searchSourceBuilder.query(QueryBuilders.queryStringQuery(query));
+
+        return searchSourceBuilder;
     }
 
     public void indexUser(User user) throws IOException {
