@@ -42,7 +42,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Page<User> findAllByLoginNotAndAppAccount_Id(Pageable pageable, String login, Long appAccountId);
     List<User> findAllByIdIn(List<Long> ids);
 
-    Page<User> findAllBySyncStatusAndCreatedDateLessThan(SyncStatus syncStatus, Instant maxDate, Pageable page);
+    Page<User> findAllBySyncStatusNotAndCreatedDateLessThan(SyncStatus syncStatus, Instant maxDate, Pageable page);
 
     @Modifying
     @Query("update #{#entityName} user set user.syncStatus = ?1 where user.id in ?2")
