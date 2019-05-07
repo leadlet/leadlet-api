@@ -48,7 +48,7 @@ public class UserIndexService {
         while(getPages){
             Pageable pageable = new PageRequest(pageNo, 20);
 
-            Page<User> page = userRepository.findAllBySyncStatusAndCreatedDateLessThan(SyncStatus.NOT_SYNCED, Instant.now(), pageable);
+            Page<User> page = userRepository.findAllBySyncStatusNotAndCreatedDateLessThan(SyncStatus.SYNCED, Instant.now(), pageable);
 
             if( page.getContent() == null ||  page.getContent().size() == 0){
                 break;
