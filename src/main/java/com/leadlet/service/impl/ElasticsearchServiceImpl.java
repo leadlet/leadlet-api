@@ -40,7 +40,8 @@ import java.util.*;
 public class ElasticsearchServiceImpl implements ElasticsearchService {
 
     ImmutableMap<String, String> resourceIndexMap
-        = ImmutableMap.of("activity", "leadlet-activity");
+        = ImmutableMap.of("activity", "leadlet-activity",
+                            "deal", "leadlet-deal");
 
     private final RestHighLevelClient restHighLevelClient;
     private final DealRepository dealRepository;
