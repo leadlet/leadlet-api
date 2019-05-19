@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class TermsFacetDTO extends FacetDTO {
 
+    private final String type = "list";
+
     private Map<String,Long> options = new HashMap<>();
 
     public Map<String, Long> getOptions() {
@@ -22,4 +24,7 @@ public class TermsFacetDTO extends FacetDTO {
 
     }
 
+    public String getType() {
+        return type;
+    }
 }
