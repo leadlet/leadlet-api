@@ -52,7 +52,7 @@ public class DealSearchIndexDTO implements Serializable {
         this.lostReason = deal.getLostReason() != null ? deal.getLostReason().getName(): "";
         this.appAccountId = deal.getAppAccount().getId();
         this.agentId = deal.getAgent() != null ? deal.getAgent().getId(): null;
-        this.agentName = deal.getAgent() != null ? deal.getAgent().getFirstName() + deal.getAgent().getLastName(): null;
+        this.agentName = deal.getAgent() != null ? deal.getAgent().getFirstName() + " " + deal.getAgent().getLastName(): null;
         this.contactId = deal.getContact() != null ? deal.getContact().getId(): null;
         this.contactName = deal.getContact() != null ? deal.getContact().getName() : null;
         this.dealTitle = deal.getTitle();
